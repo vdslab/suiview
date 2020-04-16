@@ -5,6 +5,8 @@ import { IonReactRouter } from '@ionic/react-router'
 
 import Root from './pages/root'
 
+
+
 const App = () => {
   return (
     <IonApp>
@@ -14,6 +16,8 @@ const App = () => {
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
+
+    
   )
 }
 
