@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   IonHeader,
   IonToolbar,
@@ -7,91 +7,99 @@ import {
   IonPage,
   IonButton,
   IonAlert,
-} from '@ionic/react'
-
-
+} from "@ionic/react";
 
 let recorder = null;
 
 const musicRecord = () => {
-  console.log("recoding")
-  navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+  console.log("recoding");
+  navigator.getUserMedia =
+    navigator.getUserMedia || navigator.webkitGetUserMedia;
   const constraints = { audio: true, video: false };
   let chunks = [];
-  
+
   navigator.getUserMedia(constraints, successFunc, errorFunc);
-    
+
   function successFunc(stream) {
     recorder = new MediaRecorder(stream, {
-      mimeType: 'video/webm;codecs=vp9' //ここは何にするのがベスト?
+      mimeType: "video/webm;codecs=vp9", //ここは何にするのがベスト?
     });
-      
+
     //録音
-    recorder.addEventListener('dataavailable', function(ele) {
+    recorder.addEventListener("dataavailable", function (ele) {
       if (ele.data.size > 0) {
         chunks.push(ele.data);
       }
     });
 
     // recorder.stopが実行された時のイベント
-    recorder.addEventListener('stop', function() {
+    recorder.addEventListener("stop", function () {
       let dl = document.querySelector("#dl");
       //データの送信
-      window.fetch('https://musicvis-3wi5srugvq-an.a.run.app/1/musics', { method: 'PUT', body: new Blob(chunks) })
-      
-       //集音したものから音声データを作成する
+      window.fetch("https://musicvis-3wi5srugvq-an.a.run.app/1/musics", {
+        method: "PUT",
+        body: new Blob(chunks),
+      });
+
+      //集音したものから音声データを作成する
       dl.href = URL.createObjectURL(new Blob(chunks));
-      dl.download = 'sample.wav';
+      dl.download = "sample.wav";
       console.log("you can download");
-      alert("音声のダウンロードが可能です")
+      alert("音声のダウンロードが可能です");
     });
-         
+
     recorder.start();
     console.log("start");
-        
-  } 
-// Web Audio APIが使えなかった時
-  function errorFunc(error) { //これは機能するの?
+  }
+  // Web Audio APIが使えなかった時
+  function errorFunc(error) {
+    //これは機能するの?
     alert("error");
   }
-}
+};
 
-const finPushed = ()=>{
+const finPushed = () => {
   recorder.stop();
-  console.log("button stop")
-}
-
-
+  console.log("button stop");
+};
 
 const Root = () => {
-　const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>recoding</IonTitle>
-          </IonToolbar>
+        </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonButton 
-          onClick={()=>{musicRecord();
-                       setShowAlert(true);}}>録音開始</IonButton>
+        <IonButton
+          onClick={() => {
+            musicRecord();
+            setShowAlert(true);
+          }}
+        >
+          録音開始
+        </IonButton>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
-          header={'録音中...'}
-          message={''}
-          buttons={[{
-            text: '終了',
-            handler:()=>{finPushed()}}]} 
+          header={"録音中..."}
+          message={""}
+          buttons={[
+            {
+              text: "終了",
+              handler: () => {
+                finPushed();
+              },
+            },
+          ]}
         />
-  
+
         <IonButton id="dl">ダウンロード</IonButton>
       </IonContent>
     </IonPage>
-  )
-}
+  );
+};
 
-export default Root
-
-
+export default Root;
