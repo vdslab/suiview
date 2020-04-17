@@ -7,7 +7,7 @@
   - Python3
 
     ```shell-session
-    pip3 install Flask sqlalchemy pg8000
+    pip3 install -r requirements.txt
     ```
 
 - start
