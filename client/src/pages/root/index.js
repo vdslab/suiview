@@ -16,7 +16,7 @@ const musicRecord = () => {
   navigator.getUserMedia =
     navigator.getUserMedia || navigator.webkitGetUserMedia;
   const constraints = { audio: true, video: false };
-  let chunks = [];
+  const chunks = [];
 
   navigator.getUserMedia(constraints, successFunc, errorFunc);
 
@@ -34,7 +34,7 @@ const musicRecord = () => {
 
     // recorder.stopが実行された時のイベント
     recorder.addEventListener("stop", function () {
-      let dl = document.querySelector("#dl");
+      const dl = document.querySelector("#dl");
       //データの送信
       window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
         method: "PUT",
@@ -62,6 +62,7 @@ const finPushed = () => {
   recorder.stop();
   console.log("button stop");
 };
+
 
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
