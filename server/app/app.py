@@ -1,9 +1,11 @@
 import os
 from flask import Flask, jsonify
+from flask_cors import CORS
 from db import create_session
 from models import Music
 
 app = Flask(__name__)
+cors = CORS(app)
 session = create_session()
 
 

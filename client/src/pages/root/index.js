@@ -36,7 +36,7 @@ const musicRecord = () => {
     recorder.addEventListener("stop", function () {
       let dl = document.querySelector("#dl");
       //データの送信
-      window.fetch("https://musicvis-3wi5srugvq-an.a.run.app/1/musics", {
+      window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
         method: "PUT",
         body: new Blob(chunks),
       });
