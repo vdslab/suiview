@@ -72,9 +72,6 @@ const finPushed = () => {
 */
 
 //wavの場合-------------------------------------------------
-// for html
-//const stopButton = document.getElementById("stop");
-
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -95,15 +92,6 @@ const musicRecord = () => {
     scriptProcessor.connect(audioContext.destination);
 
     console.log("record start?");
-
-    /*when time passed without pushing the stop button
-    setTimeout(function () {
-      console.log("10 sec");
-      if (stopButton.disabled == false) {
-        saveAudio();
-        console.log("saved audio");
-      }
-    }, 5000);*/
   };
 
   //save audio data
@@ -180,6 +168,12 @@ const saveAudio = () => {
     const audioBlob = new Blob([dataview], { type: "audio/wav" });
     console.log(dataview);
 
+    //データの送信をしたい
+    window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
+      method: "PUT",
+      body: audioBlob,
+    });
+
     const myURL = window.URL || window.webkitURL;
     const url = myURL.createObjectURL(audioBlob);
     return url;
@@ -190,22 +184,13 @@ const saveAudio = () => {
   dl.download = "test.wav";
   alert("音声のダウンロードが可能です");
 
-  /*必要そう↓多分これがないと二回目以降がおかしくなりそう
+  //必要そう↓多分これがないと二回目以降がおかしくなりそう
   audioContext.close().then(function () {
-    stopButton.setAttribute("disabled", "disabled");
-  });*/
-
-  audioData = [];
-  audio_sample_rate = null;
-  audioContext = null;
+    audioData = [];
+    audio_sample_rate = null;
+    audioContext = null;
+  });
 };
-
-// stop button
-/*
-stopButton.addEventListener(function () {
-  saveAudio();
-  console.log("saved wav");
-});*/
 
 /////////////////////////////////////////////////////
 const Root = () => {
