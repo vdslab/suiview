@@ -13,32 +13,26 @@ import {
 //録音した日付の入力
 //コメント(日付も)
 //録音した物の再生
-
 let recorder = null;
-
 const musicRecord = () => {
   console.log("recoding");
   navigator.getUserMedia =
     navigator.getUserMedia || navigator.webkitGetUserMedia;
   const constraints = { audio: true, video: false };
   const chunks = [];
-
   navigator.getUserMedia(constraints, successFunc, errorFunc);
-
   function successFunc(stream) {
     recorder = new MediaRecorder(stream, {
       mimeType: "video/webm;codecs=vp9", //ここは何にするのがベスト?
       //mimeType: "audio/wav;MPEG-4 AVC",
       //mimeType: "video/avi;codecs=dv",
     });
-
     //録音
     recorder.addEventListener("dataavailable", function (ele) {
       if (ele.data.size > 0) {
         chunks.push(ele.data);
       }
     });
-
     // recorder.stopが実行された時のイベント
     recorder.addEventListener("stop", function () {
       const dl = document.querySelector("#dl");
@@ -47,14 +41,12 @@ const musicRecord = () => {
         method: "PUT",
         body: new Blob(chunks),
       });
-
       //集音したものから音声データを作成する
       dl.href = URL.createObjectURL(new Blob(chunks));
       dl.download = "sample.wav";
       console.log("you can download");
       alert("音声のダウンロードが可能です");
     });
-
     recorder.start();
     console.log("start");
   }
@@ -64,7 +56,6 @@ const musicRecord = () => {
     alert("error");
   }
 };
-
 const finPushed = () => {
   recorder.stop();
   console.log("button stop");
@@ -220,7 +211,7 @@ const Root = () => {
             {
               text: "終了",
               handler: () => {
-                // finPushed();
+                //finPushed();
                 saveAudio();
               },
             },
