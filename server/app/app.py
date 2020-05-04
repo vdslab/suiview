@@ -36,7 +36,8 @@ def get_music_content(user_id, music_id):
     music = session.query(Music).get(music_id)
     print(type(music))
     response.data = music.content
-    response.mimetype = "application/octet-stream"
+    #response.mimetype = "application/octet-stream"
+    response.mimetype = "audio/wav"
     return response
 
 
@@ -45,9 +46,6 @@ def get_music_content(user_id, music_id):
 def amplitude(user_id, music_id):
     """
     # wav_filename = '/<user_id>/musics/<music_id>/content'  # 引数とこれはあってるのか
-    music = session.query(Music).get(music_id)
-    wav_filename = music  # raw?
-    print(wav_filename)
     wf = wave.open(wav_filename, "r")
     buffer = wf.readframes(wf.getnframes())
     # 縦:振幅 2バイトずつ整理(-32768から32767)
@@ -57,7 +55,7 @@ def amplitude(user_id, music_id):
     # 時間/サンプル数で1サンプル当たりの秒数→データの範囲絞ったとき時間表示するのに使う？
     time = float(wf.getnframes()) / wf.getframerate()
     """
-    wav_filename = session.query(Music).get(music_id)
+    wav_filename = get_music_content(user_id, music_id)
     wf = wave.open(wav_filename, "r")
     # 仮
     data = [48000, 36000, 12342, 34213, 13413]
