@@ -25,7 +25,6 @@ def get_musics(user_id):
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
     music = Music(user_id=user_id, content=request.data)
-    print(music)
     session.add(music)
     session.commit()
     return 'received'
@@ -35,6 +34,7 @@ def put_music(user_id):
 def get_music_content(user_id, music_id):
     response = make_response()
     music = session.query(Music).get(music_id)
+    print(type(music))
     response.data = music.content
     response.mimetype = "application/octet-stream"
     return response
@@ -57,6 +57,8 @@ def amplitude(user_id, music_id):
     # 時間/サンプル数で1サンプル当たりの秒数→データの範囲絞ったとき時間表示するのに使う？
     time = float(wf.getnframes()) / wf.getframerate()
     """
+    wav_filename = session.query(Music).get(music_id)
+    wf = wave.open(wav_filename, "r")
     # 仮
     data = [48000, 36000, 12342, 34213, 13413]
     y = 5
@@ -95,9 +97,9 @@ def fourier(user_id, music_id):
 
 # スペクトログラム
 def spectrogram(user_id, music_id):
-    #wav_filename = ""
+    # wav_filename = ""
     """
-     時間,周波数,色？=振幅(音量)?が必要
+     時間, 周波数, 色？= 振幅(音量)?が必要
      色はデシベルの相対から付けてるらしい
      heatMapに渡すなら縦横色に整理して渡すっぽい
     """
