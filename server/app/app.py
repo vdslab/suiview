@@ -1,4 +1,6 @@
+import io
 import os
+import wave
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 from db import create_session
@@ -55,8 +57,15 @@ def amplitude(user_id, music_id):
     # 時間/サンプル数で1サンプル当たりの秒数→データの範囲絞ったとき時間表示するのに使う？
     time = float(wf.getnframes()) / wf.getframerate()
     """
-    wav_filename = get_music_content(user_id, music_id)
-    wf = wave.open(wav_filename, "r")
+
+    music = session.query(Music).get(music_id)
+    wav = wave.open(io.BytesIO(music.content))
+
+    print(wav.getnchannels())
+    print(wav.getsampwidth())
+    print(wav.getframerate())
+    print(wav.getnframes())
+
     # 仮
     data = [48000, 36000, 12342, 34213, 13413]
     y = 5
