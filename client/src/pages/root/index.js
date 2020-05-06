@@ -192,12 +192,12 @@ const AmplitudeChart = ({ data }) => {
   if (data == null) {
     return null;
   }
-  console.log(data);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
         data={[
           {
+            id: "amplitude",
             data: data.filter(({ x }) => x % 100 === 0),
           },
         ]}
