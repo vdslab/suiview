@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IonHeader,
+  IonItem,
+  IonList,
   IonToolbar,
   IonTitle,
   IonContent,
@@ -8,6 +10,7 @@ import {
   IonButton,
   IonAlert,
 } from "@ionic/react";
+import { ResponsiveLine } from "@nivo/line";
 
 /*--------webmの場合-------------------------
 //録音した日付の入力
@@ -184,8 +187,70 @@ const saveAudio = () => {
 };
 
 /////////////////////////////////////////////////////
+
+const AmplitudeChart = ({ data }) => {
+  if (data == null) {
+    return null;
+  }
+  console.log(data);
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <ResponsiveLine
+        data={[
+          {
+            data: data.filter(({ x }) => x % 100 === 0),
+          },
+        ]}
+        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        xScale={{ type: "point" }}
+        yScale={{
+          type: "linear",
+          min: "auto",
+          max: "auto",
+        }}
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+          orient: "bottom",
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          tickValues: data.filter(({ x }) => x % 10000 === 0).map(({ x }) => x),
+          legend: "",
+          legendOffset: 36,
+          legendPosition: "middle",
+        }}
+        axisLeft={{
+          orient: "left",
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "",
+          legendOffset: -40,
+          legendPosition: "middle",
+        }}
+        colors={{ scheme: "nivo" }}
+        enableGridX={false}
+        enableGridY={false}
+        enablePoints={false}
+      />
+    </div>
+  );
+};
+
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/20/amplitude`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -194,14 +259,22 @@ const Root = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonButton
-          onClick={() => {
-            musicRecord();
-            setShowAlert(true);
-          }}
-        >
-          録音開始
-        </IonButton>
+        <IonList>
+          <IonItem>
+            <IonButton
+              onClick={() => {
+                musicRecord();
+                setShowAlert(true);
+              }}
+            >
+              録音開始
+            </IonButton>
+            <IonButton id="dl">ダウンロード</IonButton>
+          </IonItem>
+          <IonItem>
+            <AmplitudeChart data={data} />
+          </IonItem>
+        </IonList>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -217,8 +290,6 @@ const Root = () => {
             },
           ]}
         />
-
-        <IonButton id="dl">ダウンロード</IonButton>
       </IonContent>
     </IonPage>
   );
