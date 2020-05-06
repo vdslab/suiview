@@ -9,63 +9,17 @@ import {
   IonPage,
   IonButton,
   IonAlert,
+  IonLabel,
+  routerLink,
+  IonRouterOutlet,
 } from "@ionic/react";
-import { ResponsiveLine } from "@nivo/line";
+//import { ResponsiveLine } from "@nivo/line";
+//port ShowAmplitude from "./amplitude";
+//import AmplitudeChart from "./amplitude";
+//import ShowAmplitude from "./amplitude";
+//import ShowFourier from "./fourier";
+//import { ResponsiveBar } from "@nivo/bar";
 
-/*--------webmの場合-------------------------
-//録音した日付の入力
-//コメント(日付も)
-//録音した物の再生
-let recorder = null;
-const musicRecord = () => {
-  console.log("recoding");
-  navigator.getUserMedia =
-    navigator.getUserMedia || navigator.webkitGetUserMedia;
-  const constraints = { audio: true, video: false };
-  const chunks = [];
-  navigator.getUserMedia(constraints, successFunc, errorFunc);
-  function successFunc(stream) {
-    recorder = new MediaRecorder(stream, {
-      mimeType: "video/webm;codecs=vp9", //ここは何にするのがベスト?
-      //mimeType: "audio/wav;MPEG-4 AVC",
-      //mimeType: "video/avi;codecs=dv",
-    });
-    //録音
-    recorder.addEventListener("dataavailable", function (ele) {
-      if (ele.data.size > 0) {
-        chunks.push(ele.data);
-      }
-    });
-    // recorder.stopが実行された時のイベント
-    recorder.addEventListener("stop", function () {
-      const dl = document.querySelector("#dl");
-      //データの送信
-      window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
-        method: "PUT",
-        body: new Blob(chunks),
-      });
-      //集音したものから音声データを作成する
-      dl.href = URL.createObjectURL(new Blob(chunks));
-      dl.download = "sample.wav";
-      console.log("you can download");
-      alert("音声のダウンロードが可能です");
-    });
-    recorder.start();
-    console.log("start");
-  }
-  // Web Audio APIが使えなかった時
-  function errorFunc(error) {
-    //これは機能するの?
-    alert("error");
-  }
-};
-const finPushed = () => {
-  recorder.stop();
-  console.log("button stop");
-};
-*/
-
-//wavの場合-------------------------------------------------
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -187,7 +141,7 @@ const saveAudio = () => {
 };
 
 /////////////////////////////////////////////////////
-
+/*
 const AmplitudeChart = ({ data }) => {
   if (data == null) {
     return null;
@@ -236,20 +190,84 @@ const AmplitudeChart = ({ data }) => {
       />
     </div>
   );
+};*/
+
+//////////////////////////////////
+/*
+const FourierChart = ({ data }) => {
+  if (data == null) {
+    return null;
+  }
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <ResponsiveBar
+        data={data}
+        keys={["count"]}
+        indexBy="tag"
+        margin={{ top: 20, right: 20, bottom: 120, left: 60 }}
+        padding={0.3}
+        colors={{ scheme: "nivo" }}
+        borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+        axisTop={null}
+        axisRight={null}
+        axisBottom={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 60,
+          legend: "",
+          legendPosition: "middle",
+          legendOffset: 32,
+        }}
+        axisLeft={{
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
+          legend: "count",
+          legendPosition: "middle",
+          legendOffset: -40,
+        }}
+        labelSkipWidth={12}
+        labelSkipHeight={12}
+        labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+        animate={true}
+        motionStiffness={90}
+        motionDamping={15}
+      />
+    </div>
+  );
 };
 
+/////////////////////////*/
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const [data, setData] = useState(null);
+
+  /*const [data, setData] = useState(null);
 
   useEffect(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/20/amplitude`)
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/15/amplitude`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       });
+  }, []);*/
+
+  const [musicId, setMusicId] = useState(null);
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
+      .then((response) => response.json())
+      .then((musicId) => {
+        setMusicId(musicId);
+      });
   }, []);
+
+  console.log(musicId); //??IDだけ取りたい
+
+  const music_num = []; //仮
+  for (let i = 15; i <= 20; i++) {
+    music_num.push(i);
+  }
 
   return (
     <IonPage>
@@ -271,9 +289,12 @@ const Root = () => {
             </IonButton>
             <IonButton id="dl">ダウンロード</IonButton>
           </IonItem>
-          <IonItem>
-            <AmplitudeChart data={data} />
-          </IonItem>
+
+          <IonList>
+            {music_num.map((i) => {
+              return <IonItem routerLink={`/amplitude/${i}`}>track{i}</IonItem>;
+            })}
+          </IonList>
         </IonList>
         <IonAlert
           isOpen={showAlert}
