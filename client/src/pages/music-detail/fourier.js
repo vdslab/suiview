@@ -7,6 +7,8 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonButtons,
+  IonBackButton,
   IonButton,
   IonAlert,
   IonLabel,
@@ -76,6 +78,9 @@ const ShowFourier = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>fourier track{musicId}</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -7,6 +7,8 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonButtons,
+  IonBackButton,
   IonButton,
   IonAlert,
   IonLabel,
@@ -93,6 +95,9 @@ const ShowSpectrogram = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>spectrogram track{musicId}</IonTitle>
         </IonToolbar>
       </IonHeader>

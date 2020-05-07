@@ -82,10 +82,6 @@ def fourier(user_id, music_id):
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
     Datas = []
 
-    # X = [1.1, 2.1, 3.5, 4.2, 5.3, 6.4, 7.4, 8.1, 9.4, 10.1]
-    X = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    Y = [10.1, 23.3, 4.4, 12.1234, 123, 13, 44, 3, 4, 5]
-
     for i in range(min(1000, len(fft_data))):  # len(fft_data)):
         if 0 < freList[i] and freList[i] < 4000:  # 周波数の範囲
             dic = {
@@ -94,16 +90,6 @@ def fourier(user_id, music_id):
                 "y": fft_data[i]
             }
             Datas.append(dic)
-    """
-    for i in range(10):
-        dic = {
-            "x": X[i],
-            "y": Y[i]
-        }
-        Datas.append(dic)
-    print(len(fft_data))
-    print(len(freList))
-    """
 
     return jsonify(Datas)
 
@@ -121,10 +107,10 @@ def spectrogram(user_id, music_id):
     # colors = cm(norm(Sxx))  # RGB
     Datas = []
 
-    for i in range(min(150, len(f)), -1, -1):
+    for i in range(min(100, len(f)), -1, -1):
         dic = OrderedDict()
         dic["y"] = '{:.4f}'.format(f[i])
-        for j in range(min(150, len(time))):
+        for j in range(min(100, len(time))):
             #key = str('{:.4f}'.format(time[j]))
             key = str(j)
             dic[key] = '{:.4f}'.format(Sxx[i][j])

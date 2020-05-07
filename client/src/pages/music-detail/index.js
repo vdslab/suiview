@@ -8,6 +8,8 @@ import {
   IonTitle,
   IonContent,
   IonPage,
+  IonBackButton,
+  IonButtons,
 } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
 
@@ -80,6 +82,9 @@ const MusicDetail = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>amplitude track{musicId}</IonTitle>
         </IonToolbar>
       </IonHeader>
