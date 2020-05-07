@@ -9,6 +9,7 @@ import {
   IonPage,
   IonButton,
   IonAlert,
+  IonCard,
 } from "@ionic/react";
 
 // for audio
@@ -170,12 +171,26 @@ const Root = () => {
         <IonList>
           {musics.map(({ id }) => {
             return (
-              <IonItem key={id} routerLink={`/musics/${id}`}>
-                track{id}
-              </IonItem>
+              <IonCard>
+                <IonItem>trac{id}</IonItem>
+                <IonButton color="medium" key={id} routerLink={`/musics/${id}`}>
+                  amplitude
+                </IonButton>
+                <IonButton color="light" key={id} routerLink={`/fourier/${id}`}>
+                  fourier
+                </IonButton>
+                <IonButton
+                  color="medium"
+                  key={id}
+                  routerLink={`/spectrogram/${id}`}
+                >
+                  spectrogram
+                </IonButton>
+              </IonCard>
             );
           })}
         </IonList>
+
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}

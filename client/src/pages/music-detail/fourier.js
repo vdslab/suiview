@@ -12,6 +12,7 @@ import {
   IonLabel,
 } from "@ionic/react";
 import { ResponsiveBar } from "@nivo/bar";
+import { useParams } from "react-router-dom";
 
 const FourierChart = ({ data }) => {
   if (data == null) {
@@ -21,8 +22,8 @@ const FourierChart = ({ data }) => {
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveBar
         data={data}
-        keys={["count"]}
-        indexBy="tag"
+        keys={["y"]}
+        indexBy="x"
         margin={{ top: 20, right: 20, bottom: 120, left: 60 }}
         padding={0.3}
         colors={{ scheme: "nivo" }}
@@ -41,7 +42,7 @@ const FourierChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "count",
+          legend: "",
           legendPosition: "middle",
           legendOffset: -40,
         }}
@@ -56,29 +57,36 @@ const FourierChart = ({ data }) => {
   );
 };
 
-const ShowFourier = (id) => {
-  console.log();
-  const [showAlert, setShowAlert] = useState(false);
+const ShowFourier = () => {
   const [data, setData] = useState(null);
-
-  const music_num = [];
-  for (let i = 15; i <= 20; i++) {
-    music_num.push(i);
-  }
+  const { musicId } = useParams();
 
   useEffect(() => {
     window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/15/amplitude`)
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`
+      )
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       });
-  }, []);
+  }, [musicId]);
 
   return (
-    <IonContent>
-      <FourierChart data={data} />
-    </IonContent>
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>fourier track{musicId}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonList>
+          <IonItem>
+            <FourierChart data={data} />
+          </IonItem>
+        </IonList>
+      </IonContent>
+    </IonPage>
   );
 };
 

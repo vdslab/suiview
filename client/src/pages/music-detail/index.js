@@ -80,7 +80,7 @@ const MusicDetail = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>track{musicId}</IonTitle>
+          <IonTitle>amplitude track{musicId}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
