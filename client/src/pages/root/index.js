@@ -158,6 +158,7 @@ const Root = () => {
         <IonList>
           <IonItem>
             <IonButton
+              size="default"
               onClick={() => {
                 musicRecord();
                 setShowAlert(true);
@@ -165,7 +166,9 @@ const Root = () => {
             >
               録音開始
             </IonButton>
-            <IonButton id="dl">ダウンロード</IonButton>
+            <IonButton size="default" id="dl">
+              ダウンロード
+            </IonButton>
           </IonItem>
         </IonList>
         <IonList>
