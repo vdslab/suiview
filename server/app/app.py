@@ -13,9 +13,9 @@ import requests
 import io
 from scipy import signal
 import matplotlib
-
 from collections import OrderedDict
 import json
+import pyworld as pw
 
 
 app = Flask(__name__)
@@ -114,6 +114,26 @@ def spectrogram(user_id, music_id):
             #key = str('{:.4f}'.format(time[j]))
             key = str(j)
             dic[key] = '{:.4f}'.format(Sxx[i][j])
+        Datas.append(dic)
+
+    return jsonify(Datas)
+
+
+# 基本周波数
+@app.route('/<user_id>/musics/<music_id>/frequency', methods=['GET'])
+def frequency(user_id, music_id):
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    _f0, _time = pw.dio(data, rate)
+    f0 = pw.stonemask(data, _f0, _time, rate)
+    Datas = []
+    # for i in range(500):  # )len(f0)):
+    for i in range(len(f0)):
+        dic = {
+            "x": i+1,
+            "y": f0[i]
+        }
         Datas.append(dic)
 
     return jsonify(Datas)

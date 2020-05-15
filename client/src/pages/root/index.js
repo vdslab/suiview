@@ -175,7 +175,7 @@ const Root = () => {
           {musics.map(({ id }) => {
             return (
               <IonCard>
-                <IonItem>trac{id}</IonItem>
+                <IonItem>track{id}</IonItem>
                 <IonButton color="medium" key={id} routerLink={`/musics/${id}`}>
                   amplitude
                 </IonButton>
@@ -188,6 +188,13 @@ const Root = () => {
                   routerLink={`/spectrogram/${id}`}
                 >
                   spectrogram
+                </IonButton>
+                <IonButton
+                  color="light"
+                  key={id}
+                  routerLink={`/frequency/${id}`}
+                >
+                  frequency
                 </IonButton>
               </IonCard>
             );
