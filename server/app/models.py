@@ -37,11 +37,29 @@ class Comment(Base):
     music_id = Column(Integer, ForeignKey('musics.id'))
     text = Column(Text)
     created = Column(DateTime)
-    
+
     def to_json(self):
         return{
             'id': self.id,
         }
 
 
+class Folder(Base):
+    __tablename__ = 'folders'
 
+    id = Column(Integer, primary_key=True)
+    name = Column(Text)
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    def to_json(self):
+        return {
+            'id': self.id,
+        }
+
+
+class Music_Folders(Base):
+    __tablename__ = 'music_folders'
+
+    id = Column(Integer, primary_key=True)
+    music_id = Column(Integer, ForeignKey('musics.id'))
+    folder_id = Column(Integer, ForeignKey('folders.id'))
