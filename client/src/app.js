@@ -20,7 +20,7 @@ const App = () => {
           <Route path="/fourier/:musicId" component={ShowFourier} />
           <Route path="/spectrogram/:musicId" component={ShowSpectrogram} />
           <Route path="/frequency/:musicId" component={ShowFrequency} />
-          <Route path="/comp_chart/" component={ShowComp} />
+          <Route path="/comp_chart/:musicId/:musicId2" component={ShowComp} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

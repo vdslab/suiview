@@ -156,16 +156,22 @@ def frequency_data(user_id, music_id):
     return Datas
 
 # グラフ比較(基本周波数)
-@app.route('/<user_id>/musics/<music_id>/comp_chart', methods=['GET'])
-def comp_chart(user_id, music_id):
+@app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
+def comp_chart(user_id, music_id, music_id2):
     Datas = []
-    for i in range(2):
-        data = frequency_data(user_id, 30+i)
-        dic = {
-            "id": i,
-            "data": data
-        }
-        Datas.append(dic)
+    data = frequency_data(user_id, music_id)
+    dic = {
+        "id": music_id,
+        "data": data
+    }
+    Datas.append(dic)
+    n = int(music_id2)
+    data = frequency_data(user_id, music_id2)
+    dic = {
+        "id": music_id2,
+        "data": data
+    }
+    Datas.append(dic)
 
     return jsonify(Datas)
 

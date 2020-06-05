@@ -14,6 +14,8 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
+  IonDatetime,
+  IonText,
 } from "@ionic/react";
 import Sound from "react-sound";
 
@@ -143,6 +145,10 @@ const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [musics, setMusics] = useState([]);
   const [trackNo, setTrackNo] = useState(21);
+  const [comp1, setComp1] = useState(21);
+  const [comp2, setComp2] = useState(22);
+  const [text, setText] = useState();
+  const [selectedDate, setSelectedDate] = useState("2012-12-15T13:47:20.789");
 
   useEffect(() => {
     window
@@ -157,59 +163,82 @@ const Root = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>recoding</IonTitle>
+          <IonTitle>musicvis</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList>
-          <IonItem>
-            <IonButton
-              size="default"
-              onClick={() => {
-                musicRecord();
-                setShowAlert(true);
-              }}
-            >
-              録音開始
-            </IonButton>
-            <IonButton size="default" id="dl">
-              ダウンロード
-            </IonButton>
+        <IonCard>
+          <IonList>
+            <IonItem>
+              <IonButton
+                size="default"
+                onClick={() => {
+                  musicRecord();
+                  setShowAlert(true);
+                }}
+              >
+                録音開始
+              </IonButton>
+              <IonButton size="default" id="dl">
+                ダウンロード
+              </IonButton>
+            </IonItem>
+            <IonItem lines="none">
+              <IonLabel>trackNo.</IonLabel>
+              <IonInput
+                color="medium"
+                value={trackNo}
+                onIonChange={(e) => setTrackNo(e.target.value)}
+              />
+            </IonItem>
+            <IonItem>
+              <audio
+                controls
+                src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${trackNo}/content`}
+              />
+            </IonItem>
+          </IonList>
+        </IonCard>
+
+        <IonCard>
+          <IonItem lines="none">
+            <IonLabel>比較したいトラック番号を入力してください</IonLabel>
           </IonItem>
-          {/*<IonItem>
-            <Sound
-              url="http://localhost:8080/1/musics/21/content"
-              playStatus={play}
-            />
-            <IonButton
-              onClick={() => {
-                setPlay(true);
-              }}
-            >
-              play
-            </IonButton>
-          </IonItem>
-            */}
-          <IonItem>
-            <IonLabel>トラック番号：</IonLabel>
+          <IonItem lines="none">
+            trackNo.
             <IonInput
-              value={trackNo}
-              onIonChange={(e) => setTrackNo(e.target.value)}
+              color="medium"
+              value={comp1}
+              onIonChange={(e) => setComp1(e.target.value)}
             />
-          </IonItem>
-          {console.log(trackNo)}
-          <IonItem>
-            <audio
-              controls
-              src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${trackNo}/content`}
+            trackNo.
+            <IonInput
+              color="medium"
+              value={comp2}
+              onIonChange={(e) => setComp2(e.target.value)}
             />
+            <IonButton
+              size="big"
+              color="dark"
+              key={comp1}
+              routerLink={`/comp_chart/${comp1}/${comp2}`}
+            >
+              show
+            </IonButton>
           </IonItem>
-        </IonList>
+        </IonCard>
+
         <IonList>
           {musics.map(({ id }) => {
             return (
               <IonCard>
                 <IonItem>track{id}</IonItem>
+
+                {/*} <IonItem>
+                <IonLabel position="floating">MM/DD/YYYY</IonLabel>
+                <IonDatetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value={selectedDate} onIonChange={e => setSelectedDate(e.detail.value!)}></IonDatetime>
+            </IonItem>
+
                 {/*} {""}
                 <audio
                   controls
@@ -237,9 +266,13 @@ const Root = () => {
                 >
                   frequency
                 </IonButton>
-                <IonButton color="midium" key={id} routerLink={`/comp_chart/`}>
+                {/*<IonButton
+                  color="midium"
+                  key={id}
+                  routerLink={`/comp_chart/${id}`}
+                >
                   compare chart
-                </IonButton>
+                </IonButton>*/}
               </IonCard>
             );
           })}
