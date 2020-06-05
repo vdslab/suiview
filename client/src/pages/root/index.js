@@ -10,7 +10,12 @@ import {
   IonButton,
   IonAlert,
   IonCard,
+  IonBackButton,
+  IonIcon,
+  IonInput,
+  IonLabel,
 } from "@ionic/react";
+import Sound from "react-sound";
 
 // for audio
 let audio_sample_rate = null;
@@ -132,11 +137,12 @@ const saveAudio = () => {
   });
 };
 
-/////////////////////////////////////////////////////
+/////////////////////////////////////////////
 
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [musics, setMusics] = useState([]);
+  const [trackNo, setTrackNo] = useState(21);
 
   useEffect(() => {
     window
@@ -170,12 +176,47 @@ const Root = () => {
               ダウンロード
             </IonButton>
           </IonItem>
+          {/*<IonItem>
+            <Sound
+              url="http://localhost:8080/1/musics/21/content"
+              playStatus={play}
+            />
+            <IonButton
+              onClick={() => {
+                setPlay(true);
+              }}
+            >
+              play
+            </IonButton>
+          </IonItem>
+            */}
+          <IonItem>
+            <IonLabel>番号を入力してください</IonLabel>
+            <IonInput
+              value={trackNo}
+              onIonChange={(e) => setTrackNo(e.target.value)}
+            />
+          </IonItem>
+          {console.log(trackNo)}
+          <IonItem>
+            <audio
+              controls
+              src={`http://localhost:8080/1/musics/${trackNo}/content`}
+            />
+          </IonItem>
         </IonList>
         <IonList>
           {musics.map(({ id }) => {
             return (
               <IonCard>
                 <IonItem>track{id}</IonItem>
+                {/*} {""}
+                <audio
+                  controls
+                  //src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`}
+                  src={`http://localhost:8080/1/musics/${id}/content`}
+            />*/}
+
                 <IonButton color="medium" key={id} routerLink={`/musics/${id}`}>
                   amplitude
                 </IonButton>
