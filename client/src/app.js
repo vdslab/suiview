@@ -8,6 +8,7 @@ import MusicDetail from "./pages/music-detail";
 import ShowFourier from "./pages/music-detail/fourier";
 import ShowSpectrogram from "./pages/music-detail/spectrogram";
 import ShowFrequency from "./pages/music-detail/frequency";
+import ShowComp from "./pages/music-detail/compare";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/fourier/:musicId" component={ShowFourier} />
           <Route path="/spectrogram/:musicId" component={ShowSpectrogram} />
           <Route path="/frequency/:musicId" component={ShowFrequency} />
+          <Route path="/comp_chart/" component={ShowComp} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

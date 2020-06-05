@@ -125,7 +125,7 @@ def frequency(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    _f0, _time = pw.dio(data, rate)
+    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
     # for i in range(500):  # )len(f0)):
@@ -133,6 +133,37 @@ def frequency(user_id, music_id):
         dic = {
             "x": i+1,
             "y": f0[i]
+        }
+        Datas.append(dic)
+
+    return jsonify(Datas)
+
+
+def frequency_data(user_id, music_id):
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    f0 = pw.stonemask(data, _f0, _time, rate)
+    Datas = []
+    # for i in range(500):  # )len(f0)):
+    for i in range(len(f0)):
+        dic = {
+            "x": i+1,
+            "y": f0[i]
+        }
+        Datas.append(dic)
+    return Datas
+
+# グラフ比較(基本周波数)
+@app.route('/<user_id>/musics/<music_id>/comp_chart', methods=['GET'])
+def comp_chart(user_id, music_id):
+    Datas = []
+    for i in range(2):
+        data = frequency_data(user_id, 30+i)
+        dic = {
+            "id": i,
+            "data": data
         }
         Datas.append(dic)
 

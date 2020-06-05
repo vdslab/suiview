@@ -191,7 +191,7 @@ const Root = () => {
           </IonItem>
             */}
           <IonItem>
-            <IonLabel>番号を入力してください</IonLabel>
+            <IonLabel>トラック番号：</IonLabel>
             <IonInput
               value={trackNo}
               onIonChange={(e) => setTrackNo(e.target.value)}
@@ -201,7 +201,7 @@ const Root = () => {
           <IonItem>
             <audio
               controls
-              src={`http://localhost:8080/1/musics/${trackNo}/content`}
+              src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${trackNo}/content`}
             />
           </IonItem>
         </IonList>
@@ -236,6 +236,9 @@ const Root = () => {
                   routerLink={`/frequency/${id}`}
                 >
                   frequency
+                </IonButton>
+                <IonButton color="midium" key={id} routerLink={`/comp_chart/`}>
+                  compare chart
                 </IonButton>
               </IonCard>
             );
