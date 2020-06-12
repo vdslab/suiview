@@ -298,7 +298,6 @@ const Root = () => {
           【creat!!】
           {createdDay}
         </IonButton>
-        {/*console.log(musics)*/}
 
         <IonList>
           {musics.map(({ created, id }) => {
@@ -306,41 +305,12 @@ const Root = () => {
               <IonCard>
                 <IonItem>
                   track{id} {convertDate(created)}
+                  <IonButton
+                    slot="end"
+                    key={id}
+                    routerLink={`/detail/${id}`}
+                  ></IonButton>
                 </IonItem>
-
-                {/*} {""}
-                <audio
-                  controls
-                  //src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`}
-                  src={`http://localhost:8080/1/musics/${id}/content`}
-            />*/}
-                <IonButton color="medium" key={id} routerLink={`/musics/${id}`}>
-                  amplitude
-                </IonButton>
-                <IonButton color="light" key={id} routerLink={`/fourier/${id}`}>
-                  fourier
-                </IonButton>
-                <IonButton
-                  color="medium"
-                  key={id}
-                  routerLink={`/spectrogram/${id}`}
-                >
-                  spectrogram
-                </IonButton>
-                <IonButton
-                  color="light"
-                  key={id}
-                  routerLink={`/frequency/${id}`}
-                >
-                  frequency
-                </IonButton>
-                {/*<IonButton
-                  color="midium"
-                  key={id}
-                  routerLink={`/comp_chart/${id}`}
-                >
-                  compare chart
-                </IonButton>*/}
               </IonCard>
             );
           })}

@@ -22,9 +22,6 @@ class Music(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     content = Column(LargeBinary)
-    # created = Column(DateTime)
-    # created = Column(DateTime,
-    #                 default = datetime.datetime.utcnow)
     created = Column(DateTime, default=datetime.datetime.now(
         pytz.timezone('Asia/Tokyo')))
 
@@ -48,8 +45,6 @@ class Comment(Base):
     id = Column(Integer, primary_key=True)
     music_id = Column(Integer, ForeignKey('musics.id'))
     text = Column(Text)
-    # created = Column(DateTime)
-    # created = Column(DateTime, default=datetime.datetime.utcnow)
     created = Column(DateTime, default=datetime.datetime.now(
         pytz.timezone('Asia/Tokyo')))
 

@@ -35,24 +35,14 @@ def put_music(user_id):
     music = Music(user_id=user_id, content=request.data)
     session.add(music)
     session.commit()
-    # get_created_date()
     return 'received'
-
-
-def get_created_date():
-    d = datetime.datetime.now()
-    date = d.strftime('%Y/%m/%d/%H:%M')
-    # print(date)
-    return date
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
 def get_music_content(user_id, music_id):
     response = make_response()
     music = session.query(Music).get(music_id)
-    # print(type(music))
     response.data = music.content
-    # response.mimetype = "application/octet-stream"
     response.mimetype = "audio/wav"
     return response
 

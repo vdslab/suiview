@@ -24,6 +24,12 @@ const FourierChart = ({ data }) => {
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveBar
         data={data}
+        /*data={[
+          {
+            id: "x",
+            data: data.filter(({ x }) => x % 100 === 0),
+            //data: data.filter(({ x }) => x),
+          },*/
         keys={["y"]}
         indexBy="x"
         margin={{ top: 20, right: 20, bottom: 120, left: 60 }}
