@@ -16,8 +16,8 @@ import {
   IonLabel,
   IonDatetime,
   IonText,
+  iosTransitionAnimation,
 } from "@ionic/react";
-import Sound from "react-sound";
 
 // for audio
 let audio_sample_rate = null;
@@ -141,6 +141,36 @@ const saveAudio = () => {
 
 /////////////////////////////////////////////
 
+const getCreatDate = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, "0");
+  const date = `${d.getDate()}`.padStart(2, "0");
+  const hour = `${d.getHours()}`.padStart(2, "0");
+  const minute = `${d.getMinutes()}`.padStart(2, "0");
+  const createdDay =
+    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
+  return createdDay;
+};
+
+const convertDate = (input) => {
+  if (input === null) {
+    return "";
+  }
+
+  const d = new Date(`${input} UTC`);
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, "0");
+  const date = `${d.getDate()}`.padStart(2, "0");
+  const hour = `${d.getHours()}`.padStart(2, "0");
+  const minute = `${d.getMinutes()}`.padStart(2, "0");
+  const createdDay =
+    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
+  return createdDay;
+};
+
+////////////////////////////////////////
+
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [musics, setMusics] = useState([]);
@@ -148,7 +178,8 @@ const Root = () => {
   const [comp1, setComp1] = useState(21);
   const [comp2, setComp2] = useState(22);
   const [text, setText] = useState();
-  const [selectedDate, setSelectedDate] = useState("2012-12-15T13:47:20.789");
+  const [comentWrote, setComentWrote] = useState("createdDate");
+  const [createdDay, setCreatedDay] = useState();
 
   useEffect(() => {
     window
@@ -183,6 +214,7 @@ const Root = () => {
                 ダウンロード
               </IonButton>
             </IonItem>
+
             <IonItem lines="none">
               <IonLabel>trackNo.</IonLabel>
               <IonInput
@@ -199,6 +231,22 @@ const Root = () => {
             </IonItem>
           </IonList>
         </IonCard>
+
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header={"録音中..."}
+          message={""}
+          buttons={[
+            {
+              text: "終了",
+              handler: () => {
+                //finPushed();
+                saveAudio();
+              },
+            },
+          ]}
+        />
 
         <IonCard>
           <IonItem lines="none">
@@ -228,16 +276,37 @@ const Root = () => {
           </IonItem>
         </IonCard>
 
+        <IonCard>
+          <IonItem lines="none">{comentWrote}</IonItem>
+          <IonItem>
+            <IonInput
+              value={text}
+              placeholder="coment"
+              onIonChange={(e) => {
+                setText(e.detail.value);
+                setComentWrote(getCreatDate());
+              }}
+            ></IonInput>
+          </IonItem>
+        </IonCard>
+
+        <IonButton
+          onClick={() => {
+            setCreatedDay(getCreatDate());
+          }}
+        >
+          【creat!!】
+          {createdDay}
+        </IonButton>
+        {/*console.log(musics)*/}
+
         <IonList>
-          {musics.map(({ id }) => {
+          {musics.map(({ created, id }) => {
             return (
               <IonCard>
-                <IonItem>track{id}</IonItem>
-
-                {/*} <IonItem>
-                <IonLabel position="floating">MM/DD/YYYY</IonLabel>
-                <IonDatetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" value={selectedDate} onIonChange={e => setSelectedDate(e.detail.value!)}></IonDatetime>
-            </IonItem>
+                <IonItem>
+                  track{id} {convertDate(created)}
+                </IonItem>
 
                 {/*} {""}
                 <audio
@@ -245,7 +314,6 @@ const Root = () => {
                   //src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`}
                   src={`http://localhost:8080/1/musics/${id}/content`}
             />*/}
-
                 <IonButton color="medium" key={id} routerLink={`/musics/${id}`}>
                   amplitude
                 </IonButton>
@@ -277,22 +345,6 @@ const Root = () => {
             );
           })}
         </IonList>
-
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header={"録音中..."}
-          message={""}
-          buttons={[
-            {
-              text: "終了",
-              handler: () => {
-                //finPushed();
-                saveAudio();
-              },
-            },
-          ]}
-        />
       </IonContent>
     </IonPage>
   );

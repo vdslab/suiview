@@ -16,7 +16,7 @@ import matplotlib
 from collections import OrderedDict
 import json
 import pyworld as pw
-
+import datetime
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -35,18 +35,33 @@ def put_music(user_id):
     music = Music(user_id=user_id, content=request.data)
     session.add(music)
     session.commit()
+    # get_created_date()
     return 'received'
+
+
+def get_created_date():
+    d = datetime.datetime.now()
+    date = d.strftime('%Y/%m/%d/%H:%M')
+    # print(date)
+    return date
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
 def get_music_content(user_id, music_id):
     response = make_response()
     music = session.query(Music).get(music_id)
-    print(type(music))
+    # print(type(music))
     response.data = music.content
     # response.mimetype = "application/octet-stream"
     response.mimetype = "audio/wav"
     return response
+
+
+@app.route('/<user_id>/musics/<music_id>/created', methods=['GET'])
+def create(user_id, music_id):
+    music = session.query(Music).get(music_id)
+    date = music.created
+    return jsonify(date)
 
 
 #　波形
@@ -102,8 +117,8 @@ def spectrogram(user_id, music_id):
     f, time, Sxx = signal.stft(data, rate)
     Sxx = np.log(np.abs(Sxx))
     # Sxxを0から1に正規化
-    #norm = matplotlib.colors.Normalize(vmin=-1, vmax=1)
-    #cm = matplotlib.pyplot.get_cmap("jet")
+    # norm = matplotlib.colors.Normalize(vmin=-1, vmax=1)
+    # cm = matplotlib.pyplot.get_cmap("jet")
     # colors = cm(norm(Sxx))  # RGB
     Datas = []
 
@@ -111,7 +126,7 @@ def spectrogram(user_id, music_id):
         dic = OrderedDict()
         dic["y"] = '{:.4f}'.format(f[i])
         for j in range(min(100, len(time))):
-            #key = str('{:.4f}'.format(time[j]))
+            # key = str('{:.4f}'.format(time[j]))
             key = str(j)
             dic[key] = '{:.4f}'.format(Sxx[i][j])
         Datas.append(dic)
