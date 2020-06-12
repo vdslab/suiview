@@ -177,9 +177,9 @@ const Root = () => {
   const [trackNo, setTrackNo] = useState(21);
   const [comp1, setComp1] = useState(21);
   const [comp2, setComp2] = useState(22);
-  const [text, setText] = useState();
-  const [comentWrote, setComentWrote] = useState("createdDate");
-  const [createdDay, setCreatedDay] = useState();
+  //const [text, setText] = useState();
+  //const [comentWrote, setComentWrote] = useState("createdDate");
+  //const [createdDay, setCreatedDay] = useState();
 
   useEffect(() => {
     window
@@ -275,29 +275,6 @@ const Root = () => {
             </IonButton>
           </IonItem>
         </IonCard>
-
-        <IonCard>
-          <IonItem lines="none">{comentWrote}</IonItem>
-          <IonItem>
-            <IonInput
-              value={text}
-              placeholder="coment"
-              onIonChange={(e) => {
-                setText(e.detail.value);
-                setComentWrote(getCreatDate());
-              }}
-            ></IonInput>
-          </IonItem>
-        </IonCard>
-
-        <IonButton
-          onClick={() => {
-            setCreatedDay(getCreatDate());
-          }}
-        >
-          【creat!!】
-          {createdDay}
-        </IonButton>
 
         <IonList>
           {musics.map(({ created, id }) => {

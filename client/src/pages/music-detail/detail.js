@@ -11,10 +11,14 @@ import {
   IonBackButton,
   IonButtons,
   IonButton,
+  IonInput,
+  IonLabel,
+  IonCard,
 } from "@ionic/react";
 
 const DetailPage = () => {
   const { musicId } = useParams();
+  const [comment, setComment] = useState();
   return (
     <IonPage>
       <IonHeader>
@@ -25,6 +29,14 @@ const DetailPage = () => {
           <IonTitle>track{musicId}</IonTitle>
         </IonToolbar>
       </IonHeader>
+
+      <IonItem>
+        play
+        <audio
+          controls
+          src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
+        />
+      </IonItem>
 
       <IonContent>
         <IonButton
@@ -55,6 +67,28 @@ const DetailPage = () => {
         >
           frequency
         </IonButton>
+
+        <IonCard>
+          {/*日時を入れる<IonItem lines="none">{comment}</IonItem>*/}
+          <IonItem>
+            <IonInput
+              value={comment}
+              placeholder="comment"
+              onIonChange={(e) => {
+                setComment(e.detail.value);
+              }}
+            ></IonInput>
+          </IonItem>
+        </IonCard>
+
+        {/*<IonButton
+          onClick={() => {
+            setCreatedDay(getCreatDate());
+          }}
+        >
+          【creat!!】
+          {createdDay}
+        </IonButton>*/}
       </IonContent>
     </IonPage>
   );
