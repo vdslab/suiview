@@ -20,11 +20,11 @@ import datetime
 
 app = Flask(__name__)
 cors = CORS(app)
-session = create_session()
 
 
 @app.route('/<user_id>/musics', methods=['GET'])
 def get_musics(user_id):
+    session = create_session()
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
     return jsonify(musics)
@@ -32,6 +32,7 @@ def get_musics(user_id):
 
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
+    session = create_session()
     music = Music(user_id=user_id, content="hi")
     session.add(music)
     session.commit()
@@ -40,6 +41,7 @@ def put_music(user_id):
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
 def get_comment(user_id, music_id):
+    session = create_session()
     comment = session.query(Comment).filter_by(
         music_id=music_id).all()
     comment = [m.to_json() for m in comment]
@@ -49,7 +51,8 @@ def get_comment(user_id, music_id):
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
 def put_comment(user_id, music_id):
-    comment = Comment(music_id=music_id, text=request.data)
+    session = create_session()
+    comment = Comment(music_id=music_id, text=request.data.decode())
     session.add(comment)
     session.commit()
     return 'message reseived'
@@ -57,6 +60,7 @@ def put_comment(user_id, music_id):
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
 def get_music_content(user_id, music_id):
+    session = create_session()
     response = make_response()
     music = session.query(Music).get(music_id)
     response.data = music.content
@@ -66,6 +70,7 @@ def get_music_content(user_id, music_id):
 
 @app.route('/<user_id>/musics/<music_id>/created', methods=['GET'])
 def create(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     date = music.created
     return jsonify(date)
@@ -74,6 +79,7 @@ def create(user_id, music_id):
 #　波形
 @app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
 def amplitude(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     wf = wave.open(io.BytesIO(music.content))
     buffer = wf.readframes(wf.getnframes())
@@ -97,6 +103,7 @@ def amplitude(user_id, music_id):
 # フーリエ変換
 @app.route('/<user_id>/musics/<music_id>/fourier', methods=['GET'])
 def fourier(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data/32768  # 振幅の配列らしい
@@ -119,6 +126,7 @@ def fourier(user_id, music_id):
 # スペクトログラム
 @app.route('/<user_id>/musics/<music_id>/spectrogram', methods=['GET'])
 def spectrogram(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     f, time, Sxx = signal.stft(data, rate)
@@ -144,6 +152,7 @@ def spectrogram(user_id, music_id):
 # 基本周波数
 @app.route('/<user_id>/musics/<music_id>/frequency', methods=['GET'])
 def frequency(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
@@ -162,6 +171,7 @@ def frequency(user_id, music_id):
 
 
 def frequency_data(user_id, music_id):
+    session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
