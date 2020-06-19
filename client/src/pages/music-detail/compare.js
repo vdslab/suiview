@@ -10,6 +10,13 @@ import {
   IonPage,
   IonBackButton,
   IonButtons,
+  IonLabel,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonInput,
+  IonButton,
+  IonCard,
 } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
 
@@ -17,9 +24,21 @@ const FrequencyChart = ({ data }) => {
   if (data == null) {
     return null;
   }
+
+  /*const Data = data.map((input) => {
+    input.data.filter((x) => x % 5 == 0);
+  });*/
+  data.map((input) => {
+    input.data.filter((x) => x % 5 == 0);
+  });
+  //console.log(data);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
+        /*data={data.map((input) => {
+          [{ id: input.id, data: input.data.filter((x) => x % 5 == 0) }];
+        })}*/
+
         /*data={[
           {
             //id: "x",
@@ -94,6 +113,8 @@ const ShowComp = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
   const { musicId2 } = useParams();
+  const [comp1, setComp1] = useState(musicId);
+  const [comp2, setComp2] = useState(musicId2);
 
   useEffect(() => {
     window
@@ -105,7 +126,7 @@ const ShowComp = () => {
         setData(data);
       });
   }, [musicId]);
-  console.log(data);
+  //console.log(data);
 
   return (
     <IonPage>
@@ -120,6 +141,57 @@ const ShowComp = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonLabel>比較したいものを入れてね</IonLabel>
+        <IonCard>
+          <IonItem lines="none">
+            trackNo.
+            <IonInput
+              color="medium"
+              value={comp1}
+              onIonChange={(e) => setComp1(e.target.value)}
+            />
+            trackNo.
+            <IonInput
+              color="medium"
+              value={comp2}
+              onIonChange={(e) => setComp2(e.target.value)}
+            />
+            <IonButton
+              size="big"
+              color="dark"
+              key={comp1}
+              routerLink={`/comp_chart/${comp1}/${comp2}`}
+            >
+              compare
+            </IonButton>
+          </IonItem>
+        </IonCard>
+
+        <IonList>
+          <IonGrid>
+            <IonRow>
+              <IonCol>
+                <IonLabel>trackNo.{musicId}</IonLabel>
+                <IonItem>
+                  <audio
+                    controls
+                    src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
+                  />
+                </IonItem>
+              </IonCol>
+              <IonCol>
+                <IonLabel>trackNo.{musicId2}</IonLabel>
+                <IonItem>
+                  <audio
+                    controls
+                    src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId2}/content`}
+                  />
+                </IonItem>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonList>
+
         <IonList>
           <IonItem>
             <FrequencyChart data={data} />
