@@ -27,6 +27,8 @@ def create_engine():
                     'unix_sock': socket_path
                 }
             ),
+            client_encoding="utf8",
+            encoding="utf8",
         )
     return sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -36,7 +38,10 @@ def create_engine():
             database=db_name,
             host=db_host,
             port=db_port,
+            #query={'charset': 'utf8'},
         ),
+        client_encoding="utf8",
+        encoding="utf8",
     )
 
 

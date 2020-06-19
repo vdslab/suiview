@@ -26,14 +26,13 @@ session = create_session()
 @app.route('/<user_id>/musics', methods=['GET'])
 def get_musics(user_id):
     musics = session.query(Music).filter_by(user_id=user_id).all()
-
     musics = [m.to_json() for m in musics]
     return jsonify(musics)
 
 
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
-    music = Music(user_id=user_id, content=request.data)
+    music = Music(user_id=user_id, content="hi")
     session.add(music)
     session.commit()
     return 'received'
@@ -43,7 +42,6 @@ def put_music(user_id):
 def get_comment(user_id, music_id):
     comment = session.query(Comment).filter_by(
         music_id=music_id).all()
-    print(comment)
     comment = [m.to_json() for m in comment]
 
     return jsonify(comment)
@@ -51,7 +49,6 @@ def get_comment(user_id, music_id):
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
 def put_comment(user_id, music_id):
-    print(request.data)
     comment = Comment(music_id=music_id, text=request.data)
     session.add(comment)
     session.commit()

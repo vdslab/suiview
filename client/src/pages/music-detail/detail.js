@@ -29,6 +29,19 @@ const saveComment = (comment, musicId) => {
 const DetailPage = () => {
   const { musicId } = useParams();
   const [comment, setComment] = useState();
+  const [oldComment, setOldComment] = useState(null);
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
+      )
+      .then((response) => response.json())
+      .then((oldComment) => {
+        setOldComment(oldComment);
+      });
+  }, []);
+  console.log(oldComment);
+
   return (
     <IonPage>
       <IonHeader>

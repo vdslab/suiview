@@ -9,9 +9,6 @@ import {
   IonPage,
   IonButtons,
   IonBackButton,
-  IonButton,
-  IonAlert,
-  IonLabel,
 } from "@ionic/react";
 import { ResponsiveBar } from "@nivo/bar";
 import { useParams } from "react-router-dom";

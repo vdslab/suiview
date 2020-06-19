@@ -10,15 +10,11 @@ import {
   IonButton,
   IonAlert,
   IonCard,
-  IonBackButton,
   IonIcon,
   IonInput,
   IonLabel,
-  IonDatetime,
-  IonText,
-  iosTransitionAnimation,
 } from "@ionic/react";
-
+import { add, chevronForwardOutline } from "ionicons/icons";
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -284,9 +280,12 @@ const Root = () => {
                   track{id} {convertDate(created)}
                   <IonButton
                     slot="end"
+                    fill="clear"
                     key={id}
                     routerLink={`/detail/${id}`}
-                  ></IonButton>
+                  >
+                    <IonIcon icon={chevronForwardOutline} color="primary" />
+                  </IonButton>
                 </IonItem>
               </IonCard>
             );

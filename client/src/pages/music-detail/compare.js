@@ -35,10 +35,12 @@ const FrequencyChart = ({ data }) => {
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
-        /*data={data.map((input) => {
-          [{ id: input.id, data: input.data.filter((x) => x % 5 == 0) }];
-        })}*/
-
+        data={data.map((input) => {
+          return {
+            id: input.id,
+            data: input.data.filter(({ x }) => x % 5 == 0),
+          };
+        })}
         /*data={[
           {
             //id: "x",
@@ -46,7 +48,7 @@ const FrequencyChart = ({ data }) => {
             //data: data.filter(({ x }) => x),
           },
         ]}*/
-        data={data}
+        //data={data}
         margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
@@ -62,7 +64,9 @@ const FrequencyChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          //tickValues: data.filter(({ x }) => x % 500 === 0).map(({ x }) => x),
+          tickValues: data.length
+            ? data[0].data.filter(({ x }) => x % 500 === 0).map(({ x }) => x)
+            : [],
           legend: "",
           legendOffset: 36,
           legendPosition: "middle",
