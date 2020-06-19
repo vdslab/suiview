@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import {
   IonHeader,
   IonItem,
-  IonList,
   IonToolbar,
   IonTitle,
   IonContent,
@@ -12,9 +11,20 @@ import {
   IonButtons,
   IonButton,
   IonInput,
-  IonLabel,
   IonCard,
 } from "@ionic/react";
+
+const saveComment = (comment, musicId) => {
+  window.fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
+    {
+      method: "PUT",
+      body: comment,
+    }
+  );
+  console.log(comment);
+  console.log(musicId);
+};
 
 const DetailPage = () => {
   const { musicId } = useParams();
@@ -78,6 +88,15 @@ const DetailPage = () => {
                 setComment(e.detail.value);
               }}
             ></IonInput>
+            <IonButton
+              slot="end"
+              onClick={() => {
+                saveComment(comment, musicId);
+                //setCreatedDay(getCreatDate());
+              }}
+            >
+              【save】
+            </IonButton>
           </IonItem>
         </IonCard>
 
