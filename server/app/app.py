@@ -4,7 +4,7 @@ import wave
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 from db import create_session
-from models import Music, User
+from models import Music, User, Comment
 import numpy as np
 import scipy.io.wavfile
 import wave
@@ -26,6 +26,7 @@ session = create_session()
 @app.route('/<user_id>/musics', methods=['GET'])
 def get_musics(user_id):
     musics = session.query(Music).filter_by(user_id=user_id).all()
+
     musics = [m.to_json() for m in musics]
     return jsonify(musics)
 
@@ -36,6 +37,25 @@ def put_music(user_id):
     session.add(music)
     session.commit()
     return 'received'
+
+
+@app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
+def get_comment(user_id, music_id):
+    comment = session.query(Comment).filter_by(
+        music_id=music_id).all()
+    print(comment)
+    comment = [m.to_json() for m in comment]
+
+    return jsonify(comment)
+
+
+@app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
+def put_comment(user_id, music_id):
+    print(request.data)
+    comment = Comment(music_id=music_id, text=request.data)
+    session.add(comment)
+    session.commit()
+    return 'message reseived'
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])

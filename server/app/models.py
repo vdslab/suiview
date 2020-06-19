@@ -51,6 +51,8 @@ class Comment(Base):
     def to_json(self):
         return{
             'id': self.id,
+            'comment': self.text,
+            'created': self.created,
         }
 
 
