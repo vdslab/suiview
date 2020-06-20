@@ -12,9 +12,29 @@ import {
   IonButton,
   IonInput,
   IonCard,
+  IonList,
+  IonLabel,
 } from "@ionic/react";
 
-const saveComment = (comment, musicId) => {
+//index.js で export したのをimportするとなんかおかしくなる
+const convertDate = (input) => {
+  if (input === null) {
+    return "";
+  }
+
+  const d = new Date(`${input} UTC`);
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, "0");
+  const date = `${d.getDate()}`.padStart(2, "0");
+  const hour = `${d.getHours()}`.padStart(2, "0");
+  const minute = `${d.getMinutes()}`.padStart(2, "0");
+  const createdDay =
+    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
+  console.log(createdDay);
+    return createdDay;
+};
+
+const SaveComment = (comment, musicId) => {
   window.fetch(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
     {
@@ -24,6 +44,23 @@ const saveComment = (comment, musicId) => {
   );
   console.log(comment);
   console.log(musicId);
+};
+
+const Comments = ({ data }) => {
+return( <div>
+  <IonList>
+  {data? Object.keys(data).map(key=>{
+    console.log(data[key]);
+    return(<div>
+      <IonItem>
+      <IonLabel>{convertDate(data[key].created)}</IonLabel>
+      {data[key].comment}
+      </IonItem>
+      </div>
+      )
+  }):console.log("null")}
+</IonList>
+</div>);
 };
 
 const DetailPage = () => {
@@ -40,7 +77,7 @@ const DetailPage = () => {
         setOldComment(oldComment);
       });
   }, []);
-  console.log(oldComment);
+  // console.log(oldComment);
 
   return (
     <IonPage>
@@ -92,7 +129,6 @@ const DetailPage = () => {
         </IonButton>
 
         <IonCard>
-          {/*日時を入れる<IonItem lines="none">{comment}</IonItem>*/}
           <IonItem>
             <IonInput
               value={comment}
@@ -104,14 +140,18 @@ const DetailPage = () => {
             <IonButton
               slot="end"
               onClick={() => {
-                saveComment(comment, musicId);
-                //setCreatedDay(getCreatDate());
+                SaveComment(comment, musicId);
               }}
             >
               【save】
             </IonButton>
           </IonItem>
         </IonCard>
+
+        <IonList>
+          {/*console.log(oldComment)*/}
+          <Comments data={oldComment} />
+        </IonList>
 
         {/*<IonButton
           onClick={() => {

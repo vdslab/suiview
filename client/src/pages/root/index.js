@@ -162,7 +162,8 @@ const convertDate = (input) => {
   const minute = `${d.getMinutes()}`.padStart(2, "0");
   const createdDay =
     year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  return createdDay;
+  console.log(createdDay);
+    return createdDay;
 };
 
 ////////////////////////////////////////

@@ -33,7 +33,7 @@ def get_musics(user_id):
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
     session = create_session()
-    music = Music(user_id=user_id, content="hi")
+    music = Music(user_id=user_id, content=request.data)
     session.add(music)
     session.commit()
     return 'received'
@@ -197,7 +197,6 @@ def comp_chart(user_id, music_id, music_id2):
         "data": data
     }
     Datas.append(dic)
-    n = int(music_id2)
     data = frequency_data(user_id, music_id2)
     dic = {
         "id": music_id2,
