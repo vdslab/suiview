@@ -13,6 +13,10 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
+  IonListHeader,
+  IonSelect,
+  IonSelectOption,
+  IonItemDivider,
 } from "@ionic/react";
 import { add, chevronForwardOutline } from "ionicons/icons";
 // for audio
@@ -149,7 +153,7 @@ const getCreatDate = () => {
   return createdDay;
 };
 
-const convertDate = (input) => {
+export const convertDate = (input) => {
   if (input === null) {
     return "";
   }
@@ -162,8 +166,7 @@ const convertDate = (input) => {
   const minute = `${d.getMinutes()}`.padStart(2, "0");
   const createdDay =
     year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  console.log(createdDay);
-    return createdDay;
+  return createdDay;
 };
 
 ////////////////////////////////////////
@@ -174,10 +177,9 @@ const Root = () => {
   const [trackNo, setTrackNo] = useState(21);
   const [comp1, setComp1] = useState(21);
   const [comp2, setComp2] = useState(22);
-  //const [text, setText] = useState();
-  //const [comentWrote, setComentWrote] = useState("createdDate");
-  //const [createdDay, setCreatedDay] = useState();
-
+  const [gender, setGender] = useState();
+  const [folderData, setFolderData] = useState([]);
+  const [folderId, setFolderId] = useState();
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
@@ -186,6 +188,24 @@ const Root = () => {
         setMusics(musics);
       });
   }, []);
+
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
+      .then((response) => response.json())
+      .then((folderData) => {
+        setFolderData(folderData);
+      });
+  }, []);
+  //console.log(folderData);
+  const folder_ids = Array.from(
+    new Set(
+      folderData.map((input) => {
+        return input.folder_id;
+      })
+    )
+  );
+  // console.log(folder_ids);
 
   return (
     <IonPage>
@@ -244,6 +264,31 @@ const Root = () => {
             },
           ]}
         />
+
+        <IonCard>
+          <IonItem>フォルダごと見る</IonItem>
+          <IonItem>
+            <IonLabel>number</IonLabel>
+            <IonSelect
+              value={folderId}
+              placeholder="select one"
+              onIonChange={(e) => setFolderId(e.detail.value)}
+            >
+              {folder_ids.map((id) => {
+                return <IonSelectOption value={id}>{id}</IonSelectOption>;
+              })}
+            </IonSelect>
+            <IonButton
+              slot="end"
+              color="dark"
+              size="big"
+              key={folderId}
+              routerLink={`/folder/${folderId}`}
+            >
+              Go
+            </IonButton>
+          </IonItem>
+        </IonCard>
 
         <IonCard>
           <IonItem lines="none">
