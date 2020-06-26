@@ -21,11 +21,28 @@ import {
   IonIcon,
 } from "@ionic/react";
 import { add, chevronForwardOutline } from "ionicons/icons";
-import convertDate from "../root/index";
+//import convertDate from "../root/index";
+
+const convertDate = (input) => {
+  if (input === null) {
+    return "";
+  }
+
+  const d = new Date(`${input} UTC`);
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, "0");
+  const date = `${d.getDate()}`.padStart(2, "0");
+  const hour = `${d.getHours()}`.padStart(2, "0");
+  const minute = `${d.getMinutes()}`.padStart(2, "0");
+  const createdDay =
+    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
+  return createdDay;
+};
 
 const Folder = () => {
   const { folderId } = useParams();
   const [folderData, setFolderData] = useState([]);
+  const [musics, setMusics] = useState([]);
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
@@ -34,6 +51,16 @@ const Folder = () => {
         setFolderData(folderData);
       });
   }, []);
+
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
+      .then((response) => response.json())
+      .then((musics) => {
+        setMusics(musics);
+      });
+  }, []);
+
   console.log(folderId);
   const folder_ids = folderData.filter((input) => input.folder_id == folderId);
   const music_ids = Array.from(
@@ -43,7 +70,15 @@ const Folder = () => {
       })
     )
   );
-  console.log(music_ids);
+
+  console.log(musics);
+  const musicData = musics.filter((input) => {
+    for (let i = 0; i < music_ids.length; i++) {
+      if (input.id == music_ids[i]) {
+        return input;
+      }
+    }
+  });
 
   return (
     <IonPage>
@@ -57,12 +92,12 @@ const Folder = () => {
       </IonHeader>
 
       <IonContent>
-        <ionList>
-          {music_ids.map((id) => {
+        <IonList>
+          {musicData.map(({ created, id }) => {
             return (
               <IonCard>
                 <IonItem>
-                  track{id} {/*convertDate(created)*/}
+                  track{id} {convertDate(created)}
                   <IonButton
                     slot="end"
                     fill="clear"
@@ -75,7 +110,7 @@ const Folder = () => {
               </IonCard>
             );
           })}
-        </ionList>
+        </IonList>
       </IonContent>
     </IonPage>
   );

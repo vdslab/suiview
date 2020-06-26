@@ -58,45 +58,54 @@ def put_comment(user_id, music_id):
     session.commit()
     return 'message reseived'
 
+
 @app.route('/<user_id>/musics/<music_id>/folders', methods=['PUT'])
 def put_folder(user_id, music_id):
     session = create_session()
     folder_name = request.data.decode()
-    
-    had_name = session.query(Folder).filter_by(user_id=user_id, name=folder_name).all()
+
+    had_name = session.query(Folder).filter_by(
+        user_id=user_id, name=folder_name).all()
     had_name = [m.to_json() for m in had_name]
-    _id = session.query(func.max(Folder.id).filter(user_id==user_id)).one()
+    _id = session.query(func.max(Folder.id).filter(user_id == user_id)).one()
     #_id = [m.to_json() for m in _id]
     #print("max_id = "+ str(_id))
-    #print(had_name)
-    #print(len(had_name))
-    if len(had_name) > 0 :
+    # print(had_name)
+    # print(len(had_name))
+    if len(had_name) > 0:
         print(had_name[0]['id'])
         folder_id = had_name[0]['id']
     else:
         folder_id = _id
     #folder = Folder(id = fol_id, name=folder_name, user_id=user_id)
-    folder = Folder(name=folder_name, user_id=user_id, folder_id = folder_id)   
+    folder = Folder(name=folder_name, user_id=user_id, folder_id=folder_id)
 
-    
     #folder = Folder(name=folder_name, user_id=user_id)
     session.add(folder)
     session.commit()
-    
-    had_name = session.query(Folder).filter_by(user_id=user_id, name=folder_name).all()
+
+    had_name = session.query(Folder).filter_by(
+        user_id=user_id, name=folder_name).all()
     had_name = [m.to_json() for m in had_name]
     least_fl_id = had_name[-1]['folder_id']
     #print("least = ", end=" ")
-    #print(least_fl_id)
+    # print(least_fl_id)
+    print("userID = ")
+    print(user_id, end="  musicId = ")
+    print(music_id, end="  folder_id = ")
+    print(type(least_fl_id))
     put_music_folders(user_id, music_id, least_fl_id)
     return 'folder reseived'
 
+
 def put_music_folders(user_id, music_id, folder_id):
     session = create_session()
-    music_folder = Music_Folders(music_id=music_id, folder_id=folder_id, user_id=user_id)
+    music_folder = Music_Folders(
+        music_id=music_id, folder_id=folder_id, user_id=user_id)
     session.add(music_folder)
     session.commit()
     return 'music_folders reseived'
+
 
 @app.route('/<user_id>/musics/folders', methods=['GET'])
 def get_music_folders(user_id):
@@ -104,7 +113,6 @@ def get_music_folders(user_id):
     data = session.query(Music_Folders).filter_by(user_id=user_id).all()
     data = [m.to_json() for m in data]
     return jsonify(data)
-
 
 
 @app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])

@@ -153,7 +153,7 @@ const getCreatDate = () => {
   return createdDay;
 };
 
-export const convertDate = (input) => {
+const convertDate = (input) => {
   if (input === null) {
     return "";
   }
