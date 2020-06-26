@@ -4,7 +4,7 @@ import wave
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 from db import create_session
-from models import Music, User, Comment
+from models import Music, User, Comment, Folder, Music_Folders
 import numpy as np
 import scipy.io.wavfile
 import wave
@@ -17,6 +17,7 @@ from collections import OrderedDict
 import json
 import pyworld as pw
 import datetime
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -56,6 +57,62 @@ def put_comment(user_id, music_id):
     session.add(comment)
     session.commit()
     return 'message reseived'
+
+@app.route('/<user_id>/musics/<music_id>/folders', methods=['PUT'])
+def put_folder(user_id, music_id):
+    session = create_session()
+    folder_name = request.data.decode()
+    
+    had_name = session.query(Folder).filter_by(user_id=user_id, name=folder_name).all()
+    had_name = [m.to_json() for m in had_name]
+    _id = session.query(func.max(Folder.id).filter(user_id==user_id)).one()
+    #_id = [m.to_json() for m in _id]
+    #print("max_id = "+ str(_id))
+    #print(had_name)
+    #print(len(had_name))
+    if len(had_name) > 0 :
+        print(had_name[0]['id'])
+        folder_id = had_name[0]['id']
+    else:
+        folder_id = _id
+    #folder = Folder(id = fol_id, name=folder_name, user_id=user_id)
+    folder = Folder(name=folder_name, user_id=user_id, folder_id = folder_id)   
+
+    
+    #folder = Folder(name=folder_name, user_id=user_id)
+    session.add(folder)
+    session.commit()
+    
+    had_name = session.query(Folder).filter_by(user_id=user_id, name=folder_name).all()
+    had_name = [m.to_json() for m in had_name]
+    least_fl_id = had_name[-1]['folder_id']
+    #print("least = ", end=" ")
+    #print(least_fl_id)
+    put_music_folders(user_id, music_id, least_fl_id)
+    return 'folder reseived'
+
+def put_music_folders(user_id, music_id, folder_id):
+    session = create_session()
+    music_folder = Music_Folders(music_id=music_id, folder_id=folder_id, user_id=user_id)
+    session.add(music_folder)
+    session.commit()
+    return 'music_folders reseived'
+
+@app.route('/<user_id>/musics/folders', methods=['GET'])
+def get_music_folders(user_id):
+    session = create_session()
+    data = session.query(Music_Folders).filter_by(user_id=user_id).all()
+    data = [m.to_json() for m in data]
+    return jsonify(data)
+
+
+
+@app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
+def get_foledr(user_id, music_id):
+    session = create_session()
+    folder = session.query(Folder).filter_by(user_id=user_id).all()
+    folder = [m.to_json() for m in folder]
+    return jsonify(folder)
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])

@@ -2,6 +2,9 @@ import pytz
 from sqlalchemy import Column, Integer, ForeignKey, LargeBinary, DateTime, Text
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
+
+
+
 Base = declarative_base()
 
 
@@ -58,14 +61,16 @@ class Comment(Base):
 
 class Folder(Base):
     __tablename__ = 'folders'
-
+    
     id = Column(Integer, primary_key=True)
     name = Column(Text)
     user_id = Column(Integer, ForeignKey('users.id'))
-
+    folder_id = Column(Text)
     def to_json(self):
         return {
             'id': self.id,
+            'name': self.name,
+            'folder_id': self.folder_id,
         }
 
 
@@ -75,3 +80,11 @@ class Music_Folders(Base):
     id = Column(Integer, primary_key=True)
     music_id = Column(Integer, ForeignKey('musics.id'))
     folder_id = Column(Integer, ForeignKey('folders.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+  
+    def to_json(self):
+        return{
+            'id': self.id,
+            'music_id': self.music_id,
+            'folder_id': self.folder_id,
+            }

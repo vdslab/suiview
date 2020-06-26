@@ -30,8 +30,8 @@ const convertDate = (input) => {
   const minute = `${d.getMinutes()}`.padStart(2, "0");
   const createdDay =
     year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  console.log(createdDay);
-    return createdDay;
+  //console.log(createdDay);
+  return createdDay;
 };
 
 const SaveComment = (comment, musicId) => {
@@ -42,31 +42,49 @@ const SaveComment = (comment, musicId) => {
       body: comment,
     }
   );
-  console.log(comment);
-  console.log(musicId);
+  //console.log(comment);
+  //console.log(musicId);
+};
+
+const SaveFolder = (folder, musicId) => {
+  window.fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/folders`,
+    {
+      method: "PUT",
+      body: folder,
+    }
+  );
+  //console.log(comment);
+  //console.log(musicId);
 };
 
 const Comments = ({ data }) => {
-return( <div>
-  <IonList>
-  {data? Object.keys(data).map(key=>{
-    console.log(data[key]);
-    return(<div>
-      <IonItem>
-      <IonLabel>{convertDate(data[key].created)}</IonLabel>
-      {data[key].comment}
-      </IonItem>
-      </div>
-      )
-  }):console.log("null")}
-</IonList>
-</div>);
+  return (
+    <div>
+      <IonList>
+        {data
+          ? Object.keys(data).map((key) => {
+              return (
+                <div>
+                  <IonItem>
+                    <IonLabel>{convertDate(data[key].created)}</IonLabel>
+                    {data[key].comment}
+                  </IonItem>
+                </div>
+              );
+            })
+          : ""}
+      </IonList>
+    </div>
+  );
 };
 
 const DetailPage = () => {
   const { musicId } = useParams();
   const [comment, setComment] = useState();
   const [oldComment, setOldComment] = useState(null);
+  const [folder, setFolder] = useState(null);
+  console.log(folder);
   useEffect(() => {
     window
       .fetch(
@@ -131,6 +149,26 @@ const DetailPage = () => {
         <IonCard>
           <IonItem>
             <IonInput
+              value={folder}
+              placeholder="folderName"
+              onIonChange={(e) => {
+                setFolder(e.detail.value);
+              }}
+            ></IonInput>
+              <IonButton
+              slot="end"
+              onClick={() => {
+                SaveFolder(folder, musicId);
+              }}
+            >
+              【save】
+            </IonButton>
+          </IonItem>
+        </IonCard>
+
+        <IonCard>
+          <IonItem>
+            <IonInput
               value={comment}
               placeholder="comment"
               onIonChange={(e) => {
@@ -149,18 +187,8 @@ const DetailPage = () => {
         </IonCard>
 
         <IonList>
-          {/*console.log(oldComment)*/}
           <Comments data={oldComment} />
         </IonList>
-
-        {/*<IonButton
-          onClick={() => {
-            setCreatedDay(getCreatDate());
-          }}
-        >
-          【creat!!】
-          {createdDay}
-        </IonButton>*/}
       </IonContent>
     </IonPage>
   );
