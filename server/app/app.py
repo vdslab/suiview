@@ -59,7 +59,31 @@ def put_comment(user_id, music_id):
     return 'message reseived'
 
 
-@app.route('/<user_id>/musics/<music_id>/folders', methods=['PUT'])
+@app.route('/<user_id>/musics/folder_freq_compare', methods=['PUT', 'GET'])
+def put_comp_freqData(user_id):
+    #music_ids = request.data
+    """
+    print(music_ids)
+    print(len(music_ids))
+    print(music_ids[0])
+    print(music_ids[1])
+    print(music_ids[2])
+    """
+    music_ids = [7, 9, 8]
+    Datas = []
+    data = [1, 2, 3]
+    for i in range(len(music_ids)):
+        data = frequency_data(user_id, music_ids[i])
+        dic = {
+            "id": music_ids[i],
+            "data": data
+        }
+        Datas.append(dic)
+
+    return jsonify(Datas)
+
+
+@app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
 def put_folder(user_id, music_id):
     session = create_session()
     folder_name = request.data.decode()
@@ -116,11 +140,20 @@ def get_music_folders(user_id):
 
 
 @app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
-def get_foledr(user_id, music_id):
+def get_foledrs(user_id, music_id):
     session = create_session()
     folder = session.query(Folder).filter_by(user_id=user_id).all()
     folder = [m.to_json() for m in folder]
     return jsonify(folder)
+
+
+@app.route('/<user_id>/musics/folders/<folder_id>', methods=['GET'])
+def get_folderName(user_id, folder_id):
+    session = create_session()
+    folder = session.query(Folder).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    return jsonify(folder[0]['name'])
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
