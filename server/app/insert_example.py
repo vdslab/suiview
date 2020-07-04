@@ -1,5 +1,5 @@
 from db import create_session
-from models import User, Music
+from models import User, Music, Folder
 
 
 def main():
@@ -9,6 +9,11 @@ def main():
     session.commit()
     musics = [Music(user_id=user.id) for _ in range(5)]
     session.add_all(musics)
+    session.commit()
+    #folder = Folder(name="フォルダ1", user_id=user.id, folder_id=1)
+    folder = Folder(name="フォルダ1", user_id=user.id)
+
+    session.add(folder)
     session.commit()
 
 

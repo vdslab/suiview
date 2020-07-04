@@ -176,6 +176,7 @@ const Folder = () => {
       })
     )
   );
+
   console.log(music_ids);
   const musicData = musics.filter((input) => {
     for (let i = 0; i < music_ids.length; i++) {
@@ -187,12 +188,22 @@ const Folder = () => {
 
   const [data, setData] = useState();
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log(music_ids);
     window
       .fetch(
         ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare`,
-        { method: "PUT", body: [2, 7] }
+        { method: "PUT", body: music_ids }
+      )
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, [foldersData, folderId]);*/
+  useEffect(() => {
+    window
+      .fetch(
+        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`
       )
       .then((response) => response.json())
       .then((data) => {
@@ -200,7 +211,7 @@ const Folder = () => {
       });
   }, []);
 
-  console.log(data);
+  //console.log(data);
 
   return (
     <IonPage>
@@ -236,9 +247,7 @@ const Folder = () => {
           })}
         </IonList>
         <IonList>
-          <IonItem>
-            <FrequencyChart data={data} />
-          </IonItem>
+          <IonItem>{<FrequencyChart data={data} />}</IonItem>
         </IonList>
       </IonContent>
     </IonPage>

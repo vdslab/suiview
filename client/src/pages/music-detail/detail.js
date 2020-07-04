@@ -14,7 +14,24 @@ import {
   IonCard,
   IonList,
   IonLabel,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
+
+//export したのだとバグる
+const FolderName = ({ id }) => {
+  const [folderName, setFolderName] = useState();
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`)
+      .then((response) => response.json())
+      .then((folderName) => {
+        setFolderName(folderName);
+      });
+  }, []);
+  //console.log(id);
+  return <div>{folderName}</div>;
+};
 
 //index.js で export したのをimportするとなんかおかしくなる
 const convertDate = (input) => {
@@ -46,16 +63,21 @@ const SaveComment = (comment, musicId) => {
   //console.log(musicId);
 };
 
-const SaveFolder = (folder, musicId) => {
+const SaveFolder = (folderId, musicId) => {
+  let folder_ids = "";
+  folderId.map((input) => {
+    folder_ids += input + ",";
+  });
+  console.log(folder_ids);
+  console.log(musicId);
   window.fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/folders`,
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/put_folders/${musicId}`,
+    //`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/${folderId}`,
     {
       method: "PUT",
-      body: folder,
+      body: folder_ids,
     }
   );
-  //console.log(comment);
-  //console.log(musicId);
 };
 
 const Comments = ({ data }) => {
@@ -84,7 +106,30 @@ const DetailPage = () => {
   const [comment, setComment] = useState();
   const [oldComment, setOldComment] = useState(null);
   const [folder, setFolder] = useState(null);
-  console.log(folder);
+  const [folderData, setFolderData] = useState();
+  const [folderId, setFolderId] = useState();
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
+      .then((response) => response.json())
+      .then((folderData) => {
+        setFolderData(folderData);
+      });
+  }, []);
+  console.log(folderData);
+
+  let folder_ids = null;
+  if (folderData !== undefined) {
+    folder_ids = Array.from(
+      new Set(
+        folderData.map((input) => {
+          return input.id;
+        })
+      )
+    );
+  }
+
+  console.log(folder_ids);
   useEffect(() => {
     window
       .fetch(
@@ -146,7 +191,7 @@ const DetailPage = () => {
           frequency
         </IonButton>
 
-        <IonCard>
+        {/*<IonCard>
           <IonItem>
             <IonInput
               value={folder}
@@ -155,13 +200,45 @@ const DetailPage = () => {
                 setFolder(e.detail.value);
               }}
             ></IonInput>
-              <IonButton
+            <IonButton
               slot="end"
               onClick={() => {
                 SaveFolder(folder, musicId);
               }}
             >
               【save】
+            </IonButton>
+          </IonItem>
+            </IonCard>*/}
+
+        <IonCard>
+          <IonItem>登録するフォルダを選択</IonItem>
+          <IonItem>
+            <IonLabel>number</IonLabel>
+            <IonSelect
+              value={folderId}
+              placeholder="select one"
+              multiple={true}
+              onIonChange={(e) => setFolderId(e.detail.value)}
+            >
+              {folder_ids
+                ? folder_ids.map((id) => {
+                    return (
+                      <IonSelectOption value={id}>
+                        No.{id} <FolderName id={id} />
+                      </IonSelectOption>
+                    );
+                  })
+                : ""}
+            </IonSelect>
+            <IonButton
+              slot="end"
+              color="dark"
+              size="big"
+              key={folderId}
+              onClick={() => SaveFolder(folderId, musicId)}
+            >
+              save
             </IonButton>
           </IonItem>
         </IonCard>

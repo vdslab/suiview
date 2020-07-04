@@ -17,6 +17,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonItemDivider,
+  IonActionSheet,
 } from "@ionic/react";
 import { add, chevronForwardOutline } from "ionicons/icons";
 // for audio
@@ -169,17 +170,41 @@ const convertDate = (input) => {
   return createdDay;
 };
 
+const FolderName = ({ id }) => {
+  const [folderName, setFolderName] = useState();
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`)
+      .then((response) => response.json())
+      .then((folderName) => {
+        setFolderName(folderName);
+      });
+  }, []);
+  //console.log(id);
+  return <div>{folderName}</div>;
+};
+
+const addFolder = (name) => {
+  console.log(name);
+  window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name`, {
+    method: "PUT",
+    body: name,
+  });
+};
 ////////////////////////////////////////
 
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlert2, setShowAlert2] = useState(false);
+  const [showActionSheet, setShowActionSheet] = useState(false);
   const [musics, setMusics] = useState([]);
   const [trackNo, setTrackNo] = useState(21);
   const [comp1, setComp1] = useState(21);
   const [comp2, setComp2] = useState(22);
-  const [gender, setGender] = useState();
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
+  const [text, setText] = useState();
+  const [addFol, setAddFol] = useState();
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
@@ -189,23 +214,32 @@ const Root = () => {
       });
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
       .then((response) => response.json())
       .then((folderData) => {
         setFolderData(folderData);
       });
+  }, []);*/
+  //console.log(folderData);
+  useEffect(() => {
+    window
+      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
+      .then((response) => response.json())
+      .then((folderData) => {
+        setFolderData(folderData);
+      });
   }, []);
   //console.log(folderData);
+
   const folder_ids = Array.from(
     new Set(
       folderData.map((input) => {
-        return input.folder_id;
+        return input.id;
       })
     )
   );
-  // console.log(folder_ids);
 
   return (
     <IonPage>
@@ -249,6 +283,64 @@ const Root = () => {
           </IonList>
         </IonCard>
 
+        <IonCard>
+          <IonItem fill="medium">フォルダごと見る</IonItem>
+          <IonItem>
+            {/*<IonButton
+              size="default"
+              onClick={() => {
+                setShowAlert2(true);
+              }}
+            >
+              ファイルの追加
+            </IonButton>*/}
+            　　&emsp;
+            <IonSelect
+              value={folderId}
+              placeholder="フォルダを選んでください"
+              onIonChange={(e) => setFolderId(e.detail.value)}
+              buttons={["Cancel", "Open Modal", "Delete"]}
+            >
+              {folder_ids.map((id) => {
+                return (
+                  <IonSelectOption value={id}>
+                    No.{id} <FolderName id={id} />
+                  </IonSelectOption>
+                );
+              })}
+            </IonSelect>
+            <IonButton
+              slot="end"
+              color="dark"
+              size="big"
+              key={folderId}
+              routerLink={`/folder/${folderId}`}
+            >
+              Go
+            </IonButton>{" "}
+            　　　　
+          </IonItem>
+
+          {/*<ionItem>フォルダの追加</ionItem>*/}
+          <ionItem>
+            <IonInput
+              value={addFol}
+              placeholder="write folder name"
+              onIonChange={(e) => {
+                setAddFol(e.detail.value);
+              }}
+            ></IonInput>
+            <IonButton
+              slot="end"
+              onClick={() => {
+                console.log(addFol);
+                addFolder(addFol);
+              }}
+            >
+              【add】
+            </IonButton>
+          </ionItem>
+        </IonCard>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -265,32 +357,44 @@ const Root = () => {
           ]}
         />
 
-        <IonCard>
-          <IonItem>フォルダごと見る</IonItem>
-          <IonItem>
-            <IonLabel>number</IonLabel>
-            <IonSelect
-              value={folderId}
-              placeholder="select one"
-              onIonChange={(e) => setFolderId(e.detail.value)}
-            >
-              {folder_ids.map((id) => {
-                return <IonSelectOption value={id}>{id}</IonSelectOption>;
-              })}
-            </IonSelect>
-            <IonButton
-              slot="end"
-              color="dark"
-              size="big"
-              key={folderId}
-              routerLink={`/folder/${folderId}`}
-            >
-              Go
-            </IonButton>
-          </IonItem>
-        </IonCard>
+        <IonAlert
+          isOpen={showAlert2}
+          onDidDismiss={() => setShowAlert2(false)}
+          cssClass="my-custom-class"
+          header={"ファイルの追加"}
+          inputs={[
+            {
+              name: "name1",
+              type: "text",
+              value: "hi",
+              placeholder: "ファイル名を記入してください",
+            },
+          ]}
+          onIonChange={(e) => {
+            setText(e.detail.value);
+            console.log(text);
+          }}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: () => {
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "Add",
+              handler: () => {
+                //addFolder(text);
+                /// console.log(text);
+                console.log("Confirm Ok");
+              },
+            },
+          ]}
+        />
 
-        <IonCard>
+        {/*<IonCard>
           <IonItem lines="none">
             <IonLabel>比較したいトラック番号を入力してください</IonLabel>
           </IonItem>
@@ -316,7 +420,7 @@ const Root = () => {
               show
             </IonButton>
           </IonItem>
-        </IonCard>
+        </IonCard>*/}
 
         <IonList>
           {musics.map(({ created, id }) => {

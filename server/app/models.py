@@ -23,6 +23,7 @@ class Music(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
+    name = Column(Text)
     content = Column(LargeBinary)
     created = Column(DateTime, default=datetime.datetime.now(
         pytz.timezone('Asia/Tokyo')))
@@ -32,6 +33,7 @@ class Music(Base):
             'id': self.id,
             'userId': self.user_id,
             'created': self.created,
+            'name': "",
         }
 
 
@@ -64,13 +66,12 @@ class Folder(Base):
     id = Column(Integer, primary_key=True)
     name = Column(Text)
     user_id = Column(Integer, ForeignKey('users.id'))
-    folder_id = Column(Text)
+    #folder_id = Column(Text)
 
     def to_json(self):
         return {
             'id': self.id,
             'name': self.name,
-            'folder_id': self.folder_id,
         }
 
 
