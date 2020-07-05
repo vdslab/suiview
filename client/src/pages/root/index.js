@@ -213,17 +213,8 @@ const Root = () => {
         setMusics(musics);
       });
   }, []);
-  console.log(musics);
+  //console.log(musics);
 
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
-      .then((response) => response.json())
-      .then((folderData) => {
-        setFolderData(folderData);
-      });
-  }, []);*/
-  //console.log(folderData);
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
@@ -241,6 +232,14 @@ const Root = () => {
       })
     )
   );
+
+  musics.sort((a, b) => {
+    if (a.id > b.id) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
 
   return (
     <IonPage>
@@ -351,7 +350,6 @@ const Root = () => {
             {
               text: "終了",
               handler: () => {
-                //finPushed();
                 saveAudio();
               },
             },

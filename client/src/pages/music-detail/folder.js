@@ -176,6 +176,7 @@ const Folder = () => {
       })
     )
   );
+  console.log(foldersData);
 
   console.log(music_ids);
   const musicData = musics.filter((input) => {
@@ -185,21 +186,9 @@ const Folder = () => {
       }
     }
   });
+  console.log(musicData);
 
   const [data, setData] = useState();
-
-  /*useEffect(() => {
-    console.log(music_ids);
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare`,
-        { method: "PUT", body: music_ids }
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, [foldersData, folderId]);*/
   useEffect(() => {
     window
       .fetch(

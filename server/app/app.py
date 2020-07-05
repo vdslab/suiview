@@ -76,6 +76,7 @@ def put_music_folder(user_id, music_id):
     ids = []
     for i in folder_ids:
         ids.append(int(i))
+    print(ids)
     session = create_session()
     for folder_id in ids:
         data = Music_Folders(
@@ -116,12 +117,8 @@ def get_music_name(user_id, music_id):
 @app.route('/<user_id>/musics/change_name/<music_id>', methods=['PUT'])
 def change_name(user_id, music_id):
     session = create_session()
-    # musics = session.query(Music).filter_by(
-    #    user_id=user_id, id=music_id).all()
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #musics.name = request.data.decode()
-    #
     musics.name = request.data.decode()
     #musics = musics.to_json()
     session.add(musics)
@@ -130,25 +127,6 @@ def change_name(user_id, music_id):
     return "reseive"
 
 
-"""
-@app.route('/<user_id>/musics/folder_freq_compare', methods=['PUT', 'GET'])
-def put_comp_freqData(user_id):
-    #d = request.data.decode()
-    d = request.data.decode()
-    print(d)
-    music_ids = list(map(int, d.split(',')))
-    #music_ids = [6, 7, 8]
-    Datas = []
-    for i in range(len(music_ids)):
-        data = frequency_data(user_id, music_ids[i])
-        dic = {
-            "id": music_ids[i],
-            "data": data
-        }
-        Datas.append(dic)
-
-    return jsonify(Datas)
-"""
 @app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
 def put_comp_freqData(user_id, folder_id):
     session = create_session()
@@ -172,6 +150,7 @@ def put_comp_freqData(user_id, folder_id):
     return jsonify(Datas)
 
 
+"""
 @app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
 def put_folder(user_id, music_id):
     session = create_session()
@@ -218,6 +197,7 @@ def put_music_folders(user_id, music_id, folder_id):
     session.add(music_folder)
     session.commit()
     return 'music_folders reseived'
+"""
 
 
 @app.route('/<user_id>/musics/folders', methods=['GET'])

@@ -59,8 +59,6 @@ const SaveComment = (comment, musicId) => {
       body: comment,
     }
   );
-  //console.log(comment);
-  //console.log(musicId);
 };
 
 const SaveFolder = (folderId, musicId) => {
@@ -68,11 +66,8 @@ const SaveFolder = (folderId, musicId) => {
   folderId.map((input) => {
     folder_ids += input + ",";
   });
-  //console.log(folder_ids);
-  //console.log(musicId);
   window.fetch(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/put_folders/${musicId}`,
-    //`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/${folderId}`,
     {
       method: "PUT",
       body: folder_ids,
