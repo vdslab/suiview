@@ -34,7 +34,7 @@ def get_musics(user_id):
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
     session = create_session()
-    music = Music(user_id=user_id, content=request.data)
+    music = Music(user_id=user_id, content=request.data, name="music")
     session.add(music)
     session.commit()
     return 'received'
@@ -101,6 +101,33 @@ def put_folder2(user_id):
     print(folder)
     folder = [f.to_json() for f in folder]
     return jsonify(folder)
+
+
+@app.route('/<user_id>/musics/<music_id>/music_name', methods=['GET'])
+def get_music_name(user_id, music_id):
+    session = create_session()
+    musics = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    musics = musics.to_json()
+    music_name = musics['name']
+    return jsonify(music_name)
+
+
+@app.route('/<user_id>/musics/change_name/<music_id>', methods=['PUT'])
+def change_name(user_id, music_id):
+    session = create_session()
+    # musics = session.query(Music).filter_by(
+    #    user_id=user_id, id=music_id).all()
+    musics = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #musics.name = request.data.decode()
+    #
+    musics.name = request.data.decode()
+    #musics = musics.to_json()
+    session.add(musics)
+    session.commit()
+    # print(musics)
+    return "reseive"
 
 
 """

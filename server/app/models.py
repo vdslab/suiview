@@ -33,7 +33,7 @@ class Music(Base):
             'id': self.id,
             'userId': self.user_id,
             'created': self.created,
-            'name': "",
+            'name': self.name,
         }
 
 

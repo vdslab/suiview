@@ -228,11 +228,11 @@ const Folder = () => {
 
       <IonContent>
         <IonList>
-          {musicData.map(({ created, id }) => {
+          {musicData.map(({ created, id, name }) => {
             return (
               <IonCard>
                 <IonItem>
-                  track{id} {convertDate(created)}
+                  track{id}:{name} &emsp;{convertDate(created)}
                   <IonButton
                     slot="end"
                     fill="clear"

@@ -68,14 +68,25 @@ const SaveFolder = (folderId, musicId) => {
   folderId.map((input) => {
     folder_ids += input + ",";
   });
-  console.log(folder_ids);
-  console.log(musicId);
+  //console.log(folder_ids);
+  //console.log(musicId);
   window.fetch(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/put_folders/${musicId}`,
     //`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/${folderId}`,
     {
       method: "PUT",
       body: folder_ids,
+    }
+  );
+};
+
+const changeName = (name, musicId) => {
+  console.log(musicId);
+  window.fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/change_name/${musicId}`,
+    {
+      method: "PUT",
+      body: name,
     }
   );
 };
@@ -108,6 +119,7 @@ const DetailPage = () => {
   const [folder, setFolder] = useState(null);
   const [folderData, setFolderData] = useState();
   const [folderId, setFolderId] = useState();
+  const [musicName, setMusicName] = useState();
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
@@ -116,7 +128,6 @@ const DetailPage = () => {
         setFolderData(folderData);
       });
   }, []);
-  console.log(folderData);
 
   let folder_ids = null;
   if (folderData !== undefined) {
@@ -142,6 +153,19 @@ const DetailPage = () => {
   }, []);
   // console.log(oldComment);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+      )
+      .then((response) => response.json())
+      .then((musicName) => {
+        setMusicName(musicName);
+      });
+  }, []);
+
+  console.log(musicName);
+
   return (
     <IonPage>
       <IonHeader>
@@ -149,7 +173,30 @@ const DetailPage = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
           </IonButtons>
-          <IonTitle>track{musicId}</IonTitle>
+          <IonTitle>
+            No{musicId} : {musicName}
+          </IonTitle>
+          <IonItem>
+            名前の変更：
+            <IonInput
+              value={musicName}
+              placeholder=""
+              onIonChange={(e) => {
+                setMusicName(e.detail.value);
+              }}
+            ></IonInput>
+            <IonButton
+              slot="end"
+              onClick={() => {
+                console.log(musicName, musicId);
+                changeName(musicName, musicId);
+                //console.log(addFol);
+                //addFolder(addFol);
+              }}
+            >
+              【add】
+            </IonButton>
+          </IonItem>
         </IonToolbar>
       </IonHeader>
 

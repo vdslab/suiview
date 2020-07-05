@@ -198,7 +198,7 @@ const Root = () => {
   const [showAlert2, setShowAlert2] = useState(false);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [musics, setMusics] = useState([]);
-  const [trackNo, setTrackNo] = useState(21);
+  const [trackNo, setTrackNo] = useState(1);
   const [comp1, setComp1] = useState(21);
   const [comp2, setComp2] = useState(22);
   const [folderData, setFolderData] = useState([]);
@@ -213,6 +213,7 @@ const Root = () => {
         setMusics(musics);
       });
   }, []);
+  console.log(musics);
 
   /*useEffect(() => {
     window
@@ -386,8 +387,6 @@ const Root = () => {
             {
               text: "Add",
               handler: () => {
-                //addFolder(text);
-                /// console.log(text);
                 console.log("Confirm Ok");
               },
             },
@@ -423,11 +422,11 @@ const Root = () => {
         </IonCard>*/}
 
         <IonList>
-          {musics.map(({ created, id }) => {
+          {musics.map(({ created, id, name }) => {
             return (
               <IonCard>
                 <IonItem>
-                  track{id} {convertDate(created)}
+                  No.{id}: {name} &emsp;{convertDate(created)}
                   <IonButton
                     slot="end"
                     fill="clear"
