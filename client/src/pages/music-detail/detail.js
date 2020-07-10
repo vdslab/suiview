@@ -232,6 +232,20 @@ const DetailPage = () => {
         >
           frequency
         </IonButton>
+        <IonButton
+          color="medium"
+          key={musicId}
+          routerLink={`/spectrum_centroid_and_rolloff/${musicId}`}
+        >
+          spectrum centroid/rolloff
+        </IonButton>
+        <IonButton
+          color="light"
+          key={musicId}
+          routerLink={`/flatness/${musicId}`}
+        >
+          spectrum flatness
+        </IonButton>
 
         {/*<IonCard>
           <IonItem>

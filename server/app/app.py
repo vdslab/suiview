@@ -18,6 +18,8 @@ import json
 import pyworld as pw
 import datetime
 from sqlalchemy.sql import func
+import librosa
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -372,6 +374,88 @@ def comp_chart(user_id, music_id, music_id2):
     Datas.append(dic)
 
     return jsonify(Datas)
+
+
+# --スペクトル重心--------
+# @app.route('/<user_id>/musics/<music_id>/spectrum_centroid', methods=['GET'])
+def spectrum_centroid(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+    Datas = []
+
+    for i in range(len(cent[0])):
+        dic = {
+            "x": i+1,
+            "y": int(cent[0][i])
+        }
+        Datas.append(dic)
+    # return jsonify(Datas)
+    return Datas
+
+
+# ----スペクトルロールオフ---------
+# @app.route('/<user_id>/musics/<music_id>/spectrum_rolloff', methods=['GET'])
+def spectrum_rollofff(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    # 引数roll_percent=0.8がデフォ
+    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    # print(rolloff)
+    Datas = []
+
+    for i in range(len(rolloff[0])):
+        dic = {
+            "x": i+1,
+            "y": int(rolloff[0][i])
+        }
+        Datas.append(dic)
+    # return jsonify(Datas)
+    return Datas
+
+
+# --フラットネス--------
+@app.route('/<user_id>/musics/<music_id>/spectrum_flatness', methods=['GET'])
+def spectrum_flatness(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    flatness = librosa.feature.spectral_flatness(y=y)
+    # print(flatness)
+    Datas = []
+
+    for i in range(len(flatness[0])):
+        dic = {
+            "x": i+1,
+            "y": str(flatness[0][i])
+        }
+        Datas.append(dic)
+
+    # print(Datas)
+
+    return jsonify(Datas)
+
+
+@app.route('/<user_id>/musics/<music_id>/spectrum_centroid&rolloff', methods=['GET'])
+def get_centroid_rolloff(user_id, music_id):
+    cent = spectrum_centroid(user_id, music_id)
+    roll = spectrum_rollofff(user_id, music_id)
+    Datas = [{"id": "centroid", "data": cent}, {"id": "rolloff", "data": roll}]
+
+    return jsonify(Datas)
+
+
+"""
+print(flatness)
+plt.figure
+plt.subplot(2, 1, 1)
+plt.semilogy(flatness.T, label='flatness frequency')
+plt.ylabel('Hz')
+plt.xticks([])
+plt.legend()
+"""
 
 
 if __name__ == "__main__":

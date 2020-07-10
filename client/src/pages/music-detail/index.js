@@ -23,7 +23,7 @@ const AmplitudeChart = ({ data }) => {
         data={[
           {
             id: "amplitude",
-            data: data.filter(({ x }) => x % 100 === 0),
+            data: data /*.filter(({ x }) => x % 1 === 0)*/,
           },
         ]}
         margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
@@ -40,7 +40,7 @@ const AmplitudeChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data.filter(({ x }) => x % 10000 === 0).map(({ x }) => x),
+          tickValues: data.filter(({ x }) => x % 1 === 0).map(({ x }) => x),
           legend: "",
           legendOffset: 36,
           legendPosition: "middle",
@@ -77,13 +77,13 @@ const MusicDetail = () => {
         setData(data);
       });
   }, [musicId]);
-
+  console.log(data);
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>amplitude track{musicId}</IonTitle>
         </IonToolbar>
