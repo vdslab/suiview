@@ -20,6 +20,7 @@ import datetime
 from sqlalchemy.sql import func
 import librosa
 import matplotlib.pyplot as plt
+from dtw import dtw
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -129,6 +130,7 @@ def change_name(user_id, music_id):
     return "reseive"
 
 
+def manhattan_distance(x, y): return np.abs(x - y)
 @app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
 def put_comp_freqData(user_id, folder_id):
     session = create_session()
@@ -138,9 +140,58 @@ def put_comp_freqData(user_id, folder_id):
     music_ids = []
     for i in range(len(folder)):
         music_ids.append(folder[i]['music_id'])
-    print(folder)
     music_ids = list(set(music_ids))
-    print(music_ids)
+    preData = []
+    for _id in music_ids:
+        data = dtw_frequency_data(user_id, _id)
+        data = np.array(data)
+        preData.append(data)
+
+    path = []
+    # for i in range(0, len(preData)-1):
+    d, cost_matrix, acc_cost_matrix, path = dtw(
+        preData[0], preData[1], dist=manhattan_distance)
+    aliged_data1 = preData[0][path[0]]
+    aliged_data2 = preData[1][path[1]]
+
+    aliged_data1 = list(aliged_data1)
+    aliged_data2 = list(aliged_data2)
+    data = []
+    for i in range(len(aliged_data1)):
+        dic = {
+            "x": i+1,
+            "y": aliged_data1[i]
+        }
+        data.append(dic)
+    Datas = [{"id": 12, "data": data}]
+
+    data = []
+    for i in range(len(aliged_data2)):
+        dic = {
+            "x": i+1,
+            "y": aliged_data2[i]
+        }
+        data.append(dic)
+
+    Datas.append({"id": 15, "data": data})
+
+    """
+        dic = {
+            "id": music_ids[i],
+            "data": aliged_data
+        }
+    """
+    # Datas.append(dic)
+    """
+    aliged_data = preData[-1][path[1]]
+    dic = {
+        "id": music_ids[-1],
+        "data": aliged_data
+    }
+    Datas.append(dic)
+    """
+
+    """
     Datas = []
     for i in range(len(music_ids)):
         data = frequency_data(user_id, music_ids[i])
@@ -149,6 +200,7 @@ def put_comp_freqData(user_id, folder_id):
             "data": data
         }
         Datas.append(dic)
+    """
     return jsonify(Datas)
 
 
@@ -355,6 +407,21 @@ def frequency_data(user_id, music_id):
         }
         Datas.append(dic)
     return Datas
+
+# dtw用
+
+
+def dtw_frequency_data(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    f0 = pw.stonemask(data, _f0, _time, rate)
+    return f0
+
+# グラフ比較(基本周波数)
+
 
 # グラフ比較(基本周波数)
 @app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
