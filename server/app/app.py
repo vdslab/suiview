@@ -148,7 +148,107 @@ def put_comp_freqData(user_id, folder_id):
         preData.append(data)
 
     path = []
-    # for i in range(0, len(preData)-1):
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": d[i]
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[0], "data": data})
+
+    elif len(preData) == 2:
+        d, cost_matrix, acc_cost_matrix, path = dtw(
+            preData[0], preData[1], dist=manhattan_distance)
+        aliged_data1 = preData[0][path[0]]
+        aliged_data2 = preData[1][path[1]]
+
+        aliged_data1 = list(aliged_data1)
+        aliged_data2 = list(aliged_data2)
+        data = []
+        for i in range(len(aliged_data1)):
+            dic = {
+                "x": i+1,
+                "y": aliged_data1[i]
+            }
+            data.append(dic)
+        Datas = [{"id": music_ids[0], "data": data}]
+
+        data = []
+        for i in range(len(aliged_data2)):
+            dic = {
+                "x": i+1,
+                "y": aliged_data2[i]
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[1], "data": data})
+    else:
+        print(len(preData))
+        for i in range(1, len(preData)):
+            d, cost_matrix, acc_cost_matrix, path = dtw(
+                preData[0], preData[i], dist=manhattan_distance)
+
+            if i == 1:
+                aliged_data = preData[0][path[0]]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": aliged_data[j]
+                    }
+                    data.append(dic)
+                Datas.append({"id": music_ids[i], "data": data})
+
+            aliged_data = preData[i][path[1]]
+            aliged_data = list(aliged_data)
+            print(aliged_data)
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": aliged_data[j]
+                }
+                data.append(dic)
+            Datas.append({"id": music_ids[i], "data": data})
+            print("fin")
+            print(music_ids)
+        """
+        for i in range(1, 3):
+            d, cost_matrix, acc_cost_matrix, path = dtw(
+                preData[0], preData[i], dist=manhattan_distance)
+            if i == 1:
+                aliged_data = preData[0][path[0]]
+                aliged_data = list(aliged_data)
+                data = []
+                for i in range(len(aliged_data)):
+                    dic = {
+                        "x": i+1,
+                        "y": aliged_data[i]
+                    }
+                data.append(dic)
+                Datas.append({"id": music_ids[0], "data": data})
+
+            aliged_data = preData[i][path[1]]
+            aliged_data = list(aliged_data)
+            data = []
+            for i in range(len(aliged_data)):
+                dic = {
+                    "x": i+1,
+                    "y": aliged_data[i]
+                }
+            data.append(dic)
+            Datas.append({"id": i+1, "data": data})
+        """
+
+    #Datas = [{"id": 12, "data": data}]
+
+    """
     d, cost_matrix, acc_cost_matrix, path = dtw(
         preData[0], preData[1], dist=manhattan_distance)
     aliged_data1 = preData[0][path[0]]
@@ -174,7 +274,7 @@ def put_comp_freqData(user_id, folder_id):
         data.append(dic)
 
     Datas.append({"id": 15, "data": data})
-
+    """
     """
         dic = {
             "id": music_ids[i],
