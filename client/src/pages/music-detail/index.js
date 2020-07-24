@@ -68,6 +68,17 @@ const AmplitudeChart = ({ data }) => {
 const MusicDetail = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const [musicName, setMusicName] = useState();
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+      )
+      .then((response) => response.json())
+      .then((musicName) => {
+        setMusicName(musicName);
+      });
+  }, []);
 
   useEffect(() => {
     window
@@ -87,7 +98,9 @@ const MusicDetail = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
-          <IonTitle>amplitude track{musicId}</IonTitle>
+          <IonTitle>
+            amplitude No.{musicId} {musicName}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

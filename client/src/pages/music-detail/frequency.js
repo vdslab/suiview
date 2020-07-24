@@ -66,6 +66,18 @@ const FrequencyChart = ({ data }) => {
 const ShowFrequency = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const [musicName, setMusicName] = useState();
+
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+      )
+      .then((response) => response.json())
+      .then((musicName) => {
+        setMusicName(musicName);
+      });
+  }, []);
 
   useEffect(() => {
     window
@@ -85,7 +97,9 @@ const ShowFrequency = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
-          <IonTitle>frequency track{musicId}</IonTitle>
+          <IonTitle>
+            frequency No.{musicId} {musicName}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

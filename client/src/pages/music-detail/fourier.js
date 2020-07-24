@@ -67,6 +67,7 @@ const FourierChart = ({ data }) => {
 const ShowFourier = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const [musicName, setMusicName] = useState();
 
   useEffect(() => {
     window
@@ -79,6 +80,17 @@ const ShowFourier = () => {
       });
   }, [musicId]);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+      )
+      .then((response) => response.json())
+      .then((musicName) => {
+        setMusicName(musicName);
+      });
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -86,7 +98,9 @@ const ShowFourier = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
-          <IonTitle>fourier track{musicId}</IonTitle>
+          <IonTitle>
+            fourier No.{musicId} {musicName}
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

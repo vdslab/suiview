@@ -31,6 +31,7 @@ def get_musics(user_id):
     session = create_session()
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
+    session.close()
     return jsonify(musics)
 
 
@@ -40,6 +41,7 @@ def put_music(user_id):
     music = Music(user_id=user_id, content=request.data, name="music")
     session.add(music)
     session.commit()
+    session.close()
     return 'received'
 
 
@@ -49,7 +51,7 @@ def get_comment(user_id, music_id):
     comment = session.query(Comment).filter_by(
         music_id=music_id).all()
     comment = [m.to_json() for m in comment]
-
+    session.close()
     return jsonify(comment)
 
 
@@ -104,6 +106,7 @@ def put_folder2(user_id):
     folder = session.query(Folder).filter_by(user_id=user_id).all()
     print(folder)
     folder = [f.to_json() for f in folder]
+    session.close()
     return jsonify(folder)
 
 
@@ -114,6 +117,7 @@ def get_music_name(user_id, music_id):
         user_id=user_id, id=music_id).first()
     musics = musics.to_json()
     music_name = musics['name']
+    session.close()
     return jsonify(music_name)
 
 
@@ -126,6 +130,7 @@ def change_name(user_id, music_id):
     # musics = musics.to_json()
     session.add(musics)
     session.commit()
+    session.close()
     # print(musics)
     return "reseive"
 
@@ -301,6 +306,7 @@ def put_comp_freqData(user_id, folder_id):
         }
         Datas.append(dic)
     """
+    session.close()
     return jsonify(Datas)
 
 
@@ -359,6 +365,7 @@ def get_music_folders(user_id):
     session = create_session()
     data = session.query(Music_Folders).filter_by(user_id=user_id).all()
     data = [m.to_json() for m in data]
+    session.close()
     return jsonify(data)
 
 
@@ -367,6 +374,7 @@ def get_foledrs(user_id, music_id):
     session = create_session()
     folder = session.query(Folder).filter_by(user_id=user_id).all()
     folder = [m.to_json() for m in folder]
+    session.close()
     return jsonify(folder)
 
 
@@ -376,6 +384,7 @@ def get_folderName(user_id, folder_id):
     folder = session.query(Folder).filter_by(
         user_id=user_id, id=folder_id).all()
     folder = [f.to_json() for f in folder]
+    session.close()
     return jsonify(folder[0]['name'])
 
 
@@ -386,6 +395,7 @@ def get_music_content(user_id, music_id):
     music = session.query(Music).get(music_id)
     response.data = music.content
     response.mimetype = "audio/wav"
+    session.close()
     return response
 
 
@@ -394,6 +404,7 @@ def create(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     date = music.created
+    session.close()
     return jsonify(date)
 
 
@@ -418,7 +429,7 @@ def amplitude(user_id, music_id):
         }
         Datas.append(dic)
     print(Datas[:500])
-
+    session.close()
     return jsonify(Datas)
 
 
@@ -449,8 +460,8 @@ def fourier(user_id, music_id):
 
     Datas = []
     print(len(freList))
-    for i in range(min(780, len(pairData))):  # len(fft_data)):
-        if i % 1 == 0:
+    for i in range(min(6000, len(pairData))):  # len(fft_data)):
+        if i % 10 == 0:
             dic = {
                 "x": pairData[i][0],
                 "y": pairData[i][1],
@@ -467,7 +478,7 @@ def fourier(user_id, music_id):
             }
             Datas.append(dic)
     """
-
+    session.close()
     return jsonify(Datas)
 
 
@@ -493,7 +504,7 @@ def spectrogram(user_id, music_id):
             key = str(j)
             dic[key] = '{:.4f}'.format(Sxx[i][j])
         Datas.append(dic)
-
+    session.close()
     return jsonify(Datas)
 
 
@@ -514,7 +525,7 @@ def frequency(user_id, music_id):
             "y": f0[i]
         }
         Datas.append(dic)
-
+    session.close()
     return jsonify(Datas)
 
 
@@ -533,6 +544,7 @@ def frequency_data(user_id, music_id):
             "y": f0[i]
         }
         Datas.append(dic)
+    session.close()
     return Datas
 
 # dtw用
@@ -545,6 +557,7 @@ def dtw_frequency_data(user_id, music_id):
     data = data.astype(np.float)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    session.close()
     return f0
 
 # グラフ比較(基本周波数)
@@ -585,6 +598,7 @@ def spectrum_centroid(user_id, music_id):
             "y": int(cent[0][i])
         }
         Datas.append(dic)
+    session.close()
     # return jsonify(Datas)
     return Datas
 
@@ -607,6 +621,7 @@ def spectrum_rollofff(user_id, music_id):
         }
         Datas.append(dic)
     # return jsonify(Datas)
+    session.close()
     return Datas
 
 
@@ -628,7 +643,7 @@ def spectrum_flatness(user_id, music_id):
         Datas.append(dic)
 
     # print(Datas)
-
+    session.close()
     return jsonify(Datas)
 
 
