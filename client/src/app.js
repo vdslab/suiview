@@ -4,7 +4,7 @@ import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 
 import Root from "./pages/root";
-import MusicDetail from "./pages/music-detail";
+import MusicDetail from "./pages/music-detail/index";
 import ShowFourier from "./pages/music-detail/fourier";
 import ShowSpectrogram from "./pages/music-detail/spectrogram";
 import ShowFrequency from "./pages/music-detail/frequency";

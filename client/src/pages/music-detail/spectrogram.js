@@ -96,7 +96,7 @@ const ShowSpectrogram = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>spectrogram track{musicId}</IonTitle>
         </IonToolbar>

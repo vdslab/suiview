@@ -80,7 +80,7 @@ const FrequencyChart = ({ data }) => {
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "nivo" }}
+        colors={{ scheme: "category10" }}
         enablePoints={false}
         legends={[
           {
@@ -137,7 +137,7 @@ const ShowComp = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>
             compare track{musicId} and tarck{musicId2}

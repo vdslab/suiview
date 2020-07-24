@@ -100,7 +100,7 @@ const FrequencyChart = ({ data }) => {
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "nivo" }}
+        colors={{ scheme: "category10" }}
         enablePoints={false}
         legends={[
           {

@@ -123,7 +123,7 @@ def change_name(user_id, music_id):
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics.name = request.data.decode()
-    #musics = musics.to_json()
+    # musics = musics.to_json()
     session.add(musics)
     session.commit()
     # print(musics)
@@ -246,7 +246,7 @@ def put_comp_freqData(user_id, folder_id):
             Datas.append({"id": i+1, "data": data})
         """
 
-    #Datas = [{"id": 12, "data": data}]
+    # Datas = [{"id": 12, "data": data}]
 
     """
     d, cost_matrix, acc_cost_matrix, path = dtw(
@@ -314,8 +314,8 @@ def put_folder(user_id, music_id):
         user_id=user_id, name=folder_name).all()
     had_name = [m.to_json() for m in had_name]
     _id = session.query(func.max(Folder.id).filter(user_id == user_id)).one()
-    #_id = [m.to_json() for m in _id]
-    #print("max_id = "+ str(_id))
+    # _id = [m.to_json() for m in _id]
+    # print("max_id = "+ str(_id))
     # print(had_name)
     # print(len(had_name))
     if len(had_name) > 0:
@@ -323,10 +323,10 @@ def put_folder(user_id, music_id):
         folder_id = had_name[0]['id']
     else:
         folder_id = _id
-    #folder = Folder(id = fol_id, name=folder_name, user_id=user_id)
+    # folder = Folder(id = fol_id, name=folder_name, user_id=user_id)
     folder = Folder(name=folder_name, user_id=user_id, folder_id=folder_id)
 
-    #folder = Folder(name=folder_name, user_id=user_id)
+    # folder = Folder(name=folder_name, user_id=user_id)
     session.add(folder)
     session.commit()
 
@@ -334,7 +334,7 @@ def put_folder(user_id, music_id):
         user_id=user_id, name=folder_name).all()
     had_name = [m.to_json() for m in had_name]
     least_fl_id = had_name[-1]['folder_id']
-    #print("least = ", end=" ")
+    # print("least = ", end=" ")
     # print(least_fl_id)
     print("userID = ")
     print(user_id, end="  musicId = ")
@@ -417,6 +417,7 @@ def amplitude(user_id, music_id):
             "y": int(data[i])
         }
         Datas.append(dic)
+    print(Datas[:500])
 
     return jsonify(Datas)
 
@@ -430,8 +431,33 @@ def fourier(user_id, music_id):
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
-    Datas = []
 
+    pairData = []
+    preNum = 0
+    max_fft = 0
+    for i in range(len(fft_data)):
+        if 0 < freList[i] and freList[i] < 8000:
+            if int(freList[i]) != preNum:
+                pairData.append([preNum, max_fft])
+                preNum = int(freList[i])
+                max_fft = 0
+            if max_fft <= fft_data[i]:
+                max_fft = fft_data[i]
+
+    print(pairData)
+    print(max(freList))
+
+    Datas = []
+    print(len(freList))
+    for i in range(min(780, len(pairData))):  # len(fft_data)):
+        if i % 1 == 0:
+            dic = {
+                "x": pairData[i][0],
+                "y": pairData[i][1],
+            }
+            Datas.append(dic)
+
+    """
     for i in range(min(1000, len(fft_data))):  # len(fft_data)):
         if 0 < freList[i] and freList[i] < 4000:  # 周波数の範囲
             dic = {
@@ -440,6 +466,7 @@ def fourier(user_id, music_id):
                 "y": fft_data[i]
             }
             Datas.append(dic)
+    """
 
     return jsonify(Datas)
 

@@ -17,6 +17,8 @@ const AmplitudeChart = ({ data }) => {
   if (data == null) {
     return null;
   }
+  const d = parseInt(data.length / 10, 10);
+  console.log(d);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
@@ -40,7 +42,7 @@ const AmplitudeChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data.filter(({ x }) => x % 1 === 0).map(({ x }) => x),
+          tickValues: data.filter(({ x }) => x % d === 0).map(({ x }) => x),
           legend: "",
           legendOffset: 36,
           legendPosition: "middle",

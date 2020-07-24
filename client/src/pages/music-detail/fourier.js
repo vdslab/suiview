@@ -24,9 +24,10 @@ const FourierChart = ({ data }) => {
         /*data={[
           {
             id: "x",
-            data: data.filter(({ x }) => x % 100 === 0),
+            data: data.filter(({ x }) => x % 1 === 0),
             //data: data.filter(({ x }) => x),
-          },*/
+          },
+        ]}*/
         keys={["y"]}
         indexBy="x"
         margin={{ top: 20, right: 20, bottom: 120, left: 60 }}
@@ -39,6 +40,7 @@ const FourierChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 60,
+          tickValues: data.filter(({ x }) => x % 500 === 0).map(({ x }) => x),
           legend: "",
           legendPosition: "middle",
           legendOffset: 32,
@@ -82,7 +84,7 @@ const ShowFourier = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>fourier track{musicId}</IonTitle>
         </IonToolbar>

@@ -83,7 +83,7 @@ const ShowFrequency = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>frequency track{musicId}</IonTitle>
         </IonToolbar>

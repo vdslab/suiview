@@ -166,7 +166,8 @@ const Centroid_Rolloff = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/" />
+            {/*<IonBackButton defaultHref="/" />*/}
+            <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>
             Centroid and Rolloff No.{musicId} {musicName}
