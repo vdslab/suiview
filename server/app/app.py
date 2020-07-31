@@ -147,6 +147,7 @@ def put_comp_freqData(user_id, folder_id):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
     preData = []
+
     for _id in music_ids:
         data = dtw_frequency_data(user_id, _id)
         data = np.array(data)
@@ -223,90 +224,7 @@ def put_comp_freqData(user_id, folder_id):
             Datas.append({"id": music_ids[i], "data": data})
             print("fin")
             print(music_ids)
-        """
-        for i in range(1, 3):
-            d, cost_matrix, acc_cost_matrix, path = dtw(
-                preData[0], preData[i], dist=manhattan_distance)
-            if i == 1:
-                aliged_data = preData[0][path[0]]
-                aliged_data = list(aliged_data)
-                data = []
-                for i in range(len(aliged_data)):
-                    dic = {
-                        "x": i+1,
-                        "y": aliged_data[i]
-                    }
-                data.append(dic)
-                Datas.append({"id": music_ids[0], "data": data})
-
-            aliged_data = preData[i][path[1]]
-            aliged_data = list(aliged_data)
-            data = []
-            for i in range(len(aliged_data)):
-                dic = {
-                    "x": i+1,
-                    "y": aliged_data[i]
-                }
-            data.append(dic)
-            Datas.append({"id": i+1, "data": data})
-        """
-
-    # Datas = [{"id": 12, "data": data}]
-
-    """
-    d, cost_matrix, acc_cost_matrix, path = dtw(
-        preData[0], preData[1], dist=manhattan_distance)
-    aliged_data1 = preData[0][path[0]]
-    aliged_data2 = preData[1][path[1]]
-
-    aliged_data1 = list(aliged_data1)
-    aliged_data2 = list(aliged_data2)
-    data = []
-    for i in range(len(aliged_data1)):
-        dic = {
-            "x": i+1,
-            "y": aliged_data1[i]
-        }
-        data.append(dic)
-    Datas = [{"id": 12, "data": data}]
-
-    data = []
-    for i in range(len(aliged_data2)):
-        dic = {
-            "x": i+1,
-            "y": aliged_data2[i]
-        }
-        data.append(dic)
-
-    Datas.append({"id": 15, "data": data})
-    """
-    """
-        dic = {
-            "id": music_ids[i],
-            "data": aliged_data
-        }
-    """
-    # Datas.append(dic)
-    """
-    aliged_data = preData[-1][path[1]]
-    dic = {
-        "id": music_ids[-1],
-        "data": aliged_data
-    }
-    Datas.append(dic)
-    """
-
-    """
-    Datas = []
-    for i in range(len(music_ids)):
-        data = frequency_data(user_id, music_ids[i])
-        dic = {
-            "id": music_ids[i],
-            "data": data
-        }
-        Datas.append(dic)
-    """
-    session.close()
+        session.close()
     return jsonify(Datas)
 
 
@@ -515,6 +433,7 @@ def frequency(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 46)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
@@ -534,6 +453,7 @@ def frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 46)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
@@ -555,6 +475,7 @@ def dtw_frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 46)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     session.close()
@@ -589,6 +510,7 @@ def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    y, _ = librosa.effects.trim(y, 46)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
     Datas = []
 
@@ -609,6 +531,7 @@ def spectrum_rollofff(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    y, _ = librosa.effects.trim(y, 46)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -631,6 +554,7 @@ def spectrum_flatness(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    #y, _ = librosa.effects.trim(y, 46)
     flatness = librosa.feature.spectral_flatness(y=y)
     # print(flatness)
     Datas = []
