@@ -67,6 +67,7 @@ const ShowFrequency = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
   const [musicName, setMusicName] = useState();
+  const [ave, setAve] = useState();
 
   useEffect(() => {
     window
@@ -90,6 +91,17 @@ const ShowFrequency = () => {
       });
   }, [musicId]);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency_ave`
+      )
+      .then((response) => response.json())
+      .then((ave) => {
+        setAve(ave);
+      });
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -104,6 +116,7 @@ const ShowFrequency = () => {
       </IonHeader>
       <IonContent>
         <IonList>
+          安定度... {ave}
           <IonItem>
             <FrequencyChart data={data} />
           </IonItem>

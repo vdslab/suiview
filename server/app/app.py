@@ -373,11 +373,11 @@ def fourier(user_id, music_id):
             if max_fft <= fft_data[i]:
                 max_fft = fft_data[i]
 
-    print(pairData)
-    print(max(freList))
+    # print(pairData)
+    # print(max(freList))
 
     Datas = []
-    print(len(freList))
+    # print(len(freList))
     for i in range(min(6000, len(pairData))):  # len(fft_data)):
         if i % 10 == 0:
             dic = {
@@ -397,7 +397,50 @@ def fourier(user_id, music_id):
             Datas.append(dic)
     """
     session.close()
+    fourier_roll(user_id, music_id)
     return jsonify(Datas)
+
+
+# フーリエ変換　ロールオフ
+@app.route('/<user_id>/musics/<music_id>/fourier_roll', methods=['GET'])
+def fourier_roll(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data/32768  # 振幅の配列らしい
+    fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
+    freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
+
+    pairData = []
+    preNum = 0
+    max_fft = 0
+    for i in range(len(fft_data)):
+        if 0 < freList[i] and freList[i] < 8000:
+            if int(freList[i]) != preNum:
+                pairData.append([preNum, max_fft])
+                preNum = int(freList[i])
+                max_fft = 0
+            if max_fft <= fft_data[i]:
+                max_fft = fft_data[i]
+
+    total = 0
+    for i in range(len(pairData)):
+        total += pairData[i][1]
+
+    eight = total*0.85
+    total2 = 0
+    idx = -1
+    for i in range(len(pairData)):
+        total2 += pairData[i][1]
+        if total2 >= eight:
+            idx = i
+            break
+    # print(total)
+    # print(eight)
+    # print(idx)
+
+    session.close()
+    return jsonify(idx)
 
 
 # スペクトログラム
@@ -433,7 +476,7 @@ def frequency(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 46)
+    data, _ = librosa.effects.trim(data, 50)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
@@ -446,6 +489,29 @@ def frequency(user_id, music_id):
         Datas.append(dic)
     session.close()
     return jsonify(Datas)
+
+
+@app.route('/<user_id>/musics/<music_id>/frequency_ave', methods=['GET'])
+def frequency_ave(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 50)
+    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    f0 = pw.stonemask(data, _f0, _time, rate)
+    total = 0
+    for i in range(len(f0)-1):
+        if not(f0[i] == 0 or f0[i+1] == 0):
+            total += abs(f0[i]-f0[i+1])
+            # print(f0[i], end=" ")
+            # print(f0[i+1])
+    print(total)
+    ave = total/len(f0)
+    print("ave = " + str((ave)))
+    session.close()
+    ave = round(ave, 4)
+    return jsonify(ave)
 
 
 def frequency_data(user_id, music_id):
@@ -554,7 +620,7 @@ def spectrum_flatness(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    #y, _ = librosa.effects.trim(y, 46)
+    # y, _ = librosa.effects.trim(y, 46)
     flatness = librosa.feature.spectral_flatness(y=y)
     # print(flatness)
     Datas = []

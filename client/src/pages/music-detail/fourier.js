@@ -68,6 +68,7 @@ const ShowFourier = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
   const [musicName, setMusicName] = useState();
+  const [roll, setRoll] = useState();
 
   useEffect(() => {
     window
@@ -91,6 +92,17 @@ const ShowFourier = () => {
       });
   }, []);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier_roll`
+      )
+      .then((response) => response.json())
+      .then((roll) => {
+        setRoll(roll);
+      });
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -105,6 +117,7 @@ const ShowFourier = () => {
       </IonHeader>
       <IonContent>
         <IonList>
+          ロールオフ： {roll}
           <IonItem>
             <FourierChart data={data} />
           </IonItem>
