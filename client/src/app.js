@@ -13,7 +13,7 @@ import DetailPage from "./pages/music-detail/detail";
 import Folder from "./pages/music-detail/folder";
 import Centroid_Rolloff from "./pages/music-detail/centroid_rolloff";
 import Flatness from "./pages/music-detail/flatness";
-
+import Decibel from "./pages/music-detail/decibel";
 const App = () => {
   return (
     <IonApp>
@@ -32,6 +32,7 @@ const App = () => {
             component={Centroid_Rolloff}
           />
           <Route path="/flatness/:musicId" component={Flatness} />
+          <Route path="/decibel/:musicId" component={Decibel} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

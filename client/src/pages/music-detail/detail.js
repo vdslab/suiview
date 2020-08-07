@@ -246,6 +246,13 @@ const DetailPage = () => {
         >
           spectrum flatness
         </IonButton>
+        <IonButton
+          color="medium"
+          key={musicId}
+          routerLink={`/decibel/${musicId}`}
+        >
+          decibel
+        </IonButton>
 
         {/*<IonCard>
           <IonItem>

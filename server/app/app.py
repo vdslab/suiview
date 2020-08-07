@@ -326,6 +326,31 @@ def create(user_id, music_id):
     return jsonify(date)
 
 
+# parallelCoordinates
+@app.route('/<user_id>/musics/parallel/<folder_id>', methods=['PUT', 'GET'])
+def parallel_data(user_id, folder_id):
+    session = create_session()
+    folder = session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    music_ids = []
+    for i in range(len(folder)):
+        music_ids.append(folder[i]['music_id'])
+    music_ids = list(set(music_ids))
+
+    Datas = []
+
+    for _id in music_ids:
+        dic = {
+            "pich": frequency_ave_data(user_id, _id),
+            "tone": fourier_roll_data(user_id, _id),
+            "volume": decibel_ave_data(user_id, _id),
+        }
+        Datas.append(dic)
+    session.close()
+    return jsonify(Datas)
+
+
 #　波形
 @app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
 def amplitude(user_id, music_id):
@@ -443,6 +468,43 @@ def fourier_roll(user_id, music_id):
     return jsonify(idx)
 
 
+def fourier_roll_data(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data/32768  # 振幅の配列らしい
+    fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
+    freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
+
+    pairData = []
+    preNum = 0
+    max_fft = 0
+    for i in range(len(fft_data)):
+        if 0 < freList[i] and freList[i] < 8000:
+            if int(freList[i]) != preNum:
+                pairData.append([preNum, max_fft])
+                preNum = int(freList[i])
+                max_fft = 0
+            if max_fft <= fft_data[i]:
+                max_fft = fft_data[i]
+
+    total = 0
+    for i in range(len(pairData)):
+        total += pairData[i][1]
+
+    eight = total*0.85
+    total2 = 0
+    idx = -1
+    for i in range(len(pairData)):
+        total2 += pairData[i][1]
+        if total2 >= eight:
+            idx = i
+            break
+
+    session.close()
+    return idx
+
+
 # スペクトログラム
 @app.route('/<user_id>/musics/<music_id>/spectrogram', methods=['GET'])
 def spectrogram(user_id, music_id):
@@ -467,6 +529,123 @@ def spectrogram(user_id, music_id):
         Datas.append(dic)
     session.close()
     return jsonify(Datas)
+
+
+# デシベル値
+@app.route('/<user_id>/musics/<music_id>/decibel', methods=['GET'])
+def decibel(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -80
+        for j in range(len(db)):
+            if _max < db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    Datas = []
+    for i in range(len(dbLine)):
+        dic = {
+            "x": i+1,
+            "y": int(dbLine[i])
+        }
+        Datas.append(dic)
+    session.close()
+    return jsonify(Datas)
+
+
+# デシベル値　平均
+@app.route('/<user_id>/musics/<music_id>/decibel_ave', methods=['GET'])
+def decibel_ave(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -80
+        for j in range(len(db)):
+            if _max < db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    Datas = []
+    total = 0
+    cnt = 0
+    for i in range(len(dbLine)-1):
+        if not(dbLine[i] == 0 or dbLine[i+1] == 0):
+            if dbLine[i] >= -30:
+                total += abs(dbLine[i]-dbLine[i+1])
+                cnt += 1
+
+    ave = total/cnt
+    session.close()
+    return jsonify(ave)
+
+
+def decibel_ave(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -80
+        for j in range(len(db)):
+            if _max < db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    Datas = []
+    total = 0
+    cnt = 0
+    for i in range(len(dbLine)-1):
+        if not(dbLine[i] == 0 or dbLine[i+1] == 0):
+            if dbLine[i] >= -30:
+                total += abs(dbLine[i]-dbLine[i+1])
+                cnt += 1
+
+    ave = total/cnt
+    session.close()
+    return jsonify(ave)
+
+
+def decibel_ave_data(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -80
+        for j in range(len(db)):
+            if _max < db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    Datas = []
+    total = 0
+    cnt = 0
+    for i in range(len(dbLine)-1):
+        if not(dbLine[i] == 0 or dbLine[i+1] == 0):
+            if dbLine[i] >= -30:
+                total += abs(dbLine[i]-dbLine[i+1])
+                cnt += 1
+
+    ave = total/cnt
+    session.close()
+    return ave
 
 
 # 基本周波数
@@ -501,17 +680,41 @@ def frequency_ave(user_id, music_id):
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     total = 0
+    cnt = 0
     for i in range(len(f0)-1):
         if not(f0[i] == 0 or f0[i+1] == 0):
             total += abs(f0[i]-f0[i+1])
-            # print(f0[i], end=" ")
-            # print(f0[i+1])
+            cnt += 1
+
     print(total)
-    ave = total/len(f0)
+    ave = total/cnt
     print("ave = " + str((ave)))
     session.close()
     ave = round(ave, 4)
     return jsonify(ave)
+
+
+def frequency_ave_data(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 50)
+    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    f0 = pw.stonemask(data, _f0, _time, rate)
+    total = 0
+    cnt = 0
+    for i in range(len(f0)-1):
+        if not(f0[i] == 0 or f0[i+1] == 0):
+            total += abs(f0[i]-f0[i+1])
+            cnt += 1
+
+    print(total)
+    ave = total/cnt
+    print("ave = " + str((ave)))
+    session.close()
+    ave = round(ave, 4)
+    return ave
 
 
 def frequency_data(user_id, music_id):
