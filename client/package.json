@@ -19,6 +19,7 @@
     "@nivo/bar": "^0.61.1",
     "@nivo/heatmap": "^0.61.0",
     "@nivo/line": "^0.61.1",
+    "@nivo/parallel-coordinates": "^0.62.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2"

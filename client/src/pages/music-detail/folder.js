@@ -22,6 +22,8 @@ import {
 } from "@ionic/react";
 import { add, chevronForwardOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
+import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
+
 //import convertDate from "../root/index";
 
 const convertDate = (input) => {
@@ -133,11 +135,97 @@ const FrequencyChart = ({ data }) => {
   );
 };
 
+const ParallelCoodinates = ({ data }) => {
+  if (data == null) {
+    return null;
+  }
+
+  /*data.map((input) => {
+    input.data.filter((x) => x % 5 == 0);
+  });*/
+
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <ResponsiveParallelCoordinates
+        data={data}
+        variables={[
+          {
+            key: "No.",
+            type: "point",
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "pich",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "pich",
+            type: "linear",
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "pich",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "tone",
+            type: "linear",
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "tone",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "volume",
+            type: "point",
+            padding: 1,
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "volume",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+        ]}
+        axesPlan="foreground"
+        strokeWidth={3}
+        //lineOpacity={0.1}
+        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+        animate={true}
+        motionStiffness={90}
+        motionDamping={12}
+        colors={{ scheme: "category10" }}
+        theme={{
+          axis: {
+            domain: {
+              line: {
+                stroke: "rgb(136, 158, 174)",
+                strokeWidth: 2,
+              },
+            },
+            ticks: {
+              line: {
+                stroke: "rgb(136, 158, 174)",
+                strokeWidth: 2,
+              },
+            },
+          },
+        }}
+      />
+    </div>
+  );
+};
+
 const Folder = () => {
   const { folderId } = useParams();
   const [foldersData, setFoldersData] = useState([]);
   const [musics, setMusics] = useState([]);
   const [folderName, setFolderName] = useState();
+  const [parallelData, setPallelData] = useState();
 
   useEffect(() => {
     window
@@ -168,6 +256,17 @@ const Folder = () => {
       });
   }, []);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
+      )
+      .then((response) => response.json())
+      .then((parallelData) => {
+        setPallelData(parallelData);
+      });
+  }, []);
+
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
   const music_ids = Array.from(
     new Set(
@@ -188,7 +287,7 @@ const Folder = () => {
   });
   console.log(musicData);
 
-  const [data, setData] = useState();
+  /*const [data, setData] = useState();
   useEffect(() => {
     window
       .fetch(
@@ -198,7 +297,7 @@ const Folder = () => {
       .then((data) => {
         setData(data);
       });
-  }, []);
+  }, []);*/
 
   //console.log(data);
 
@@ -221,7 +320,14 @@ const Folder = () => {
             return (
               <IonCard>
                 <IonItem>
-                  track{id}:{name} &emsp;{convertDate(created)}
+                  play
+                  <audio
+                    controls
+                    src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`}
+                  />
+                </IonItem>
+                <IonItem>
+                  No.{id}:{name} &emsp;{convertDate(created)}
                   <IonButton
                     slot="end"
                     fill="clear"
@@ -236,7 +342,10 @@ const Folder = () => {
           })}
         </IonList>
         <IonList>
-          <IonItem>{<FrequencyChart data={data} />}</IonItem>
+          <IonItem>
+            <ParallelCoodinates data={parallelData}></ParallelCoodinates>
+          </IonItem>
+          {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
         </IonList>
       </IonContent>
     </IonPage>

@@ -342,9 +342,10 @@ def parallel_data(user_id, folder_id):
 
     for _id in music_ids:
         dic = {
+            "No.": _id,
             "pich": frequency_ave_data(user_id, _id),
             "tone": fourier_roll_data(user_id, _id),
-            "volume": decibel_ave_data(user_id, _id),
+            "volume": round(decibel_ave_data(user_id, _id), 4),
         }
         Datas.append(dic)
     session.close()
