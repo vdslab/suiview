@@ -143,6 +143,34 @@ const ParallelCoodinates = ({ data }) => {
   /*data.map((input) => {
     input.data.filter((x) => x % 5 == 0);
   });*/
+  const max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.tone;
+    })
+  );
+  const min = Math.min.apply(
+    Math,
+    data.map((input) => {
+      return input.tone;
+    })
+  );
+
+  const pich_max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.pich;
+    })
+  );
+
+  const vol_max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.volume;
+    })
+  );
+
+  const pich_vol_max = Math.max(pich_max, vol_max);
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
@@ -155,14 +183,14 @@ const ParallelCoodinates = ({ data }) => {
             min: "auto",
             max: "auto",
             ticksPosition: "before",
-            legend: "pich",
+            legend: "No.",
             legendPosition: "start",
             legendOffset: 20,
           },
           {
             key: "pich",
             type: "linear",
-            min: "auto",
+            min: 0,
             max: "auto",
             ticksPosition: "before",
             legend: "pich",
@@ -172,8 +200,8 @@ const ParallelCoodinates = ({ data }) => {
           {
             key: "tone",
             type: "linear",
-            min: "auto",
-            max: "auto",
+            min: max,
+            max: min,
             ticksPosition: "before",
             legend: "tone",
             legendPosition: "start",
@@ -181,9 +209,9 @@ const ParallelCoodinates = ({ data }) => {
           },
           {
             key: "volume",
-            type: "point",
+            type: "linear",
             padding: 1,
-            min: "auto",
+            min: 0,
             max: "auto",
             ticksPosition: "before",
             legend: "volume",
@@ -226,6 +254,9 @@ const Folder = () => {
   const [musics, setMusics] = useState([]);
   const [folderName, setFolderName] = useState();
   const [parallelData, setPallelData] = useState();
+
+  let chart = "nomal";
+  console.log(chart);
 
   useEffect(() => {
     window
@@ -275,7 +306,7 @@ const Folder = () => {
       })
     )
   );
-  console.log(foldersData);
+  //console.log(foldersData);
 
   console.log(music_ids);
   const musicData = musics.filter((input) => {
@@ -285,7 +316,7 @@ const Folder = () => {
       }
     }
   });
-  console.log(musicData);
+  //console.log(musicData);
 
   /*const [data, setData] = useState();
   useEffect(() => {
@@ -342,8 +373,45 @@ const Folder = () => {
           })}
         </IonList>
         <IonList>
+          <IonButton
+            onClick={() => {
+              chart = "nomal";
+              console.log(chart);
+            }}
+          >
+            nomal
+          </IonButton>
+          <IonButton
+            onClick={() => {
+              chart = "pich";
+              console.log(chart);
+            }}
+          >
+            pich
+          </IonButton>
+          <IonButton
+            onClick={() => {
+              chart = "tone";
+              console.log(chart);
+            }}
+          >
+            tone
+          </IonButton>
+          <IonButton
+            onClick={() => {
+              chart = "volume";
+              console.log(chart);
+            }}
+          >
+            volume
+          </IonButton>
           <IonItem>
-            <ParallelCoodinates data={parallelData}></ParallelCoodinates>
+            {chart == "nomal" ? (
+              <ParallelCoodinates data={parallelData}></ParallelCoodinates>
+            ) : (
+              <IonItem>hello</IonItem>
+            )}
+            {/*} <ParallelCoodinates data={parallelData}></ParallelCoodinates>*/}
           </IonItem>
           {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
         </IonList>

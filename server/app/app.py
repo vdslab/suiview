@@ -337,6 +337,7 @@ def parallel_data(user_id, folder_id):
     for i in range(len(folder)):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
+    music_ids.sort()
 
     Datas = []
 
