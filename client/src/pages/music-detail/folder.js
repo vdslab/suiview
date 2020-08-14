@@ -190,7 +190,7 @@ const ParallelCoodinates = ({ data }) => {
           {
             key: "pich",
             type: "linear",
-            min: 0,
+            min: "auto",
             max: "auto",
             ticksPosition: "before",
             legend: "pich",
@@ -211,7 +211,7 @@ const ParallelCoodinates = ({ data }) => {
             key: "volume",
             type: "linear",
             padding: 1,
-            min: 0,
+            min: "auto",
             max: "auto",
             ticksPosition: "before",
             legend: "volume",
@@ -316,7 +316,15 @@ const Folder = () => {
       }
     }
   });
-  //console.log(musicData);
+
+  musicData.sort(function (a, b) {
+    if (a.id < b.id) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
+  console.log(musicData);
 
   /*const [data, setData] = useState();
   useEffect(() => {
@@ -375,14 +383,6 @@ const Folder = () => {
         <IonList>
           <IonButton
             onClick={() => {
-              chart = "nomal";
-              console.log(chart);
-            }}
-          >
-            nomal
-          </IonButton>
-          <IonButton
-            onClick={() => {
               chart = "pich";
               console.log(chart);
             }}
@@ -405,14 +405,22 @@ const Folder = () => {
           >
             volume
           </IonButton>
+          <IonButton
+            color="medium"
+            key={folderId}
+            routerLink={`/folder_pich/${folderId}`}
+          >
+            pich
+          </IonButton>
           <IonItem>
-            {chart == "nomal" ? (
+            {/*} {chart == "nomal" ? (
               <ParallelCoodinates data={parallelData}></ParallelCoodinates>
             ) : (
-              <IonItem>hello</IonItem>
+              <FrequencyChart data={data} />
             )}
             {/*} <ParallelCoodinates data={parallelData}></ParallelCoodinates>*/}
           </IonItem>
+          <ParallelCoodinates data={parallelData}></ParallelCoodinates>
           {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
         </IonList>
       </IonContent>
