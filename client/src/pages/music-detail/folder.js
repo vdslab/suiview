@@ -382,44 +382,26 @@ const Folder = () => {
         </IonList>
         <IonList>
           <IonButton
-            onClick={() => {
-              chart = "pich";
-              console.log(chart);
-            }}
-          >
-            pich
-          </IonButton>
-          <IonButton
-            onClick={() => {
-              chart = "tone";
-              console.log(chart);
-            }}
-          >
-            tone
-          </IonButton>
-          <IonButton
-            onClick={() => {
-              chart = "volume";
-              console.log(chart);
-            }}
-          >
-            volume
-          </IonButton>
-          <IonButton
             color="medium"
             key={folderId}
             routerLink={`/folder_pich/${folderId}`}
           >
             pich
           </IonButton>
-          <IonItem>
-            {/*} {chart == "nomal" ? (
-              <ParallelCoodinates data={parallelData}></ParallelCoodinates>
-            ) : (
-              <FrequencyChart data={data} />
-            )}
-            {/*} <ParallelCoodinates data={parallelData}></ParallelCoodinates>*/}
-          </IonItem>
+          <IonButton
+            color="light"
+            key={folderId}
+            routerLink={`/folder_tone/${folderId}`}
+          >
+            tone
+          </IonButton>
+          <IonButton
+            color="medium"
+            key={folderId}
+            routerLink={`/folder_volume/${folderId}`}
+          >
+            volume
+          </IonButton>
           <ParallelCoodinates data={parallelData}></ParallelCoodinates>
           {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
         </IonList>

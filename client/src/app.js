@@ -15,6 +15,8 @@ import Centroid_Rolloff from "./pages/music-detail/centroid_rolloff";
 import Flatness from "./pages/music-detail/flatness";
 import Decibel from "./pages/music-detail/decibel";
 import Pich from "./pages/music-detail/folder_detail/pich";
+import Volume from "./pages/music-detail/folder_detail/volume";
+import Tone from "./pages/music-detail/folder_detail/tone";
 const App = () => {
   return (
     <IonApp>
@@ -35,6 +37,8 @@ const App = () => {
           <Route path="/flatness/:musicId" component={Flatness} />
           <Route path="/decibel/:musicId" component={Decibel} />
           <Route path="/folder_pich/:folderID" component={Pich} />
+          <Route path="/folder_volume/:folderID" component={Volume} />
+          <Route path="/folder_tone/:folderID" component={Tone} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

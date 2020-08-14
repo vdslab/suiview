@@ -152,7 +152,7 @@ def put_comp_freqData(user_id, folder_id):
         data = dtw_frequency_data(user_id, _id)
         data = np.array(data)
         preData.append(data)
-
+    print(preData)
     path = []
     Datas = []
     if len(preData) == 1:
@@ -561,6 +561,32 @@ def decibel(user_id, music_id):
     return jsonify(Datas)
 
 
+def decibel_data(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -80
+        for j in range(len(db)):
+            if _max < db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    Datas = []
+    for i in range(len(dbLine)):
+        dic = {
+            "x": i+1,
+            "y": int(dbLine[i])
+        }
+        Datas.append(dic)
+    session.close()
+    return dbLine
+
+
 # デシベル値　平均
 @app.route('/<user_id>/musics/<music_id>/decibel_ave', methods=['GET'])
 def decibel_ave(user_id, music_id):
@@ -592,6 +618,7 @@ def decibel_ave(user_id, music_id):
     return jsonify(ave)
 
 
+"""
 def decibel_ave(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
@@ -619,6 +646,7 @@ def decibel_ave(user_id, music_id):
     ave = total/cnt
     session.close()
     return jsonify(ave)
+"""
 
 
 def decibel_ave_data(user_id, music_id):
@@ -648,6 +676,99 @@ def decibel_ave_data(user_id, music_id):
     ave = total/cnt
     session.close()
     return ave
+
+
+@app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['PUT', 'GET'])
+def comp_decibel(user_id, folder_id):
+    session = create_session()
+    folder = session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    music_ids = []
+    for i in range(len(folder)):
+        music_ids.append(folder[i]['music_id'])
+    music_ids = list(set(music_ids))
+    preData = []
+
+    for _id in music_ids:
+        data = decibel_data(user_id, _id)
+        data = np.array(data)
+        preData.append(data)
+
+    print(preData)
+    path = []
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": str(d[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[0], "data": data})
+
+    elif len(preData) == 2:
+        d, cost_matrix, acc_cost_matrix, path = dtw(
+            preData[0], preData[1], dist=manhattan_distance)
+        aliged_data1 = preData[0][path[0]]
+        aliged_data2 = preData[1][path[1]]
+
+        aliged_data1 = list(aliged_data1)
+        aliged_data2 = list(aliged_data2)
+        data = []
+        for i in range(len(aliged_data1)):
+            dic = {
+                "x": i+1,
+                "y": str(aliged_data1[i])
+            }
+            data.append(dic)
+        Datas = [{"id": music_ids[0], "data": data}]
+
+        data = []
+        for i in range(len(aliged_data2)):
+            dic = {
+                "x": i+1,
+                "y": str(aliged_data2[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[1], "data": data})
+    else:
+        print(len(preData))
+        for i in range(1, len(preData)):
+            d, cost_matrix, acc_cost_matrix, path = dtw(
+                preData[0], preData[i], dist=manhattan_distance)
+
+            if i == 1:
+                aliged_data = preData[0][path[0]]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": str(aliged_data[j])
+                    }
+                    data.append(dic)
+                Datas.append({"id": music_ids[i], "data": data})
+
+            aliged_data = preData[i][path[1]]
+            aliged_data = list(aliged_data)
+            # print(aliged_data)
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": str(aliged_data[j])
+                }
+                data.append(dic)
+            Datas.append({"id": music_ids[i], "data": data})
+            print("fin")
+        print("all clear")
+        session.close()
+    return jsonify(Datas)
 
 
 # 基本周波数
@@ -819,6 +940,23 @@ def spectrum_rollofff(user_id, music_id):
     return Datas
 
 
+def spectrum_rollofff_y(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    y, _ = librosa.effects.trim(y, 46)
+    # 引数roll_percent=0.8がデフォ
+    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    # print(rolloff)
+    Datas = []
+
+    for i in range(len(rolloff[0])):
+        Datas.append(int(rolloff[0][i]))
+    # return jsonify(Datas)
+    session.close()
+    return Datas
+
+
 # --フラットネス--------
 @app.route('/<user_id>/musics/<music_id>/spectrum_flatness', methods=['GET'])
 def spectrum_flatness(user_id, music_id):
@@ -851,15 +989,97 @@ def get_centroid_rolloff(user_id, music_id):
     return jsonify(Datas)
 
 
-"""
-print(flatness)
-plt.figure
-plt.subplot(2, 1, 1)
-plt.semilogy(flatness.T, label='flatness frequency')
-plt.ylabel('Hz')
-plt.xticks([])
-plt.legend()
-"""
+@app.route('/<user_id>/musics/folder_comp_tone/<folder_id>', methods=['PUT', 'GET'])
+def comp_tone(user_id, folder_id):
+    session = create_session()
+    folder = session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    music_ids = []
+    for i in range(len(folder)):
+        music_ids.append(folder[i]['music_id'])
+    music_ids = list(set(music_ids))
+    preData = []
+
+    for _id in music_ids:
+        data = spectrum_rollofff_y(user_id, _id)
+        data = np.array(data)
+        preData.append(data)
+
+    print(preData)
+    path = []
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": str(d[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[0], "data": data})
+
+    elif len(preData) == 2:
+        d, cost_matrix, acc_cost_matrix, path = dtw(
+            preData[0], preData[1], dist=manhattan_distance)
+        aliged_data1 = preData[0][path[0]]
+        aliged_data2 = preData[1][path[1]]
+
+        aliged_data1 = list(aliged_data1)
+        aliged_data2 = list(aliged_data2)
+        data = []
+        for i in range(len(aliged_data1)):
+            dic = {
+                "x": i+1,
+                "y": str(aliged_data1[i])
+            }
+            data.append(dic)
+        Datas = [{"id": music_ids[0], "data": data}]
+
+        data = []
+        for i in range(len(aliged_data2)):
+            dic = {
+                "x": i+1,
+                "y": str(aliged_data2[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": music_ids[1], "data": data})
+    else:
+        print(len(preData))
+        for i in range(1, len(preData)):
+            d, cost_matrix, acc_cost_matrix, path = dtw(
+                preData[0], preData[i], dist=manhattan_distance)
+
+            if i == 1:
+                aliged_data = preData[0][path[0]]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": str(aliged_data[j])
+                    }
+                    data.append(dic)
+                Datas.append({"id": music_ids[i], "data": data})
+
+            aliged_data = preData[i][path[1]]
+            aliged_data = list(aliged_data)
+            # print(aliged_data)
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": str(aliged_data[j])
+                }
+                data.append(dic)
+            Datas.append({"id": music_ids[i], "data": data})
+            print("fin")
+        print("all clear")
+        session.close()
+    return jsonify(Datas)
 
 
 if __name__ == "__main__":
