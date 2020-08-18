@@ -167,32 +167,6 @@ def put_comp_freqData(user_id, folder_id):
 
         Datas.append({"id": music_ids[0], "data": data})
 
-    elif len(preData) == 2:
-        d, cost_matrix, acc_cost_matrix, path = dtw(
-            preData[0], preData[1], dist=manhattan_distance)
-        aliged_data1 = preData[0][path[0]]
-        aliged_data2 = preData[1][path[1]]
-
-        aliged_data1 = list(aliged_data1)
-        aliged_data2 = list(aliged_data2)
-        data = []
-        for i in range(len(aliged_data1)):
-            dic = {
-                "x": i+1,
-                "y": aliged_data1[i]
-            }
-            data.append(dic)
-        Datas = [{"id": music_ids[0], "data": data}]
-
-        data = []
-        for i in range(len(aliged_data2)):
-            dic = {
-                "x": i+1,
-                "y": aliged_data2[i]
-            }
-            data.append(dic)
-
-        Datas.append({"id": music_ids[1], "data": data})
     else:
         print(len(preData))
         for i in range(1, len(preData)):
@@ -209,8 +183,9 @@ def put_comp_freqData(user_id, folder_id):
                         "y": aliged_data[j]
                     }
                     data.append(dic)
-                Datas.append({"id": music_ids[i], "data": data})
+                Datas.append({"id": music_ids[0], "data": data})
 
+            #aliged_data = preData[i][path[1]]
             aliged_data = preData[i][path[1]]
             aliged_data = list(aliged_data)
             print(aliged_data)
@@ -392,7 +367,7 @@ def fourier(user_id, music_id):
     preNum = 0
     max_fft = 0
     for i in range(len(fft_data)):
-        if 0 < freList[i] and freList[i] < 8000:
+        if 0 < freList[i] and freList[i] <= 8000:  # 24000に合わせた方がいいかも
             if int(freList[i]) != preNum:
                 pairData.append([preNum, max_fft])
                 preNum = int(freList[i])
@@ -437,12 +412,12 @@ def fourier_roll(user_id, music_id):
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
-
+    print("pre len="+str(max(freList)))
     pairData = []
     preNum = 0
     max_fft = 0
     for i in range(len(fft_data)):
-        if 0 < freList[i] and freList[i] < 8000:
+        if 0 < freList[i] and freList[i] <= 24000:  # 24000はサンプリング周波数/2
             if int(freList[i]) != preNum:
                 pairData.append([preNum, max_fft])
                 preNum = int(freList[i])
@@ -451,6 +426,7 @@ def fourier_roll(user_id, music_id):
                 max_fft = fft_data[i]
 
     total = 0
+    print("data lend="+str(len(pairData)))
     for i in range(len(pairData)):
         total += pairData[i][1]
 
@@ -710,32 +686,6 @@ def comp_decibel(user_id, folder_id):
 
         Datas.append({"id": music_ids[0], "data": data})
 
-    elif len(preData) == 2:
-        d, cost_matrix, acc_cost_matrix, path = dtw(
-            preData[0], preData[1], dist=manhattan_distance)
-        aliged_data1 = preData[0][path[0]]
-        aliged_data2 = preData[1][path[1]]
-
-        aliged_data1 = list(aliged_data1)
-        aliged_data2 = list(aliged_data2)
-        data = []
-        for i in range(len(aliged_data1)):
-            dic = {
-                "x": i+1,
-                "y": str(aliged_data1[i])
-            }
-            data.append(dic)
-        Datas = [{"id": music_ids[0], "data": data}]
-
-        data = []
-        for i in range(len(aliged_data2)):
-            dic = {
-                "x": i+1,
-                "y": str(aliged_data2[i])
-            }
-            data.append(dic)
-
-        Datas.append({"id": music_ids[1], "data": data})
     else:
         print(len(preData))
         for i in range(1, len(preData)):
@@ -752,7 +702,7 @@ def comp_decibel(user_id, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": music_ids[i], "data": data})
+                Datas.append({"id": music_ids[0], "data": data})
 
             aliged_data = preData[i][path[1]]
             aliged_data = list(aliged_data)
@@ -1021,32 +971,6 @@ def comp_tone(user_id, folder_id):
 
         Datas.append({"id": music_ids[0], "data": data})
 
-    elif len(preData) == 2:
-        d, cost_matrix, acc_cost_matrix, path = dtw(
-            preData[0], preData[1], dist=manhattan_distance)
-        aliged_data1 = preData[0][path[0]]
-        aliged_data2 = preData[1][path[1]]
-
-        aliged_data1 = list(aliged_data1)
-        aliged_data2 = list(aliged_data2)
-        data = []
-        for i in range(len(aliged_data1)):
-            dic = {
-                "x": i+1,
-                "y": str(aliged_data1[i])
-            }
-            data.append(dic)
-        Datas = [{"id": music_ids[0], "data": data}]
-
-        data = []
-        for i in range(len(aliged_data2)):
-            dic = {
-                "x": i+1,
-                "y": str(aliged_data2[i])
-            }
-            data.append(dic)
-
-        Datas.append({"id": music_ids[1], "data": data})
     else:
         print(len(preData))
         for i in range(1, len(preData)):
@@ -1063,7 +987,7 @@ def comp_tone(user_id, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": music_ids[i], "data": data})
+                Datas.append({"id": music_ids[0], "data": data})
 
             aliged_data = preData[i][path[1]]
             aliged_data = list(aliged_data)

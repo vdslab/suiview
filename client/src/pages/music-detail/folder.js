@@ -193,15 +193,17 @@ const ParallelCoodinates = ({ data }) => {
             min: "auto",
             max: "auto",
             ticksPosition: "before",
-            legend: "pich",
+            legend: "ptich",
             legendPosition: "start",
             legendOffset: 20,
           },
           {
             key: "tone",
             type: "linear",
-            min: max,
-            max: min,
+            //min: max,
+            //max: min,
+            min: "auto",
+            max: "auto",
             ticksPosition: "before",
             legend: "tone",
             legendPosition: "start",
@@ -381,27 +383,30 @@ const Folder = () => {
           })}
         </IonList>
         <IonList>
-          <IonButton
-            color="medium"
-            key={folderId}
-            routerLink={`/folder_pich/${folderId}`}
-          >
-            pich
-          </IonButton>
-          <IonButton
-            color="light"
-            key={folderId}
-            routerLink={`/folder_tone/${folderId}`}
-          >
-            tone
-          </IonButton>
-          <IonButton
-            color="medium"
-            key={folderId}
-            routerLink={`/folder_volume/${folderId}`}
-          >
-            volume
-          </IonButton>
+          <IonItem>
+            detail &nbsp;
+            <IonButton
+              color="medium"
+              key={folderId}
+              routerLink={`/folder_pich/${folderId}`}
+            >
+              pich
+            </IonButton>
+            <IonButton
+              color="light"
+              key={folderId}
+              routerLink={`/folder_tone/${folderId}`}
+            >
+              tone
+            </IonButton>
+            <IonButton
+              color="medium"
+              key={folderId}
+              routerLink={`/folder_volume/${folderId}`}
+            >
+              volume
+            </IonButton>
+          </IonItem>
           <ParallelCoodinates data={parallelData}></ParallelCoodinates>
           {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
         </IonList>

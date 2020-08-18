@@ -325,7 +325,7 @@ const Root = () => {
           <ionItem>
             <IonInput
               value={addFol}
-              placeholder="write folder name"
+              placeholder="追加するファイル名を記入してください"
               onIonChange={(e) => {
                 setAddFol(e.detail.value);
               }}
