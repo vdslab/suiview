@@ -24,6 +24,8 @@ import { add, chevronForwardOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
+import FolderDetail from "./folder_detail/detail";
+
 //import convertDate from "../root/index";
 
 const convertDate = (input) => {
@@ -257,7 +259,7 @@ const Folder = () => {
   const [folderName, setFolderName] = useState();
   const [parallelData, setPallelData] = useState();
 
-  let chart = "nomal";
+  let chart = "init";
   console.log(chart);
 
   useEffect(() => {
@@ -289,7 +291,7 @@ const Folder = () => {
       });
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
@@ -298,7 +300,7 @@ const Folder = () => {
       .then((parallelData) => {
         setPallelData(parallelData);
       });
-  }, []);
+  }, []);*/
 
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
   const music_ids = Array.from(
@@ -382,7 +384,7 @@ const Folder = () => {
             );
           })}
         </IonList>
-        <IonList>
+        {/*<IonList>
           <IonItem>
             detail &nbsp;
             <IonButton
@@ -407,9 +409,13 @@ const Folder = () => {
               volume
             </IonButton>
           </IonItem>
+
           <ParallelCoodinates data={parallelData}></ParallelCoodinates>
-          {/*} <IonItem>{<FrequencyChart data={data} />}</IonItem>*/}
-        </IonList>
+        </IonList>*/}
+        <IonCard>
+          <h1>Chart</h1>
+          <FolderDetail initState={folderId} />
+        </IonCard>
       </IonContent>
     </IonPage>
   );
