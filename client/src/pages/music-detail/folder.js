@@ -102,7 +102,7 @@ const FrequencyChart = ({ data }) => {
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "category10" }}
+        colors={{ scheme: "yellow_green" }}
         enablePoints={false}
         legends={[
           {
@@ -228,7 +228,7 @@ const ParallelCoodinates = ({ data }) => {
         animate={true}
         motionStiffness={90}
         motionDamping={12}
-        colors={{ scheme: "category10" }}
+        colors={{ scheme: "yellow_green" }}
         theme={{
           axis: {
             domain: {

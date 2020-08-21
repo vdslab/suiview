@@ -20,7 +20,7 @@ import datetime
 from sqlalchemy.sql import func
 import librosa
 import matplotlib.pyplot as plt
-#from dtw import dtw
+# from dtw import dtw
 from dtw import *
 
 app = Flask(__name__)
@@ -316,6 +316,7 @@ def parallel_data(user_id, folder_id):
 
     Datas = []
 
+    """
     for _id in music_ids:
         dic = {
             "No.": _id,
@@ -324,8 +325,30 @@ def parallel_data(user_id, folder_id):
             "volume": round(decibel_ave_data(user_id, _id), 4),
         }
         Datas.append(dic)
+    """
+
+    for _id in music_ids:
+        Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+            user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+    Datas = sorted(Datas, key=lambda x: x[2])
+    for i in range(len(Datas)):
+        Datas[i].append(Datas[i][1]+Datas[i][3] +
+                        ((Datas[-1][2]-Datas[i][2])/10000))
+    Datas = sorted(Datas, key=lambda x: x[4])
+    print(Datas)
+
+    dicDatas = []
+    for i in range(len(Datas)-1, -1, -1):
+        dic = {
+            "No.": Datas[i][0],
+            "pich": Datas[i][1],
+            "tone": Datas[i][2],
+            "volume": Datas[i][3],
+        }
+        dicDatas.append(dic)
+
     session.close()
-    return jsonify(Datas)
+    return jsonify(dicDatas)
 
 
 #　波形
