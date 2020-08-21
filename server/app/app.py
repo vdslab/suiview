@@ -20,7 +20,8 @@ import datetime
 from sqlalchemy.sql import func
 import librosa
 import matplotlib.pyplot as plt
-from dtw import dtw
+#from dtw import dtw
+from dtw import *
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -152,6 +153,7 @@ def put_comp_freqData(user_id, folder_id):
         data = dtw_frequency_data(user_id, _id)
         data = np.array(data)
         preData.append(data)
+
     print(preData)
     path = []
     Datas = []
@@ -170,11 +172,10 @@ def put_comp_freqData(user_id, folder_id):
     else:
         print(len(preData))
         for i in range(1, len(preData)):
-            d, cost_matrix, acc_cost_matrix, path = dtw(
-                preData[0], preData[i], dist=manhattan_distance)
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
-                aliged_data = preData[0][path[0]]
+                aliged_data = preData[0][alignment.index1]
                 aliged_data = list(aliged_data)
                 data = []
                 for j in range(len(aliged_data)):
@@ -185,8 +186,7 @@ def put_comp_freqData(user_id, folder_id):
                     data.append(dic)
                 Datas.append({"id": music_ids[0], "data": data})
 
-            #aliged_data = preData[i][path[1]]
-            aliged_data = preData[i][path[1]]
+            aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
             print(aliged_data)
             data = []
@@ -689,11 +689,10 @@ def comp_decibel(user_id, folder_id):
     else:
         print(len(preData))
         for i in range(1, len(preData)):
-            d, cost_matrix, acc_cost_matrix, path = dtw(
-                preData[0], preData[i], dist=manhattan_distance)
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
-                aliged_data = preData[0][path[0]]
+                aliged_data = preData[0][alignment.index1]
                 aliged_data = list(aliged_data)
                 data = []
                 for j in range(len(aliged_data)):
@@ -704,7 +703,7 @@ def comp_decibel(user_id, folder_id):
                     data.append(dic)
                 Datas.append({"id": music_ids[0], "data": data})
 
-            aliged_data = preData[i][path[1]]
+            aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
             # print(aliged_data)
             data = []
@@ -974,11 +973,10 @@ def comp_tone(user_id, folder_id):
     else:
         print(len(preData))
         for i in range(1, len(preData)):
-            d, cost_matrix, acc_cost_matrix, path = dtw(
-                preData[0], preData[i], dist=manhattan_distance)
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
-                aliged_data = preData[0][path[0]]
+                aliged_data = preData[0][alignment.index1]
                 aliged_data = list(aliged_data)
                 data = []
                 for j in range(len(aliged_data)):
@@ -989,7 +987,7 @@ def comp_tone(user_id, folder_id):
                     data.append(dic)
                 Datas.append({"id": music_ids[0], "data": data})
 
-            aliged_data = preData[i][path[1]]
+            aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
             # print(aliged_data)
             data = []
