@@ -37,9 +37,14 @@ const LinerChart = ({ data }) => {
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
-        data={data.map((input) => {
+        {...console.log(data.length)}
+        data={data.map((input, i) => {
+          const l = 90 - i * Math.floor(70 / data.length);
+          const hsl = "hsl(120, 73%, " + String(l) + "%)";
+          console.log(hsl);
           return {
             id: input.id,
+            color: hsl,
             data: input.data.filter(({ x }) => x % 5 == 0),
           };
         })}
@@ -74,12 +79,13 @@ const LinerChart = ({ data }) => {
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "yellow_green" }}
+        //colors={{ scheme: "yellow_green" }}
+        colors={(data) => data.color}
         enablePoints={false}
         legends={[
           {
             anchor: "top-left",
-            direction: "column",
+            direction: "row",
             justify: false,
             translateX: 0,
             translateY: -50,
@@ -373,16 +379,21 @@ const VolumeChart = (folderId) => {
   );
 };
 
-/*
-const ProgressLinerChart = ({ data }) => {
-  if (data == null || data == undefined) {
+const ProgressLine = ({ data /* see data tab */ }) => {
+  if (data == null) {
     return null;
   }
   console.log(data);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
-        data={data}
+        // data={data}
+        data={[
+          {
+            id: "Your record",
+            data: data.filter(({ x }) => x % 1 === 0),
+          },
+        ]}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
@@ -399,7 +410,7 @@ const ProgressLinerChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "transportation",
+          legend: "track No.",
           legendOffset: 36,
           legendPosition: "middle",
         }}
@@ -408,11 +419,11 @@ const ProgressLinerChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "count",
+          legend: "point",
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "yellow_green" }}
+        colors={{ scheme: "accent" }}
         lineWidth={4}
         pointSize={10}
         pointColor={{ theme: "background" }}
@@ -455,257 +466,6 @@ const ProgressLinerChart = ({ data }) => {
 };
 
 const ProgressDraw = ({ folderId }) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-  console.log(data);
-  if (data == undefined) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
-  }
-  return (
-    <div>
-      <ProgressLinerChart data={data} />
-    </div>
-  );
-};
-
-const ProgressChart = (folderId) => {
-  if (folderId == null) {
-    return null;
-  }
-
-  return (
-    <div>
-      <ProgressDraw folderId={folderId} />
-    </div>
-  );
-};*/
-const LinerChart2 = ({ data }) => {
-  if (data == null) {
-    return null;
-  }
-
-  return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveLine
-        data={data}
-        //data={data}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-        }}
-        curve="step"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          //tickValues: data.length
-          //  ? data[0].data.filter(({ x }) => x % 500 === 0).map(({ x }) => x)
-          // : [],
-          legend: "",
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "",
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        colors={{ scheme: "yellow_green" }}
-        enablePoints={false}
-        legends={[
-          {
-            anchor: "top-left",
-            direction: "column",
-            justify: false,
-            translateX: 0,
-            translateY: -50,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
-  );
-};
-
-const Frequency = ({ data }) => {
-  if (data == null) {
-    return null;
-  }
-  console.log(data);
-
-  return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveLine
-        /*data={[
-          {
-            id: "x",
-            data: data, //.filter(({ x }) => x % 5 === 0),
-            //data: data.filter(({ x }) => x),
-          },
-        ]}*/
-        data={data}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-        }}
-        curve="step"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          //tickValues: data, //.filter(({ x }) => x % 500 === 0).map(({ x }) => x),
-          legend: "",
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "",
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        colors={{ scheme: "nivo" }}
-        enablePoints={false}
-      />
-    </div>
-  );
-};
-
-const MyResponsiveLine = ({ data /* see data tab */ }) => {
-  if (data == null) {
-    return null;
-  }
-  console.log(data);
-  return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveLine
-        // data={data}
-        data={[
-          {
-            id: "x",
-            data: data.filter(({ x }) => x % 1 === 0),
-          },
-        ]}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-          stacked: true,
-          reverse: false,
-        }}
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "track No.",
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "point",
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        colors={{ scheme: "yellow_green" }}
-        lineWidth={4}
-        pointSize={10}
-        pointColor={{ theme: "background" }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: "serieColor" }}
-        pointLabel="y"
-        pointLabelYOffset={-12}
-        areaBaselineValue={120}
-        areaOpacity={0.45}
-        useMesh={true}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 100,
-            translateY: 0,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
-  );
-};
-
-const VolumeDraw2 = ({ folderId }) => {
   const [data, setData] = useState();
   useEffect(() => {
     window
@@ -727,26 +487,26 @@ const VolumeDraw2 = ({ folderId }) => {
   }
   return (
     <div>
-      <MyResponsiveLine data={data} />
+      <ProgressLine data={data} />
     </div>
   );
 };
 
-const VolumeChart2 = (folderId) => {
+const ProgressChart = (folderId) => {
   if (folderId == null) {
     return null;
   }
 
   return (
     <div>
-      <VolumeDraw2 folderId={folderId} />
+      <ProgressDraw folderId={folderId} />
     </div>
   );
 };
 
 const FolderDetail = () => {
   const [chartId, setChartId] = useState("ALL");
-  const chartIds = ["All", "PITCH", "VOL", "TONE", "PROGRESS"];
+  const chartIds = ["ALL", "PITCH", "VOL", "TONE", "PROGRESS"];
   const { folderId } = useParams();
   return (
     <div>
@@ -766,7 +526,7 @@ const FolderDetail = () => {
       {chartId === "PITCH" ? FrequencyChart(folderId) : []}
       {chartId === "VOL" ? VolumeChart(folderId) : []}
       {chartId === "TONE" ? ToneChart(folderId) : []}
-      {chartId === "PROGRESS" ? VolumeChart2(folderId) : []}
+      {chartId === "PROGRESS" ? ProgressChart(folderId) : []}
     </div>
   );
 };
