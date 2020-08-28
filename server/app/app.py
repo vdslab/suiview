@@ -351,6 +351,311 @@ def parallel_data(user_id, folder_id):
     return jsonify(dicDatas)
 
 
+# 精進グラフ
+@app.route('/<user_id>/musics/progress/<folder_id>', methods=['PUT', 'GET'])
+def progress(user_id, folder_id):
+    session = create_session()
+    folder = session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    music_ids = []
+    for i in range(len(folder)):
+        music_ids.append(folder[i]['music_id'])
+    music_ids = list(set(music_ids))
+    music_ids.sort()
+
+    Datas = []
+    for _id in music_ids:
+        Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+            user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+    #Datas = sorted(Datas, key=lambda x: x[2])
+    for i in range(len(Datas)):
+        Datas[i].append(Datas[i][1]+Datas[i][3] +
+                        ((Datas[-1][2]-Datas[i][2])/10000))
+    dicDatas = []
+    for i in range(len(Datas)):
+        dic = {
+            "x": Datas[i][0],
+            "y": round(Datas[i][4], 4)
+        }
+        dicDatas.append(dic)
+    session.close()
+
+    DD = [
+        {
+            "id": "japan",
+            "color": "hsl(341, 70%, 50%)",
+            "data": [
+                {
+                    "x": "plane",
+                    "y": 235
+                },
+                {
+                    "x": "helicopter",
+                    "y": 210
+                },
+                {
+                    "x": "boat",
+                    "y": 149
+                },
+                {
+                    "x": "train",
+                    "y": 154
+                },
+                {
+                    "x": "subway",
+                    "y": 100
+                },
+                {
+                    "x": "bus",
+                    "y": 66
+                },
+                {
+                    "x": "car",
+                    "y": 276
+                },
+                {
+                    "x": "moto",
+                    "y": 220
+                },
+                {
+                    "x": "bicycle",
+                    "y": 126
+                },
+                {
+                    "x": "horse",
+                    "y": 32
+                },
+                {
+                    "x": "skateboard",
+                    "y": 147
+                },
+                {
+                    "x": "others",
+                    "y": 271
+                }
+            ]
+        },
+        {
+            "id": "france",
+            "color": "hsl(355, 70%, 50%)",
+            "data": [
+                {
+                    "x": "plane",
+                    "y": 78
+                },
+                {
+                    "x": "helicopter",
+                    "y": 87
+                },
+                {
+                    "x": "boat",
+                    "y": 55
+                },
+                {
+                    "x": "train",
+                    "y": 253
+                },
+                {
+                    "x": "subway",
+                    "y": 288
+                },
+                {
+                    "x": "bus",
+                    "y": 209
+                },
+                {
+                    "x": "car",
+                    "y": 173
+                },
+                {
+                    "x": "moto",
+                    "y": 220
+                },
+                {
+                    "x": "bicycle",
+                    "y": 224
+                },
+                {
+                    "x": "horse",
+                    "y": 90
+                },
+                {
+                    "x": "skateboard",
+                    "y": 261
+                },
+                {
+                    "x": "others",
+                    "y": 32
+                }
+            ]
+        },
+        {
+            "id": "us",
+            "color": "hsl(51, 70%, 50%)",
+            "data": [
+                {
+                    "x": "plane",
+                    "y": 138
+                },
+                {
+                    "x": "helicopter",
+                    "y": 205
+                },
+                {
+                    "x": "boat",
+                    "y": 210
+                },
+                {
+                    "x": "train",
+                    "y": 112
+                },
+                {
+                    "x": "subway",
+                    "y": 175
+                },
+                {
+                    "x": "bus",
+                    "y": 263
+                },
+                {
+                    "x": "car",
+                    "y": 287
+                },
+                {
+                    "x": "moto",
+                    "y": 213
+                },
+                {
+                    "x": "bicycle",
+                    "y": 26
+                },
+                {
+                    "x": "horse",
+                    "y": 224
+                },
+                {
+                    "x": "skateboard",
+                    "y": 197
+                },
+                {
+                    "x": "others",
+                    "y": 116
+                }
+            ]
+        },
+        {
+            "id": "germany",
+            "color": "hsl(185, 70%, 50%)",
+            "data": [
+                {
+                    "x": "plane",
+                    "y": 290
+                },
+                {
+                    "x": "helicopter",
+                    "y": 36
+                },
+                {
+                    "x": "boat",
+                    "y": 122
+                },
+                {
+                    "x": "train",
+                    "y": 84
+                },
+                {
+                    "x": "subway",
+                    "y": 195
+                },
+                {
+                    "x": "bus",
+                    "y": 294
+                },
+                {
+                    "x": "car",
+                    "y": 92
+                },
+                {
+                    "x": "moto",
+                    "y": 79
+                },
+                {
+                    "x": "bicycle",
+                    "y": 142
+                },
+                {
+                    "x": "horse",
+                    "y": 213
+                },
+                {
+                    "x": "skateboard",
+                    "y": 91
+                },
+                {
+                    "x": "others",
+                    "y": 30
+                }
+            ]
+        },
+        {
+            "id": "norway",
+            "color": "hsl(320, 70%, 50%)",
+            "data": [
+                {
+                    "x": "plane",
+                    "y": 209
+                },
+                {
+                    "x": "helicopter",
+                    "y": 117
+                },
+                {
+                    "x": "boat",
+                    "y": 203
+                },
+                {
+                    "x": "train",
+                    "y": 217
+                },
+                {
+                    "x": "subway",
+                    "y": 27
+                },
+                {
+                    "x": "bus",
+                    "y": 237
+                },
+                {
+                    "x": "car",
+                    "y": 212
+                },
+                {
+                    "x": "moto",
+                    "y": 100
+                },
+                {
+                    "x": "bicycle",
+                    "y": 93
+                },
+                {
+                    "x": "horse",
+                    "y": 282
+                },
+                {
+                    "x": "skateboard",
+                    "y": 149
+                },
+                {
+                    "x": "others",
+                    "y": 185
+                }
+            ]
+        }
+    ]
+    return jsonify(dicDatas)
+
+
 #　波形
 @app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
 def amplitude(user_id, music_id):

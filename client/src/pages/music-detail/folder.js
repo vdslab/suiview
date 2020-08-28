@@ -44,223 +44,11 @@ const convertDate = (input) => {
   return createdDay;
 };
 
-const FrequencyChart = ({ data }) => {
-  if (data == null) {
-    return null;
-  }
-
-  /*const Data = data.map((input) => {
-    input.data.filter((x) => x % 5 == 0);
-  });*/
-  data.map((input) => {
-    input.data.filter((x) => x % 5 == 0);
-  });
-  //console.log(data);
-  return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveLine
-        data={data.map((input) => {
-          return {
-            id: input.id,
-            data: input.data.filter(({ x }) => x % 5 == 0),
-          };
-        })}
-        /*data={[
-          {
-            //id: "x",
-            data: data.filter(({ x }) => x % 5 === 0),
-            //data: data.filter(({ x }) => x),
-          },
-        ]}*/
-        //data={data}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-        }}
-        curve="step"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          tickValues: data.length
-            ? data[0].data.filter(({ x }) => x % 500 === 0).map(({ x }) => x)
-            : [],
-          legend: "",
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "",
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        colors={{ scheme: "yellow_green" }}
-        enablePoints={false}
-        legends={[
-          {
-            anchor: "top-left",
-            direction: "column",
-            justify: false,
-            translateX: 0,
-            translateY: -50,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
-  );
-};
-
-const ParallelCoodinates = ({ data }) => {
-  if (data == null) {
-    return null;
-  }
-
-  /*data.map((input) => {
-    input.data.filter((x) => x % 5 == 0);
-  });*/
-  const max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.tone;
-    })
-  );
-  const min = Math.min.apply(
-    Math,
-    data.map((input) => {
-      return input.tone;
-    })
-  );
-
-  const pich_max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.pich;
-    })
-  );
-
-  const vol_max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.volume;
-    })
-  );
-
-  const pich_vol_max = Math.max(pich_max, vol_max);
-
-  return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <ResponsiveParallelCoordinates
-        data={data}
-        variables={[
-          {
-            key: "No.",
-            type: "point",
-            min: "auto",
-            max: "auto",
-            ticksPosition: "before",
-            legend: "No.",
-            legendPosition: "start",
-            legendOffset: 20,
-          },
-          {
-            key: "pich",
-            type: "linear",
-            min: "auto",
-            max: "auto",
-            ticksPosition: "before",
-            legend: "ptich",
-            legendPosition: "start",
-            legendOffset: 20,
-          },
-          {
-            key: "tone",
-            type: "linear",
-            //min: max,
-            //max: min,
-            min: "auto",
-            max: "auto",
-            ticksPosition: "before",
-            legend: "tone",
-            legendPosition: "start",
-            legendOffset: 20,
-          },
-          {
-            key: "volume",
-            type: "linear",
-            padding: 1,
-            min: "auto",
-            max: "auto",
-            ticksPosition: "before",
-            legend: "volume",
-            legendPosition: "start",
-            legendOffset: 20,
-          },
-        ]}
-        axesPlan="foreground"
-        strokeWidth={3}
-        //lineOpacity={0.1}
-        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
-        animate={true}
-        motionStiffness={90}
-        motionDamping={12}
-        colors={{ scheme: "yellow_green" }}
-        theme={{
-          axis: {
-            domain: {
-              line: {
-                stroke: "rgb(136, 158, 174)",
-                strokeWidth: 2,
-              },
-            },
-            ticks: {
-              line: {
-                stroke: "rgb(136, 158, 174)",
-                strokeWidth: 2,
-              },
-            },
-          },
-        }}
-      />
-    </div>
-  );
-};
-
 const Folder = () => {
   const { folderId } = useParams();
   const [foldersData, setFoldersData] = useState([]);
   const [musics, setMusics] = useState([]);
   const [folderName, setFolderName] = useState();
-  const [parallelData, setPallelData] = useState();
-
-  let chart = "init";
-  console.log(chart);
 
   useEffect(() => {
     window
@@ -291,17 +79,6 @@ const Folder = () => {
       });
   }, []);
 
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((parallelData) => {
-        setPallelData(parallelData);
-      });
-  }, []);*/
-
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
   const music_ids = Array.from(
     new Set(
@@ -310,7 +87,6 @@ const Folder = () => {
       })
     )
   );
-  //console.log(foldersData);
 
   console.log(music_ids);
   const musicData = musics.filter((input) => {
@@ -328,21 +104,6 @@ const Folder = () => {
       return 1;
     }
   });
-  console.log(musicData);
-
-  /*const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);*/
-
-  //console.log(data);
 
   return (
     <IonPage>
@@ -384,37 +145,12 @@ const Folder = () => {
             );
           })}
         </IonList>
-        {/*<IonList>
-          <IonItem>
-            detail &nbsp;
-            <IonButton
-              color="medium"
-              key={folderId}
-              routerLink={`/folder_pich/${folderId}`}
-            >
-              pich
-            </IonButton>
-            <IonButton
-              color="light"
-              key={folderId}
-              routerLink={`/folder_tone/${folderId}`}
-            >
-              tone
-            </IonButton>
-            <IonButton
-              color="medium"
-              key={folderId}
-              routerLink={`/folder_volume/${folderId}`}
-            >
-              volume
-            </IonButton>
-          </IonItem>
 
-          <ParallelCoodinates data={parallelData}></ParallelCoodinates>
-        </IonList>*/}
         <IonCard>
-          <h1>Chart</h1>
-          <FolderDetail initState={folderId} />
+          <IonItem lines="none">
+            <h1>Chart</h1>
+          </IonItem>
+          <FolderDetail id={folderId} />
         </IonCard>
       </IonContent>
     </IonPage>
