@@ -196,11 +196,11 @@ const addFolder = (name) => {
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [showAlert2, setShowAlert2] = useState(false);
-  const [showActionSheet, setShowActionSheet] = useState(false);
+  //const [showActionSheet, setShowActionSheet] = useState(false);
   const [musics, setMusics] = useState([]);
   const [trackNo, setTrackNo] = useState(1);
-  const [comp1, setComp1] = useState(21);
-  const [comp2, setComp2] = useState(22);
+  //const [comp1, setComp1] = useState(21);
+  //const [comp2, setComp2] = useState(22);
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
