@@ -105,7 +105,6 @@ def put_folder_name(user_id):
 def put_folder2(user_id):
     session = create_session()
     folder = session.query(Folder).filter_by(user_id=user_id).all()
-    print(folder)
     folder = [f.to_json() for f in folder]
     session.close()
     return jsonify(folder)
@@ -136,6 +135,36 @@ def change_name(user_id, music_id):
     return "reseive"
 
 
+@app.route('/<user_id>/musics/delete/<music_id>', methods=['DELETE'])
+def delete(user_id, music_id):
+    session = create_session()
+    musics = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    session.query(Comment).filter_by(music_id=music_id).delete()
+    session.query(Music_Folders).filter_by(
+        user_id=user_id, music_id=music_id).delete()
+    session.delete(musics)
+    # session.delete(comments)
+    session.commit()
+    session.close()
+    print("Delete function")
+    return "delete"
+
+
+@app.route('/<user_id>/musics/delete_folder/<folder_id>', methods=['DELETE'])
+def delete_folder(user_id, folder_id):
+    session = create_session()
+    session.query(Folder).filter_by(user_id=user_id, id=folder_id).delete()
+    session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).delete()
+    session.commit()
+    session.close()
+    print("Delete function")
+    return "delete"
+
+#####################################################
+
+
 def manhattan_distance(x, y): return np.abs(x - y)
 @app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
 def put_comp_freqData(user_id, folder_id):
@@ -148,6 +177,9 @@ def put_comp_freqData(user_id, folder_id):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
     music_ids.sort()
+    cnt = min(len(music_ids), 10)
+    music_ids = music_ids[-1*cnt:]
+
     preData = []
 
     for _id in music_ids:
@@ -155,7 +187,7 @@ def put_comp_freqData(user_id, folder_id):
         data = np.array(data)
         preData.append(data)
 
-    print(preData)
+    # print(preData)
     path = []
     Datas = []
     if len(preData) == 1:
@@ -171,7 +203,11 @@ def put_comp_freqData(user_id, folder_id):
         Datas.append({"id": music_ids[0], "data": data})
 
     else:
-        print(len(preData))
+        # print(len(preData))
+        print(music_ids)
+        for i in range(len(preData)):
+            print(len(preData[i]))
+           # print(preData[i][:1000])
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -189,17 +225,19 @@ def put_comp_freqData(user_id, folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            print(aliged_data)
+            # print(aliged_data)
             data = []
             for j in range(len(aliged_data)):
                 dic = {
                     "x": j+1,
-                    "y": aliged_data[j]
+                    "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
             Datas.append({"id": music_ids[i], "data": data})
-            print("fin")
-            print(music_ids)
+            print("fin"+str(i))
+            print(len(Datas))
+        print(Datas)
+        print("finish")
         session.close()
     return jsonify(Datas)
 
@@ -314,20 +352,11 @@ def parallel_data(user_id, folder_id):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
     music_ids.sort()
+    cnt = min(len(music_ids), 10)
+    music_ids = music_ids[-1*cnt:]
+    print(music_ids)
 
     Datas = []
-
-    """
-    for _id in music_ids:
-        dic = {
-            "No.": _id,
-            "pich": frequency_ave_data(user_id, _id),
-            "tone": fourier_roll_data(user_id, _id),
-            "volume": round(decibel_ave_data(user_id, _id), 4),
-        }
-        Datas.append(dic)
-    """
-
     for _id in music_ids:
         Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
             user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
@@ -721,6 +750,10 @@ def comp_decibel(user_id, folder_id):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
     music_ids.sort()
+    cnt = min(len(music_ids), 10)
+    music_ids = music_ids[-1*cnt:]
+    print(music_ids)
+
     preData = []
 
     for _id in music_ids:
@@ -784,7 +817,7 @@ def frequency(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 50)
+    #data, _ = librosa.effects.trim(data, 40)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
@@ -805,7 +838,7 @@ def frequency_ave(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 50)
+    #data, _ = librosa.effects.trim(data, 45)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     total = 0
@@ -828,7 +861,7 @@ def frequency_ave_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 50)
+    #data, _ = librosa.effects.trim(data, 50)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     total = 0
@@ -851,7 +884,7 @@ def frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 46)
+    #data, _ = librosa.effects.trim(data, 46)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
@@ -873,7 +906,7 @@ def dtw_frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 46)
+    #data, _ = librosa.effects.trim(data, 46)
     _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
     f0 = pw.stonemask(data, _f0, _time, rate)
     session.close()
@@ -1006,6 +1039,10 @@ def comp_tone(user_id, folder_id):
         music_ids.append(folder[i]['music_id'])
     music_ids = list(set(music_ids))
     music_ids.sort()
+    cnt = min(len(music_ids), 10)
+    music_ids = music_ids[-1*cnt:]
+    print(music_ids)
+
     preData = []
 
     for _id in music_ids:

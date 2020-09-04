@@ -19,8 +19,9 @@ import {
   IonSelectOption,
   IonItemDivider,
   IonIcon,
+  IonAlert,
 } from "@ionic/react";
-import { add, chevronForwardOutline } from "ionicons/icons";
+import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
@@ -44,11 +45,26 @@ const convertDate = (input) => {
   return createdDay;
 };
 
+const DeleteFolder = (id) => {
+  console.log("Delete function");
+  console.log(id);
+
+  window.fetch(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_folder/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  //window.location.href = "/";
+};
+
 const Folder = () => {
   const { folderId } = useParams();
   const [foldersData, setFoldersData] = useState([]);
   const [musics, setMusics] = useState([]);
   const [folderName, setFolderName] = useState();
+  const [showAlert3, setShowAlert3] = useState(false);
 
   useEffect(() => {
     window
@@ -112,13 +128,57 @@ const Folder = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
           </IonButtons>
-          <IonTitle>
-            Folder{folderId} {folderName}
-          </IonTitle>
+
+          <IonItem>
+            <IonTitle>
+              Folder{folderId} {folderName}
+            </IonTitle>
+            <IonButton
+              slot="end"
+              expand="block"
+              color="danger"
+              onClick={() => {
+                setShowAlert3(true);
+              }}
+            >
+              <IonIcon icon={trashOutline} color="light" />
+            </IonButton>
+
+            <IonAlert
+              isOpen={showAlert3}
+              onDidDismiss={() => setShowAlert3(false)}
+              cssClass="my-custom-class"
+              header={"Confirm!"}
+              message={`本当に Folder.${folderId}を削除しますか？`}
+              buttons={[
+                {
+                  text: "Cancel",
+                  cssClass: "secondary",
+                  handler: () => {
+                    console.log("cancel");
+                  },
+                },
+                {
+                  text: "Yes",
+                  handler: () => {
+                    DeleteFolder(folderId);
+                    console.log("Deleeeete");
+                  },
+                },
+              ]}
+            />
+          </IonItem>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
+        <IonCard>
+          <IonItem lines="none">
+            <h1>Chart</h1>
+          </IonItem>
+          <FolderDetail id={folderId} />
+        </IonCard>
+
         <IonList>
           {musicData.map(({ created, id, name }) => {
             return (
@@ -145,13 +205,6 @@ const Folder = () => {
             );
           })}
         </IonList>
-
-        <IonCard>
-          <IonItem lines="none">
-            <h1>Chart</h1>
-          </IonItem>
-          <FolderDetail id={folderId} />
-        </IonCard>
       </IonContent>
     </IonPage>
   );

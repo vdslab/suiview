@@ -19,7 +19,7 @@ import {
   IonItemDivider,
   IonActionSheet,
 } from "@ionic/react";
-import { add, chevronForwardOutline } from "ionicons/icons";
+import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -180,7 +180,6 @@ const FolderName = ({ id }) => {
         setFolderName(folderName);
       });
   }, []);
-  //console.log(id);
   return <div>{folderName}</div>;
 };
 
@@ -195,12 +194,10 @@ const addFolder = (name) => {
 
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
-  const [showAlert2, setShowAlert2] = useState(false);
-  //const [showActionSheet, setShowActionSheet] = useState(false);
+  //const [showAlert2, setShowAlert2] = useState(false);
+  const [showAlert3, setShowAlert3] = useState(false);
   const [musics, setMusics] = useState([]);
-  const [trackNo, setTrackNo] = useState(1);
-  //const [comp1, setComp1] = useState(21);
-  //const [comp2, setComp2] = useState(22);
+  const [trackNo, setTrackNo] = useState(Math.max(1, 6));
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
@@ -213,7 +210,6 @@ const Root = () => {
         setMusics(musics);
       });
   }, []);
-  //console.log(musics);
 
   useEffect(() => {
     window
@@ -223,7 +219,6 @@ const Root = () => {
         setFolderData(folderData);
       });
   }, []);
-  //console.log(folderData);
 
   const folder_ids = Array.from(
     new Set(
@@ -356,7 +351,7 @@ const Root = () => {
           ]}
         />
 
-        <IonAlert
+        {/*} <IonAlert
           isOpen={showAlert2}
           onDidDismiss={() => setShowAlert2(false)}
           cssClass="my-custom-class"
@@ -389,35 +384,7 @@ const Root = () => {
               },
             },
           ]}
-        />
-
-        {/*<IonCard>
-          <IonItem lines="none">
-            <IonLabel>比較したいトラック番号を入力してください</IonLabel>
-          </IonItem>
-          <IonItem lines="none">
-            trackNo.
-            <IonInput
-              color="medium"
-              value={comp1}
-              onIonChange={(e) => setComp1(e.target.value)}
-            />
-            trackNo.
-            <IonInput
-              color="medium"
-              value={comp2}
-              onIonChange={(e) => setComp2(e.target.value)}
-            />
-            <IonButton
-              size="big"
-              color="dark"
-              key={comp1}
-              routerLink={`/comp_chart/${comp1}/${comp2}`}
-            >
-              show
-            </IonButton>
-          </IonItem>
-        </IonCard>*/}
+        />*/}
 
         <IonList>
           {musics.map(({ created, id, name }) => {

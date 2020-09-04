@@ -16,7 +16,10 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonAlert,
+  IonIcon,
 } from "@ionic/react";
+import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 
 //export したのだとバグる
 const FolderName = ({ id }) => {
@@ -107,6 +110,17 @@ const Comments = ({ data }) => {
   );
 };
 
+const Delete = (id) => {
+  console.log("Delete function");
+  console.log(id);
+
+  window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${id}`, {
+    method: "DELETE",
+  });
+
+  //window.location.href = "/";
+};
+
 const DetailPage = () => {
   const { musicId } = useParams();
   const [comment, setComment] = useState();
@@ -115,6 +129,8 @@ const DetailPage = () => {
   const [folderData, setFolderData] = useState();
   const [folderId, setFolderId] = useState();
   const [musicName, setMusicName] = useState();
+  const [showAlert3, setShowAlert3] = useState(false);
+
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
@@ -135,7 +151,6 @@ const DetailPage = () => {
     );
   }
 
-  console.log(folder_ids);
   useEffect(() => {
     window
       .fetch(
@@ -185,8 +200,6 @@ const DetailPage = () => {
               onClick={() => {
                 console.log(musicName, musicId);
                 changeName(musicName, musicId);
-                //console.log(addFol);
-                //addFolder(addFol);
               }}
             >
               【add】
@@ -194,6 +207,42 @@ const DetailPage = () => {
           </IonItem>
         </IonToolbar>
       </IonHeader>
+
+      <IonItem>
+        <IonButton
+          slot="start"
+          expand="block"
+          color="danger"
+          onClick={() => {
+            setShowAlert3(true);
+          }}
+        >
+          <IonIcon icon={trashOutline} color="light" />
+        </IonButton>
+        <IonAlert
+          isOpen={showAlert3}
+          onDidDismiss={() => setShowAlert3(false)}
+          cssClass="my-custom-class"
+          header={"Confirm!"}
+          message={`本当に track No.${musicId}を削除しますか？`}
+          buttons={[
+            {
+              text: "Cancel",
+              cssClass: "secondary",
+              handler: () => {
+                console.log("cancel");
+              },
+            },
+            {
+              text: "Yes",
+              handler: () => {
+                Delete(musicId);
+                console.log("Deleeeete");
+              },
+            },
+          ]}
+        />
+      </IonItem>
 
       <IonItem>
         play

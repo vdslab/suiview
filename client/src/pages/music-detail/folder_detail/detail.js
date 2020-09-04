@@ -135,6 +135,8 @@ const FrequencyDraw = ({ folderId }) => {
   }
   return (
     <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+
       <LinerChart data={data} />
     </div>
   );
@@ -284,6 +286,7 @@ const ParalellDraw = ({ folderId }) => {
   }
   return (
     <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
       <ParallelCoordinates data={data} />
     </div>
   );
@@ -323,6 +326,8 @@ const ToneDraw = ({ folderId }) => {
   }
   return (
     <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+
       <LinerChart data={data} />
     </div>
   );
@@ -362,6 +367,7 @@ const VolumeDraw = ({ folderId }) => {
   }
   return (
     <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
       <LinerChart data={data} />
     </div>
   );
@@ -505,8 +511,8 @@ const ProgressChart = (folderId) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("ALL");
-  const chartIds = ["ALL", "PITCH", "VOL", "TONE", "PROGRESS"];
+  const [chartId, setChartId] = useState("PROGRESS");
+  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { folderId } = useParams();
   return (
     <div>
@@ -522,11 +528,11 @@ const FolderDetail = () => {
           })}
         </IonSelect>
       </IonItem>
+      {chartId === "PROGRESS" ? ProgressChart(folderId) : []}
       {chartId === "ALL" ? ParallelChart(folderId) : []}
       {chartId === "PITCH" ? FrequencyChart(folderId) : []}
       {chartId === "VOL" ? VolumeChart(folderId) : []}
       {chartId === "TONE" ? ToneChart(folderId) : []}
-      {chartId === "PROGRESS" ? ProgressChart(folderId) : []}
     </div>
   );
 };
