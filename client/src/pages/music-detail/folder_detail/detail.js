@@ -511,7 +511,7 @@ const ProgressChart = (folderId) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("PROGRESS");
+  const [chartId, setChartId] = useState("VOL");
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { folderId } = useParams();
   return (

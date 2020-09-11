@@ -103,7 +103,20 @@ const ShowFourier = () => {
       });
   }, []);
 
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
+    <div>
+      <FourierChart data={data} />
+    </div>
+  );
+
+  /*return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -124,7 +137,7 @@ const ShowFourier = () => {
         </IonList>
       </IonContent>
     </IonPage>
-  );
+  );*/
 };
 
 export default ShowFourier;

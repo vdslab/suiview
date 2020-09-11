@@ -102,7 +102,7 @@ const ShowFrequency = () => {
       });
   }, []);
 
-  console.log(data);
+  
   if (data == undefined) {
     return (
       <IonItem>

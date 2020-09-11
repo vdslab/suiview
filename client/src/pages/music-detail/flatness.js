@@ -121,8 +121,20 @@ const Flatness = () => {
         setMusicName(musicName);
       });
   }, []);
-
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
+    <div>
+      <AmplitudeChart data={data} />
+    </div>
+  );
+
+  /*return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -142,7 +154,7 @@ const Flatness = () => {
         </IonList>
       </IonContent>
     </IonPage>
-  );
+  );*/
 };
 
 export default Flatness;

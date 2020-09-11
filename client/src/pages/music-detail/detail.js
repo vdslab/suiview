@@ -23,6 +23,12 @@ import {
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 import ShowFrequency from "./frequency";
+import Decibel from "./decibel";
+import Centroid_Rolloff from "./centroid_rolloff";
+import Flatness from "./flatness";
+import ShowFourier from "./fourier";
+import MusicDetail from "./index";
+import ShowSpectrogram from "./spectrogram";
 
 //export したのだとバグる
 const FolderName = ({ id }) => {
@@ -159,28 +165,93 @@ const FrequencyChart = (musicId) => {
   if (musicId == null) {
     return null;
   }
-
   return (
     <div>
       <ShowFrequency musicId={musicId} />
     </div>
   );
 };
-const VolumeChart = () => {
-  return <div>volume chart</div>;
+const VolumeChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <Decibel musicId={musicId} />
+    </div>
+  );
 };
 
-const ToneChart = () => {
-  return <div>ToneChart</div>;
+const ToneChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <Centroid_Rolloff musicId={musicId} />
+    </div>
+  );
 };
 
-const MusicDetail = () => {
-  const [chartId, setChartId] = useState("PROGRESS");
-  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
+const FlatChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <Flatness musicId={musicId} />
+    </div>
+  );
+};
+
+const FourierChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <ShowFourier musicId={musicId} />
+    </div>
+  );
+};
+
+const AmplitudeChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <MusicDetail musicId={musicId} />
+    </div>
+  );
+};
+
+const SpectrogramChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
+  return (
+    <div>
+      <ShowSpectrogram musicId={musicId} />
+    </div>
+  );
+};
+
+const TrackDetail = () => {
+  const [chartId, setChartId] = useState("PITCH");
+  const chartIds = [
+    "PITCH",
+    "VOL",
+    "TONE",
+    "SPECTRUM FLATNESS",
+    "FOURIER",
+    "AMPLITUDE",
+    "SPECTROGRAM",
+  ];
   const { musicId } = useParams();
   return (
     <div>
-      <IonItem>
+      <IonItem lines="none">
         <IonSelect
           value={chartId}
           placeholder={chartId}
@@ -192,11 +263,13 @@ const MusicDetail = () => {
           })}
         </IonSelect>
       </IonItem>
-      {/*{chartId === "PROGRESS" ? ProgressChart(musicId) : []}
-      {chartId === "ALL" ? ParallelChart(msuciId) : []}*/}
       {chartId === "PITCH" ? FrequencyChart(musicId) : []}
       {chartId === "VOL" ? VolumeChart(musicId) : []}
       {chartId === "TONE" ? ToneChart(musicId) : []}
+      {chartId === "SPECTRUM FLATNESS" ? FlatChart(musicId) : []}
+      {chartId === "FOURIER" ? FourierChart(musicId) : []}
+      {chartId === "AMPLITUDE" ? AmplitudeChart(musicId) : []}
+      {chartId === "SPECTROGRAM" ? SpectrogramChart(musicId) : []}
     </div>
   );
 };
@@ -329,14 +402,8 @@ const DetailPage = () => {
           src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
         />
       </IonItem>
-
-      <IonCard>
-        <IonItem>Detail</IonItem>
-        <MusicDetail musicId={musicId} />
-      </IonCard>
-
       <IonContent>
-        <IonButton
+        {/*<IonButton
           color="medium"
           key={musicId}
           routerLink={`/musics/${musicId}`}
@@ -378,13 +445,13 @@ const DetailPage = () => {
         >
           spectrum flatness
         </IonButton>
-        <IonButton
+        {/*<IonButton
           color="medium"
           key={musicId}
           routerLink={`/decibel/${musicId}`}
         >
           decibel
-        </IonButton>
+        </IonButton>*/}
 
         <IonCard>
           <IonItem>登録するフォルダを選択</IonItem>
@@ -416,6 +483,13 @@ const DetailPage = () => {
               save
             </IonButton>
           </IonItem>
+        </IonCard>
+
+        <IonCard>
+          <IonItem>
+            <h1>Detail</h1>
+          </IonItem>
+          <TrackDetail musicId={musicId} />
         </IonCard>
 
         <IonCard>

@@ -161,12 +161,25 @@ const Centroid_Rolloff = () => {
       });
   }, []);
 
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
+    <div>
+      <FeacherChart data={data} />
+    </div>
+  );
+
+  /*return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            {/*<IonBackButton defaultHref="/" />*/}
+            {/*<IonBackButton defaultHref="/" />
             <IonBackButton defaultHref={`/detail/${musicId}`} />
           </IonButtons>
           <IonTitle>
@@ -181,7 +194,7 @@ const Centroid_Rolloff = () => {
         </IonList>
       </IonContent>
     </IonPage>
-  );
+  );*/
 };
 
 export default Centroid_Rolloff;

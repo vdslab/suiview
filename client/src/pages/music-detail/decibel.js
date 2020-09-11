@@ -104,8 +104,23 @@ const Decibel = () => {
       });
   }, []);
   console.log(data);
+
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
-    <IonPage>
+    <div>
+      <IonItem lines="none"> 安定度... {ave}</IonItem>
+      <AmplitudeChart data={data} />
+    </div>
+  );
+
+  /*return (
+     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -124,8 +139,9 @@ const Decibel = () => {
           </IonItem>
         </IonList>
       </IonContent>
-    </IonPage>
-  );
+  </IonPage>
+    <div></div>
+  );*/
 };
 
 export default Decibel;

@@ -65,6 +65,26 @@ const DeleteFolder = (id) => {
   //window.location.href = "/";
 };
 
+const DeleteFromFolder = (folderId, musicId) => {
+  console.log("Delete function");
+  console.log(musicId);
+
+  window
+    .fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${musicId}/from/${folderId}`,
+      {
+        method: "DELETE",
+      }
+    )
+    .then((response) => response.text())
+    .then((text) => {
+      console.log(text);
+      window.location.href = `/folder/${folderId}`;
+    });
+
+  //window.location.href = "/";
+};
+
 const Folder = () => {
   const { folderId } = useParams();
   const [foldersData, setFoldersData] = useState([]);
@@ -200,7 +220,6 @@ const Folder = () => {
             return (
               <IonCard>
                 <IonItem>
-                  play
                   <audio
                     controls
                     src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`}
@@ -216,6 +235,39 @@ const Folder = () => {
                   >
                     <IonIcon icon={chevronForwardOutline} color="primary" />
                   </IonButton>
+                  <IonButton
+                    slot="end"
+                    expand="block"
+                    color="danger"
+                    onClick={() => {
+                      setShowAlert3(true);
+                    }}
+                  >
+                    <IonIcon icon={trashOutline} color="light" />
+                  </IonButton>
+                  <IonAlert
+                    isOpen={showAlert3}
+                    onDidDismiss={() => setShowAlert3(false)}
+                    cssClass="my-custom-class"
+                    header={"Confirm!"}
+                    message={`本当に Folder.${folderId}から track${id}を削除しますか？`}
+                    buttons={[
+                      {
+                        text: "Cancel",
+                        cssClass: "secondary",
+                        handler: () => {
+                          console.log("cancel");
+                        },
+                      },
+                      {
+                        text: "Yes",
+                        handler: () => {
+                          DeleteFromFolder(folderId, id);
+                          console.log("Deleeeete");
+                        },
+                      },
+                    ]}
+                  />
                 </IonItem>
               </IonCard>
             );

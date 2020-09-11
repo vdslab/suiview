@@ -91,7 +91,20 @@ const ShowSpectrogram = () => {
       });
   }, [musicId]);
 
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
+    <div>
+      <HeatMapChart data={data} />
+    </div>
+  );
+
+  /*return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -109,7 +122,7 @@ const ShowSpectrogram = () => {
         </IonList>
       </IonContent>
     </IonPage>
-  );
+  );*/
 };
 
 export default ShowSpectrogram;

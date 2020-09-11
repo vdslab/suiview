@@ -90,8 +90,21 @@ const MusicDetail = () => {
         setData(data);
       });
   }, [musicId]);
-  console.log(data);
+  //console.log(data);
+
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
+    <div>
+      <AmplitudeChart data={data} />
+    </div>
+  );
+  /*return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
@@ -111,7 +124,7 @@ const MusicDetail = () => {
         </IonList>
       </IonContent>
     </IonPage>
-  );
+  );*/
 };
 
 export default MusicDetail;

@@ -151,6 +151,17 @@ def delete(user_id, music_id):
     return "delete"
 
 
+@app.route('/<user_id>/musics/delete/<music_id>/from/<folder_id>', methods=['DELETE'])
+def delete_from_folder(user_id, music_id, folder_id):
+    session = create_session()
+    session.query(Music_Folders).filter_by(
+        user_id=user_id, music_id=music_id, folder_id=folder_id).delete()
+    session.commit()
+    session.close()
+    print("Delete function")
+    return "delete"
+
+
 @app.route('/<user_id>/musics/delete_folder/<folder_id>', methods=['DELETE'])
 def delete_folder(user_id, folder_id):
     session = create_session()
@@ -444,7 +455,6 @@ def amplitude(user_id, music_id):
             "y": int(data[i])
         }
         Datas.append(dic)
-    print(Datas[:500])
     session.close()
     return jsonify(Datas)
 
@@ -772,7 +782,7 @@ def comp_decibel(user_id, folder_id):
         data = np.array(data)
         preData.append(data)
 
-    print(preData)
+    # print(preData)
     path = []
     Datas = []
     if len(preData) == 1:
