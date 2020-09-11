@@ -49,12 +49,18 @@ const DeleteFolder = (id) => {
   console.log("Delete function");
   console.log(id);
 
-  window.fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_folder/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  window
+    .fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_folder/${id}`,
+      {
+        method: "DELETE",
+      }
+    )
+    .then((response) => response.text())
+    .then((text) => {
+      console.log(text);
+      window.location.href = "/";
+    });
 
   //window.location.href = "/";
 };
@@ -112,6 +118,8 @@ const Folder = () => {
       }
     }
   });
+
+  console.log(music_ids.length);
 
   musicData.sort(function (a, b) {
     if (a.id < b.id) {
@@ -176,7 +184,15 @@ const Folder = () => {
           <IonItem lines="none">
             <h1>Chart</h1>
           </IonItem>
-          <FolderDetail id={folderId} />
+          {music_ids.length > 0 ? (
+            <FolderDetail id={folderId} />
+          ) : (
+            <IonItem>
+              {" "}
+              <p>データがありません。トラックを追加してください</p>
+            </IonItem>
+          )}
+          {/*} <FolderDetail id={folderId} />*/}
         </IonCard>
 
         <IonList>

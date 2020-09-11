@@ -102,8 +102,23 @@ const ShowFrequency = () => {
       });
   }, []);
 
+  console.log(data);
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
   return (
-    <IonPage>
+    <div>
+      <IonItem lines="none"> 安定度... {ave}</IonItem>
+      <FrequencyChart data={data} />
+    </div>
+  );
+
+  /*return (
+    /*<IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
@@ -113,7 +128,8 @@ const ShowFrequency = () => {
             frequency No.{musicId} {musicName}
           </IonTitle>
         </IonToolbar>
-      </IonHeader>
+    </IonHeader>
+    <div>
       <IonContent>
         <IonList>
           安定度... {ave}
@@ -122,8 +138,8 @@ const ShowFrequency = () => {
           </IonItem>
         </IonList>
       </IonContent>
-    </IonPage>
-  );
+    </div>
+  );*/
 };
 
 export default ShowFrequency;

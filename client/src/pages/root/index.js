@@ -18,6 +18,8 @@ import {
   IonSelectOption,
   IonItemDivider,
   IonActionSheet,
+  IonItemOptions,
+  IonItemOption,
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 // for audio
@@ -197,7 +199,7 @@ const Root = () => {
   //const [showAlert2, setShowAlert2] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
   const [musics, setMusics] = useState([]);
-  const [trackNo, setTrackNo] = useState(Math.max(1, 6));
+  const [trackNo, setTrackNo] = useState();
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
@@ -320,7 +322,7 @@ const Root = () => {
           <ionItem>
             <IonInput
               value={addFol}
-              placeholder="追加するファイル名を記入してください"
+              placeholder="追加するフォルダ名を記入してください"
               onIonChange={(e) => {
                 setAddFol(e.detail.value);
               }}
@@ -400,6 +402,39 @@ const Root = () => {
                   >
                     <IonIcon icon={chevronForwardOutline} color="primary" />
                   </IonButton>
+                  <IonButton
+                    slot="end"
+                    expand="block"
+                    color="danger"
+                    onClick={() => {
+                      setShowAlert3(true);
+                    }}
+                  >
+                    <IonIcon icon={trashOutline} color="light" />
+                  </IonButton>
+                  <IonAlert
+                    isOpen={showAlert3}
+                    onDidDismiss={() => setShowAlert3(false)}
+                    cssClass="my-custom-class"
+                    header={"!バグ"}
+                    message={`本当に track No.${id}を削除しますか？`}
+                    buttons={[
+                      {
+                        text: "Cancel",
+                        cssClass: "secondary",
+                        handler: () => {
+                          console.log("cancel");
+                        },
+                      },
+                      {
+                        text: "Yes",
+                        handler: () => {
+                          // Delete(musicId);
+                          console.log("Deleeeete");
+                        },
+                      },
+                    ]}
+                  />
                 </IonItem>
               </IonCard>
             );

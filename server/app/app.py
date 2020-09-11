@@ -162,6 +162,17 @@ def delete_folder(user_id, folder_id):
     print("Delete function")
     return "delete"
 
+
+# DBのcommentテーブルにuser_idを追加すること
+@app.route('/<user_id>/musics/delete_comment/<comment_id>', methods=['DELETE'])
+def delete_comment(user_id, comment_id):
+    session = create_session()
+    session.query(Comment).filter_by(id=comment_id).delete()
+    session.commit()
+    session.close()
+    print("Delete comment function")
+    return "delete_comment"
+
 #####################################################
 
 

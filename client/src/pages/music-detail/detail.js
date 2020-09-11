@@ -18,8 +18,11 @@ import {
   IonSelectOption,
   IonAlert,
   IonIcon,
+  IonTextarea,
+  IonItemOption,
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
+import ShowFrequency from "./frequency";
 
 //export したのだとバグる
 const FolderName = ({ id }) => {
@@ -89,41 +92,119 @@ const changeName = (name, musicId) => {
   );
 };
 
-const Comments = ({ data }) => {
+const DeleteComment = (id, musicId) => {
+  console.log(musicId);
+  window
+    .fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_comment/${id}`,
+      {
+        method: "DELETE",
+      }
+    )
+    .then((response) => response.text())
+    .then((text) => {
+      console.log(text);
+      window.location.href = `/detail/${musicId}`; //こういう使い方でいいのか
+    });
+};
+
+const Comments = ({ data, musicId }) => {
   return (
     <div>
-      <IonList>
+      <IonCard>
+        <IonItem color="medium">Comment Log</IonItem>
         {data
           ? Object.keys(data).map((key) => {
               return (
                 <div>
-                  <IonItem>
-                    <IonLabel>{convertDate(data[key].created)}</IonLabel>
-                    {data[key].comment}
-                  </IonItem>
+                  <IonList>
+                    {/*} <IonLabel>{convertDate(data[key].created)}</IonLabel>*/}
+                    <IonItem lines="none">
+                      {convertDate(data[key].created)}
+                      <IonButton
+                        slot="end"
+                        expand="block"
+                        color="danger"
+                        onClick={() => {
+                          DeleteComment(data[key].id, musicId);
+                        }}
+                      >
+                        <IonIcon icon={trashOutline} color="light" />
+                      </IonButton>
+                    </IonItem>
+                    <IonItem>{data[key].comment}</IonItem>
+                  </IonList>
                 </div>
               );
             })
           : ""}
-      </IonList>
+      </IonCard>
     </div>
   );
 };
 
 const Delete = (id) => {
-  console.log("Delete function");
-  console.log(id);
+  window
+    .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${id}`, {
+      method: "DELETE",
+    })
+    .then((response) => response.text())
+    .then((text) => {
+      console.log(text);
+      window.location.href = "/";
+    });
+};
 
-  window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${id}`, {
-    method: "DELETE",
-  });
+const FrequencyChart = (musicId) => {
+  if (musicId == null) {
+    return null;
+  }
 
-  //window.location.href = "/";
+  return (
+    <div>
+      <ShowFrequency musicId={musicId} />
+    </div>
+  );
+};
+const VolumeChart = () => {
+  return <div>volume chart</div>;
+};
+
+const ToneChart = () => {
+  return <div>ToneChart</div>;
+};
+
+const MusicDetail = () => {
+  const [chartId, setChartId] = useState("PROGRESS");
+  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
+  const { musicId } = useParams();
+  return (
+    <div>
+      <IonItem>
+        <IonSelect
+          value={chartId}
+          placeholder={chartId}
+          onIonChange={(e) => setChartId(e.detail.value)}
+          buttons={["Cancel", "Open Modal", "Delete"]}
+        >
+          {chartIds.map((id) => {
+            return <IonSelectOption value={id}>{id}</IonSelectOption>;
+          })}
+        </IonSelect>
+      </IonItem>
+      {/*{chartId === "PROGRESS" ? ProgressChart(musicId) : []}
+      {chartId === "ALL" ? ParallelChart(msuciId) : []}*/}
+      {chartId === "PITCH" ? FrequencyChart(musicId) : []}
+      {chartId === "VOL" ? VolumeChart(musicId) : []}
+      {chartId === "TONE" ? ToneChart(musicId) : []}
+    </div>
+  );
 };
 
 const DetailPage = () => {
   const { musicId } = useParams();
   const [comment, setComment] = useState();
+  const [text, setText] = useState();
   const [oldComment, setOldComment] = useState(null);
   const [folder, setFolder] = useState(null);
   const [folderData, setFolderData] = useState();
@@ -173,8 +254,6 @@ const DetailPage = () => {
         setMusicName(musicName);
       });
   }, []);
-
-  console.log(musicName);
 
   return (
     <IonPage>
@@ -245,12 +324,16 @@ const DetailPage = () => {
       </IonItem>
 
       <IonItem>
-        play
         <audio
           controls
           src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
         />
       </IonItem>
+
+      <IonCard>
+        <IonItem>Detail</IonItem>
+        <MusicDetail musicId={musicId} />
+      </IonCard>
 
       <IonContent>
         <IonButton
@@ -303,26 +386,6 @@ const DetailPage = () => {
           decibel
         </IonButton>
 
-        {/*<IonCard>
-          <IonItem>
-            <IonInput
-              value={folder}
-              placeholder="folderName"
-              onIonChange={(e) => {
-                setFolder(e.detail.value);
-              }}
-            ></IonInput>
-            <IonButton
-              slot="end"
-              onClick={() => {
-                SaveFolder(folder, musicId);
-              }}
-            >
-              【save】
-            </IonButton>
-          </IonItem>
-            </IonCard>*/}
-
         <IonCard>
           <IonItem>登録するフォルダを選択</IonItem>
           <IonItem>
@@ -357,26 +420,28 @@ const DetailPage = () => {
 
         <IonCard>
           <IonItem>
-            <IonInput
-              value={comment}
-              placeholder="comment"
-              onIonChange={(e) => {
-                setComment(e.detail.value);
-              }}
-            ></IonInput>
             <IonButton
               slot="end"
               onClick={() => {
-                SaveComment(comment, musicId);
+                SaveComment(text, musicId);
               }}
             >
               【save】
             </IonButton>
           </IonItem>
+          <IonItem>
+            <IonTextarea
+              rows={6}
+              cols={20}
+              placeholder="comment"
+              value={text}
+              onIonChange={(e) => setText(e.detail.value)}
+            ></IonTextarea>
+          </IonItem>
         </IonCard>
 
         <IonList>
-          <Comments data={oldComment} />
+          <Comments data={oldComment} musicId={musicId} />
         </IonList>
       </IonContent>
     </IonPage>
