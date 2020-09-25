@@ -138,6 +138,7 @@ const Centroid_Rolloff = () => {
   const { musicId } = useParams();
   const [data, setData] = useState();
   const [musicName, setMusicName] = useState();
+  const [ave, setAve] = useState();
 
   useEffect(() => {
     window
@@ -161,6 +162,18 @@ const Centroid_Rolloff = () => {
       });
   }, []);
 
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
+      )
+      .then((response) => response.json())
+      .then((ave) => {
+        setAve(ave);
+      });
+  }, []);
+  console.log(data);
+
   if (data == undefined) {
     return (
       <IonItem>
@@ -170,6 +183,7 @@ const Centroid_Rolloff = () => {
   }
   return (
     <div>
+      <IonItem lines="none"> 安定度... {ave}</IonItem>
       <FeacherChart data={data} />
     </div>
   );

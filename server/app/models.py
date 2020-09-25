@@ -51,6 +51,7 @@ class Comment(Base):
     text = Column(Text)
     created = Column(DateTime, default=datetime.datetime.now(
         pytz.timezone('Asia/Tokyo')))
+    user_id = Column(Integer, ForeignKey('users.id'))
 
     def to_json(self):
         return{

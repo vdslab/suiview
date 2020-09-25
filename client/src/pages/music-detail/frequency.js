@@ -42,7 +42,7 @@ const FrequencyChart = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data.filter(({ x }) => x % 500 === 0).map(({ x }) => x),
+          tickValues: data.filter(({ x }) => x % 50 === 0).map(({ x }) => x),
           legend: "",
           legendOffset: 36,
           legendPosition: "middle",
@@ -102,7 +102,6 @@ const ShowFrequency = () => {
       });
   }, []);
 
-  
   if (data == undefined) {
     return (
       <IonItem>

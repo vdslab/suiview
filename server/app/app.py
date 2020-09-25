@@ -465,6 +465,7 @@ def fourier(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    #data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -515,6 +516,7 @@ def fourier_roll(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    #data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -556,6 +558,7 @@ def fourier_roll_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    #data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -621,7 +624,9 @@ def decibel(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    print(rate)
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -640,6 +645,7 @@ def decibel(user_id, music_id):
         }
         Datas.append(dic)
     session.close()
+    print(len(Datas))
     return jsonify(Datas)
 
 
@@ -648,6 +654,7 @@ def decibel_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -676,6 +683,8 @@ def decibel_ave(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    #data, _ = librosa.effects.trim(data, 45)
+    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -736,6 +745,7 @@ def decibel_ave_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
+    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -836,10 +846,14 @@ def comp_decibel(user_id, folder_id):
 def frequency(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    #rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data, rate = librosa.load(io.BytesIO(music.content), 48000)
+    print(rate)
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 40)
-    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    data, _ = librosa.effects.trim(data, 45)
+    _f0, _time = pw.dio(data, rate, f0_floor=70,
+                        f0_ceil=1600, frame_period=10.625)
+    # print(_time)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
     # for i in range(500):  # )len(f0)):
@@ -850,6 +864,7 @@ def frequency(user_id, music_id):
         }
         Datas.append(dic)
     session.close()
+    print(len(Datas))
     return jsonify(Datas)
 
 
@@ -859,8 +874,9 @@ def frequency_ave(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 45)
-    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    data, _ = librosa.effects.trim(data, 45)
+    _f0, _time = pw.dio(data, rate, f0_floor=70,
+                        f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
     total = 0
     cnt = 0
@@ -882,8 +898,9 @@ def frequency_ave_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 50)
-    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    data, _ = librosa.effects.trim(data, 45)
+    _f0, _time = pw.dio(data, rate, f0_floor=70,
+                        f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
     total = 0
     cnt = 0
@@ -905,8 +922,9 @@ def frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 46)
-    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    data, _ = librosa.effects.trim(data, 45)
+    _f0, _time = pw.dio(data, rate, f0_floor=70,
+                        f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
     Datas = []
     # for i in range(500):  # )len(f0)):
@@ -927,8 +945,9 @@ def dtw_frequency_data(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 46)
-    _f0, _time = pw.dio(data, rate, f0_floor=70, f0_ceil=1600)
+    data, _ = librosa.effects.trim(data, 45)
+    _f0, _time = pw.dio(data, rate, f0_floor=70,
+                        f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
     session.close()
     return f0
@@ -962,7 +981,9 @@ def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 46)
+    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+
+    y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
     Datas = []
 
@@ -983,7 +1004,9 @@ def spectrum_rollofff(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 46)
+    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+    print(sr)
+    y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -997,14 +1020,50 @@ def spectrum_rollofff(user_id, music_id):
         Datas.append(dic)
     # return jsonify(Datas)
     session.close()
+    print(len(Datas))
     return Datas
+
+
+@app.route('/<user_id>/musics/<music_id>/rolloff_ave', methods=['GET'])
+def spectrum_rollofff_ave(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+    print(sr)
+    y, _ = librosa.effects.trim(y, 45)
+    # 引数roll_percent=0.8がデフォ
+    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    # print(rolloff)
+    """
+    Datas = []
+
+    for i in range(len(rolloff[0])):
+        dic = {
+            "x": i+1,
+            "y": int(rolloff[0][i])
+        }
+        Datas.append(dic)
+    # return jsonify(Datas)
+    """
+    cnt = 0
+    total = 0
+    for i in range(len(rolloff[0])-1):
+        if rolloff[0][i] < 4000 and rolloff[0][i+1] < 4000:
+            total += abs(rolloff[0][i]-rolloff[0][i+1])
+            cnt += 1
+    ave = total/cnt
+
+    session.close()
+
+    return jsonify(ave)
 
 
 def spectrum_rollofff_y(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 46)
+    y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -1023,7 +1082,7 @@ def spectrum_flatness(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    # y, _ = librosa.effects.trim(y, 46)
+    y, _ = librosa.effects.trim(y, 45)
     flatness = librosa.feature.spectral_flatness(y=y)
     # print(flatness)
     Datas = []
