@@ -18,6 +18,7 @@ import {
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
+import Posts from "../posts";
 
 // for audio
 let audio_sample_rate = null;
@@ -263,6 +264,7 @@ const Root = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <Posts />
         <IonCard>
           <IonList>
             <IonItem>

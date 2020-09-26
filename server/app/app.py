@@ -27,6 +27,16 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
+###認証#########################
+@app.route('/', methods=['POST'])
+def get_token():
+    print(request.data.decode())
+    return jsonify("get token")
+
+
+################################
+
+
 @app.route('/<user_id>/musics', methods=['GET'])
 def get_musics(user_id):
     session = create_session()
