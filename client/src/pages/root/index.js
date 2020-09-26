@@ -13,15 +13,12 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
-  IonListHeader,
   IonSelect,
   IonSelectOption,
-  IonItemDivider,
-  IonActionSheet,
-  IonItemOptions,
-  IonItemOption,
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
+import { useAuth0 } from "@auth0/auth0-react";
+
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -204,6 +201,16 @@ const Root = () => {
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
   const [addFol, setAddFol] = useState();
+
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+
   useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
@@ -243,6 +250,16 @@ const Root = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>musicvis</IonTitle>
+          <ionItem>
+            {" "}
+            Hello {user.name}{" "}
+            <IonButton
+              color="light"
+              onClick={() => logout({ returnTo: window.location.origin })}
+            >
+              Log out
+            </IonButton>
+          </ionItem>
         </IonToolbar>
       </IonHeader>
       <IonContent>
