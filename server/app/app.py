@@ -1,8 +1,8 @@
 import io
 import os
 import wave
-from flask import Flask, jsonify, request, make_response
-from flask_cors import CORS
+from flask import Flask, jsonify, request, make_response,  current_app, _app_ctx_stack
+from flask_cors import CORS, cross_origin
 from db import create_session
 from models import Music, User, Comment, Folder, Music_Folders
 import numpy as np
@@ -22,16 +22,140 @@ import librosa
 import matplotlib.pyplot as plt
 # from dtw import dtw
 from dtw import *
-
+from flask_jwt import JWT, jwt_required, current_identity
+import jwt
+import urllib
+from functools import wraps
 app = Flask(__name__)
 cors = CORS(app)
 
 
 ###認証#########################
-@app.route('/', methods=['POST'])
+class AuthError(Exception):
+    def __init__(self, error, status_code):
+        self.error = error
+        self.status_code = status_code
+
+
+def get_token_auth_header():
+    """Obtains the access token from the Authorization Header
+    """
+    auth = request.headers.get("Authorization", None)
+    print("!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(auth)
+    if not auth:
+        raise AuthError({"code": "authorization_header_missing",
+                         "description":
+                         "Authorization header is expected"}, 401)
+
+    parts = auth.split()
+
+    if parts[0].lower() != "bearer":
+        raise AuthError({"code": "invalid_header",
+                         "description":
+                         "Authorization header must start with"
+                         " Bearer"}, 401)
+    elif len(parts) == 1:
+        raise AuthError({"code": "invalid_header",
+                         "description": "Token not found"}, 401)
+    elif len(parts) > 2:
+        raise AuthError({"code": "invalid_header",
+                         "description":
+                         "Authorization header must be"
+                         " Bearer token"}, 401)
+
+    token = parts[1]
+    print("hello!!!!!!!!", token)
+    return token
+
+
+def requires_auth(f):
+    """Determines if the access token is valid
+    """
+    print(f)
+
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = get_token_auth_header()
+        return token
+
+        jsonurl = urllib.request.urlopen(
+            "https://auth0-react-test.us.auth0.com/.well-known/jwks.json")
+        jwks = json.loads(jsonurl.read())
+        unverified_header = jwt.get_unverified_header(token)
+        rsa_key = {}
+        for key in jwks["keys"]:
+            if key["kid"] == unverified_header["kid"]:
+                rsa_key = {
+                    "kty": key["kty"],
+                    "kid": key["kid"],
+                    "use": key["use"],
+                    "n": key["n"],
+                    "e": key["e"]
+                }
+        if rsa_key:
+            try:
+                payload = jwt.decode(
+                    token,
+                    rsa_key,
+                    algorithms=rsa_key,
+                    audience="https://musicvis",
+                    issuer="https://auth0-react-test.us.auth0.com/"
+                )
+            except jwt.ExpiredSignatureError:
+                raise AuthError({"code": "token_expired",
+                                 "description": "token is expired"}, 401)
+            # except jwt.JWTClaimsError:
+            except jwt.MissingRequiredClaimError:
+                raise AuthError({"code": "invalid_claims",
+                                 "description":
+                                 "incorrect claims,"
+                                 "please check the audience and issuer"}, 401)
+            except Exception:
+                raise AuthError({"code": "invalid_header",
+                                 "description":
+                                 "Unable to parse authentication"
+                                 " token."}, 400)
+
+            _app_ctx_stack.top.current_user = payload
+            print(payload)
+            return f(*args, **kwargs)
+        raise AuthError({"code": "invalid_header",
+                         "description": "Unable to find appropriate key"}, 400)
+
+    return decorated
+
+
+@app.route("/secured/ping")
+@cross_origin(headers=['Content-Type', 'Authorization'])
+@requires_auth
+def secured_ping():
+    return "All good. You only get this message if you're authenticated"
+
+
+# @requires_auth
+@app.route('/user', methods=['POST'])
 def get_token():
-    print(request.data.decode())
-    return jsonify("get token")
+    token = request.headers.get('Authorization')
+    t = decode_auth_token(token)
+    print(t)
+    # tokenからユーザ情報を取る?
+    return token
+
+
+def decode_auth_token(auth_token):
+    """
+    Decodes the auth token
+    :param auth_token:
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
 
 
 ################################
@@ -430,7 +554,7 @@ def progress(user_id, folder_id):
     for _id in music_ids:
         Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
             user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
-    #Datas = sorted(Datas, key=lambda x: x[2])
+    # Datas = sorted(Datas, key=lambda x: x[2])
     for i in range(len(Datas)):
         Datas[i].append(-1*(Datas[i][1]+Datas[i][3] +
                             ((Datas[-1][2]-Datas[i][2])/10000)))
@@ -475,7 +599,7 @@ def fourier(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    #data, _ = librosa.effects.trim(data, 45)
+    # data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -526,7 +650,7 @@ def fourier_roll(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    #data, _ = librosa.effects.trim(data, 45)
+    # data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -568,7 +692,7 @@ def fourier_roll_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    #data, _ = librosa.effects.trim(data, 45)
+    # data, _ = librosa.effects.trim(data, 45)
     data = data/32768  # 振幅の配列らしい
     fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
     freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
@@ -693,7 +817,7 @@ def decibel_ave(user_id, music_id):
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 45)
+    # data, _ = librosa.effects.trim(data, 45)
     data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
@@ -856,7 +980,7 @@ def comp_decibel(user_id, folder_id):
 def frequency(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
-    #rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    # rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data, rate = librosa.load(io.BytesIO(music.content), 48000)
     print(rate)
     data = data.astype(np.float)
@@ -991,7 +1115,7 @@ def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
 
     y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
@@ -1014,7 +1138,7 @@ def spectrum_rollofff(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
     print(sr)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
@@ -1039,7 +1163,7 @@ def spectrum_rollofff_ave(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    #y, sr = librosa.load(io.BytesIO(music.content), 96000)
+    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
     print(sr)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ

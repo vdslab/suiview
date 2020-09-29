@@ -197,7 +197,7 @@ const Root = () => {
   //const [showAlert2, setShowAlert2] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
   const [musics, setMusics] = useState([]);
-  const [trackNo, setTrackNo] = useState(1);
+  const [trackNo, setTrackNo] = useState(7);
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
