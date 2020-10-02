@@ -192,11 +192,54 @@ const addFolder = (name) => {
 };
 ////////////////////////////////////////
 
+const useFetch = (url) => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    window
+      // .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
+      .fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
+  }, []);
+  return data;
+};
+
+const useFetch_get = (url) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://musicvis",
+          scope: "read:posts",
+        });
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          // body: JSON.stringify(token),
+        });
+        setData(await response.json());
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [getAccessTokenSilently]);
+  //console.log(data);
+  return data;
+};
+
 const Root = () => {
   const [showAlert, setShowAlert] = useState(false);
   //const [showAlert2, setShowAlert2] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
-  const [musics, setMusics] = useState([]);
+  //const [musics, setMusics] = useState([]);
+  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
   const [trackNo, setTrackNo] = useState(7);
   const [folderData, setFolderData] = useState([]);
   const [folderId, setFolderId] = useState();
@@ -212,14 +255,14 @@ const Root = () => {
     logout,
   } = useAuth0();
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
       .then((response) => response.json())
       .then((musics) => {
         setMusics(musics);
       });
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     window
