@@ -41,8 +41,6 @@ def get_token_auth_header():
     """Obtains the access token from the Authorization Header
     """
     auth = request.headers.get("Authorization", None)
-    print("!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(auth)
     if not auth:
         raise AuthError({"code": "authorization_header_missing",
                          "description":
@@ -65,20 +63,15 @@ def get_token_auth_header():
                          " Bearer token"}, 401)
 
     token = parts[1]
-    print("hello!!!!!!!!", token)
     return token
 
 
 def requires_auth(f):
     """Determines if the access token is valid
     """
-    print(f)
-
     @wraps(f)
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
-        return token
-
         jsonurl = urllib.request.urlopen(
             "https://auth0-react-test.us.auth0.com/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
@@ -94,11 +87,14 @@ def requires_auth(f):
                     "e": key["e"]
                 }
         if rsa_key:
+            print("token: ", token)
+            print("--------------")
+            print("rsa_key: ", rsa_key)
             try:
                 payload = jwt.decode(
                     token,
                     rsa_key,
-                    algorithms=rsa_key,
+                    algorithms='RS256',
                     audience="https://musicvis",
                     issuer="https://auth0-react-test.us.auth0.com/"
                 )
@@ -118,27 +114,30 @@ def requires_auth(f):
                                  " token."}, 400)
 
             _app_ctx_stack.top.current_user = payload
-            print(payload)
+            # print("-----------")
+            # print(payload)
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",
                          "description": "Unable to find appropriate key"}, 400)
-
+    # print(decorated)
     return decorated
 
 
-@app.route("/secured/ping")
-@cross_origin(headers=['Content-Type', 'Authorization'])
-@requires_auth
+# @app.route("/secured/ping")
+@app.route("/user")  # 仮置き
+# @cross_origin(headers=['Content-Type', 'Authorization'])
+# @requires_auth
 def secured_ping():
     return "All good. You only get this message if you're authenticated"
 
 
+# @cross_origin(headers=['Content-Type', 'Authorization'])
+# @app.route('/user', methods=['POST'])
 # @requires_auth
-@app.route('/user', methods=['POST'])
 def get_token():
     token = request.headers.get('Authorization')
     t = decode_auth_token(token)
-    print(t)
+    # print(t)
     # tokenからユーザ情報を取る?
     return token
 
@@ -187,6 +186,7 @@ def get_comment(user_id, music_id):
         music_id=music_id).all()
     comment = [m.to_json() for m in comment]
     session.close()
+    print(comment)
     return jsonify(comment)
 
 

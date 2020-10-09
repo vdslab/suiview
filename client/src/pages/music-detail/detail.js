@@ -29,39 +29,9 @@ import Flatness from "./flatness";
 import ShowFourier from "./fourier";
 import MusicDetail from "./index";
 import ShowSpectrogram from "./spectrogram";
-
-//export したのだとバグる
-const FolderName = ({ id }) => {
-  const [folderName, setFolderName] = useState();
-  useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`)
-      .then((response) => response.json())
-      .then((folderName) => {
-        setFolderName(folderName);
-      });
-  }, []);
-  //console.log(id);
-  return <div>{folderName}</div>;
-};
-
-//index.js で export したのをimportするとなんかおかしくなる
-const convertDate = (input) => {
-  if (input === null) {
-    return "";
-  }
-
-  const d = new Date(`${input} UTC`);
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const date = `${d.getDate()}`.padStart(2, "0");
-  const hour = `${d.getHours()}`.padStart(2, "0");
-  const minute = `${d.getMinutes()}`.padStart(2, "0");
-  const createdDay =
-    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  //console.log(createdDay);
-  return createdDay;
-};
+import { useFetch_get } from "../root/index";
+import { convertDate } from "../root/index";
+import { FolderName } from "../root/index";
 
 const SaveComment = (comment, musicId) => {
   window.fetch(
@@ -161,80 +131,53 @@ const Delete = (id) => {
     });
 };
 
-const FrequencyChart = (musicId) => {
+const ShowChart = (musicId, kind) => {
   if (musicId == null) {
     return null;
   }
-  return (
-    <div>
-      <ShowFrequency musicId={musicId} />
-    </div>
-  );
-};
-const VolumeChart = (musicId) => {
-  if (musicId == null) {
-    return null;
+  if (kind == "freq") {
+    return (
+      <div>
+        <ShowFrequency musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "vol") {
+    return (
+      <div>
+        <Decibel musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "tone") {
+    return (
+      <div>
+        <Centroid_Rolloff musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "flat") {
+    return (
+      <div>
+        <Flatness musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "fourier") {
+    return (
+      <div>
+        <ShowFourier musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "amplitude") {
+    return (
+      <div>
+        <MusicDetail musicId={musicId} />
+      </div>
+    );
+  } else if (kind == "spect") {
+    return (
+      <div>
+        <ShowSpectrogram musicId={musicId} />
+      </div>
+    );
   }
-  return (
-    <div>
-      <Decibel musicId={musicId} />
-    </div>
-  );
-};
-
-const ToneChart = (musicId) => {
-  if (musicId == null) {
-    return null;
-  }
-  return (
-    <div>
-      <Centroid_Rolloff musicId={musicId} />
-    </div>
-  );
-};
-
-const FlatChart = (musicId) => {
-  if (musicId == null) {
-    return null;
-  }
-  return (
-    <div>
-      <Flatness musicId={musicId} />
-    </div>
-  );
-};
-
-const FourierChart = (musicId) => {
-  if (musicId == null) {
-    return null;
-  }
-  return (
-    <div>
-      <ShowFourier musicId={musicId} />
-    </div>
-  );
-};
-
-const AmplitudeChart = (musicId) => {
-  if (musicId == null) {
-    return null;
-  }
-  return (
-    <div>
-      <MusicDetail musicId={musicId} />
-    </div>
-  );
-};
-
-const SpectrogramChart = (musicId) => {
-  if (musicId == null) {
-    return null;
-  }
-  return (
-    <div>
-      <ShowSpectrogram musicId={musicId} />
-    </div>
-  );
 };
 
 const TrackDetail = () => {
@@ -263,34 +206,72 @@ const TrackDetail = () => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "PITCH" ? FrequencyChart(musicId) : []}
+      {/*{chartId === "PITCH" ? FrequencyChart(musicId) : []}
       {chartId === "VOL" ? VolumeChart(musicId) : []}
       {chartId === "TONE" ? ToneChart(musicId) : []}
       {chartId === "SPECTRUM FLATNESS" ? FlatChart(musicId) : []}
       {chartId === "FOURIER" ? FourierChart(musicId) : []}
       {chartId === "AMPLITUDE" ? AmplitudeChart(musicId) : []}
-      {chartId === "SPECTROGRAM" ? SpectrogramChart(musicId) : []}
+        {chartId === "SPECTROGRAM" ? SpectrogramChart(musicId) : []}*/}
+
+      {chartId === "PITCH" ? ShowChart(musicId, "freq") : []}
+      {chartId === "VOL" ? ShowChart(musicId, "vol") : []}
+      {chartId === "TONE" ? ShowChart(musicId, "tone") : []}
+      {chartId === "SPECTRUM FLATNESS" ? ShowChart(musicId, "flat") : []}
+      {chartId === "FOURIER" ? ShowChart(musicId, "fourier") : []}
+      {chartId === "AMPLITUDE" ? ShowChart(musicId, "amplitude") : []}
+      {chartId === "SPECTROGRAM" ? ShowChart(musicId, "spect") : []}
     </div>
   );
 };
 
 const DetailPage = () => {
+  //const [comment, setComment] = useState();
+  //const [oldComment, setOldComment] = useState(null);
+  //const [folder, setFolder] = useState(null);
+  //const [folderData, setFolderData] = useState();
   const { musicId } = useParams();
-  const [comment, setComment] = useState();
   const [text, setText] = useState();
-  const [oldComment, setOldComment] = useState(null);
-  const [folder, setFolder] = useState(null);
-  const [folderData, setFolderData] = useState();
+
+  const oldComment = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
+  );
+  const folderData = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
+  );
   const [folderId, setFolderId] = useState();
   const [musicName, setMusicName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
       .then((response) => response.json())
       .then((folderData) => {
         setFolderData(folderData);
+      });
+  }, []);*/
+
+  /* useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
+      )
+      .then((response) => response.json())
+      .then((oldComment) => {
+        setOldComment(oldComment);
+      });
+  }, []);*/
+  // console.log(oldComment);
+
+  useEffect(() => {
+    window
+      .fetch(
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+      )
+      .then((response) => response.json())
+      .then((musicName) => {
+        setMusicName(musicName);
       });
   }, []);
 
@@ -304,29 +285,6 @@ const DetailPage = () => {
       )
     );
   }
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
-      )
-      .then((response) => response.json())
-      .then((oldComment) => {
-        setOldComment(oldComment);
-      });
-  }, []);
-  // console.log(oldComment);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
-      )
-      .then((response) => response.json())
-      .then((musicName) => {
-        setMusicName(musicName);
-      });
-  }, []);
 
   return (
     <IonPage>
@@ -403,56 +361,6 @@ const DetailPage = () => {
         />
       </IonItem>
       <IonContent>
-        {/*<IonButton
-          color="medium"
-          key={musicId}
-          routerLink={`/musics/${musicId}`}
-        >
-          amplitude
-        </IonButton>
-        <IonButton
-          color="light"
-          key={musicId}
-          routerLink={`/fourier/${musicId}`}
-        >
-          fourier
-        </IonButton>
-        <IonButton
-          color="medium"
-          key={musicId}
-          routerLink={`/spectrogram/${musicId}`}
-        >
-          spectrogram
-        </IonButton>
-        <IonButton
-          color="light"
-          key={musicId}
-          routerLink={`/frequency/${musicId}`}
-        >
-          frequency
-        </IonButton>
-        <IonButton
-          color="medium"
-          key={musicId}
-          routerLink={`/spectrum_centroid_and_rolloff/${musicId}`}
-        >
-          spectrum centroid/rolloff
-        </IonButton>
-        <IonButton
-          color="light"
-          key={musicId}
-          routerLink={`/flatness/${musicId}`}
-        >
-          spectrum flatness
-        </IonButton>
-        {/*<IonButton
-          color="medium"
-          key={musicId}
-          routerLink={`/decibel/${musicId}`}
-        >
-          decibel
-        </IonButton>*/}
-
         <IonCard>
           <IonItem>登録するフォルダを選択</IonItem>
           <IonItem>

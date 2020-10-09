@@ -26,24 +26,8 @@ import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
 import FolderDetail from "./folder_detail/detail";
-
-//import convertDate from "../root/index";
-
-const convertDate = (input) => {
-  if (input === null) {
-    return "";
-  }
-
-  const d = new Date(`${input} UTC`);
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const date = `${d.getDate()}`.padStart(2, "0");
-  const hour = `${d.getHours()}`.padStart(2, "0");
-  const minute = `${d.getMinutes()}`.padStart(2, "0");
-  const createdDay =
-    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  return createdDay;
-};
+import { useFetch_get } from "../root/index";
+import { convertDate } from "../root/index";
 
 const DeleteFolder = (id) => {
   console.log("Delete function");
@@ -86,9 +70,14 @@ const DeleteFromFolder = (folderId, musicId) => {
 };
 
 const Folder = () => {
+  //const [foldersData, setFoldersData] = useState([]);
+  //const [musics, setMusics] = useState([]);
   const { folderId } = useParams();
-  const [foldersData, setFoldersData] = useState([]);
-  const [musics, setMusics] = useState([]);
+  const foldersData = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`
+  );
+
+  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
   const [folderName, setFolderName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
 
@@ -103,24 +92,25 @@ const Folder = () => {
       });
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
       .then((response) => response.json())
       .then((foldersData) => {
         setFoldersData(foldersData);
       });
-  }, []);
+  }, []);*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
       .then((response) => response.json())
       .then((musics) => {
         setMusics(musics);
       });
-  }, []);
+  }, []);*/
 
+  console.log(foldersData);
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
   const music_ids = Array.from(
     new Set(
@@ -130,7 +120,7 @@ const Folder = () => {
     )
   );
 
-  console.log(music_ids);
+  //console.log(music_ids);
   const musicData = musics.filter((input) => {
     for (let i = 0; i < music_ids.length; i++) {
       if (input.id == music_ids[i]) {
@@ -139,7 +129,7 @@ const Folder = () => {
     }
   });
 
-  console.log(music_ids.length);
+  //console.log(music_ids.length);
 
   musicData.sort(function (a, b) {
     if (a.id < b.id) {

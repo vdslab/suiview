@@ -154,7 +154,7 @@ const getCreatDate = () => {
   return createdDay;
 };
 
-const convertDate = (input) => {
+export const convertDate = (input) => {
   if (input === null) {
     return "";
   }
@@ -170,7 +170,7 @@ const convertDate = (input) => {
   return createdDay;
 };
 
-const FolderName = ({ id }) => {
+export const FolderName = ({ id }) => {
   const [folderName, setFolderName] = useState();
   useEffect(() => {
     window
@@ -206,10 +206,9 @@ const useFetch = (url) => {
   return data;
 };
 
-const useFetch_get = (url) => {
+export const useFetch_get = (url) => {
   const { getAccessTokenSilently } = useAuth0();
   const [data, setData] = useState([]);
-
   useEffect(() => {
     (async () => {
       try {
@@ -230,18 +229,20 @@ const useFetch_get = (url) => {
       }
     })();
   }, [getAccessTokenSilently]);
-  //console.log(data);
   return data;
 };
 
 const Root = () => {
-  const [showAlert, setShowAlert] = useState(false);
   //const [showAlert2, setShowAlert2] = useState(false);
-  const [showAlert3, setShowAlert3] = useState(false);
   //const [musics, setMusics] = useState([]);
+  //const [folderData, setFolderData] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert3, setShowAlert3] = useState(false);
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
   const [trackNo, setTrackNo] = useState(7);
-  const [folderData, setFolderData] = useState([]);
+  const folderData = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
+  );
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
   const [addFol, setAddFol] = useState();
@@ -264,14 +265,14 @@ const Root = () => {
       });
   }, []);*/
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
       .then((response) => response.json())
       .then((folderData) => {
         setFolderData(folderData);
       });
-  }, []);
+  }, []);*/
 
   const folder_ids = Array.from(
     new Set(
@@ -307,7 +308,6 @@ const Root = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <Posts />
         <IonCard>
           <IonList>
             <IonItem>
