@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  IonHeader,
-  IonItem,
-  IonList,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonBackButton,
-  IonButtons,
-} from "@ionic/react";
+import { IonItem } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
 
 const AmplitudeChart = ({ data }) => {
@@ -68,17 +58,6 @@ const AmplitudeChart = ({ data }) => {
 const MusicDetail = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
-  const [musicName, setMusicName] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
-      )
-      .then((response) => response.json())
-      .then((musicName) => {
-        setMusicName(musicName);
-      });
-  }, []);
 
   useEffect(() => {
     window
@@ -90,7 +69,6 @@ const MusicDetail = () => {
         setData(data);
       });
   }, [musicId]);
-  //console.log(data);
 
   if (data == undefined) {
     return (
@@ -104,27 +82,6 @@ const MusicDetail = () => {
       <AmplitudeChart data={data} />
     </div>
   );
-  /*return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref={`/detail/${musicId}`} />
-          </IonButtons>
-          <IonTitle>
-            amplitude No.{musicId} {musicName}
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <IonItem>
-            <AmplitudeChart data={data} />
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
-  );*/
 };
 
 export default MusicDetail;

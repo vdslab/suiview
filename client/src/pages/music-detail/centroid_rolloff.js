@@ -22,6 +22,7 @@ import {
 } from "@ionic/react";
 import { add, chevronForwardOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
+import { useFetch_get } from "../root";
 //import convertDate from "../root/index";
 
 const convertDate = (input) => {
@@ -137,8 +138,9 @@ const FeacherChart = ({ data }) => {
 const Centroid_Rolloff = () => {
   const { musicId } = useParams();
   const [data, setData] = useState();
-  const [musicName, setMusicName] = useState();
-  const [ave, setAve] = useState();
+  const ave = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
+  );
 
   useEffect(() => {
     window
@@ -150,29 +152,6 @@ const Centroid_Rolloff = () => {
         setData(data);
       });
   }, []);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
-      )
-      .then((response) => response.json())
-      .then((musicName) => {
-        setMusicName(musicName);
-      });
-  }, []);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
-      )
-      .then((response) => response.json())
-      .then((ave) => {
-        setAve(ave);
-      });
-  }, []);
-  console.log(data);
 
   if (data == undefined) {
     return (
@@ -187,28 +166,6 @@ const Centroid_Rolloff = () => {
       <FeacherChart data={data} />
     </div>
   );
-
-  /*return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            {/*<IonBackButton defaultHref="/" />
-            <IonBackButton defaultHref={`/detail/${musicId}`} />
-          </IonButtons>
-          <IonTitle>
-            Centroid and Rolloff No.{musicId} {musicName}
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent>
-        <IonList>
-          <IonItem>{<FeacherChart data={data} />}</IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
-  );*/
 };
 
 export default Centroid_Rolloff;

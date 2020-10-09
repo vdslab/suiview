@@ -1,18 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonHeader,
-  IonItem,
-  IonList,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonButtons,
-  IonBackButton,
-  IonButton,
-  IonAlert,
-  IonLabel,
-} from "@ionic/react";
+import { IonItem } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
 
@@ -103,26 +90,6 @@ const ShowSpectrogram = () => {
       <HeatMapChart data={data} />
     </div>
   );
-
-  /*return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref={`/detail/${musicId}`} />
-          </IonButtons>
-          <IonTitle>spectrogram track{musicId}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          <IonItem>
-            <HeatMapChart data={data} />
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
-  );*/
 };
 
 export default ShowSpectrogram;

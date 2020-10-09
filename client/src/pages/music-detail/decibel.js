@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  IonHeader,
-  IonItem,
-  IonList,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonBackButton,
-  IonButtons,
-} from "@ionic/react";
+import { IonItem } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
+import { useFetch_get } from "../root/index";
 
 const AmplitudeChart = ({ data }) => {
   if (data == null) {
@@ -68,19 +59,9 @@ const AmplitudeChart = ({ data }) => {
 const Decibel = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
-  const [musicName, setMusicName] = useState();
-  const [ave, setAve] = useState();
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
-      )
-      .then((response) => response.json())
-      .then((musicName) => {
-        setMusicName(musicName);
-      });
-  }, []);
+  const ave = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel_ave`
+  );
 
   useEffect(() => {
     window
@@ -92,18 +73,6 @@ const Decibel = () => {
         setData(data);
       });
   }, [musicId]);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel_ave`
-      )
-      .then((response) => response.json())
-      .then((ave) => {
-        setAve(ave);
-      });
-  }, []);
-  console.log(data);
 
   if (data == undefined) {
     return (
@@ -118,30 +87,6 @@ const Decibel = () => {
       <AmplitudeChart data={data} />
     </div>
   );
-
-  /*return (
-     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref={`/detail/${musicId}`} />
-          </IonButtons>
-          <IonTitle>
-            Decibel No.{musicId} {musicName}
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          安定度： {ave}
-          <IonItem>
-            <AmplitudeChart data={data} />
-          </IonItem>
-        </IonList>
-      </IonContent>
-  </IonPage>
-    <div></div>
-  );*/
 };
 
 export default Decibel;

@@ -24,6 +24,7 @@ import {
 import { add, chevronForwardOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
+import { useFetch_get } from "../../root/index";
 
 const LinerChart = ({ data }) => {
   if (data == null) {
@@ -109,47 +110,6 @@ const LinerChart = ({ data }) => {
           },
         ]}
       />
-    </div>
-  );
-};
-
-const FrequencyDraw = ({ folderId }) => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
-  if (data == undefined) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
-  }
-  return (
-    <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
-
-      <LinerChart data={data} />
-    </div>
-  );
-};
-
-const FrequencyChart = (folderId) => {
-  if (folderId == null) {
-    return null;
-  }
-
-  return (
-    <div>
-      <FrequencyDraw folderId={folderId} />
     </div>
   );
 };
@@ -264,127 +224,6 @@ const ParallelCoordinates = ({ data }) => {
   );
 };
 
-const ParalellDraw = ({ folderId }) => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
-  if (data == undefined) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
-  }
-  return (
-    <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
-      <ParallelCoordinates data={data} />
-    </div>
-  );
-};
-
-const ParallelChart = (folderId) => {
-  if (folderId == null) {
-    return null;
-  }
-
-  return (
-    <div>
-      <ParalellDraw folderId={folderId} />
-    </div>
-  );
-};
-
-const ToneDraw = ({ folderId }) => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
-  if (data == undefined) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
-  }
-  return (
-    <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
-
-      <LinerChart data={data} />
-    </div>
-  );
-};
-
-const ToneChart = (folderId) => {
-  if (folderId == null) {
-    return null;
-  }
-
-  return (
-    <div>
-      <ToneDraw folderId={folderId} />
-    </div>
-  );
-};
-
-const VolumeDraw = ({ folderId }) => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-
-  if (data == undefined) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
-  }
-  return (
-    <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
-      <LinerChart data={data} />
-    </div>
-  );
-};
-
-const VolumeChart = (folderId) => {
-  if (folderId == null) {
-    return null;
-  }
-
-  return (
-    <div>
-      <VolumeDraw folderId={folderId} />
-    </div>
-  );
-};
-
 const ProgressLine = ({ data /* see data tab */ }) => {
   if (data == null) {
     return null;
@@ -471,18 +310,141 @@ const ProgressLine = ({ data /* see data tab */ }) => {
   );
 };
 
+///////////////////////////////////////////////
+
+const FrequencyDraw = ({ folderId }) => {
+  const data = useFetch_get(
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`
+  );
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
+  return (
+    <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+
+      <LinerChart data={data} />
+    </div>
+  );
+};
+
+const FrequencyChart = (folderId) => {
+  if (folderId == null) {
+    return null;
+  }
+
+  return (
+    <div>
+      <FrequencyDraw folderId={folderId} />
+    </div>
+  );
+};
+
+const ParalellDraw = ({ folderId }) => {
+  const data = useFetch_get(
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
+  );
+
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
+  return (
+    <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+      <ParallelCoordinates data={data} />
+    </div>
+  );
+};
+
+const ParallelChart = (folderId) => {
+  if (folderId == null) {
+    return null;
+  }
+
+  return (
+    <div>
+      <ParalellDraw folderId={folderId} />
+    </div>
+  );
+};
+
+const ToneDraw = ({ folderId }) => {
+  const data = useFetch_get(
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderId}`
+  );
+
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
+  return (
+    <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+
+      <LinerChart data={data} />
+    </div>
+  );
+};
+
+const ToneChart = (folderId) => {
+  if (folderId == null) {
+    return null;
+  }
+
+  return (
+    <div>
+      <ToneDraw folderId={folderId} />
+    </div>
+  );
+};
+
+const VolumeDraw = ({ folderId }) => {
+  const data = useFetch_get(
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${folderId}`
+  );
+
+  if (data == undefined) {
+    return (
+      <IonItem>
+        <div>loading...</div>
+      </IonItem>
+    );
+  }
+  return (
+    <div>
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+      <LinerChart data={data} />
+    </div>
+  );
+};
+
+const VolumeChart = (folderId) => {
+  if (folderId == null) {
+    return null;
+  }
+
+  return (
+    <div>
+      <VolumeDraw folderId={folderId} />
+    </div>
+  );
+};
+
 const ProgressDraw = ({ folderId }) => {
-  const [data, setData] = useState();
-  useEffect(() => {
-    window
-      .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${folderId}`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
+  const data = useFetch_get(
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${folderId}`
+  );
 
   if (data == undefined) {
     return (

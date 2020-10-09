@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  IonHeader,
-  IonItem,
-  IonList,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonButtons,
-  IonBackButton,
-} from "@ionic/react";
+import { IonItem } from "@ionic/react";
 import { ResponsiveBar } from "@nivo/bar";
 import { useParams } from "react-router-dom";
 
@@ -67,8 +57,6 @@ const FourierChart = ({ data }) => {
 const ShowFourier = () => {
   const [data, setData] = useState(null);
   const { musicId } = useParams();
-  const [musicName, setMusicName] = useState();
-  const [roll, setRoll] = useState();
 
   useEffect(() => {
     window
@@ -80,28 +68,6 @@ const ShowFourier = () => {
         setData(data);
       });
   }, [musicId]);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
-      )
-      .then((response) => response.json())
-      .then((musicName) => {
-        setMusicName(musicName);
-      });
-  }, []);
-
-  useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier_roll`
-      )
-      .then((response) => response.json())
-      .then((roll) => {
-        setRoll(roll);
-      });
-  }, []);
 
   if (data == undefined) {
     return (
@@ -115,29 +81,6 @@ const ShowFourier = () => {
       <FourierChart data={data} />
     </div>
   );
-
-  /*return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref={`/detail/${musicId}`} />
-          </IonButtons>
-          <IonTitle>
-            fourier No.{musicId} {musicName}
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <IonList>
-          ロールオフ： {roll}
-          <IonItem>
-            <FourierChart data={data} />
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonPage>
-  );*/
 };
 
 export default ShowFourier;
