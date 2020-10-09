@@ -18,7 +18,6 @@ import {
 } from "@ionic/react";
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import Posts from "../posts";
 
 // for audio
 let audio_sample_rate = null;
@@ -141,7 +140,7 @@ const saveAudio = () => {
 };
 
 /////////////////////////////////////////////
-
+/*
 const getCreatDate = () => {
   const d = new Date();
   const year = d.getFullYear();
@@ -153,7 +152,7 @@ const getCreatDate = () => {
     year + "/" + month + "/" + date + "/" + hour + ":" + minute;
   return createdDay;
 };
-
+*/
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -192,20 +191,6 @@ const addFolder = (name) => {
 };
 ////////////////////////////////////////
 
-const useFetch = (url) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    window
-      // .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
-      .fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);
-  return data;
-};
-
 export const useFetch_get = (url) => {
   const { getAccessTokenSilently } = useAuth0();
   const [data, setData] = useState([]);
@@ -238,7 +223,7 @@ const Root = () => {
   //const [folderData, setFolderData] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
-  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
+  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
   const [trackNo, setTrackNo] = useState(7);
   const folderData = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
@@ -493,6 +478,7 @@ const Root = () => {
                         handler: () => {
                           // Delete(musicId);
                           console.log("Deleeeete");
+                          console.log(id);
                         },
                       },
                     ]}

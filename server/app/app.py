@@ -1,7 +1,7 @@
 import io
 import os
 import wave
-from flask import Flask, jsonify, request, make_response,  current_app, _app_ctx_stack
+from flask import Flask, jsonify, request, make_response, g
 from flask_cors import CORS, cross_origin
 from db import create_session
 from models import Music, User, Comment, Folder, Music_Folders
@@ -20,10 +20,8 @@ import datetime
 from sqlalchemy.sql import func
 import librosa
 import matplotlib.pyplot as plt
-# from dtw import dtw
 from dtw import *
-from flask_jwt import JWT, jwt_required, current_identity
-import jwt
+from jose import jwt
 import urllib
 from functools import wraps
 app = Flask(__name__)
@@ -79,29 +77,19 @@ def requires_auth(f):
         rsa_key = {}
         for key in jwks["keys"]:
             if key["kid"] == unverified_header["kid"]:
-                rsa_key = {
-                    "kty": key["kty"],
-                    "kid": key["kid"],
-                    "use": key["use"],
-                    "n": key["n"],
-                    "e": key["e"]
-                }
+                rsa_key = key
         if rsa_key:
-            print("token: ", token)
-            print("--------------")
-            print("rsa_key: ", rsa_key)
             try:
                 payload = jwt.decode(
                     token,
                     rsa_key,
-                    algorithms='RS256',
+                    algorithms=['RS256'],
                     audience="https://musicvis",
                     issuer="https://auth0-react-test.us.auth0.com/"
                 )
             except jwt.ExpiredSignatureError:
                 raise AuthError({"code": "token_expired",
                                  "description": "token is expired"}, 401)
-            # except jwt.JWTClaimsError:
             except jwt.MissingRequiredClaimError:
                 raise AuthError({"code": "invalid_claims",
                                  "description":
@@ -113,56 +101,25 @@ def requires_auth(f):
                                  "Unable to parse authentication"
                                  " token."}, 400)
 
-            _app_ctx_stack.top.current_user = payload
-            # print("-----------")
-            # print(payload)
+            g.current_user = payload
+            print("-----------")
+            print(payload)
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",
                          "description": "Unable to find appropriate key"}, 400)
-    # print(decorated)
     return decorated
-
-
-# @app.route("/secured/ping")
-@app.route("/user")  # 仮置き
-# @cross_origin(headers=['Content-Type', 'Authorization'])
-# @requires_auth
-def secured_ping():
-    return "All good. You only get this message if you're authenticated"
-
-
-# @cross_origin(headers=['Content-Type', 'Authorization'])
-# @app.route('/user', methods=['POST'])
-# @requires_auth
-def get_token():
-    token = request.headers.get('Authorization')
-    t = decode_auth_token(token)
-    # print(t)
-    # tokenからユーザ情報を取る?
-    return token
-
-
-def decode_auth_token(auth_token):
-    """
-    Decodes the auth token
-    :param auth_token:
-    :return: integer|string
-    """
-    try:
-        payload = jwt.decode(auth_token, app.config.get('SECRET_KEY'))
-        return payload['sub']
-    except jwt.ExpiredSignatureError:
-        return 'Signature expired. Please log in again.'
-    except jwt.InvalidTokenError:
-        return 'Invalid token. Please log in again.'
 
 
 ################################
 
 
-@app.route('/<user_id>/musics', methods=['GET'])
-def get_musics(user_id):
+@app.route('/musics', methods=['GET'])
+@requires_auth
+def get_musics():
     session = create_session()
+    user_id = g.current_user['sub']
+    print(user_id)
+    user_id = 1
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
     session.close()

@@ -87,7 +87,7 @@ const FeacherChart = ({ data }) => {
           tickPadding: 5,
           tickRotation: 0,
           tickValues: data.length
-            ? data[0].data.filter(({ x }) => x % 50 === 0).map(({ x }) => x)
+            ? data[0].data.filter(({ x }) => x % 200 === 0).map(({ x }) => x)
             : [],
           legend: "",
           legendOffset: 36,

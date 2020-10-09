@@ -32,6 +32,30 @@ import ShowSpectrogram from "./spectrogram";
 import { useFetch_get } from "../root/index";
 import { convertDate } from "../root/index";
 import { FolderName } from "../root/index";
+import { useAuth0 } from "@auth0/auth0-react";
+
+const useFetch_put = (url, data) => {
+  const { getAccessTokenSilently } = useAuth0();
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://musicvis",
+          scope: "read:posts",
+        });
+        window.fetch(url, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: data,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, []);
+};
 
 const SaveComment = (comment, musicId) => {
   window.fetch(
