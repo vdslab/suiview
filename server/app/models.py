@@ -10,7 +10,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Text, primary_key=True, server_default="1")
 
     def to_json(self):
         return {
@@ -22,7 +22,7 @@ class Music(Base):
     __tablename__ = 'musics'
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Text, ForeignKey('users.id'))
     name = Column(Text)
     content = Column(LargeBinary)
     created = Column(DateTime, default=datetime.datetime.now(
@@ -51,7 +51,7 @@ class Comment(Base):
     text = Column(Text)
     created = Column(DateTime, default=datetime.datetime.now(
         pytz.timezone('Asia/Tokyo')))
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Text, ForeignKey('users.id'))
 
     def to_json(self):
         return{
@@ -66,8 +66,8 @@ class Folder(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(Text)
-    user_id = Column(Integer, ForeignKey('users.id'))
-    #folder_id = Column(Text)
+    user_id = Column(Text, ForeignKey('users.id'))
+    # folder_id = Column(Text)
 
     def to_json(self):
         return {
@@ -82,7 +82,7 @@ class Music_Folders(Base):
     id = Column(Integer, primary_key=True)
     music_id = Column(Integer, ForeignKey('musics.id'))
     folder_id = Column(Integer, ForeignKey('folders.id'))
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Text, ForeignKey('users.id'))
 
     def to_json(self):
         return{

@@ -24,6 +24,8 @@ from dtw import *
 from jose import jwt
 import urllib
 from functools import wraps
+import sys
+import sqlalchemy.exc
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -102,8 +104,8 @@ def requires_auth(f):
                                  " token."}, 400)
 
             g.current_user = payload
-            print("-----------")
-            print(payload)
+            # print("-----------")
+            # print(payload)
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",
                          "description": "Unable to find appropriate key"}, 400)
@@ -112,14 +114,25 @@ def requires_auth(f):
 
 ################################
 
-
 @app.route('/musics', methods=['GET'])
 @requires_auth
 def get_musics():
     session = create_session()
     user_id = g.current_user['sub']
     print(user_id)
-    user_id = 1
+    user_t = session.query(User).all()
+    user_list = list(user_t[i].id for i in range(len(user_t)))
+    registered = False
+    for _id in user_list:
+        if _id == user_id:
+            registered = True
+            break
+
+    if registered == False:
+        u = User(id=user_id)
+        session.add(u)
+        session.commit()
+
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
     session.close()
@@ -129,6 +142,8 @@ def get_musics():
 @app.route('/<user_id>/musics', methods=['PUT'])
 def put_music(user_id):
     session = create_session()
+    # root/inedxの音送るとこ修正しないといけない
+    user_id = "auth0|5f6381061d80b10078e6515a"
     music = Music(user_id=user_id, content=request.data, name="music")
     session.add(music)
     session.commit()
