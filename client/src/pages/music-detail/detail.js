@@ -34,29 +34,6 @@ import { convertDate } from "../root/index";
 import { FolderName } from "../root/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const useFetch_put = (url, data) => {
-  const { getAccessTokenSilently } = useAuth0();
-  useEffect(() => {
-    (async () => {
-      try {
-        const token = await getAccessTokenSilently({
-          audience: "https://musicvis",
-          scope: "read:posts",
-        });
-        window.fetch(url, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: data,
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
-};
-
 const SaveComment = (comment, musicId) => {
   window.fetch(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
@@ -230,14 +207,6 @@ const TrackDetail = () => {
           })}
         </IonSelect>
       </IonItem>
-      {/*{chartId === "PITCH" ? FrequencyChart(musicId) : []}
-      {chartId === "VOL" ? VolumeChart(musicId) : []}
-      {chartId === "TONE" ? ToneChart(musicId) : []}
-      {chartId === "SPECTRUM FLATNESS" ? FlatChart(musicId) : []}
-      {chartId === "FOURIER" ? FourierChart(musicId) : []}
-      {chartId === "AMPLITUDE" ? AmplitudeChart(musicId) : []}
-        {chartId === "SPECTROGRAM" ? SpectrogramChart(musicId) : []}*/}
-
       {chartId === "PITCH" ? ShowChart(musicId, "freq") : []}
       {chartId === "VOL" ? ShowChart(musicId, "vol") : []}
       {chartId === "TONE" ? ShowChart(musicId, "tone") : []}
@@ -250,13 +219,8 @@ const TrackDetail = () => {
 };
 
 const DetailPage = () => {
-  //const [comment, setComment] = useState();
-  //const [oldComment, setOldComment] = useState(null);
-  //const [folder, setFolder] = useState(null);
-  //const [folderData, setFolderData] = useState();
   const { musicId } = useParams();
   const [text, setText] = useState();
-
   const oldComment = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
   );
@@ -266,27 +230,7 @@ const DetailPage = () => {
   const [folderId, setFolderId] = useState();
   const [musicName, setMusicName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
-
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
-      .then((response) => response.json())
-      .then((folderData) => {
-        setFolderData(folderData);
-      });
-  }, []);*/
-
-  /* useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
-      )
-      .then((response) => response.json())
-      .then((oldComment) => {
-        setOldComment(oldComment);
-      });
-  }, []);*/
-  // console.log(oldComment);
+  const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
 
   useEffect(() => {
     window
@@ -381,7 +325,7 @@ const DetailPage = () => {
       <IonItem>
         <audio
           controls
-          src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
+          src={`${process.env.REACT_APP_API_ENDPOINT}/${user_id}/musics/${musicId}/content`}
         />
       </IonItem>
       <IonContent>
@@ -430,6 +374,10 @@ const DetailPage = () => {
               slot="end"
               onClick={() => {
                 SaveComment(text, musicId);
+                /*useFetch_put(
+                  `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
+                  text
+                );*/
               }}
             >
               【save】

@@ -120,14 +120,16 @@ def get_musics():
     session = create_session()
     user_id = g.current_user['sub']
     print(user_id)
+    # get user list
     user_t = session.query(User).all()
     user_list = list(user_t[i].id for i in range(len(user_t)))
     registered = False
+    # check registerd
     for _id in user_list:
         if _id == user_id:
             registered = True
             break
-
+    # register
     if registered == False:
         u = User(id=user_id)
         session.add(u)
@@ -140,6 +142,7 @@ def get_musics():
 
 
 @app.route('/<user_id>/musics', methods=['PUT'])
+# @requires_auth
 def put_music(user_id):
     session = create_session()
     # root/inedxの音送るとこ修正しないといけない
@@ -148,23 +151,26 @@ def put_music(user_id):
     session.add(music)
     session.commit()
     session.close()
+    print("ok")
     return 'received'
 
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
+@requires_auth
 def get_comment(user_id, music_id):
     session = create_session()
+    user_id = g.current_user['sub']
     comment = session.query(Comment).filter_by(
         music_id=music_id).all()
     comment = [m.to_json() for m in comment]
     session.close()
-    print(comment)
     return jsonify(comment)
 
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
 def put_comment(user_id, music_id):
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
     comment = Comment(music_id=music_id, text=request.data.decode())
     session.add(comment)
     session.commit()
@@ -174,6 +180,7 @@ def put_comment(user_id, music_id):
 @app.route('/<user_id>/musics/<music_id>/<folder_id>', methods=['PUT'])
 def put_music_folders2(user_id, music_id, folder_id):
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
     data = Music_Folders(
         user_id=user_id, music_id=music_id, folder_id=folder_id)
     session.add(data)
@@ -190,6 +197,8 @@ def put_music_folder(user_id, music_id):
         ids.append(int(i))
     print(ids)
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
+    #user_id = "1"
     for folder_id in ids:
         data = Music_Folders(
             user_id=user_id, music_id=music_id, folder_id=folder_id)
@@ -201,6 +210,7 @@ def put_music_folder(user_id, music_id):
 @app.route('/<user_id>/musics/folder_name', methods=['PUT'])
 def put_folder_name(user_id):
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
     folderName = Folder(name=request.data.decode(), user_id=user_id)
     session.add(folderName)
     session.commit()
@@ -208,8 +218,10 @@ def put_folder_name(user_id):
 
 
 @app.route('/<user_id>/musics/folders2', methods=['GET'])
+@requires_auth
 def put_folder2(user_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Folder).filter_by(user_id=user_id).all()
     folder = [f.to_json() for f in folder]
     session.close()
@@ -219,6 +231,7 @@ def put_folder2(user_id):
 @app.route('/<user_id>/musics/<music_id>/music_name', methods=['GET'])
 def get_music_name(user_id, music_id):
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics = musics.to_json()
@@ -230,6 +243,7 @@ def get_music_name(user_id, music_id):
 @app.route('/<user_id>/musics/change_name/<music_id>', methods=['PUT'])
 def change_name(user_id, music_id):
     session = create_session()
+    user_id = "auth0 | 5f6381061d80b10078e6515a"
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics.name = request.data.decode()
@@ -280,7 +294,6 @@ def delete_folder(user_id, folder_id):
     return "delete"
 
 
-# DBのcommentテーブルにuser_idを追加すること
 @app.route('/<user_id>/musics/delete_comment/<comment_id>', methods=['DELETE'])
 def delete_comment(user_id, comment_id):
     session = create_session()
@@ -290,13 +303,81 @@ def delete_comment(user_id, comment_id):
     print("Delete comment function")
     return "delete_comment"
 
+
+@app.route('/<user_id>/musics/folders', methods=['GET'])
+@requires_auth
+def get_music_folders(user_id):
+    session = create_session()
+    user_id = g.current_user['sub']
+    data = session.query(Music_Folders).filter_by(user_id=user_id).all()
+    data = [m.to_json() for m in data]
+    session.close()
+    return jsonify(data)
+
+# 使ってなさげ
+@app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
+def get_foledrs(user_id, music_id):
+    session = create_session()
+    folder = session.query(Folder).filter_by(user_id=user_id).all()
+    folder = [m.to_json() for m in folder]
+    session.close()
+    return jsonify(folder)
+
+# nameの変更あるから保留、名前未入力の場合のエラー(続行は出来る)
+@app.route('/<user_id>/musics/folder_name/<folder_id>', methods=['GET'])
+# @requires_auth
+def get_folderName(user_id, folder_id):
+    session = create_session()
+    #user_id = g.current_user['sub']
+    folder = session.query(Folder).filter_by(
+        user_id=user_id, id=folder_id).all()
+    folder = [f.to_json() for f in folder]
+    session.close()
+    return jsonify(folder[0]['name'])
+
+
+@app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
+# 照らし合わせが出来てない
+def get_music_content(user_id, music_id):
+    session = create_session()
+    response = make_response()
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
+    response.data = music.content
+    response.mimetype = "audio/wav"
+    session.close()
+    print(user_id, music_id)
+    return response
+
+
+@app.route('/user_id', methods=['GET'])
+@requires_auth
+def res_user_id():
+    user_id = g.current_user['sub']
+    return jsonify(user_id)
+
+
+# 使ってなさげ
+# @app.route('/<user_id>/musics/<music_id>/created', methods=['GET'])
+
+
+def create(user_id, music_id):
+    session = create_session()
+    music = session.query(Music).get(music_id)
+    date = music.created
+    session.close()
+    return jsonify(date)
+
 #####################################################
 
 
 def manhattan_distance(x, y): return np.abs(x - y)
 @app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
+@requires_auth
 def put_comp_freqData(user_id, folder_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).all()
     folder = [f.to_json() for f in folder]
@@ -369,109 +450,12 @@ def put_comp_freqData(user_id, folder_id):
         session.close()
     return jsonify(Datas)
 
-
-"""
-@app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
-def put_folder(user_id, music_id):
-    session = create_session()
-    folder_name = request.data.decode()
-
-    had_name = session.query(Folder).filter_by(
-        user_id=user_id, name=folder_name).all()
-    had_name = [m.to_json() for m in had_name]
-    _id = session.query(func.max(Folder.id).filter(user_id == user_id)).one()
-    # _id = [m.to_json() for m in _id]
-    # print("max_id = "+ str(_id))
-    # print(had_name)
-    # print(len(had_name))
-    if len(had_name) > 0:
-        print(had_name[0]['id'])
-        folder_id = had_name[0]['id']
-    else:
-        folder_id = _id
-    # folder = Folder(id = fol_id, name=folder_name, user_id=user_id)
-    folder = Folder(name=folder_name, user_id=user_id, folder_id=folder_id)
-
-    # folder = Folder(name=folder_name, user_id=user_id)
-    session.add(folder)
-    session.commit()
-
-    had_name = session.query(Folder).filter_by(
-        user_id=user_id, name=folder_name).all()
-    had_name = [m.to_json() for m in had_name]
-    least_fl_id = had_name[-1]['folder_id']
-    # print("least = ", end=" ")
-    # print(least_fl_id)
-    print("userID = ")
-    print(user_id, end="  musicId = ")
-    print(music_id, end="  folder_id = ")
-    print(type(least_fl_id))
-    put_music_folders(user_id, music_id, least_fl_id)
-    return 'folder reseived'
-
-
-def put_music_folders(user_id, music_id, folder_id):
-    session = create_session()
-    music_folder = Music_Folders(
-        music_id=music_id, folder_id=folder_id, user_id=user_id)
-    session.add(music_folder)
-    session.commit()
-    return 'music_folders reseived'
-"""
-
-
-@app.route('/<user_id>/musics/folders', methods=['GET'])
-def get_music_folders(user_id):
-    session = create_session()
-    data = session.query(Music_Folders).filter_by(user_id=user_id).all()
-    data = [m.to_json() for m in data]
-    session.close()
-    return jsonify(data)
-
-
-@app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
-def get_foledrs(user_id, music_id):
-    session = create_session()
-    folder = session.query(Folder).filter_by(user_id=user_id).all()
-    folder = [m.to_json() for m in folder]
-    session.close()
-    return jsonify(folder)
-
-
-@app.route('/<user_id>/musics/folders/<folder_id>', methods=['GET'])
-def get_folderName(user_id, folder_id):
-    session = create_session()
-    folder = session.query(Folder).filter_by(
-        user_id=user_id, id=folder_id).all()
-    folder = [f.to_json() for f in folder]
-    session.close()
-    return jsonify(folder[0]['name'])
-
-
-@app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
-def get_music_content(user_id, music_id):
-    session = create_session()
-    response = make_response()
-    music = session.query(Music).get(music_id)
-    response.data = music.content
-    response.mimetype = "audio/wav"
-    session.close()
-    return response
-
-
-@app.route('/<user_id>/musics/<music_id>/created', methods=['GET'])
-def create(user_id, music_id):
-    session = create_session()
-    music = session.query(Music).get(music_id)
-    date = music.created
-    session.close()
-    return jsonify(date)
-
-
 # parallelCoordinates
 @app.route('/<user_id>/musics/parallel/<folder_id>', methods=['PUT', 'GET'])
+@requires_auth
 def parallel_data(user_id, folder_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).all()
     folder = [f.to_json() for f in folder]
@@ -511,8 +495,10 @@ def parallel_data(user_id, folder_id):
 
 # 精進グラフ
 @app.route('/<user_id>/musics/progress/<folder_id>', methods=['PUT', 'GET'])
+@requires_auth
 def progress(user_id, folder_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).all()
     folder = [f.to_json() for f in folder]
@@ -543,9 +529,13 @@ def progress(user_id, folder_id):
 
 #　波形
 @app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
+@requires_auth
 def amplitude(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     wf = wave.open(io.BytesIO(music.content))
     buffer = wf.readframes(wf.getnframes())
     # 縦:振幅 2バイトずつ整理(-32768から32767)
@@ -567,8 +557,11 @@ def amplitude(user_id, music_id):
 
 # フーリエ変換
 @app.route('/<user_id>/musics/<music_id>/fourier', methods=['GET'])
+@requires_auth
 def fourier(user_id, music_id):
     session = create_session()
+    user_id = g.current_user['sub']
+    #music = session.query(Music).filter_by(user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     # data, _ = librosa.effects.trim(data, 45)
@@ -700,8 +693,12 @@ def fourier_roll_data(user_id, music_id):
 
 # スペクトログラム
 @app.route('/<user_id>/musics/<music_id>/spectrogram', methods=['GET'])
+@requires_auth
 def spectrogram(user_id, music_id):
     session = create_session()
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     f, time, Sxx = signal.stft(data, rate)
@@ -726,9 +723,13 @@ def spectrogram(user_id, music_id):
 
 # デシベル値
 @app.route('/<user_id>/musics/<music_id>/decibel', methods=['GET'])
+@requires_auth
 def decibel(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     print(rate)
     data = data.astype(np.float)
@@ -757,7 +758,9 @@ def decibel(user_id, music_id):
 
 def decibel_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -784,9 +787,13 @@ def decibel_data(user_id, music_id):
 
 # デシベル値　平均
 @app.route('/<user_id>/musics/<music_id>/decibel_ave', methods=['GET'])
+@requires_auth
 def decibel_ave(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     # data, _ = librosa.effects.trim(data, 45)
@@ -815,40 +822,11 @@ def decibel_ave(user_id, music_id):
     return jsonify(ave)
 
 
-"""
-def decibel_ave(user_id, music_id):
-    session = create_session()
-    music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data.astype(np.float)
-    S = np.abs(librosa.stft(data))
-    db = librosa.amplitude_to_db(S, ref=np.max)
-    dbLine = []
-    for i in range(len(db[0])):
-        _max = -80
-        for j in range(len(db)):
-            if _max < db[j][i]:
-                _max = db[j][i]
-        dbLine.append(_max)
-
-    Datas = []
-    total = 0
-    cnt = 0
-    for i in range(len(dbLine)-1):
-        if not(dbLine[i] == 0 or dbLine[i+1] == 0):
-            if dbLine[i] >= -30:
-                total += abs(dbLine[i]-dbLine[i+1])
-                cnt += 1
-
-    ave = total/cnt
-    session.close()
-    return jsonify(ave)
-"""
-
-
 def decibel_ave_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -877,8 +855,10 @@ def decibel_ave_data(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['PUT', 'GET'])
+@requires_auth
 def comp_decibel(user_id, folder_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).all()
     folder = [f.to_json() for f in folder]
@@ -949,8 +929,12 @@ def comp_decibel(user_id, folder_id):
 
 # 基本周波数
 @app.route('/<user_id>/musics/<music_id>/frequency', methods=['GET'])
+@requires_auth
 def frequency(user_id, music_id):
     session = create_session()
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
     # rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data, rate = librosa.load(io.BytesIO(music.content), 48000)
@@ -975,9 +959,13 @@ def frequency(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/<music_id>/frequency_ave', methods=['GET'])
+@requires_auth
 def frequency_ave(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1001,7 +989,9 @@ def frequency_ave(user_id, music_id):
 
 def frequency_ave_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+   # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1025,7 +1015,9 @@ def frequency_ave_data(user_id, music_id):
 
 def frequency_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1048,7 +1040,9 @@ def frequency_data(user_id, music_id):
 
 def dtw_frequency_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+   # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1060,7 +1054,7 @@ def dtw_frequency_data(user_id, music_id):
 
 # グラフ比較(基本周波数)
 
-
+# 多分使ってない
 # グラフ比較(基本周波数)
 @app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
 def comp_chart(user_id, music_id, music_id2):
@@ -1085,10 +1079,10 @@ def comp_chart(user_id, music_id, music_id2):
 # @app.route('/<user_id>/musics/<music_id>/spectrum_centroid', methods=['GET'])
 def spectrum_centroid(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
-
     y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
     Datas = []
@@ -1108,14 +1102,14 @@ def spectrum_centroid(user_id, music_id):
 # @app.route('/<user_id>/musics/<music_id>/spectrum_rolloff', methods=['GET'])
 def spectrum_rollofff(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
     print(sr)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    # print(rolloff)
     Datas = []
 
     for i in range(len(rolloff[0])):
@@ -1124,19 +1118,20 @@ def spectrum_rollofff(user_id, music_id):
             "y": int(rolloff[0][i])
         }
         Datas.append(dic)
-    # return jsonify(Datas)
     session.close()
     print(len(Datas))
     return Datas
 
 
 @app.route('/<user_id>/musics/<music_id>/rolloff_ave', methods=['GET'])
+@requires_auth
 def spectrum_rollofff_ave(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    # y, sr = librosa.load(io.BytesIO(music.content), 96000)
-    print(sr)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
@@ -1158,7 +1153,10 @@ def spectrum_rollofff_ave(user_id, music_id):
         if rolloff[0][i] < 4000 and rolloff[0][i+1] < 4000:
             total += abs(rolloff[0][i]-rolloff[0][i+1])
             cnt += 1
-    ave = total/cnt
+    if cnt != 0:
+        ave = total/cnt
+    else:
+        ave = -1
 
     session.close()
 
@@ -1167,7 +1165,9 @@ def spectrum_rollofff_ave(user_id, music_id):
 
 def spectrum_rollofff_y(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
@@ -1184,13 +1184,16 @@ def spectrum_rollofff_y(user_id, music_id):
 
 # --フラットネス--------
 @app.route('/<user_id>/musics/<music_id>/spectrum_flatness', methods=['GET'])
+@requires_auth
 def spectrum_flatness(user_id, music_id):
     session = create_session()
-    music = session.query(Music).get(music_id)
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    #music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     flatness = librosa.feature.spectral_flatness(y=y)
-    # print(flatness)
     Datas = []
 
     for i in range(len(flatness[0])):
@@ -1206,7 +1209,9 @@ def spectrum_flatness(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/<music_id>/spectrum_centroid&rolloff', methods=['GET'])
+@requires_auth
 def get_centroid_rolloff(user_id, music_id):
+    user_id = g.current_user['sub']
     cent = spectrum_centroid(user_id, music_id)
     roll = spectrum_rollofff(user_id, music_id)
     Datas = [{"id": "centroid", "data": cent}, {"id": "rolloff", "data": roll}]
@@ -1215,8 +1220,10 @@ def get_centroid_rolloff(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/folder_comp_tone/<folder_id>', methods=['PUT', 'GET'])
+@requires_auth
 def comp_tone(user_id, folder_id):
     session = create_session()
+    user_id = g.current_user['sub']
     folder = session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).all()
     folder = [f.to_json() for f in folder]

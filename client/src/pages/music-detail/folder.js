@@ -80,35 +80,16 @@ const Folder = () => {
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
   const [folderName, setFolderName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
-
   useEffect(() => {
     window
       .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${folderId}`
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${folderId}`
       )
       .then((response) => response.json())
       .then((folderName) => {
         setFolderName(folderName);
       });
   }, []);
-
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`)
-      .then((response) => response.json())
-      .then((foldersData) => {
-        setFoldersData(foldersData);
-      });
-  }, []);*/
-
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
-      .then((response) => response.json())
-      .then((musics) => {
-        setMusics(musics);
-      });
-  }, []);*/
 
   console.log(foldersData);
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { ResponsiveBar } from "@nivo/bar";
 import { useParams } from "react-router-dom";
+import { useFetch_get } from "../root/index";
 
 const FourierChart = ({ data }) => {
   if (data == null) {
@@ -55,10 +56,12 @@ const FourierChart = ({ data }) => {
 };
 
 const ShowFourier = () => {
-  const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`
+  );
 
-  useEffect(() => {
+  /* useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`
@@ -67,7 +70,7 @@ const ShowFourier = () => {
       .then((data) => {
         setData(data);
       });
-  }, [musicId]);
+  }, [musicId]);*/
 
   if (data == undefined) {
     return (

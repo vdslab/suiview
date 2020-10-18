@@ -16,8 +16,44 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
+import { chevronForwardOutline, trashOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
+
+const Fetch_put2 = () => {
+  //const { getAccessTokenSilently } = useAuth0();
+  console.log("14");
+  /*useEffect(() => {
+    (async () => {
+      try {
+        const token = await getAccessTokenSilently({
+          audience: "https://musicvis",
+          scope: "read:posts",
+        });
+        console.log(token);
+        const response = await fetch(
+          `${process.env.REACT_APP_API_ENDPOINT}/1/musics`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            // body: JSON.stringify(token),
+          }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [getAccessTokenSilently]);*/
+  return "ii";
+};
+
+const Fetch_put = () => {
+  //const { getAccessTokenSilently } = useAuth0();
+  console.log("148");
+  console.log(Fetch_put2());
+  return "koko";
+};
 
 // for audio
 let audio_sample_rate = null;
@@ -114,7 +150,6 @@ const saveAudio = () => {
     const dataview = encodeWAV(mergeBuffers(audioData), audio_sample_rate);
     const audioBlob = new Blob([dataview], { type: "audio/wav" });
     console.log(dataview);
-
     //データの送信をしたい
     window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
       method: "PUT",
@@ -123,6 +158,9 @@ const saveAudio = () => {
 
     const myURL = window.URL || window.webkitURL;
     const url = myURL.createObjectURL(audioBlob);
+    console.log(url);
+    console.log("123");
+    const a = Fetch_put();
     return url;
   };
 
@@ -140,19 +178,6 @@ const saveAudio = () => {
 };
 
 /////////////////////////////////////////////
-/*
-const getCreatDate = () => {
-  const d = new Date();
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const date = `${d.getDate()}`.padStart(2, "0");
-  const hour = `${d.getHours()}`.padStart(2, "0");
-  const minute = `${d.getMinutes()}`.padStart(2, "0");
-  const createdDay =
-    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  return createdDay;
-};
-*/
 export const convertDate = (input) => {
   if (input === null) {
     return "";
@@ -170,15 +195,9 @@ export const convertDate = (input) => {
 };
 
 export const FolderName = ({ id }) => {
-  const [folderName, setFolderName] = useState();
-  useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`)
-      .then((response) => response.json())
-      .then((folderName) => {
-        setFolderName(folderName);
-      });
-  }, []);
+  const folderName = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`
+  );
   return <div>{folderName}</div>;
 };
 
@@ -218,9 +237,6 @@ export const useFetch_get = (url) => {
 };
 
 const Root = () => {
-  //const [showAlert2, setShowAlert2] = useState(false);
-  //const [musics, setMusics] = useState([]);
-  //const [folderData, setFolderData] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [showAlert3, setShowAlert3] = useState(false);
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
@@ -231,7 +247,8 @@ const Root = () => {
   const [folderId, setFolderId] = useState();
   const [text, setText] = useState();
   const [addFol, setAddFol] = useState();
-
+  const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
+  console.log(user_id);
   const {
     isLoading,
     isAuthenticated,
@@ -240,24 +257,6 @@ const Root = () => {
     loginWithRedirect,
     logout,
   } = useAuth0();
-
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`)
-      .then((response) => response.json())
-      .then((musics) => {
-        setMusics(musics);
-      });
-  }, []);*/
-
-  /*useEffect(() => {
-    window
-      .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`)
-      .then((response) => response.json())
-      .then((folderData) => {
-        setFolderData(folderData);
-      });
-  }, []);*/
 
   const folder_ids = Array.from(
     new Set(
@@ -321,7 +320,7 @@ const Root = () => {
             <IonItem>
               <audio
                 controls
-                src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${trackNo}/content`}
+                src={`${process.env.REACT_APP_API_ENDPOINT}/${user_id}/musics/${trackNo}/content`}
               />
             </IonItem>
           </IonList>
@@ -338,7 +337,36 @@ const Root = () => {
             >
               ファイルの追加
             </IonButton>*/}
-            　　&emsp;
+            　　&emsp; {console.log(folder_ids.length)}
+            {/*folder_ids.length == 0 ? (
+              <div>
+                <IonSelect
+                  value={folderId}
+                  placeholder="フォルダを選んでください"
+                  onIonChange={(e) => setFolderId(e.detail.value)}
+                  buttons={["Cancel", "Open Modal", "Delete"]}
+                >
+                  {folder_ids.map((id) => {
+                    return (
+                      <IonSelectOption value={id}>
+                        No.{id} <FolderName id={id} />
+                      </IonSelectOption>
+                    );
+                  })}
+                </IonSelect>
+                <IonButton
+                  slot="end"
+                  color="dark"
+                  size="big"
+                  key={folderId}
+                  routerLink={`/folder/${folderId}`}
+                >
+                  Go
+                </IonButton>
+              </div>
+            ) : (
+              <IonItem>nothing</IonItem>
+            )*/}
             <IonSelect
               value={folderId}
               placeholder="フォルダを選んでください"
@@ -394,6 +422,7 @@ const Root = () => {
             {
               text: "終了",
               handler: () => {
+                console.log("push fin");
                 saveAudio();
               },
             },

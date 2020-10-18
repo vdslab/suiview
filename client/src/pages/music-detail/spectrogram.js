@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { useParams } from "react-router-dom";
 import { ResponsiveHeatMap } from "@nivo/heatmap";
+import { useFetch_get } from "../root/index";
 
 const HeatMapChart = ({ data }) => {
   if (data == null) {
@@ -64,10 +65,13 @@ const HeatMapChart = ({ data }) => {
 };
 
 const ShowSpectrogram = () => {
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`
+  );
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`
@@ -76,7 +80,7 @@ const ShowSpectrogram = () => {
       .then((data) => {
         setData(data);
       });
-  }, [musicId]);
+  }, [musicId]);*/
 
   if (data == undefined) {
     return (

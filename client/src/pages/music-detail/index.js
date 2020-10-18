@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
-
+import { useFetch_get } from "../root/index";
 const AmplitudeChart = ({ data }) => {
   if (data == null) {
     return null;
@@ -56,10 +56,13 @@ const AmplitudeChart = ({ data }) => {
 };
 
 const MusicDetail = () => {
-  const [data, setData] = useState(null);
+  //const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/amplitude`
+  );
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/amplitude`
@@ -68,7 +71,7 @@ const MusicDetail = () => {
       .then((data) => {
         setData(data);
       });
-  }, [musicId]);
+  }, [musicId]);*/
 
   if (data == undefined) {
     return (

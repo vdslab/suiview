@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
+import { useFetch_get } from "../root/index";
 
 const AmplitudeChart = ({ data }) => {
   if (data == null) {
@@ -86,10 +87,12 @@ const AmplitudeChart = ({ data }) => {
 };
 
 const Flatness = () => {
-  const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`
+  );
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`
@@ -98,7 +101,7 @@ const Flatness = () => {
       .then((data) => {
         setData(data);
       });
-  }, []);
+  }, []);*/
 
   if (data == undefined) {
     return (

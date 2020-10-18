@@ -18,6 +18,7 @@ import Pich from "./pages/music-detail/folder_detail/pich";
 import Volume from "./pages/music-detail/folder_detail/volume";
 import Tone from "./pages/music-detail/folder_detail/tone";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useFetch_get } from "./pages/root/index";
 
 const App = () => {
   const {
@@ -28,6 +29,7 @@ const App = () => {
     loginWithRedirect,
     logout,
   } = useAuth0();
+  //useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/users`);
 
   if (isLoading) {
     return <div>Loading...</div>;

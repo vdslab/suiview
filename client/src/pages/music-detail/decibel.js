@@ -57,13 +57,16 @@ const AmplitudeChart = ({ data }) => {
 };
 
 const Decibel = () => {
-  const [data, setData] = useState(null);
+  //const [data, setData] = useState(null);
   const { musicId } = useParams();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`
+  );
   const ave = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel_ave`
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`
@@ -72,7 +75,7 @@ const Decibel = () => {
       .then((data) => {
         setData(data);
       });
-  }, [musicId]);
+  }, [musicId]);*/
 
   if (data == undefined) {
     return (

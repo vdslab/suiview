@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   IonHeader,
@@ -137,12 +137,14 @@ const FeacherChart = ({ data }) => {
 
 const Centroid_Rolloff = () => {
   const { musicId } = useParams();
-  const [data, setData] = useState();
+  const data = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`
+  );
   const ave = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
   );
 
-  useEffect(() => {
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`
@@ -151,7 +153,7 @@ const Centroid_Rolloff = () => {
       .then((data) => {
         setData(data);
       });
-  }, []);
+  }, []);*/
 
   if (data == undefined) {
     return (
