@@ -65,22 +65,10 @@ const HeatMapChart = ({ data }) => {
 };
 
 const ShowSpectrogram = () => {
-  // const [data, setData] = useState(null);
   const { musicId } = useParams();
   const data = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`
   );
-
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, [musicId]);*/
 
   if (data == undefined) {
     return (

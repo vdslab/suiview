@@ -26,43 +26,40 @@ import { ResponsiveLine } from "@nivo/line";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
 import FolderDetail from "./folder_detail/detail";
-import { useFetch_get } from "../root/index";
-import { convertDate } from "../root/index";
+import { useFetch_get, convertDate, useGetToken } from "../root/index";
 
-const DeleteFolder = (id) => {
-  console.log("Delete function");
-  console.log(id);
-
+const DeleteFolder = (id, token) => {
   window
     .fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_folder/${id}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((response) => response.text())
     .then((text) => {
-      console.log(text);
+      //console.log(text);
       window.location.href = "/";
     });
-
-  //window.location.href = "/";
 };
 
-const DeleteFromFolder = (folderId, musicId) => {
-  console.log("Delete function");
-  console.log(musicId);
-
+const DeleteFromFolder = (folderId, musicId, token) => {
   window
     .fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${musicId}/from/${folderId}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((response) => response.text())
     .then((text) => {
-      console.log(text);
+      // console.log(text);
       window.location.href = `/folder/${folderId}`;
     });
 
@@ -77,7 +74,7 @@ const Folder = () => {
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`
   );
 
-  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`);
+  const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
   const [folderName, setFolderName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
   useEffect(() => {
@@ -92,7 +89,9 @@ const Folder = () => {
   }, []);
 
   console.log(foldersData);
+  console.log(musics);
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
+  const token = useGetToken();
   const music_ids = Array.from(
     new Set(
       folder_ids.map((input) => {
@@ -101,7 +100,7 @@ const Folder = () => {
     )
   );
 
-  //console.log(music_ids);
+  console.log(music_ids);
   const musicData = musics.filter((input) => {
     for (let i = 0; i < music_ids.length; i++) {
       if (input.id == music_ids[i]) {
@@ -119,7 +118,7 @@ const Folder = () => {
       return 1;
     }
   });
-
+  console.log(musicData);
   return (
     <IonPage>
       <IonHeader>
@@ -160,8 +159,7 @@ const Folder = () => {
                 {
                   text: "Yes",
                   handler: () => {
-                    DeleteFolder(folderId);
-                    console.log("Deleeeete");
+                    DeleteFolder(folderId, token);
                   },
                 },
               ]}
@@ -233,7 +231,7 @@ const Folder = () => {
                       {
                         text: "Yes",
                         handler: () => {
-                          DeleteFromFolder(folderId, id);
+                          DeleteFromFolder(folderId, id, token);
                           console.log("Deleeeete");
                         },
                       },

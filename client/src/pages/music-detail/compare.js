@@ -20,6 +20,7 @@ import {
 } from "@ionic/react";
 import { ResponsiveLine } from "@nivo/line";
 
+/*使ってない */
 const FrequencyChart = ({ data }) => {
   if (data == null) {
     return null;

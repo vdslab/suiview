@@ -66,17 +66,6 @@ const Decibel = () => {
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel_ave`
   );
 
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, [musicId]);*/
-
   if (data == undefined) {
     return (
       <IonItem>

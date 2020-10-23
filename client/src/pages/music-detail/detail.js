@@ -29,53 +29,53 @@ import Flatness from "./flatness";
 import ShowFourier from "./fourier";
 import MusicDetail from "./index";
 import ShowSpectrogram from "./spectrogram";
-import { useFetch_get } from "../root/index";
-import { convertDate } from "../root/index";
-import { FolderName } from "../root/index";
+import {
+  useFetch_get,
+  convertDate,
+  FolderName,
+  Fetch_put,
+  useGetToken,
+} from "../root/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const SaveComment = (comment, musicId) => {
-  window.fetch(
+const SaveComment = (comment, musicId, token) => {
+  Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
-    {
-      method: "PUT",
-      body: comment,
-    }
+    comment,
+    token
   );
 };
 
-const SaveFolder = (folderId, musicId) => {
+const SaveFolder = (folderId, musicId, token) => {
   let folder_ids = "";
   folderId.map((input) => {
     folder_ids += input + ",";
   });
-  window.fetch(
+  Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/put_folders/${musicId}`,
-    {
-      method: "PUT",
-      body: folder_ids,
-    }
+    folder_ids,
+    token
   );
 };
 
-const changeName = (name, musicId) => {
-  console.log(musicId);
-  window.fetch(
+const changeName = (name, musicId, token) => {
+  Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/change_name/${musicId}`,
-    {
-      method: "PUT",
-      body: name,
-    }
+    name,
+    token
   );
 };
 
-const DeleteComment = (id, musicId) => {
+const DeleteComment = (id, musicId, token) => {
   console.log(musicId);
   window
     .fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_comment/${id}`,
       {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
     .then((response) => response.text())
@@ -85,7 +85,7 @@ const DeleteComment = (id, musicId) => {
     });
 };
 
-const Comments = ({ data, musicId }) => {
+const Comments = ({ data, musicId, token }) => {
   return (
     <div>
       <IonCard>
@@ -103,7 +103,7 @@ const Comments = ({ data, musicId }) => {
                         expand="block"
                         color="danger"
                         onClick={() => {
-                          DeleteComment(data[key].id, musicId);
+                          DeleteComment(data[key].id, musicId, token);
                         }}
                       >
                         <IonIcon icon={trashOutline} color="light" />
@@ -120,10 +120,14 @@ const Comments = ({ data, musicId }) => {
   );
 };
 
-const Delete = (id) => {
+//error
+const Delete = (id, token) => {
   window
     .fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
     .then((response) => response.text())
     .then((text) => {
@@ -231,11 +235,16 @@ const DetailPage = () => {
   const [musicName, setMusicName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
   const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
-
+  const token = useGetToken();
   useEffect(() => {
     window
       .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       .then((response) => response.json())
       .then((musicName) => {
@@ -277,7 +286,7 @@ const DetailPage = () => {
               slot="end"
               onClick={() => {
                 console.log(musicName, musicId);
-                changeName(musicName, musicId);
+                changeName(musicName, musicId, token);
               }}
             >
               【add】
@@ -314,7 +323,7 @@ const DetailPage = () => {
             {
               text: "Yes",
               handler: () => {
-                Delete(musicId);
+                Delete(musicId, token);
                 console.log("Deleeeete");
               },
             },
@@ -354,7 +363,7 @@ const DetailPage = () => {
               color="dark"
               size="big"
               key={folderId}
-              onClick={() => SaveFolder(folderId, musicId)}
+              onClick={() => SaveFolder(folderId, musicId, token)}
             >
               save
             </IonButton>
@@ -373,7 +382,7 @@ const DetailPage = () => {
             <IonButton
               slot="end"
               onClick={() => {
-                SaveComment(text, musicId);
+                SaveComment(text, musicId, token);
                 /*useFetch_put(
                   `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
                   text
@@ -395,7 +404,7 @@ const DetailPage = () => {
         </IonCard>
 
         <IonList>
-          <Comments data={oldComment} musicId={musicId} />
+          <Comments data={oldComment} musicId={musicId} token={token} />
         </IonList>
       </IonContent>
     </IonPage>

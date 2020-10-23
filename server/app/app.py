@@ -161,17 +161,20 @@ def get_comment(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
     comment = session.query(Comment).filter_by(
-        music_id=music_id).all()
+        music_id=music_id, user_id=user_id).all()
     comment = [m.to_json() for m in comment]
     session.close()
     return jsonify(comment)
 
 
 @app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
+@requires_auth
 def put_comment(user_id, music_id):
     session = create_session()
-    user_id = "auth0|5f6381061d80b10078e6515a"
-    comment = Comment(music_id=music_id, text=request.data.decode())
+    #user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
+    comment = Comment(music_id=music_id,
+                      text=request.data.decode(), user_id=user_id)
     session.add(comment)
     session.commit()
     return 'message reseived'
@@ -189,7 +192,9 @@ def put_music_folders2(user_id, music_id, folder_id):
 
 
 @app.route('/<user_id>/musics/put_folders/<music_id>', methods=['PUT'])
+@requires_auth
 def put_music_folder(user_id, music_id):
+    user_id = g.current_user['sub']
     folder_ids = request.data.decode()
     folder_ids = list(map(str, folder_ids[:-1].split(',')))
     ids = []
@@ -197,8 +202,6 @@ def put_music_folder(user_id, music_id):
         ids.append(int(i))
     print(ids)
     session = create_session()
-    user_id = "auth0|5f6381061d80b10078e6515a"
-    #user_id = "1"
     for folder_id in ids:
         data = Music_Folders(
             user_id=user_id, music_id=music_id, folder_id=folder_id)
@@ -208,9 +211,10 @@ def put_music_folder(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/folder_name', methods=['PUT'])
+@requires_auth
 def put_folder_name(user_id):
     session = create_session()
-    user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     folderName = Folder(name=request.data.decode(), user_id=user_id)
     session.add(folderName)
     session.commit()
@@ -229,8 +233,10 @@ def put_folder2(user_id):
 
 
 @app.route('/<user_id>/musics/<music_id>/music_name', methods=['GET'])
+@requires_auth
 def get_music_name(user_id, music_id):
     session = create_session()
+    #user_id = g.current_user['sub']
     user_id = "auth0|5f6381061d80b10078e6515a"
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
@@ -241,9 +247,10 @@ def get_music_name(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/change_name/<music_id>', methods=['PUT'])
+@requires_auth
 def change_name(user_id, music_id):
     session = create_session()
-    user_id = "auth0 | 5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics.name = request.data.decode()
@@ -251,10 +258,9 @@ def change_name(user_id, music_id):
     session.add(musics)
     session.commit()
     session.close()
-    # print(musics)
     return "reseive"
 
-
+# エラーでる
 @app.route('/<user_id>/musics/delete/<music_id>', methods=['DELETE'])
 def delete(user_id, music_id):
     session = create_session()
@@ -272,8 +278,11 @@ def delete(user_id, music_id):
 
 
 @app.route('/<user_id>/musics/delete/<music_id>/from/<folder_id>', methods=['DELETE'])
+@requires_auth
 def delete_from_folder(user_id, music_id, folder_id):
     session = create_session()
+    #user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     session.query(Music_Folders).filter_by(
         user_id=user_id, music_id=music_id, folder_id=folder_id).delete()
     session.commit()
@@ -283,8 +292,11 @@ def delete_from_folder(user_id, music_id, folder_id):
 
 
 @app.route('/<user_id>/musics/delete_folder/<folder_id>', methods=['DELETE'])
+@requires_auth
 def delete_folder(user_id, folder_id):
     session = create_session()
+    #user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     session.query(Folder).filter_by(user_id=user_id, id=folder_id).delete()
     session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).delete()
@@ -295,9 +307,11 @@ def delete_folder(user_id, folder_id):
 
 
 @app.route('/<user_id>/musics/delete_comment/<comment_id>', methods=['DELETE'])
+@requires_auth
 def delete_comment(user_id, comment_id):
     session = create_session()
-    session.query(Comment).filter_by(id=comment_id).delete()
+    user_id = g.current_user['sub']
+    session.query(Comment).filter_by(id=comment_id, user_id=user_id).delete()
     session.commit()
     session.close()
     print("Delete comment function")
@@ -325,10 +339,10 @@ def get_foledrs(user_id, music_id):
 
 # nameの変更あるから保留、名前未入力の場合のエラー(続行は出来る)
 @app.route('/<user_id>/musics/folder_name/<folder_id>', methods=['GET'])
-# @requires_auth
+@requires_auth
 def get_folderName(user_id, folder_id):
     session = create_session()
-    #user_id = g.current_user['sub']
+    user_id = g.current_user['sub']
     folder = session.query(Folder).filter_by(
         user_id=user_id, id=folder_id).all()
     folder = [f.to_json() for f in folder]

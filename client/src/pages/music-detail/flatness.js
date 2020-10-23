@@ -92,17 +92,6 @@ const Flatness = () => {
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`
   );
 
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);*/
-
   if (data == undefined) {
     return (
       <IonItem>

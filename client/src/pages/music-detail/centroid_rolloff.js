@@ -23,23 +23,6 @@ import {
 import { add, chevronForwardOutline } from "ionicons/icons";
 import { ResponsiveLine } from "@nivo/line";
 import { useFetch_get } from "../root";
-//import convertDate from "../root/index";
-
-const convertDate = (input) => {
-  if (input === null) {
-    return "";
-  }
-
-  const d = new Date(`${input} UTC`);
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const date = `${d.getDate()}`.padStart(2, "0");
-  const hour = `${d.getHours()}`.padStart(2, "0");
-  const minute = `${d.getMinutes()}`.padStart(2, "0");
-  const createdDay =
-    year + "/" + month + "/" + date + "/" + hour + ":" + minute;
-  return createdDay;
-};
 
 const FeacherChart = ({ data }) => {
   if (data == null) {
@@ -143,17 +126,6 @@ const Centroid_Rolloff = () => {
   const ave = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
   );
-
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, []);*/
 
   if (data == undefined) {
     return (

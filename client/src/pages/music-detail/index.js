@@ -56,22 +56,10 @@ const AmplitudeChart = ({ data }) => {
 };
 
 const MusicDetail = () => {
-  //const [data, setData] = useState(null);
   const { musicId } = useParams();
   const data = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/amplitude`
   );
-
-  /*useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/amplitude`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, [musicId]);*/
 
   if (data == undefined) {
     return (

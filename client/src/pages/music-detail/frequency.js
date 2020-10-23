@@ -54,7 +54,6 @@ const FrequencyChart = ({ data }) => {
   );
 };
 const ShowFrequency = () => {
-  //const [data, setData] = useState(null);
   const { musicId } = useParams();
   const ave = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency_ave`
@@ -62,16 +61,6 @@ const ShowFrequency = () => {
   const data = useFetch_get(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`
   );
-  /* useEffect(() => {
-    window
-      .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-      });
-  }, [musicId]);*/
 
   if (data == undefined) {
     return (
