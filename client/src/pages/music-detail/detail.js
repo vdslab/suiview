@@ -59,15 +59,26 @@ const SaveFolder = (folderId, musicId, token) => {
 };
 
 const changeName = (name, musicId, token) => {
-  Fetch_put(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/change_name/${musicId}`,
-    name,
-    token
-  );
+  window
+    .fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/change_name/${musicId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: name,
+      }
+    )
+    .then((response) => response.text())
+    .then((text) => {
+      // console.log(text);
+      window.location.href = `/detail/${musicId}`; //こういう使い方でいいのか
+    });
 };
 
 const DeleteComment = (id, musicId, token) => {
-  console.log(musicId);
+  //console.log(musicId);
   window
     .fetch(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/delete_comment/${id}`,
@@ -80,7 +91,7 @@ const DeleteComment = (id, musicId, token) => {
     )
     .then((response) => response.text())
     .then((text) => {
-      console.log(text);
+      // console.log(text);
       window.location.href = `/detail/${musicId}`; //こういう使い方でいいのか
     });
 };
@@ -236,13 +247,19 @@ const DetailPage = () => {
   const [showAlert3, setShowAlert3] = useState(false);
   const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
   const token = useGetToken();
-  useEffect(() => {
+
+  const name = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+  );
+  console.log(name);
+
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, //ここのtokenが空でエラーになってる
           },
         }
       )
@@ -250,7 +267,7 @@ const DetailPage = () => {
       .then((musicName) => {
         setMusicName(musicName);
       });
-  }, []);
+  }, []);*/
 
   let folder_ids = null;
   if (folderData !== undefined) {
@@ -271,13 +288,13 @@ const DetailPage = () => {
             <IonBackButton defaultHref="/" />
           </IonButtons>
           <IonTitle>
-            No{musicId} : {musicName}
+            No{musicId} : {name}
           </IonTitle>
           <IonItem>
             名前の変更：
             <IonInput
               value={musicName}
-              placeholder=""
+              placeholder="記入してください"
               onIonChange={(e) => {
                 setMusicName(e.detail.value);
               }}
@@ -289,7 +306,7 @@ const DetailPage = () => {
                 changeName(musicName, musicId, token);
               }}
             >
-              【add】
+              【change】
             </IonButton>
           </IonItem>
         </IonToolbar>

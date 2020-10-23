@@ -57,7 +57,7 @@ const musicRecord = () => {
     .then(handleSuccess);
 };
 
-const saveAudio = () => {
+const saveAudio = (token) => {
   // export WAV from audio float data
   const exportWAV = (audioData) => {
     const encodeWAV = (samples, sampleRate) => {
@@ -117,6 +117,9 @@ const saveAudio = () => {
     //データの送信をしたい
     window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
       method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: audioBlob,
     });
 
@@ -419,7 +422,7 @@ const Root = () => {
               text: "終了",
               handler: () => {
                 console.log("push fin");
-                saveAudio();
+                saveAudio(token);
               },
             },
           ]}

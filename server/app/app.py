@@ -142,11 +142,10 @@ def get_musics():
 
 
 @app.route('/<user_id>/musics', methods=['PUT'])
-# @requires_auth
+@requires_auth
 def put_music(user_id):
     session = create_session()
-    # root/inedxの音送るとこ修正しないといけない
-    user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     music = Music(user_id=user_id, content=request.data, name="music")
     session.add(music)
     session.commit()
@@ -171,7 +170,6 @@ def get_comment(user_id, music_id):
 @requires_auth
 def put_comment(user_id, music_id):
     session = create_session()
-    #user_id = "auth0|5f6381061d80b10078e6515a"
     user_id = g.current_user['sub']
     comment = Comment(music_id=music_id,
                       text=request.data.decode(), user_id=user_id)
@@ -180,6 +178,8 @@ def put_comment(user_id, music_id):
     return 'message reseived'
 
 
+"""
+# 使ってる？
 @app.route('/<user_id>/musics/<music_id>/<folder_id>', methods=['PUT'])
 def put_music_folders2(user_id, music_id, folder_id):
     session = create_session()
@@ -189,6 +189,7 @@ def put_music_folders2(user_id, music_id, folder_id):
     session.add(data)
     session.commit()
     return 'reseived'
+"""
 
 
 @app.route('/<user_id>/musics/put_folders/<music_id>', methods=['PUT'])
@@ -236,8 +237,8 @@ def put_folder2(user_id):
 @requires_auth
 def get_music_name(user_id, music_id):
     session = create_session()
-    #user_id = g.current_user['sub']
-    user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
+    #user_id = "auth0|5f6381061d80b10078e6515a"
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics = musics.to_json()
@@ -295,7 +296,6 @@ def delete_from_folder(user_id, music_id, folder_id):
 @requires_auth
 def delete_folder(user_id, folder_id):
     session = create_session()
-    #user_id = "auth0|5f6381061d80b10078e6515a"
     user_id = g.current_user['sub']
     session.query(Folder).filter_by(user_id=user_id, id=folder_id).delete()
     session.query(Music_Folders).filter_by(
@@ -328,6 +328,8 @@ def get_music_folders(user_id):
     session.close()
     return jsonify(data)
 
+
+"""
 # 使ってなさげ
 @app.route('/<user_id>/musics/<music_id>/folders', methods=['GET'])
 def get_foledrs(user_id, music_id):
@@ -336,6 +338,7 @@ def get_foledrs(user_id, music_id):
     folder = [m.to_json() for m in folder]
     session.close()
     return jsonify(folder)
+"""
 
 # nameの変更あるから保留、名前未入力の場合のエラー(続行は出来る)
 @app.route('/<user_id>/musics/folder_name/<folder_id>', methods=['GET'])

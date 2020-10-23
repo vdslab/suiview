@@ -45,7 +45,7 @@ const DeleteFolder = (id, token) => {
       window.location.href = "/";
     });
 };
-
+//消すのがリストの後ろのやつになっちゃう
 const DeleteFromFolder = (folderId, musicId, token) => {
   window
     .fetch(
@@ -77,7 +77,10 @@ const Folder = () => {
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
   const [folderName, setFolderName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
-  useEffect(() => {
+  const name = useFetch_get(
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${folderId}`
+  );
+  /*useEffect(() => {
     window
       .fetch(
         `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${folderId}`
@@ -86,10 +89,10 @@ const Folder = () => {
       .then((folderName) => {
         setFolderName(folderName);
       });
-  }, []);
+  }, []);*/
 
-  console.log(foldersData);
-  console.log(musics);
+  //console.log(foldersData);
+  //console.log(musics);
   const folder_ids = foldersData.filter((input) => input.folder_id == folderId);
   const token = useGetToken();
   const music_ids = Array.from(
@@ -100,7 +103,7 @@ const Folder = () => {
     )
   );
 
-  console.log(music_ids);
+  //console.log(music_ids);
   const musicData = musics.filter((input) => {
     for (let i = 0; i < music_ids.length; i++) {
       if (input.id == music_ids[i]) {
@@ -118,7 +121,7 @@ const Folder = () => {
       return 1;
     }
   });
-  console.log(musicData);
+  //console.log(musicData);
   return (
     <IonPage>
       <IonHeader>
@@ -129,7 +132,7 @@ const Folder = () => {
 
           <IonItem>
             <IonTitle>
-              Folder{folderId} {folderName}
+              Folder{folderId} {name}
             </IonTitle>
             <IonButton
               slot="end"
