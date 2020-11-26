@@ -301,9 +301,11 @@ def delete_folder(user_id, folder_id):
     session.query(Music_Folders).filter_by(
         user_id=user_id, folder_id=folder_id).delete()
     session.commit()
+    folder = session.query(Folder).filter_by(user_id=user_id).all()
+    folder = [f.to_json() for f in folder]
     session.close()
     print("Delete function")
-    return "delete"
+    return jsonify(folder)
 
 
 @app.route('/<user_id>/musics/delete_comment/<comment_id>', methods=['DELETE'])

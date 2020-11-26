@@ -15,17 +15,25 @@ import {
   IonItemOption,
   IonItemOptions,
   useIonViewWillEnter,
+  IonFab,
+  IonFabButton,
+  IonFooter,
 } from "@ionic/react";
 import {
   chevronForwardOutline,
-  trashOutline,
+  add,
   settingsOutline,
+  folderOutline,
+  micOutline,
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { musicRecord, saveAudio, useFetch_get } from "./index";
-import { request_folder_list } from "../../serviceWorker/index";
+import {
+  request_folder_list,
+  request_del_folder,
+} from "../../serviceWorker/index";
 /////////////////////////////////////////////
-const Home = () => {
+const Home = ({ history }) => {
   const [folderData, setFolderData] = useState();
 
   const {
@@ -44,6 +52,13 @@ const Home = () => {
     });
   }, []);
   console.log(folderData);
+
+  const delFolder = (id) => {
+    console.log("del", id);
+    request_del_folder(id, getAccessTokenSilently).then((data) => {
+      setFolderData(data);
+    });
+  };
 
   /*musics.sort((a, b) => {
     if (a.id > b.id) {
@@ -116,7 +131,9 @@ const Home = () => {
                       <IonItemOption
                         color="danger"
                         expandable
-                        onClick={() => {}}
+                        onClick={() => {
+                          setFolderData(delFolder(data.id));
+                        }}
                       >
                         delete
                       </IonItemOption>
@@ -127,6 +144,16 @@ const Home = () => {
             : []}
         </IonList>
       </IonContent>
+      <IonFooter>
+        <IonToolbar>
+          <IonButton slot="start" fill="clear">
+            <IonIcon icon={folderOutline}></IonIcon>
+          </IonButton>
+          <IonButton slot="end" fill="clear">
+            <IonIcon icon={micOutline}></IonIcon>
+          </IonButton>
+        </IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 };
