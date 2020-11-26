@@ -25,7 +25,7 @@ let audioContext = null;
 // audio data
 let audioData = [];
 
-const musicRecord = () => {
+export const musicRecord = () => {
   const bufferSize = 1024;
   let scriptProcessor = null;
   const handleSuccess = (stream) => {
@@ -57,7 +57,7 @@ const musicRecord = () => {
     .then(handleSuccess);
 };
 
-const saveAudio = (token) => {
+export const saveAudio = (token) => {
   // export WAV from audio float data
   const exportWAV = (audioData) => {
     const encodeWAV = (samples, sampleRate) => {
@@ -125,9 +125,9 @@ const saveAudio = (token) => {
 
     const myURL = window.URL || window.webkitURL;
     const url = myURL.createObjectURL(audioBlob);
-    console.log(url);
+    /*console.log(url);
     console.log("123");
-    const a = Fetch_put();
+    const a = Fetch_put(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, audioBlob, token);*/
     return url;
   };
 
@@ -243,7 +243,6 @@ const Root = () => {
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
   );
   const [folderId, setFolderId] = useState();
-  // const [text, setText] = useState();
   const [addFol, setAddFol] = useState();
   const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
   const token = useGetToken();
@@ -328,44 +327,7 @@ const Root = () => {
         <IonCard>
           <IonItem fill="medium">フォルダごと見る</IonItem>
           <IonItem>
-            {/*<IonButton
-              size="default"
-              onClick={() => {
-                setShowAlert2(true);
-              }}
-            >
-              ファイルの追加
-            </IonButton>*/}
             　　&emsp; {console.log(folder_ids.length)}
-            {/*folder_ids.length == 0 ? (
-              <div>
-                <IonSelect
-                  value={folderId}
-                  placeholder="フォルダを選んでください"
-                  onIonChange={(e) => setFolderId(e.detail.value)}
-                  buttons={["Cancel", "Open Modal", "Delete"]}
-                >
-                  {folder_ids.map((id) => {
-                    return (
-                      <IonSelectOption value={id}>
-                        No.{id} <FolderName id={id} />
-                      </IonSelectOption>
-                    );
-                  })}
-                </IonSelect>
-                <IonButton
-                  slot="end"
-                  color="dark"
-                  size="big"
-                  key={folderId}
-                  routerLink={`/folder/${folderId}`}
-                >
-                  Go
-                </IonButton>
-              </div>
-            ) : (
-              <IonItem>nothing</IonItem>
-            )*/}
             <IonSelect
               value={folderId}
               placeholder="フォルダを選んでください"
@@ -427,41 +389,6 @@ const Root = () => {
             },
           ]}
         />
-
-        {/*} <IonAlert
-          isOpen={showAlert2}
-          onDidDismiss={() => setShowAlert2(false)}
-          cssClass="my-custom-class"
-          header={"ファイルの追加"}
-          inputs={[
-            {
-              name: "name1",
-              type: "text",
-              value: "hi",
-              placeholder: "ファイル名を記入してください",
-            },
-          ]}
-          onIonChange={(e) => {
-            setText(e.detail.value);
-            console.log(text);
-          }}
-          buttons={[
-            {
-              text: "Cancel",
-              role: "cancel",
-              cssClass: "secondary",
-              handler: () => {
-                console.log("Confirm Cancel");
-              },
-            },
-            {
-              text: "Add",
-              handler: () => {
-                console.log("Confirm Ok");
-              },
-            },
-          ]}
-        />*/}
 
         <IonList>
           {musics.map(({ created, id, name }) => {
