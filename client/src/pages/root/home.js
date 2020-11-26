@@ -18,6 +18,7 @@ import {
   IonFab,
   IonFabButton,
   IonFooter,
+  IonAlert,
 } from "@ionic/react";
 import {
   chevronForwardOutline,
@@ -35,6 +36,9 @@ import {
 /////////////////////////////////////////////
 const Home = ({ history }) => {
   const [folderData, setFolderData] = useState();
+  const [showAlert, setShowAlert] = useState(false);
+  const [newFolName, setNewFolName] = useState();
+  const [newFolText, setNewFolText] = useState();
 
   const {
     isLoading,
@@ -88,27 +92,22 @@ const Home = ({ history }) => {
       <IonContent>
         <IonList>
           <IonListHeader>Folders</IonListHeader>
-          <IonItemSliding>
-            <IonItem
-              _ngcontent-yfv-c79=""
-              onClick={() => {
-                // history.push(`/detail/${d.id}/from_future`);
-              }}
-              detail="false"
-              target="_blank"
-              class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-            >
-              すべて
-              <IonButton slot="end" fill="clear">
-                <IonIcon icon={chevronForwardOutline}></IonIcon>
-              </IonButton>
-            </IonItem>
-            <IonItemOptions>
-              <IonItemOption color="danger" expandable onClick={() => {}}>
-                delete
-              </IonItemOption>
-            </IonItemOptions>
-          </IonItemSliding>
+
+          <IonItem
+            _ngcontent-yfv-c79=""
+            onClick={() => {
+              // history.push(`/detail/${d.id}/from_future`);
+            }}
+            detail="false"
+            target="_blank"
+            class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+          >
+            すべて
+            <IonButton slot="end" fill="clear">
+              <IonIcon icon={chevronForwardOutline}></IonIcon>
+            </IonButton>
+          </IonItem>
+
           {folderData != undefined
             ? folderData.map((data, id) => {
                 return (
@@ -146,13 +145,56 @@ const Home = ({ history }) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonButton slot="start" fill="clear">
+          <IonButton
+            slot="start"
+            fill="clear"
+            onClick={() => setShowAlert(true)}
+          >
             <IonIcon icon={folderOutline}></IonIcon>
           </IonButton>
           <IonButton slot="end" fill="clear">
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>
         </IonToolbar>
+
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          cssClass="my-custom-class"
+          header={"新規フォルダ"}
+          subHeader={"このフォルダの名前と詳細を記入してください"}
+          inputs={[
+            {
+              name: "name1",
+              type: "text",
+              value: newFolName,
+              placeholder: "名前",
+            },
+            {
+              name: "name2",
+              type: "textarea",
+              value: newFolText,
+              placeholder: "詳細(任意)",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: () => {
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "Ok",
+              handler: () => {
+                console.log(newFolName);
+              },
+            },
+          ]}
+          onIonChange={(e) => setNewFolName(e.target.value)}
+        />
       </IonFooter>
     </IonPage>
   );
