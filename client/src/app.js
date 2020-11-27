@@ -20,6 +20,7 @@ import Tone from "./pages/music-detail/folder_detail/tone";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useFetch_get } from "./pages/root/index";
 import Home from "../src/pages/root/home";
+import Recording from "../src/pages/recording";
 
 const App = () => {
   const {
@@ -45,6 +46,7 @@ const App = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/" component={Home} exact />
+            <Route path="/recording/:foldername" component={Recording} />
             <Route path="/musics/:musicId" component={MusicDetail} />
             <Route path="/fourier/:musicId" component={ShowFourier} />
             <Route path="/spectrogram/:musicId" component={ShowSpectrogram} />

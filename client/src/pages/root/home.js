@@ -150,7 +150,11 @@ const Home = ({ history }) => {
           >
             <IonIcon icon={folderOutline}></IonIcon>
           </IonButton>
-          <IonButton slot="end" fill="clear">
+          <IonButton
+            slot="end"
+            fill="clear"
+            onClick={() => history.push(`/recording/all`)}
+          >
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>
         </IonToolbar>
