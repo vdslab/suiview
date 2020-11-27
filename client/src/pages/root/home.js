@@ -32,13 +32,12 @@ import { musicRecord, saveAudio, useFetch_get } from "./index";
 import {
   request_folder_list,
   request_del_folder,
+  request_add_folder,
 } from "../../serviceWorker/index";
 /////////////////////////////////////////////
 const Home = ({ history }) => {
   const [folderData, setFolderData] = useState();
   const [showAlert, setShowAlert] = useState(false);
-  const [newFolName, setNewFolName] = useState();
-  const [newFolText, setNewFolText] = useState();
 
   const {
     isLoading,
@@ -64,13 +63,12 @@ const Home = ({ history }) => {
     });
   };
 
-  /*musics.sort((a, b) => {
-    if (a.id > b.id) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });*/
+  const addFol = (name) => {
+    console.log(name);
+    request_add_folder(name, getAccessTokenSilently).then((data) => {
+      setFolderData(data);
+    });
+  };
 
   return (
     <IonPage>
@@ -162,19 +160,12 @@ const Home = ({ history }) => {
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
           header={"新規フォルダ"}
-          subHeader={"このフォルダの名前と詳細を記入してください"}
+          subHeader={"フォルダの名前を記入してください"}
           inputs={[
             {
-              name: "name1",
+              name: "name",
               type: "text",
-              value: newFolName,
               placeholder: "名前",
-            },
-            {
-              name: "name2",
-              type: "textarea",
-              value: newFolText,
-              placeholder: "詳細(任意)",
             },
           ]}
           buttons={[
@@ -188,12 +179,11 @@ const Home = ({ history }) => {
             },
             {
               text: "Ok",
-              handler: () => {
-                console.log(newFolName);
+              handler: (data) => {
+                addFol(data.name);
               },
             },
           ]}
-          onIonChange={(e) => setNewFolName(e.target.value)}
         />
       </IonFooter>
     </IonPage>

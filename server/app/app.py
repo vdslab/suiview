@@ -216,10 +216,15 @@ def put_music_folder(user_id, music_id):
 def put_folder_name(user_id):
     session = create_session()
     user_id = g.current_user['sub']
+    print(request.data.decode())
     folderName = Folder(name=request.data.decode(), user_id=user_id)
     session.add(folderName)
     session.commit()
-    return 'folderName reseived'
+
+    folder = session.query(Folder).filter_by(user_id=user_id).all()
+    folder = [f.to_json() for f in folder]
+    session.close()
+    return jsonify(folder)
 
 
 @app.route('/<user_id>/musics/folders2', methods=['GET'])
@@ -262,6 +267,8 @@ def change_name(user_id, music_id):
     return "reseive"
 
 # エラーでる
+
+
 @app.route('/<user_id>/musics/delete/<music_id>', methods=['DELETE'])
 def delete(user_id, music_id):
     session = create_session()
@@ -343,6 +350,8 @@ def get_foledrs(user_id, music_id):
 """
 
 # nameの変更あるから保留、名前未入力の場合のエラー(続行は出来る)
+
+
 @app.route('/<user_id>/musics/folder_name/<folder_id>', methods=['GET'])
 @requires_auth
 def get_folderName(user_id, folder_id):
@@ -392,6 +401,8 @@ def create(user_id, music_id):
 
 
 def manhattan_distance(x, y): return np.abs(x - y)
+
+
 @app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
 @requires_auth
 def put_comp_freqData(user_id, folder_id):
@@ -470,6 +481,8 @@ def put_comp_freqData(user_id, folder_id):
     return jsonify(Datas)
 
 # parallelCoordinates
+
+
 @app.route('/<user_id>/musics/parallel/<folder_id>', methods=['PUT', 'GET'])
 @requires_auth
 def parallel_data(user_id, folder_id):
@@ -1075,6 +1088,8 @@ def dtw_frequency_data(user_id, music_id):
 
 # 多分使ってない
 # グラフ比較(基本周波数)
+
+
 @app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
 def comp_chart(user_id, music_id, music_id2):
     Datas = []
