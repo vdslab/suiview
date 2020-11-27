@@ -77,7 +77,7 @@ const Home = ({ history }) => {
           <IonButton
             slot="start"
             fill="clear"
-            href="/setting"
+            //href="/setting"
             onClick={() => {
               history.push("/setting");
             }}
@@ -94,7 +94,7 @@ const Home = ({ history }) => {
           <IonItem
             _ngcontent-yfv-c79=""
             onClick={() => {
-              // history.push(`/detail/${d.id}/from_future`);
+              history.push(`/folder/all`);
             }}
             detail="false"
             target="_blank"
@@ -113,7 +113,7 @@ const Home = ({ history }) => {
                     <IonItem
                       _ngcontent-yfv-c79=""
                       onClick={() => {
-                        // history.push(`/detail/${d.id}/from_future`);
+                        history.push(`/folder/${data.id}`);
                       }}
                       detail="false"
                       target="_blank"
@@ -129,7 +129,7 @@ const Home = ({ history }) => {
                         color="danger"
                         expandable
                         onClick={() => {
-                          setFolderData(delFolder(data.id));
+                          delFolder(data.id);
                         }}
                       >
                         delete

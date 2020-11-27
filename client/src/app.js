@@ -22,7 +22,7 @@ import { useFetch_get } from "./pages/root/index";
 import Home from "../src/pages/root/home";
 import Recording from "../src/pages/recording";
 import Setting from "../src/pages/setting";
-
+import Fol from "../src/pages/folder";
 const App = () => {
   const {
     isLoading,
@@ -49,7 +49,9 @@ const App = () => {
             <Route path="/" component={Home} exact />
             <Route path="/recording/:foldername" component={Recording} />
             <Route path="/setting" component={Setting} />
-            <Route path="/musics/:musicId" component={MusicDetail} />
+            <Route path="/folder/:foldername" component={Fol} />
+
+            {/*<Route path="/musics/:musicId" component={MusicDetail} />
             <Route path="/fourier/:musicId" component={ShowFourier} />
             <Route path="/spectrogram/:musicId" component={ShowSpectrogram} />
             <Route path="/frequency/:musicId" component={ShowFrequency} />
@@ -64,7 +66,7 @@ const App = () => {
             <Route path="/decibel/:musicId" component={Decibel} />
             <Route path="/folder_pich/:folderID" component={Pich} />
             <Route path="/folder_volume/:folderID" component={Volume} />
-            <Route path="/folder_tone/:folderID" component={Tone} />
+    <Route path="/folder_tone/:folderID" component={Tone} />*/}
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

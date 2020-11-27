@@ -137,12 +137,39 @@ def get_musics():
 
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
+    musics.reverse()
+    print(musics)
     session.close()
     return jsonify(musics)
 
 
-@app.route('/<user_id>/musics', methods=['PUT'])
+# 該当フォルダの曲のリストを返す
+@app.route('/musics/folder/<folder_id>', methods=['GET'])
 @requires_auth
+def get_folder_musics(folder_id):
+    session = create_session()
+    user_id = g.current_user['sub']
+    musics = session.query(Music_Folders).filter_by(
+        user_id=user_id, folder_id=folder_id).all()
+    musics = [m.to_json() for m in musics]
+    music_ids = []
+    for i in range(len(musics)):
+        music_ids.append(musics[i]["music_id"])
+
+    all_music = session.query(Music).filter_by(user_id=user_id)
+    all_music = [m.to_json() for m in all_music]
+    fol_music = []
+    for i in range(len(all_music)):
+        if all_music[i]["id"] in music_ids:
+            fol_music.append(all_music[i])
+    print(fol_music)
+
+    session.close()
+    return jsonify(fol_music)
+
+
+@ app.route('/<user_id>/musics', methods=['PUT'])
+@ requires_auth
 def put_music(user_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -154,8 +181,8 @@ def put_music(user_id):
     return 'received'
 
 
-@app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
+@ requires_auth
 def get_comment(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -166,8 +193,8 @@ def get_comment(user_id, music_id):
     return jsonify(comment)
 
 
-@app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/comments', methods=['PUT'])
+@ requires_auth
 def put_comment(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -192,8 +219,8 @@ def put_music_folders2(user_id, music_id, folder_id):
 """
 
 
-@app.route('/<user_id>/musics/put_folders/<music_id>', methods=['PUT'])
-@requires_auth
+@ app.route('/<user_id>/musics/put_folders/<music_id>', methods=['PUT'])
+@ requires_auth
 def put_music_folder(user_id, music_id):
     user_id = g.current_user['sub']
     folder_ids = request.data.decode()
@@ -227,6 +254,7 @@ def put_folder_name(user_id):
     return jsonify(folder)
 
 
+# フォルダのリストを返す
 @app.route('/<user_id>/musics/folders2', methods=['GET'])
 @requires_auth
 def put_folder2(user_id):
@@ -243,7 +271,6 @@ def put_folder2(user_id):
 def get_music_name(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
-    #user_id = "auth0|5f6381061d80b10078e6515a"
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     musics = musics.to_json()
@@ -266,30 +293,37 @@ def change_name(user_id, music_id):
     session.close()
     return "reseive"
 
-# エラーでる
 
-
+# 録音データの削除
 @app.route('/<user_id>/musics/delete/<music_id>', methods=['DELETE'])
+@requires_auth
 def delete(user_id, music_id):
     session = create_session()
+    user_id = g.current_user['sub']
     musics = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    session.query(Comment).filter_by(music_id=music_id).delete()
+    session.query(Comment).filter_by(
+        music_id=music_id, user_id=user_id).delete()
     session.query(Music_Folders).filter_by(
         user_id=user_id, music_id=music_id).delete()
     session.delete(musics)
     # session.delete(comments)
     session.commit()
     session.close()
-    print("Delete function")
-    return "delete"
+
+    musics = session.query(Music).filter_by(user_id=user_id).all()
+    musics = [m.to_json() for m in musics]
+    musics.reverse()
+    session.close()
+    print(musics)
+    return jsonify(musics)
 
 
 @app.route('/<user_id>/musics/delete/<music_id>/from/<folder_id>', methods=['DELETE'])
 @requires_auth
 def delete_from_folder(user_id, music_id, folder_id):
     session = create_session()
-    #user_id = "auth0|5f6381061d80b10078e6515a"
+    # user_id = "auth0|5f6381061d80b10078e6515a"
     user_id = g.current_user['sub']
     session.query(Music_Folders).filter_by(
         user_id=user_id, music_id=music_id, folder_id=folder_id).delete()
@@ -371,7 +405,7 @@ def get_music_content(user_id, music_id):
     response = make_response()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
@@ -567,7 +601,7 @@ def amplitude(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     wf = wave.open(io.BytesIO(music.content))
     buffer = wf.readframes(wf.getnframes())
     # 縦:振幅 2バイトずつ整理(-32768から32767)
@@ -593,7 +627,7 @@ def amplitude(user_id, music_id):
 def fourier(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
-    #music = session.query(Music).filter_by(user_id=user_id, id=music_id).first()
+    # music = session.query(Music).filter_by(user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     # data, _ = librosa.effects.trim(data, 45)
@@ -761,7 +795,7 @@ def decibel(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     print(rate)
     data = data.astype(np.float)
@@ -792,7 +826,7 @@ def decibel_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -825,7 +859,7 @@ def decibel_ave(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     # data, _ = librosa.effects.trim(data, 45)
@@ -858,7 +892,7 @@ def decibel_ave_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -997,7 +1031,7 @@ def frequency_ave(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1049,7 +1083,7 @@ def frequency_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
@@ -1115,7 +1149,7 @@ def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
@@ -1138,7 +1172,7 @@ def spectrum_rollofff(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     print(sr)
     y, _ = librosa.effects.trim(y, 45)
@@ -1164,7 +1198,7 @@ def spectrum_rollofff_ave(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
@@ -1201,7 +1235,7 @@ def spectrum_rollofff_y(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
@@ -1224,7 +1258,7 @@ def spectrum_flatness(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    #music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     flatness = librosa.feature.spectral_flatness(y=y)
