@@ -74,17 +74,17 @@ const Home = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton slot="start" fill="clear">
+          <IonButton
+            slot="start"
+            fill="clear"
+            href="/setting"
+            onClick={() => {
+              history.push("/setting");
+            }}
+          >
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
           <IonTitle>musicvis</IonTitle>
-          <IonButton
-            slot="end"
-            color="light"
-            onClick={() => logout({ returnTo: window.location.origin })}
-          >
-            Log out
-          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent>
