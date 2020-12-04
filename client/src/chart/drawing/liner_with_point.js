@@ -1,33 +1,29 @@
 import React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
-const ManyLiner = ({ data }) => {
-  if (data == null || data === undefined) {
+const PointLiner = ({ data }) => {
+  if (data == null) {
     return null;
   }
-
-  data.map((input) => {
-    input.data.filter((x) => x % 5 == 0);
-  });
-
+  console.log(data);
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
-        data={data.map((input) => {
-          const d = parseInt(input.data.length / 100, 10);
-          return {
-            id: input.id,
-            data: input.data.filter(({ x }) => x % d == 0),
-          };
-        })}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        data={[
+          {
+            id: "Your record",
+            data: data.filter(({ x, _ }) => x % 1 === 0),
+          },
+        ]}
+        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
           min: "auto",
           max: "auto",
+          stacked: true,
+          reverse: false,
         }}
-        curve="linear"
         axisTop={null}
         axisRight={null}
         axisBottom={{
@@ -35,10 +31,7 @@ const ManyLiner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data.length
-            ? data[0].data.filter(({ x }) => x % 200 === 0).map(({ x }) => x)
-            : [],
-          legend: "",
+          legend: "track No.",
           legendOffset: 36,
           legendPosition: "middle",
         }}
@@ -47,19 +40,28 @@ const ManyLiner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "",
+          legend: "point",
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "nivo" }}
-        enablePoints={false}
+        colors={{ scheme: "accent" }}
+        lineWidth={4}
+        pointSize={10}
+        pointColor={{ theme: "background" }}
+        pointBorderWidth={2}
+        pointBorderColor={{ from: "serieColor" }}
+        pointLabel="y"
+        pointLabelYOffset={-12}
+        areaBaselineValue={120}
+        areaOpacity={0.45}
+        useMesh={true}
         legends={[
           {
-            anchor: "top-left",
+            anchor: "bottom-right",
             direction: "column",
             justify: false,
-            translateX: 0,
-            translateY: -50,
+            translateX: 100,
+            translateY: 0,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
             itemWidth: 80,
@@ -83,5 +85,4 @@ const ManyLiner = ({ data }) => {
     </div>
   );
 };
-
-export default ManyLiner;
+export default PointLiner;

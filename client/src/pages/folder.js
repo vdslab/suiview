@@ -21,6 +21,7 @@ import {
   IonItemOption,
   IonItemOptions,
   IonFooter,
+  IonListHeader,
 } from "@ionic/react";
 import {
   chevronForwardOutline,
@@ -35,6 +36,11 @@ import {
   request_folder_name,
 } from "../serviceWorker/index";
 import { useParams } from "react-router-dom";
+import ProgressChart from "../chart/page/progress";
+import ParallelChart from "../chart/page/parallel";
+import FrequencyChart from "../chart/page/cmp_freq";
+import VolumeChart from "../chart/page/comp_vol";
+import ToneChart from "../chart/page/cmp_tone";
 
 export const convertDate = (input) => {
   if (input === null) {
@@ -54,38 +60,98 @@ export const convertDate = (input) => {
 };
 
 ////////////////////////////////////////////
+const ShowChart = (folderId, kind) => {
+  console.log("here");
+  if (folderId == null) {
+    return null;
+  }
+  console.log(kind);
+
+  if (kind === "progress") {
+    return (
+      <div>
+        <ProgressChart folderId={folderId} />
+      </div>
+    );
+  } else if (kind === "parallel") {
+    return (
+      <div>
+        <ParallelChart folderId={folderId} />
+      </div>
+    );
+  } else if (kind === "pitch") {
+    return (
+      <div>
+        <FrequencyChart folderId={folderId} />
+      </div>
+    );
+  } else if (kind === "vol") {
+    return (
+      <div>
+        <VolumeChart folderId={folderId} />
+      </div>
+    );
+  } else if (kind === "tone") {
+    return (
+      <div>
+        <ToneChart folderId={folderId} />
+      </div>
+    );
+  }
+};
+
+const FolderDetail = () => {
+  const [chartId, setChartId] = useState("PROGRESS");
+  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
+  const { foldername } = useParams();
+  console.log(foldername);
+  return (
+    <div>
+      <IonItem>
+        <IonSelect
+          value={chartId}
+          placeholder={chartId}
+          onIonChange={(e) => setChartId(e.detail.value)}
+          buttons={["Cancel", "Open Modal", "Delete"]}
+        >
+          {chartIds.map((id, k) => {
+            return (
+              <IonSelectOption value={id} key={k}>
+                {id}
+              </IonSelectOption>
+            );
+          })}
+        </IonSelect>
+      </IonItem>
+      {chartId === "PROGRESS" ? ShowChart(foldername, "progress") : []}
+      {chartId === "ALL" ? ShowChart(foldername, "parallel") : []}
+      {chartId === "PITCH" ? ShowChart(foldername, "pitch") : []}
+      {chartId === "VOL" ? ShowChart(foldername, "vol") : []}
+      {chartId === "TONE" ? ShowChart(foldername, "tone") : []}
+    </div>
+  );
+};
 
 const Folder = ({ history }) => {
   const [musics, setMusics] = useState();
   const id = useParams().foldername;
   const [folName, setFolName] = useState();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request_music_list(id, getAccessTokenSilently).then((data) => {
       setMusics(data);
     });
   }, []);
-  console.log(musics);
 
   useIonViewWillEnter(() => {
     request_folder_name(id, getAccessTokenSilently).then((data) => {
       setFolName(data);
     });
   }, []);
-  console.log(folName);
 
   const delMusic = (id) => {
-    console.log("del", id);
     request_del_music(id, getAccessTokenSilently).then((data) => {
       setMusics(data);
     });
@@ -95,15 +161,22 @@ const Folder = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonBackButton
+          <IonButton
             slot="start"
-            defaultHref="/"
+            href="/"
             icon={chevronBackOutline}
-          />
+            //onClick={() => history.push("/")}
+          ></IonButton>
           <IonTitle>{folName}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonList>
+          <IonListHeader>詳細グラフ</IonListHeader>
+          <IonCard>
+            <FolderDetail />
+          </IonCard>
+        </IonList>
         <IonList>
           {musics !== undefined
             ? musics.map((data, i) => {

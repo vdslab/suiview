@@ -559,6 +559,7 @@ def parallel_data(user_id, folder_id):
         dicDatas.append(dic)
 
     session.close()
+    print(dicDatas)
     return jsonify(dicDatas)
 
 
@@ -1333,6 +1334,7 @@ def comp_tone(user_id, folder_id):
     else:
         print(len(preData))
         for i in range(1, len(preData)):
+            #alignment = dtw(preData[0], preData[i], keep_internals=True)
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:

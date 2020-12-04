@@ -138,20 +138,20 @@ const ShowChart = (musicId, kind) => {
   if (musicId == null) {
     return null;
   }
-  if (kind == "pitch") {
+  if (kind === "pitch") {
     console.log("here");
     return (
       <div>
         <ShowFrequency musicId={musicId} />
       </div>
     );
-  } else if (kind == "vol") {
+  } else if (kind === "vol") {
     return (
       <div>
         <Decibel musicId={musicId} />
       </div>
     );
-  } else if (kind == "tone") {
+  } else if (kind === "tone") {
     return (
       <div>
         <Centroid_Rolloff musicId={musicId} />
@@ -190,10 +190,10 @@ const Chartes = () => {
     "PITCH",
     "VOL",
     "TONE",
-    "SPECTRUM FLATNESS",
+    /*"SPECTRUM FLATNESS",
     "FOURIER",
     "AMPLITUDE",
-    "SPECTROGRAM",
+    "SPECTROGRAM",*/
   ];
   const { musicId } = useParams();
   console.log(musicId);
@@ -206,8 +206,12 @@ const Chartes = () => {
           onIonChange={(e) => setChartId(e.detail.value)}
           buttons={["Cancel", "Open Modal", "Delete"]}
         >
-          {chartIds.map((id) => {
-            return <IonSelectOption value={id}>{id}</IonSelectOption>;
+          {chartIds.map((id, k) => {
+            return (
+              <IonSelectOption value={id} key={k}>
+                {id}
+              </IonSelectOption>
+            );
           })}
         </IonSelect>
       </IonItem>

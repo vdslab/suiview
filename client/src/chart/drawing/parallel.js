@@ -1,0 +1,117 @@
+import React, { useEffect, useState } from "react";
+import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
+
+const ParallelCoordinates = ({ data }) => {
+  if (data === null || data === undefined) {
+    return null;
+  }
+
+  console.log(data);
+  /*const max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.tone;
+    })
+  );
+  const min = Math.min.apply(
+    Math,
+    data.map((input) => {
+      return input.tone;
+    })
+  );
+
+  const pich_max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.pich;
+    })
+  );
+
+  const vol_max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.volume;
+    })
+  );
+*/
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <ResponsiveParallelCoordinates
+        data={data}
+        variables={[
+          {
+            key: "No.",
+            type: "point",
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "No.",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "pich",
+            type: "linear",
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "ptich",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "tone",
+            type: "linear",
+            //min: max,
+            //max: min,
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "tone",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+          {
+            key: "volume",
+            type: "linear",
+            padding: 1,
+            min: "auto",
+            max: "auto",
+            ticksPosition: "before",
+            legend: "volume",
+            legendPosition: "start",
+            legendOffset: 20,
+          },
+        ]}
+        axesPlan="foreground"
+        strokeWidth={3}
+        //lineOpacity={0.1}
+        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+        animate={true}
+        motionStiffness={90}
+        motionDamping={12}
+        colors={{ scheme: "yellow_green" }}
+        lineOpacity={0.45}
+        theme={{
+          axis: {
+            domain: {
+              line: {
+                stroke: "rgb(136, 158, 174)",
+                strokeWidth: 2,
+              },
+            },
+            ticks: {
+              line: {
+                stroke: "rgb(136, 158, 174)",
+                strokeWidth: 2,
+              },
+            },
+          },
+        }}
+      />
+      hello
+    </div>
+  );
+};
+
+export default ParallelCoordinates;

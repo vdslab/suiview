@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import Liner from "../drawing/liner";
 import { request } from "../../serviceWorker/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import ParallelCoordinates from "../drawing/parallel";
 
-const ShowFrequency = () => {
-  const { musicId } = useParams();
-  const [ave, setAve] = useState();
+const ParallelChart = () => {
+  console.log("here");
+
+  const { foldername } = useParams();
   const [data, setData] = useState();
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency/ave`,
-      getAccessTokenSilently
-    ).then((data) => {
-      setAve(data);
-    });
-  }, []);
-
-  useEffect(() => {
-    request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`,
-      getAccessTokenSilently,
+      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${foldername}`,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
   }, []);
+  console.log(data);
 
   if (data == undefined) {
     return (
@@ -39,10 +31,10 @@ const ShowFrequency = () => {
   }
   return (
     <div>
-      <IonItem lines="none"> 安定度... {ave}</IonItem>
-      <Liner data={data} />
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+      <ParallelCoordinates data={data} />
     </div>
   );
 };
 
-export default ShowFrequency;
+export default ParallelChart;
