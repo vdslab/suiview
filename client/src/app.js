@@ -23,6 +23,8 @@ import Home from "../src/pages/root/home";
 import Recording from "../src/pages/recording";
 import Setting from "../src/pages/setting";
 import Fol from "../src/pages/folder";
+import Detail from "../src/pages/detail";
+
 const App = () => {
   const {
     isLoading,
@@ -50,6 +52,7 @@ const App = () => {
             <Route path="/recording/:foldername" component={Recording} />
             <Route path="/setting" component={Setting} />
             <Route path="/folder/:foldername" component={Fol} />
+            <Route path="/detail/:musicId/from/:folderId" component={Detail} />
 
             {/*<Route path="/musics/:musicId" component={MusicDetail} />
             <Route path="/fourier/:musicId" component={ShowFourier} />

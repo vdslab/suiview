@@ -148,3 +148,45 @@ export const request_folder_name = async (id, getAccessTokenSilently) => {
     console.error(e);
   }
 };
+
+export const request_music_name = async (id, getAccessTokenSilently) => {
+  try {
+    const token = await getAccessTokenSilently({
+      audience: "https://musicvis",
+      scope: "read:posts",
+    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/music_name`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+export const request_comment_list = async (id, getAccessTokenSilently) => {
+  try {
+    const token = await getAccessTokenSilently({
+      audience: "https://musicvis",
+      scope: "read:posts",
+    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/comments`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};

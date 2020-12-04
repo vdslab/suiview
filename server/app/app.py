@@ -180,6 +180,8 @@ def put_music(user_id):
     print("ok")
     return 'received'
 
+# 曲ごとのコメントのリストを返す
+
 
 @ app.route('/<user_id>/musics/<music_id>/comments', methods=['GET'])
 @ requires_auth
@@ -402,6 +404,7 @@ def get_folderName(user_id, folder_id):
 # 照らし合わせが出来てない
 def get_music_content(user_id, music_id):
     session = create_session()
+    user_id = "auth0|5f6381061d80b10078e6515a"
     response = make_response()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
@@ -852,7 +855,7 @@ def decibel_data(user_id, music_id):
 
 
 # デシベル値　平均
-@app.route('/<user_id>/musics/<music_id>/decibel_ave', methods=['GET'])
+@app.route('/<user_id>/musics/<music_id>/decibel/ave', methods=['GET'])
 @requires_auth
 def decibel_ave(user_id, music_id):
     session = create_session()
@@ -1021,10 +1024,11 @@ def frequency(user_id, music_id):
         Datas.append(dic)
     session.close()
     print(len(Datas))
+
     return jsonify(Datas)
 
 
-@app.route('/<user_id>/musics/<music_id>/frequency_ave', methods=['GET'])
+@app.route('/<user_id>/musics/<music_id>/frequency/ave', methods=['GET'])
 @requires_auth
 def frequency_ave(user_id, music_id):
     session = create_session()

@@ -106,14 +106,27 @@ const Folder = ({ history }) => {
       <IonContent>
         <IonList>
           {musics !== undefined
-            ? musics.map((data, id) => {
+            ? musics.map((data, i) => {
                 return (
-                  <IonItemSliding key={id}>
-                    <IonItem>
+                  <IonItemSliding key={i}>
+                    <IonItem
+                      _ngcontent-yfv-c79=""
+                      onClick={() => {
+                        console.log(data);
+                        history.push(`/detail/${data.id}/from/${id}`);
+                      }}
+                      detail="false"
+                      target="_blank"
+                      class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+                    >
                       <IonLabel>
                         {convertDate(data.created)}&emsp;{data.name}&emsp;
                       </IonLabel>
+                      <IonButton slot="end" fill="clear">
+                        <IonIcon icon={chevronForwardOutline}></IonIcon>
+                      </IonButton>
                     </IonItem>
+
                     <IonItemOptions>
                       <IonItemOption
                         color="danger"
