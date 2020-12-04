@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { IonItem } from "@ionic/react";
+import React from "react";
 import { ResponsiveLine } from "@nivo/line";
-import { convertDate, useFetch_get } from "../../pages/root/index";
 
 const Liner = ({ data }) => {
   if (data == null) {
