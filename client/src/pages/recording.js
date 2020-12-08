@@ -12,25 +12,17 @@ import {
   IonLabel,
   IonListHeader,
   IonBackButton,
-  IonChip,
   IonInput,
   IonTextarea,
-  IonCard,
   IonFooter,
   IonGrid,
   IonCol,
   IonRow,
+  IonAlert,
 } from "@ionic/react";
-import {
-  chevronForwardOutline,
-  closeOutline,
-  settingsOutline,
-  folderOutline,
-  micOutline,
-  radioButtonOnOutline,
-} from "ionicons/icons";
+import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { musicRecord, saveAudio, useFetch_get } from "../pages/root/index";
+import { musicRecord, saveAudio } from "../serviceWorker/recording";
 import {
   request_folder_list,
   request_del_folder,
@@ -42,7 +34,9 @@ const Recording = ({ history }) => {
   const [musicName, setMusicName] = useState();
   const [comment, setComment] = useState();
   const item = useParams();
+  const [showAlert, setShowAlert] = useState(false);
   const folName = item.foldername;
+  const [r, setR] = useState();
 
   const {
     isLoading,
@@ -53,6 +47,8 @@ const Recording = ({ history }) => {
     logout,
     getAccessTokenSilently,
   } = useAuth0();
+
+  console.log(r);
 
   return (
     <IonPage>
@@ -88,10 +84,33 @@ const Recording = ({ history }) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          <IonButton expand="full">
+          <IonButton
+            expand="full"
+            onClick={() => {
+              musicRecord();
+              setShowAlert(true);
+            }}
+          >
             <IonIcon icon={radioButtonOnOutline}></IonIcon>
           </IonButton>
-          <IonGrid>
+          <IonAlert
+            isOpen={showAlert}
+            onDidDismiss={() => setShowAlert(false)}
+            cssClass="my-custom-class"
+            header={"録音中..."}
+            buttons={[
+              { text: "取り消し" },
+              {
+                text: "完了!",
+                handler: () => {
+                  console.log("push fin");
+                  setR(saveAudio(getAccessTokenSilently));
+                },
+              },
+            ]}
+          />
+
+          {/*<IonGrid>
             <IonRow>
               <IonCol>
                 <IonButton expand="full">やり直す</IonButton>
@@ -100,7 +119,7 @@ const Recording = ({ history }) => {
                 <IonButton expand="full">記録する</IonButton>
               </IonCol>
             </IonRow>
-          </IonGrid>
+          </IonGrid>*/}
         </IonToolbar>
       </IonFooter>
     </IonPage>

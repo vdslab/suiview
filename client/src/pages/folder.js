@@ -164,19 +164,25 @@ const Folder = ({ history }) => {
           <IonButton
             slot="start"
             href="/"
-            icon={chevronBackOutline}
+            fill="clear"
             //onClick={() => history.push("/")}
-          ></IonButton>
+          >
+            <IonIcon icon={chevronBackOutline}></IonIcon>
+          </IonButton>
           <IonTitle>{folName}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList>
-          <IonListHeader>詳細グラフ</IonListHeader>
-          <IonCard>
-            <FolderDetail />
-          </IonCard>
-        </IonList>
+        {id == "all" ? (
+          []
+        ) : (
+          <IonList>
+            <IonListHeader>詳細グラフ</IonListHeader>
+            <IonCard>
+              <FolderDetail />
+            </IonCard>
+          </IonList>
+        )}
         <IonList>
           {musics !== undefined
             ? musics.map((data, i) => {
@@ -222,7 +228,7 @@ const Folder = ({ history }) => {
           <IonButton
             slot="end"
             fill="clear"
-            onClick={() => history.push(`/recording/all`)}
+            onClick={() => history.push(`/recording/${id}`)}
           >
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>
