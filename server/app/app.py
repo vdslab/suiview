@@ -293,7 +293,7 @@ def change_name(user_id, music_id):
     session.add(musics)
     session.commit()
     session.close()
-    return "reseive"
+    return jsonify("reseive")
 
 
 # 録音データの削除

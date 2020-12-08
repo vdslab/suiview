@@ -36,7 +36,8 @@ const Recording = ({ history }) => {
   const item = useParams();
   const [showAlert, setShowAlert] = useState(false);
   const folName = item.foldername;
-  const [r, setR] = useState();
+  //フォルダ・名前のやつやるでバックログ用
+  //const [r, setR] = useState();
 
   const {
     isLoading,
@@ -48,7 +49,7 @@ const Recording = ({ history }) => {
     getAccessTokenSilently,
   } = useAuth0();
 
-  console.log(r);
+  //console.log(r);
 
   return (
     <IonPage>
@@ -104,7 +105,7 @@ const Recording = ({ history }) => {
                 text: "完了!",
                 handler: () => {
                   console.log("push fin");
-                  setR(saveAudio(getAccessTokenSilently));
+                  //setR(saveAudio(getAccessTokenSilently));
                 },
               },
             ]}

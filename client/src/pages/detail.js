@@ -31,6 +31,7 @@ import {
   request_del_music,
   request_folder_name,
   request_comment_list,
+  request_change_music_name,
 } from "../serviceWorker/index";
 import {
   closeOutline,
@@ -256,6 +257,11 @@ const Detail = ({ history }) => {
   }, []);
   console.log(comments);
 
+  const changeName = () => {
+    console.log("here");
+    request_change_music_name(name, musicId, getAccessTokenSilently);
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -269,7 +275,19 @@ const Detail = ({ history }) => {
           >
             <IonIcon icon={closeOutline}></IonIcon>
           </IonButton>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>
+            <IonItem lines="none">
+              <IonInput
+                value={name}
+                onIonChange={(e) => {
+                  setName(e.detail.value);
+                }}
+              ></IonInput>
+              <IonButton slot="end" fill="outline" onClick={() => changeName()}>
+                名前を変更する
+              </IonButton>
+            </IonItem>
+          </IonTitle>
           <IonButton
             slot="end"
             fill="clear"
