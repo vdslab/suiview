@@ -36,6 +36,7 @@ import { useParams } from "react-router-dom";
 const SelectFolder = ({ history }) => {
   const folderId = useParams().folderId;
   const musicId = useParams().musicId;
+  const from = useParams().path;
   const [musicName, setMusicName] = useState();
   const [folderList, setFolderList] = useState();
   const [showAlert, setShowAlert] = useState(false);
@@ -68,9 +69,15 @@ const SelectFolder = ({ history }) => {
 
   const ChangeFol = (id) => {
     console.log(id);
-    request_change_folder(musicId, id, getAccessTokenSilently).then(() =>
-      history.push("/")
-    );
+    request_change_folder(musicId, id, getAccessTokenSilently).then(() => {
+      /*できれば遷移の仕方分けたい*/
+      /*  if (from == "detail") {
+        history.push("/");
+      } else {
+        history.push(`/folder/${folderId}`);
+      }*/
+      history.push("/");
+    });
   };
 
   const {

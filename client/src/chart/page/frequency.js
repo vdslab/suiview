@@ -23,24 +23,29 @@ const ShowFrequency = () => {
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`,
-      getAccessTokenSilently,
       getAccessTokenSilently
     ).then((data) => {
       setData(data);
     });
   }, []);
 
-  if (data == undefined) {
+  console.log(data);
+
+  /*if (data == undefined) {
     return (
       <IonItem>
         <div>loading...</div>
       </IonItem>
     );
-  }
+  }*/
   return (
     <div>
       <IonItem lines="none"> 安定度... {ave}</IonItem>
-      <Liner data={data} />
+      {data != undefined ? (
+        <Liner data={data} />
+      ) : (
+        <IonItem>loading...</IonItem>
+      )}
     </div>
   );
 };

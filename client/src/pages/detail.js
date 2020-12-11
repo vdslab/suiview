@@ -316,7 +316,9 @@ const Detail = ({ history }) => {
               text: "フォルダの移動",
               icon: ellipsisHorizontalCircleOutline,
               handler: () => {
-                history.push(`/select_folder/${musicId}/from/${folderId}`);
+                history.push(
+                  `/select_folder/${musicId}/folder/${folderId}/from/detail`
+                );
                 console.log("Share clicked");
               },
             },

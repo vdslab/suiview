@@ -245,11 +245,11 @@ def put_music_folder(user_id, music_id):
 @requires_auth
 def change_folder(music_id, folder_id):
     session = create_session()
-    #user_id = res_user_id()
+    # user_id = res_user_id()
     user_id = g.current_user['sub']
     data = session.query(Music_Folders).filter_by(
         user_id=user_id, music_id=music_id).first()
-    print("fol",folder_id)
+    print("fol", folder_id)
     print("data= ", data.to_json())
     if data != None:
         data.folder_id = folder_id
@@ -257,7 +257,7 @@ def change_folder(music_id, folder_id):
         print("hahahaha")
         data = Music_Folders(
             user_id=user_id, music_id=music_id, folder_id=folder_id)
-    
+
     print("data= ", data.to_json())
     session.add(data)
     session.commit()
@@ -566,15 +566,22 @@ def parallel_data(user_id, folder_id):
 
     Datas = []
     for _id in music_ids:
-        Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+        # Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+        #    user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+        Datas.append([_id, frequency_ave_data(user_id, _id),  spectrum_rollofff_ave_data(
             user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+
+    """
     Datas = sorted(Datas, key=lambda x: x[2])
     for i in range(len(Datas)):
         Datas[i].append(Datas[i][1]+Datas[i][3] +
                         ((Datas[-1][2]-Datas[i][2])/10000))
     Datas = sorted(Datas, key=lambda x: x[4])
     print(Datas)
-
+    """
+    for i in range(len(Datas)):
+        Datas[i].append(Datas[i][1]+Datas[i][3] + Datas[i][2])
+    Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     for i in range(len(Datas)-1, -1, -1):
         dic = {
@@ -591,8 +598,8 @@ def parallel_data(user_id, folder_id):
 
 
 # 精進グラフ
-@app.route('/<user_id>/musics/progress/<folder_id>', methods=['PUT', 'GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/progress/<folder_id>', methods=['PUT', 'GET'])
+@ requires_auth
 def progress(user_id, folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -607,12 +614,20 @@ def progress(user_id, folder_id):
 
     Datas = []
     for _id in music_ids:
-        Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+        # Datas.append([_id, frequency_ave_data(user_id, _id), fourier_roll_data(
+        #    user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+        Datas.append([_id, frequency_ave_data(user_id, _id),  spectrum_rollofff_ave_data(
             user_id, _id), round(decibel_ave_data(user_id, _id), 4)])
+
     # Datas = sorted(Datas, key=lambda x: x[2])
+    """
     for i in range(len(Datas)):
         Datas[i].append(-1*(Datas[i][1]+Datas[i][3] +
                             ((Datas[-1][2]-Datas[i][2])/10000)))
+    """
+    for i in range(len(Datas)):
+        Datas[i].append(-1*(Datas[i][1]+Datas[i][3] + Datas[i][2]))
+
     dicDatas = []
     for i in range(len(Datas)):
         dic = {
@@ -625,8 +640,8 @@ def progress(user_id, folder_id):
 
 
 #　波形
-@app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
+@ requires_auth
 def amplitude(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -653,8 +668,8 @@ def amplitude(user_id, music_id):
 
 
 # フーリエ変換
-@app.route('/<user_id>/musics/<music_id>/fourier', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/fourier', methods=['GET'])
+@ requires_auth
 def fourier(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -707,7 +722,7 @@ def fourier(user_id, music_id):
 
 
 # フーリエ変換　ロールオフ
-@app.route('/<user_id>/musics/<music_id>/fourier_roll', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/fourier_roll', methods=['GET'])
 def fourier_roll(user_id, music_id):
     session = create_session()
     music = session.query(Music).get(music_id)
@@ -789,8 +804,8 @@ def fourier_roll_data(user_id, music_id):
 
 
 # スペクトログラム
-@app.route('/<user_id>/musics/<music_id>/spectrogram', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/spectrogram', methods=['GET'])
+@ requires_auth
 def spectrogram(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -819,8 +834,8 @@ def spectrogram(user_id, music_id):
 
 
 # デシベル値
-@app.route('/<user_id>/musics/<music_id>/decibel', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/decibel', methods=['GET'])
+@ requires_auth
 def decibel(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -841,8 +856,20 @@ def decibel(user_id, music_id):
                 _max = db[j][i]
         dbLine.append(_max)
 
-    Datas = []
+    start = 0
+    end = 0
     for i in range(len(dbLine)):
+        if dbLine[i] > -20:
+            start = i
+            break
+    for i in range(len(dbLine)-1, -1, -1):
+        if dbLine[i] > -20:
+            end = i
+            break
+
+    Datas = []
+    # for i in range(len(dbLine)):
+    for i in range(start, end):
         dic = {
             "x": i+1,
             "y": int(dbLine[i])
@@ -870,7 +897,7 @@ def decibel_data(user_id, music_id):
             if _max < db[j][i]:
                 _max = db[j][i]
         dbLine.append(_max)
-
+    """
     Datas = []
     for i in range(len(dbLine)):
         dic = {
@@ -878,13 +905,30 @@ def decibel_data(user_id, music_id):
             "y": int(dbLine[i])
         }
         Datas.append(dic)
+    """
     session.close()
     return dbLine
 
 
+def find_start_end(user_id, music_id):
+    decibelData = decibel_data(user_id, music_id)
+    start = 0
+    end = 0
+    for i in range(len(decibelData)):
+        if decibelData[i] > -25:
+            start = i
+            break
+    for i in range(len(decibelData)-1, -1, -1):
+        if decibelData[i] > -25:
+            end = i
+            break
+    return [start, end]
+
 # デシベル値　平均
-@app.route('/<user_id>/musics/<music_id>/decibel/ave', methods=['GET'])
-@requires_auth
+
+
+@ app.route('/<user_id>/musics/<music_id>/decibel/ave', methods=['GET'])
+@ requires_auth
 def decibel_ave(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -905,14 +949,23 @@ def decibel_ave(user_id, music_id):
                 _max = db[j][i]
         dbLine.append(_max)
 
-    Datas = []
+    start = 0
+    end = 0
+    for i in range(len(dbLine)):
+        if dbLine[i] > -20:
+            start = i
+            break
+    for i in range(len(dbLine)-1, -1, -1):
+        if dbLine[i] > -20:
+            end = i
+            break
+
     total = 0
     cnt = 0
-    for i in range(len(dbLine)-1):
+    for i in range(start, end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
-            if dbLine[i] >= -30:
-                total += abs(dbLine[i]-dbLine[i+1])
-                cnt += 1
+            total += abs(dbLine[i]-dbLine[i+1])
+            cnt += 1
 
     ave = total/cnt
     session.close()
@@ -937,22 +990,31 @@ def decibel_ave_data(user_id, music_id):
                 _max = db[j][i]
         dbLine.append(_max)
 
-    Datas = []
+    start = 0
+    end = 0
+    for i in range(len(dbLine)):
+        if dbLine[i] > -20:
+            start = i
+            break
+    for i in range(len(dbLine)-1, -1, -1):
+        if dbLine[i] > -20:
+            end = i
+            break
+
     total = 0
     cnt = 0
-    for i in range(len(dbLine)-1):
+    for i in range(start, end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
-            if dbLine[i] >= -30:
-                total += abs(dbLine[i]-dbLine[i+1])
-                cnt += 1
+            total += abs(dbLine[i]-dbLine[i+1])
+            cnt += 1
 
     ave = total/cnt
     session.close()
     return ave
 
 
-@app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['PUT', 'GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['PUT', 'GET'])
+@ requires_auth
 def comp_decibel(user_id, folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1025,8 +1087,8 @@ def comp_decibel(user_id, folder_id):
 
 
 # 基本周波数
-@app.route('/<user_id>/musics/<music_id>/frequency', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/frequency', methods=['GET'])
+@ requires_auth
 def frequency(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1038,26 +1100,43 @@ def frequency(user_id, music_id):
     print(rate)
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
+    """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
     # print(_time)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    """
+
+    f0, voiced_flag, voiced_probs = librosa.pyin(
+        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+    # times = librosa.times_like(f0)
+    print(f0)
+    start, end = find_start_end(user_id, music_id)
     Datas = []
-    # for i in range(500):  # )len(f0)):
-    for i in range(len(f0)):
-        dic = {
-            "x": i+1,
-            "y": f0[i]
-        }
+    for i in range(start, end):
+        # for i in range(len(f0)):
+        if f0[i] >= 0:
+            dic = {
+                "x": i+1,
+                "y": round(f0[i], 4)
+            }
+        else:
+            dic = {
+                "x": i+1,
+                "y": 0
+            }
         Datas.append(dic)
     session.close()
     print(len(Datas))
+    print(Datas)
+
+    # print(Datas)
 
     return jsonify(Datas)
 
 
-@app.route('/<user_id>/musics/<music_id>/frequency/ave', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/frequency/ave', methods=['GET'])
+@ requires_auth
 def frequency_ave(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1067,13 +1146,19 @@ def frequency_ave(user_id, music_id):
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
+    """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    """
+    f0, voiced_flag, voiced_probs = librosa.pyin(
+        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+    start, end = find_start_end(user_id, music_id)
     total = 0
     cnt = 0
-    for i in range(len(f0)-1):
-        if not(f0[i] == 0 or f0[i+1] == 0):
+    if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
+        if f0[i] > 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
             total += abs(f0[i]-f0[i+1])
             cnt += 1
 
@@ -1093,13 +1178,20 @@ def frequency_ave_data(user_id, music_id):
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
+    """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    """
+    f0, voiced_flag, voiced_probs = librosa.pyin(
+        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+    start, end = find_start_end(user_id, music_id)
     total = 0
     cnt = 0
-    for i in range(len(f0)-1):
-        if not(f0[i] == 0 or f0[i+1] == 0):
+    for i in range(start, end):
+        if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
+            # print(f0[i])
             total += abs(f0[i]-f0[i+1])
             cnt += 1
 
@@ -1119,16 +1211,27 @@ def frequency_data(user_id, music_id):
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
+    """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    """
+    f0, voiced_flag, voiced_probs = librosa.pyin(
+        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
     Datas = []
-    # for i in range(500):  # )len(f0)):
     for i in range(len(f0)):
-        dic = {
-            "x": i+1,
-            "y": f0[i]
-        }
+        if f0[i] >= 0:
+            dic = {
+                "x": i+1,
+                "y": round(f0[i], 4)
+            }
+        else:
+            dic = {
+                "x": i+1,
+                "y": 0
+            }
+
         Datas.append(dic)
     session.close()
     return Datas
@@ -1144,9 +1247,13 @@ def dtw_frequency_data(user_id, music_id):
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     data, _ = librosa.effects.trim(data, 45)
+    """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
     f0 = pw.stonemask(data, _f0, _time, rate)
+    """
+    f0, voiced_flag, voiced_probs = librosa.pyin(
+        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
     session.close()
     return f0
 
@@ -1156,7 +1263,7 @@ def dtw_frequency_data(user_id, music_id):
 # グラフ比較(基本周波数)
 
 
-@app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
 def comp_chart(user_id, music_id, music_id2):
     Datas = []
     data = frequency_data(user_id, music_id)
@@ -1185,9 +1292,10 @@ def spectrum_centroid(user_id, music_id):
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+    start, end = find_start_end(user_id, music_id)
     Datas = []
-
-    for i in range(len(cent[0])):
+    # for i in range(len(cent[0])):
+    for i in range(start, end):
         dic = {
             "x": i+1,
             "y": int(cent[0][i])
@@ -1210,9 +1318,11 @@ def spectrum_rollofff(user_id, music_id):
     y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    Datas = []
 
-    for i in range(len(rolloff[0])):
+    start, end = find_start_end(user_id, music_id)
+    Datas = []
+    for i in range(start, end):
+        # for i in range(len(rolloff[0])):
         dic = {
             "x": i+1,
             "y": int(rolloff[0][i])
@@ -1223,8 +1333,8 @@ def spectrum_rollofff(user_id, music_id):
     return Datas
 
 
-@app.route('/<user_id>/musics/<music_id>/rolloff_ave', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/rolloff_ave', methods=['GET'])
+@ requires_auth
 def spectrum_rollofff_ave(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1247,9 +1357,10 @@ def spectrum_rollofff_ave(user_id, music_id):
         Datas.append(dic)
     # return jsonify(Datas)
     """
+    start, end = find_start_end(user_id, music_id)
     cnt = 0
     total = 0
-    for i in range(len(rolloff[0])-1):
+    for i in range(start, end):
         if rolloff[0][i] < 4000 and rolloff[0][i+1] < 4000:
             total += abs(rolloff[0][i]-rolloff[0][i+1])
             cnt += 1
@@ -1261,6 +1372,34 @@ def spectrum_rollofff_ave(user_id, music_id):
     session.close()
 
     return jsonify(ave)
+
+
+def spectrum_rollofff_ave_data(user_id, music_id):
+    session = create_session()
+    user_id = g.current_user['sub']
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    # music = session.query(Music).get(music_id)
+    y, sr = librosa.load(io.BytesIO(music.content), 48000)
+    y, _ = librosa.effects.trim(y, 45)
+    # 引数roll_percent=0.8がデフォ
+    rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+
+    start, end = find_start_end(user_id, music_id)
+    cnt = 0
+    total = 0
+    for i in range(start, end):
+        if rolloff[0][i] < 4000 and rolloff[0][i+1] < 4000:
+            total += abs(rolloff[0][i]-rolloff[0][i+1])
+            cnt += 1
+    if cnt != 0:
+        ave = total/cnt
+    else:
+        ave = -1
+
+    session.close()
+
+    return ave
 
 
 def spectrum_rollofff_y(user_id, music_id):
@@ -1283,8 +1422,8 @@ def spectrum_rollofff_y(user_id, music_id):
 
 
 # --フラットネス--------
-@app.route('/<user_id>/musics/<music_id>/spectrum_flatness', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/spectrum_flatness', methods=['GET'])
+@ requires_auth
 def spectrum_flatness(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1308,8 +1447,8 @@ def spectrum_flatness(user_id, music_id):
     return jsonify(Datas)
 
 
-@app.route('/<user_id>/musics/<music_id>/spectrum_centroid&rolloff', methods=['GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/<music_id>/spectrum_centroid&rolloff', methods=['GET'])
+@ requires_auth
 def get_centroid_rolloff(user_id, music_id):
     user_id = g.current_user['sub']
     cent = spectrum_centroid(user_id, music_id)
@@ -1319,8 +1458,8 @@ def get_centroid_rolloff(user_id, music_id):
     return jsonify(Datas)
 
 
-@app.route('/<user_id>/musics/folder_comp_tone/<folder_id>', methods=['PUT', 'GET'])
-@requires_auth
+@ app.route('/<user_id>/musics/folder_comp_tone/<folder_id>', methods=['PUT', 'GET'])
+@ requires_auth
 def comp_tone(user_id, folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -1361,7 +1500,7 @@ def comp_tone(user_id, folder_id):
     else:
         print(len(preData))
         for i in range(1, len(preData)):
-            #alignment = dtw(preData[0], preData[i], keep_internals=True)
+            # alignment = dtw(preData[0], preData[i], keep_internals=True)
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:

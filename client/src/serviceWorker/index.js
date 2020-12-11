@@ -9,7 +9,6 @@ export const request = async (url, getAccessTokenSilently) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      // body: JSON.stringify(token),
     });
     return await response.json();
   } catch (e) {

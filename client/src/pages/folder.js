@@ -208,6 +208,18 @@ const Folder = ({ history }) => {
 
                     <IonItemOptions>
                       <IonItemOption
+                        color="primary"
+                        expandable
+                        onClick={() => {
+                          history.push(
+                            `/select_folder/${data.id}/folder/${id}/from/folderdata`
+                          );
+                        }}
+                      >
+                        file
+                      </IonItemOption>
+
+                      <IonItemOption
                         color="danger"
                         expandable
                         onClick={() => {

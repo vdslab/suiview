@@ -55,7 +55,7 @@ const App = () => {
             <Route path="/folder/:foldername" component={Fol} />
             <Route path="/detail/:musicId/from/:folderId" component={Detail} />
             <Route
-              path="/select_folder/:musicId/from/:folderId"
+              path="/select_folder/:musicId/folder/:folderId/from/:path"
               component={SelectFolder}
             />
 
