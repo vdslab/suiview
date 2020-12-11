@@ -240,6 +240,25 @@ def put_music_folder(user_id, music_id):
     return 'reseived'
 
 
+# フォルダの変更
+@app.route('/1/musics/<music_id>/change_folder/<folder_id>', methods={"PUT"})
+@requires_auth
+def change_folder(music_id, folder_id):
+    session = create_session()
+    #user_id = res_user_id()
+    user_id = g.current_user['sub']
+    data = session.query(Music_Folders).filter_by(
+        user_id=user_id, music_id=music_id).first()
+    data = data.to_json()
+    data.folder_id = folder_id
+    print(data)
+    print("-----------")
+    session.add(data)
+    session.commit()
+    session.close()
+    return get_folder_musics(folder_id)
+
+
 @app.route('/<user_id>/musics/folder_name', methods=['PUT'])
 @requires_auth
 def put_folder_name(user_id):

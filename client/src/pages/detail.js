@@ -313,9 +313,10 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "フォルダの移動(まだできない)",
+              text: "フォルダの移動",
               icon: ellipsisHorizontalCircleOutline,
               handler: () => {
+                history.push(`/select_folder/${musicId}/from/${folderId}`);
                 console.log("Share clicked");
               },
             },

@@ -24,6 +24,7 @@ import Recording from "../src/pages/recording";
 import Setting from "../src/pages/setting";
 import Fol from "../src/pages/folder";
 import Detail from "../src/pages/detail";
+import SelectFolder from "../src/pages/select-folder";
 
 const App = () => {
   const {
@@ -53,6 +54,10 @@ const App = () => {
             <Route path="/setting" component={Setting} />
             <Route path="/folder/:foldername" component={Fol} />
             <Route path="/detail/:musicId/from/:folderId" component={Detail} />
+            <Route
+              path="/select_folder/:musicId/from/:folderId"
+              component={SelectFolder}
+            />
 
             {/*<Route path="/musics/:musicId" component={MusicDetail} />
             <Route path="/fourier/:musicId" component={ShowFourier} />

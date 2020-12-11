@@ -238,3 +238,28 @@ export const request_change_music_name = async (
     console.error(e);
   }
 };
+
+export const request_change_folder = async (
+  musicId,
+  folderId,
+  getAccessTokenSilently
+) => {
+  try {
+    const token = await getAccessTokenSilently({
+      audience: "https://musicvis",
+      scope: "read:posts",
+    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/change_folder/${folderId}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (e) {
+    console.error(e);
+  }
+};
