@@ -89,4 +89,5 @@ class Music_Folders(Base):
             'id': self.id,
             'music_id': self.music_id,
             'folder_id': self.folder_id,
+            'user_id': self.user_id
         }

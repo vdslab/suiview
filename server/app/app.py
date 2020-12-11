@@ -249,14 +249,22 @@ def change_folder(music_id, folder_id):
     user_id = g.current_user['sub']
     data = session.query(Music_Folders).filter_by(
         user_id=user_id, music_id=music_id).first()
-    data = data.to_json()
-    data.folder_id = folder_id
-    print(data)
-    print("-----------")
+    print("fol",folder_id)
+    print("data= ", data.to_json())
+    if data != None:
+        data.folder_id = folder_id
+    else:
+        print("hahahaha")
+        data = Music_Folders(
+            user_id=user_id, music_id=music_id, folder_id=folder_id)
+    
+    print("data= ", data.to_json())
     session.add(data)
     session.commit()
     session.close()
-    return get_folder_musics(folder_id)
+    return "fin"
+
+# フォルダの追加
 
 
 @app.route('/<user_id>/musics/folder_name', methods=['PUT'])
