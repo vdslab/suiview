@@ -5,6 +5,26 @@ const Liner = ({ data }) => {
   if (data == null) {
     return null;
   }
+
+  let max = Math.max.apply(
+    Math,
+    data.map((input) => {
+      return input.y;
+    })
+  );
+
+  console.log(max)
+  
+  let min = 0;
+  if(max <= 0) {
+    min = -20;
+    max = 0
+  } else {
+    max += 50;
+  }
+  console.log(max)
+  console.log(min)
+
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
@@ -19,8 +39,8 @@ const Liner = ({ data }) => {
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: "auto",
-          max: "auto",
+          min: min,
+          max: max,
         }}
         curve="step"
         axisTop={null}

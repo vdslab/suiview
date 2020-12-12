@@ -7,7 +7,7 @@ const ParallelCoordinates = ({ data }) => {
   }
 
   console.log(data);
-  /*const max = Math.max.apply(
+  const max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.tone;
@@ -27,13 +27,27 @@ const ParallelCoordinates = ({ data }) => {
     })
   );
 
+  const pich_min = Math.min.apply(
+    Math,
+    data.map((input) => {
+      return input.pich;
+    })
+  );
+
   const vol_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.volume;
     })
   );
-*/
+
+  const vol_min = Math.min.apply(
+    Math,
+    data.map((input) => {
+      return input.volume;
+    })
+  );
+
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveParallelCoordinates
@@ -52,8 +66,10 @@ const ParallelCoordinates = ({ data }) => {
           {
             key: "pich",
             type: "linear",
-            min: "auto",
-            max: "auto",
+            min: pich_max,
+            max: pich_min,
+            //min: "auto",
+            //max: "auto",
             ticksPosition: "before",
             legend: "ptich",
             legendPosition: "start",
@@ -62,10 +78,10 @@ const ParallelCoordinates = ({ data }) => {
           {
             key: "tone",
             type: "linear",
-            //min: max,
-            //max: min,
-            min: "auto",
-            max: "auto",
+            min: max,
+            max: min,
+            //min: "auto",
+            //max: "auto",
             ticksPosition: "before",
             legend: "tone",
             legendPosition: "start",
@@ -75,8 +91,10 @@ const ParallelCoordinates = ({ data }) => {
             key: "volume",
             type: "linear",
             padding: 1,
-            min: "auto",
-            max: "auto",
+            min: vol_max,
+            max: vol_min,
+            //min: "auto",
+            //max: "auto",
             ticksPosition: "before",
             legend: "volume",
             legendPosition: "start",

@@ -336,7 +336,6 @@ const Detail = ({ history }) => {
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonListHeader>詳細</IonListHeader>
           <IonCard>
             <Chartes />
           </IonCard>

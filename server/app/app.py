@@ -580,14 +580,14 @@ def parallel_data(user_id, folder_id):
     print(Datas)
     """
     for i in range(len(Datas)):
-        Datas[i].append(Datas[i][1]+Datas[i][3] + Datas[i][2])
+        Datas[i].append(Datas[i][1]+Datas[i][3] + Datas[i][2]/100)
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     for i in range(len(Datas)-1, -1, -1):
         dic = {
             "No.": Datas[i][0],
             "pich": Datas[i][1],
-            "tone": Datas[i][2],
+            "tone": Datas[i][2]/100,
             "volume": Datas[i][3],
         }
         dicDatas.append(dic)
@@ -626,7 +626,7 @@ def progress(user_id, folder_id):
                             ((Datas[-1][2]-Datas[i][2])/10000)))
     """
     for i in range(len(Datas)):
-        Datas[i].append(-1*(Datas[i][1]+Datas[i][3] + Datas[i][2]))
+        Datas[i].append(-1*(Datas[i][1]+Datas[i][3] + Datas[i][2]/100))
 
     dicDatas = []
     for i in range(len(Datas)):
@@ -845,7 +845,6 @@ def decibel(user_id, music_id):
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     print(rate)
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -869,7 +868,9 @@ def decibel(user_id, music_id):
 
     Datas = []
     # for i in range(len(dbLine)):
-    for i in range(start, end):
+    if end < len(dbLine)-2:
+        end += 1
+    for i in range(max(0, start), end):
         dic = {
             "x": i+1,
             "y": int(dbLine[i])
@@ -887,7 +888,6 @@ def decibel_data(user_id, music_id):
     # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -915,11 +915,11 @@ def find_start_end(user_id, music_id):
     start = 0
     end = 0
     for i in range(len(decibelData)):
-        if decibelData[i] > -25:
+        if decibelData[i] > -20:
             start = i
             break
     for i in range(len(decibelData)-1, -1, -1):
-        if decibelData[i] > -25:
+        if decibelData[i] > -20:
             end = i
             break
     return [start, end]
@@ -937,8 +937,6 @@ def decibel_ave(user_id, music_id):
     # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    # data, _ = librosa.effects.trim(data, 45)
-    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -962,7 +960,9 @@ def decibel_ave(user_id, music_id):
 
     total = 0
     cnt = 0
-    for i in range(start, end):
+    if end < len(dbLine)-2:
+        end += 1
+    for i in range(max(0, start), end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
             total += abs(dbLine[i]-dbLine[i+1])
             cnt += 1
@@ -976,10 +976,8 @@ def decibel_ave_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
@@ -1003,7 +1001,9 @@ def decibel_ave_data(user_id, music_id):
 
     total = 0
     cnt = 0
-    for i in range(start, end):
+    if end < len(dbLine)-2:
+        end += 1
+    for i in range(max(0, start), end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
             total += abs(dbLine[i]-dbLine[i+1])
             cnt += 1
@@ -1071,7 +1071,7 @@ def comp_decibel(user_id, folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            # print(aliged_data)
+
             data = []
             for j in range(len(aliged_data)):
                 dic = {
@@ -1095,26 +1095,17 @@ def frequency(user_id, music_id):
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
-    # rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data, rate = librosa.load(io.BytesIO(music.content), 48000)
-    print(rate)
-    data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
-    """
-    _f0, _time = pw.dio(data, rate, f0_floor=70,
-                        f0_ceil=1600, frame_period=10.625)
-    # print(_time)
-    f0 = pw.stonemask(data, _f0, _time, rate)
-    """
 
+    data, rate = librosa.load(io.BytesIO(music.content), 48000)
+    data = data.astype(np.float)
     f0, voiced_flag, voiced_probs = librosa.pyin(
         data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
-    # times = librosa.times_like(f0)
-    print(f0)
+
     start, end = find_start_end(user_id, music_id)
     Datas = []
-    for i in range(start, end):
-        # for i in range(len(f0)):
+    if end < len(f0)-2:
+        end += 1
+    for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
                 "x": i+1,
@@ -1145,7 +1136,6 @@ def frequency_ave(user_id, music_id):
     # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
     """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
@@ -1157,10 +1147,13 @@ def frequency_ave(user_id, music_id):
     start, end = find_start_end(user_id, music_id)
     total = 0
     cnt = 0
-    if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
-        if f0[i] > 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
-            total += abs(f0[i]-f0[i+1])
-            cnt += 1
+    if end < len(f0)-2:
+        end += 1
+    for i in range(max(0, start), end):
+        if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
+            if f0[i] > 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
+                total += abs(f0[i]-f0[i+1])
+                cnt += 1
 
     print(total)
     ave = total/cnt
@@ -1177,7 +1170,6 @@ def frequency_ave_data(user_id, music_id):
    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
     """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
@@ -1189,7 +1181,9 @@ def frequency_ave_data(user_id, music_id):
     start, end = find_start_end(user_id, music_id)
     total = 0
     cnt = 0
-    for i in range(start, end):
+    if end < len(f0)-2:
+        end += 1
+    for i in range(max(0, start), end):
         if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
             # print(f0[i])
             total += abs(f0[i]-f0[i+1])
@@ -1210,17 +1204,13 @@ def frequency_data(user_id, music_id):
     # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
-    """
-    _f0, _time = pw.dio(data, rate, f0_floor=70,
-                        f0_ceil=1600, frame_period=10.625)
-    f0 = pw.stonemask(data, _f0, _time, rate)
-    """
     f0, voiced_flag, voiced_probs = librosa.pyin(
         data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
 
     Datas = []
-    for i in range(len(f0)):
+    if end < len(f0)-2:
+        end += 1
+    for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
                 "x": i+1,
@@ -1288,9 +1278,7 @@ def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 45)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
     start, end = find_start_end(user_id, music_id)
     Datas = []
@@ -1312,11 +1300,9 @@ def spectrum_rollofff(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
+
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    print(sr)
     y, _ = librosa.effects.trim(y, 45)
-    # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
 
     start, end = find_start_end(user_id, music_id)
@@ -1342,7 +1328,6 @@ def spectrum_rollofff_ave(user_id, music_id):
         user_id=user_id, id=music_id).first()
     # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -1381,7 +1366,6 @@ def spectrum_rollofff_ave_data(user_id, music_id):
         user_id=user_id, id=music_id).first()
     # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
 

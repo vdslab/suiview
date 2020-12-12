@@ -101,7 +101,7 @@ const ShowChart = (folderId, kind) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("PROGRESS");
+  const [chartId, setChartId] = useState("ALL");
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { foldername } = useParams();
   console.log(foldername);
@@ -177,7 +177,6 @@ const Folder = ({ history }) => {
           []
         ) : (
           <IonList>
-            <IonListHeader>詳細グラフ</IonListHeader>
             <IonCard>
               <FolderDetail />
             </IonCard>
@@ -199,7 +198,8 @@ const Folder = ({ history }) => {
                       class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                     >
                       <IonLabel>
-                        {convertDate(data.created)}&emsp;{data.name}&emsp;
+                        No.{data.id}&emsp;{convertDate(data.created)}&emsp;
+                        {data.name}&emsp;
                       </IonLabel>
                       <IonButton slot="end" fill="clear">
                         <IonIcon icon={chevronForwardOutline}></IonIcon>
