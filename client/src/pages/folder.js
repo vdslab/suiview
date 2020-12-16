@@ -101,7 +101,7 @@ const ShowChart = (folderId, kind) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("TONE");
+  const [chartId, setChartId] = useState("PITCH");
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { foldername } = useParams();
   console.log(foldername);

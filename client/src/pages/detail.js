@@ -186,7 +186,7 @@ const ShowChart = (musicId, kind) => {
 };
 
 const Chartes = () => {
-  const [chartId, setChartId] = useState("TONE");
+  const [chartId, setChartId] = useState("PITCH");
   const chartIds = [
     "PITCH",
     "VOL",

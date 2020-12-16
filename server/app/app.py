@@ -467,7 +467,7 @@ def create(user_id, music_id):
 def manhattan_distance(x, y): return np.abs(x - y)
 
 
-@app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['PUT', 'GET'])
+@app.route('/<user_id>/musics/folder_freq_compare/<folder_id>', methods=['GET'])
 @requires_auth
 def put_comp_freqData(user_id, folder_id):
     session = create_session()
@@ -487,6 +487,8 @@ def put_comp_freqData(user_id, folder_id):
 
     for _id in music_ids:
         data = dtw_frequency_data(user_id, _id)
+        start, end = find_start_end(user_id, _id)
+        data = trim(data, start, end)
         data = np.array(data)
         preData.append(data)
 
@@ -1013,7 +1015,17 @@ def decibel_ave_data(user_id, music_id):
     return ave
 
 
-@ app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['PUT', 'GET'])
+def trim(data, start, end):
+    res = []
+    print(start, end, len(data))
+    if end < len(data)-2:
+        end += 1
+    for i in range(start, end):
+        res.append(data[i])
+    return res
+
+
+@ app.route('/<user_id>/musics/folder_comp_volume/<folder_id>', methods=['GET'])
 @ requires_auth
 def comp_decibel(user_id, folder_id):
     session = create_session()
@@ -1034,6 +1046,8 @@ def comp_decibel(user_id, folder_id):
 
     for _id in music_ids:
         data = decibel_data(user_id, _id)
+        start, end = find_start_end(user_id, _id)
+        data = trim(data, start, end)
         data = np.array(data)
         preData.append(data)
 
@@ -1236,7 +1250,7 @@ def dtw_frequency_data(user_id, music_id):
    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    data, _ = librosa.effects.trim(data, 45)
+    #data, _ = librosa.effects.trim(data, 45)
     """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
@@ -1307,7 +1321,7 @@ def spectrum_rollofff(user_id, music_id):
         user_id=user_id, id=music_id).first()
 
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 45)
+    # , _ = librosa.effects.trim(y, 45)
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
 
     start, end = find_start_end(user_id, music_id)
@@ -1399,7 +1413,7 @@ def spectrum_rollofff_y(user_id, music_id):
         user_id=user_id, id=music_id).first()
     # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    y, _ = librosa.effects.trim(y, 45)
+    #y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -1471,6 +1485,8 @@ def comp_tone(user_id, folder_id):
 
     for _id in music_ids:
         data = spectrum_rollofff_y(user_id, _id)
+        start, end = find_start_end(user_id, _id)
+        data = trim(data, start, end)
         data = np.array(data)
         preData.append(data)
 
