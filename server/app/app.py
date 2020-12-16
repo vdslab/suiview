@@ -849,9 +849,9 @@ def decibel(user_id, music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -80
+        _max = -20
         for j in range(len(db)):
-            if _max < db[j][i]:
+            if _max <= db[j][i]:
                 _max = db[j][i]
         dbLine.append(_max)
 
@@ -870,7 +870,7 @@ def decibel(user_id, music_id):
     # for i in range(len(dbLine)):
     if end < len(dbLine)-2:
         end += 1
-    for i in range(max(0, start), end):
+    for i in range(start, end):
         dic = {
             "x": i+1,
             "y": int(dbLine[i])
@@ -892,7 +892,7 @@ def decibel_data(user_id, music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -80
+        _max = -80  # トリミングデシベル値設定
         for j in range(len(db)):
             if _max < db[j][i]:
                 _max = db[j][i]
@@ -945,7 +945,7 @@ def decibel_ave(user_id, music_id):
         for j in range(len(db)):
             if _max < db[j][i]:
                 _max = db[j][i]
-        dbLine.append(_max)
+                dbLine.append(_max)
 
     start = 0
     end = 0
@@ -958,11 +958,11 @@ def decibel_ave(user_id, music_id):
             end = i
             break
 
-    total = 0
     cnt = 0
+    total = 0
     if end < len(dbLine)-2:
         end += 1
-    for i in range(max(0, start), end):
+    for i in range(start, end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
             total += abs(dbLine[i]-dbLine[i+1])
             cnt += 1
@@ -1003,7 +1003,7 @@ def decibel_ave_data(user_id, music_id):
     cnt = 0
     if end < len(dbLine)-2:
         end += 1
-    for i in range(max(0, start), end):
+    for i in range(0, end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
             total += abs(dbLine[i]-dbLine[i+1])
             cnt += 1
@@ -1253,6 +1253,7 @@ def dtw_frequency_data(user_id, music_id):
 # グラフ比較(基本周波数)
 
 
+"""
 @ app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
 def comp_chart(user_id, music_id, music_id2):
     Datas = []
@@ -1271,9 +1272,11 @@ def comp_chart(user_id, music_id, music_id2):
 
     return jsonify(Datas)
 
-
+"""
 # --スペクトル重心--------
 # @app.route('/<user_id>/musics/<music_id>/spectrum_centroid', methods=['GET'])
+
+
 def spectrum_centroid(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
@@ -1283,6 +1286,8 @@ def spectrum_centroid(user_id, music_id):
     start, end = find_start_end(user_id, music_id)
     Datas = []
     # for i in range(len(cent[0])):
+    if end < len(cent[0]-2):
+        end += 1
     for i in range(start, end):
         dic = {
             "x": i+1,
@@ -1307,6 +1312,8 @@ def spectrum_rollofff(user_id, music_id):
 
     start, end = find_start_end(user_id, music_id)
     Datas = []
+    if end < len(rolloff[0]-2):
+        end += 1
     for i in range(start, end):
         # for i in range(len(rolloff[0])):
         dic = {
@@ -1437,6 +1444,7 @@ def get_centroid_rolloff(user_id, music_id):
     user_id = g.current_user['sub']
     cent = spectrum_centroid(user_id, music_id)
     roll = spectrum_rollofff(user_id, music_id)
+    print(len(cent))
     Datas = [{"id": "centroid", "data": cent}, {"id": "rolloff", "data": roll}]
 
     return jsonify(Datas)

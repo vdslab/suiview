@@ -186,7 +186,7 @@ const ShowChart = (musicId, kind) => {
 };
 
 const Chartes = () => {
-  const [chartId, setChartId] = useState("PITCH");
+  const [chartId, setChartId] = useState("TONE");
   const chartIds = [
     "PITCH",
     "VOL",
@@ -242,6 +242,7 @@ const Detail = ({ history }) => {
     loginWithRedirect,
     logout,
     getAccessTokenSilently,
+    getAccessTokenWithPopup,
   } = useAuth0();
 
   useIonViewWillEnter(() => {
@@ -266,7 +267,13 @@ const Detail = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton
+          <IonBackButton
+            slot="start"
+            fill="clear"
+            defaultHref={`/folder/${folderId}`}
+            icon={closeOutline}
+          ></IonBackButton>
+          {/*<IonButton
             fill="clear"
             slot="start"
             onClick={() => {
@@ -274,7 +281,7 @@ const Detail = ({ history }) => {
             }}
           >
             <IonIcon icon={closeOutline}></IonIcon>
-          </IonButton>
+          </IonButton>*/}
           <IonTitle>
             <IonItem lines="none">
               <IonInput

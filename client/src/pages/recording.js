@@ -105,6 +105,7 @@ const Recording = ({ history }) => {
                 text: "完了!",
                 handler: () => {
                   console.log("push fin");
+                  saveAudio(getAccessTokenSilently);
                   //setR(saveAudio(getAccessTokenSilently));
                 },
               },

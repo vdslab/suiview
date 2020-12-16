@@ -17,7 +17,7 @@ const ManyLiner = ({ data }) => {
           const d = parseInt(input.data.length / 100, 10);
           return {
             id: input.id,
-            data: input.data.filter(({ x }) => x % d == 0),
+            data: input.data.filter(({ x }) => x % 5 == 0),
           };
         })}
         margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
@@ -36,7 +36,7 @@ const ManyLiner = ({ data }) => {
           tickPadding: 5,
           tickRotation: 0,
           tickValues: data.length
-            ? data[0].data.filter(({ x }) => x % 200 === 0).map(({ x }) => x)
+            ? data[0].data.filter(({ x }) => x % 50 === 0).map(({ x }) => x)
             : [],
           legend: "",
           legendOffset: 36,

@@ -101,7 +101,7 @@ const ShowChart = (folderId, kind) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("ALL");
+  const [chartId, setChartId] = useState("TONE");
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { foldername } = useParams();
   console.log(foldername);
@@ -161,14 +161,12 @@ const Folder = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton
+          <IonBackButton
             slot="start"
-            href="/"
             fill="clear"
-            //onClick={() => history.push("/")}
-          >
-            <IonIcon icon={chevronBackOutline}></IonIcon>
-          </IonButton>
+            defaultHref="/"
+            icon={chevronBackOutline}
+          ></IonBackButton>
           <IonTitle>{folName}</IonTitle>
         </IonToolbar>
       </IonHeader>
