@@ -46,8 +46,10 @@ export const convertDate = (input) => {
   if (input === null) {
     return "";
   }
-
-  const d = new Date(`${input} UTC`);
+  //console.log("input = " + input);
+  //const d = new Date(`${input} UTC`);
+  const d = new Date(input);
+  //console.log(d);
   const year = d.getFullYear();
   const month = `${d.getMonth() + 1}`.padStart(2, "0");
   const date = `${d.getDate()}`.padStart(2, "0");
@@ -101,7 +103,7 @@ const ShowChart = (folderId, kind) => {
 };
 
 const FolderDetail = () => {
-  const [chartId, setChartId] = useState("PITCH");
+  const [chartId, setChartId] = useState("VOL");
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const { foldername } = useParams();
   console.log(foldername);
