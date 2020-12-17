@@ -11,12 +11,12 @@ import { Auth0Provider } from "@auth0/auth0-react";
 
 render(
   <Auth0Provider
-    domain="auth0-react-test.us.auth0.com"
-    clientId={process.env.REACT_APP_CLIENT_ID}
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={window.location.origin}
-    audience="https://musicvis"
+    audience={process.env.REACT_APP_AUTH0_AUDIENCE}
   >
     <App />
   </Auth0Provider>,
-  document.getElementById("content")
+  document.getElementById("content"),
 );

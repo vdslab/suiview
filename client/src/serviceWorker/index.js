@@ -1,7 +1,7 @@
 export const request = async (url, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(url, {
@@ -19,7 +19,7 @@ export const request = async (url, getAccessTokenSilently) => {
 export const request_folder_list = async (getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -29,7 +29,7 @@ export const request_folder_list = async (getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -40,7 +40,7 @@ export const request_folder_list = async (getAccessTokenSilently) => {
 export const request_del_folder = async (id, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -50,7 +50,7 @@ export const request_del_folder = async (id, getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -61,7 +61,7 @@ export const request_del_folder = async (id, getAccessTokenSilently) => {
 export const request_add_folder = async (item, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -72,7 +72,7 @@ export const request_add_folder = async (item, getAccessTokenSilently) => {
           Authorization: `Bearer ${token}`,
         },
         body: item,
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -87,7 +87,7 @@ export const request_music_list = async (id, getAccessTokenSilently) => {
   }
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(url, {
@@ -105,7 +105,7 @@ export const request_music_list = async (id, getAccessTokenSilently) => {
 export const request_del_music = async (id, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -115,7 +115,7 @@ export const request_del_music = async (id, getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -130,7 +130,7 @@ export const request_folder_name = async (id, getAccessTokenSilently) => {
 
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -140,7 +140,7 @@ export const request_folder_name = async (id, getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -151,7 +151,7 @@ export const request_folder_name = async (id, getAccessTokenSilently) => {
 export const request_music_name = async (id, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -161,7 +161,7 @@ export const request_music_name = async (id, getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -172,7 +172,7 @@ export const request_music_name = async (id, getAccessTokenSilently) => {
 export const request_comment_list = async (id, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -182,7 +182,7 @@ export const request_comment_list = async (id, getAccessTokenSilently) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -193,7 +193,7 @@ export const request_comment_list = async (id, getAccessTokenSilently) => {
 export const request_add_music = async (item, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -204,7 +204,7 @@ export const request_add_music = async (item, getAccessTokenSilently) => {
           Authorization: `Bearer ${token}`,
         },
         body: item,
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -215,11 +215,11 @@ export const request_add_music = async (item, getAccessTokenSilently) => {
 export const request_change_music_name = async (
   item,
   musicId,
-  getAccessTokenSilently
+  getAccessTokenSilently,
 ) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -230,7 +230,7 @@ export const request_change_music_name = async (
           Authorization: `Bearer ${token}`,
         },
         body: item,
-      }
+      },
     );
     return await response.json();
   } catch (e) {
@@ -241,11 +241,11 @@ export const request_change_music_name = async (
 export const request_change_folder = async (
   musicId,
   folderId,
-  getAccessTokenSilently
+  getAccessTokenSilently,
 ) => {
   try {
     const token = await getAccessTokenSilently({
-      audience: "https://musicvis",
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       scope: "read:posts",
     });
     const response = await fetch(
@@ -255,7 +255,7 @@ export const request_change_folder = async (
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return await response.json();
   } catch (e) {
