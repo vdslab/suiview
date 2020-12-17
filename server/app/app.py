@@ -73,7 +73,7 @@ def requires_auth(f):
     def decorated(*args, **kwargs):
         token = get_token_auth_header()
         jsonurl = urllib.request.urlopen(
-            "https://auth0-react-test.us.auth0.com/.well-known/jwks.json")
+            "https://auth.vdslab.jp/.well-known/jwks.json")
         jwks = json.loads(jsonurl.read())
         unverified_header = jwt.get_unverified_header(token)
         rsa_key = {}
@@ -86,8 +86,8 @@ def requires_auth(f):
                     token,
                     rsa_key,
                     algorithms=['RS256'],
-                    audience="https://musicvis",
-                    issuer="https://auth0-react-test.us.auth0.com/"
+                    audience="https://musicvis-3wi5srugvq-an.a.run.app",
+                    issuer="https://auth.vdslab.jp/"
                 )
             except jwt.ExpiredSignatureError:
                 raise AuthError({"code": "token_expired",
