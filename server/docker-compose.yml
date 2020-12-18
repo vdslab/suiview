@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    environment:
+      - PORT=8080
+      - PGHOST=db
+  db:
+    image: gcr.io/cloudsql-docker/gce-proxy
+    volumes:
+      - "./vdslab-207906-a59a0e8171a8.json:/config/vdslab-207906-a59a0e8171a8.json"
+    command:
+      ["/cloud_sql_proxy",
+      "-instances=vdslab-207906:asia-northeast1:pg=tcp:0.0.0.0:5432",
+      "-credential_file=/config/vdslab-207906-a59a0e8171a8.json"]
+    expose:
+      - "5432"
