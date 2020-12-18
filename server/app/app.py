@@ -1078,11 +1078,9 @@ def comp_decibel(user_id, folder_id):
 def frequency(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
 
-    f0 = music.fundamental_frequency()
+    f0 = music.fundamental_frequency(session)
 
     start, end = find_start_end(user_id, music_id)
     Datas = []
@@ -1114,10 +1112,9 @@ def frequency(user_id, music_id):
 def frequency_ave(user_id, music_id):
     session = create_session()
     user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
+    music = session.query(Music).get(music_id)
 
-    f0 = music.fundamental_frequency()
+    f0 = music.fundamental_frequency(session)
 
     start, end = find_start_end(user_id, music_id)
     total = 0
@@ -1140,10 +1137,9 @@ def frequency_ave(user_id, music_id):
 
 def frequency_ave_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
+    music = session.query(Music).get(music_id)
 
-    f0 = music.fundamental_frequency()
+    f0 = music.fundamental_frequency(session)
 
     start, end = find_start_end(user_id, music_id)
     total = 0
@@ -1167,10 +1163,9 @@ def frequency_ave_data(user_id, music_id):
 # dtw用
 def dtw_frequency_data(user_id, music_id):
     session = create_session()
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
+    music = session.query(Music).get(music_id)
 
-    f0 = music.fundamental_frequency()
+    f0 = music.fundamental_frequency(session)
 
     session.close()
     return f0

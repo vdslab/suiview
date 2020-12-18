@@ -2,7 +2,7 @@ import io
 import numpy as np
 import librosa
 from sqlalchemy.ext.automap import automap_base
-from db import engine, create_session
+from db import engine
 
 
 Base = automap_base()
@@ -11,15 +11,15 @@ Base = automap_base()
 class Music(Base):
     __tablename__ = 'musics'
 
-    def fundamental_frequency(self, cache=True):
+    # XXX remove session from argument
+    def fundamental_frequency(self, session, cache=True):
         if self.f0 is None:
-            with create_session() as session:
-                data, rate = librosa.load(io.BytesIO(self.content), 48000)
-                data = data.astype(np.float)
-                f0, _, _ = librosa.pyin(data, fmin=librosa.note_to_hz(
-                    'C2'), fmax=librosa.note_to_hz('C7'))
-                self.f0 = f0.tobytes()
-                session.commit()
+            data, rate = librosa.load(io.BytesIO(self.content), 48000)
+            data = data.astype(np.float)
+            f0, _, _ = librosa.pyin(data, fmin=librosa.note_to_hz(
+                'C2'), fmax=librosa.note_to_hz('C7'))
+            self.f0 = f0.tobytes()
+            session.commit()
         return np.frombuffer(self.f0, dtype=np.float)
 
     def to_json(self):
