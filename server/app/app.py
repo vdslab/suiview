@@ -2,35 +2,25 @@ import io
 import os
 import wave
 from flask import Flask, jsonify, request, make_response, g
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from db import create_session
 from models import Music, User, Comment, Folder, Music_Folders
 import numpy as np
 import scipy.io.wavfile
-import wave
 from pylab import frombuffer
-import requests
-import io
 from scipy import signal
-import matplotlib
 from collections import OrderedDict
 import json
-import pyworld as pw
-import datetime
-from sqlalchemy.sql import func
 import librosa
-import matplotlib.pyplot as plt
-from dtw import *
+from dtw import dtw
 from jose import jwt
 import urllib
 from functools import wraps
-import sys
-import sqlalchemy.exc
 app = Flask(__name__)
 cors = CORS(app)
 
 
-###認証#########################
+# ###認証#########################
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
@@ -130,7 +120,7 @@ def get_musics():
             registered = True
             break
     # register
-    if registered == False:
+    if registered is False:
         u = User(id=user_id)
         session.add(u)
         session.commit()
@@ -251,7 +241,7 @@ def change_folder(music_id, folder_id):
         user_id=user_id, music_id=music_id).first()
     print("fol", folder_id)
     print("data= ", data.to_json())
-    if data != None:
+    if data is not None:
         data.folder_id = folder_id
     else:
         print("hahahaha")
@@ -493,7 +483,6 @@ def put_comp_freqData(user_id, folder_id):
         preData.append(data)
 
     # print(preData)
-    path = []
     Datas = []
     if len(preData) == 1:
         data = []
@@ -512,7 +501,7 @@ def put_comp_freqData(user_id, folder_id):
         print(music_ids)
         for i in range(len(preData)):
             print(len(preData[i]))
-           # print(preData[i][:1000])
+            # print(preData[i][:1000])
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -641,7 +630,7 @@ def progress(user_id, folder_id):
     return jsonify(dicDatas)
 
 
-#　波形
+# 波形
 @ app.route('/<user_id>/musics/<music_id>/amplitude', methods=['GET'])
 @ requires_auth
 def amplitude(user_id, music_id):
@@ -990,11 +979,9 @@ def decibel_ave_data(user_id, music_id):
                 _max = db[j][i]
         dbLine.append(_max)
 
-    start = 0
     end = 0
     for i in range(len(dbLine)):
         if dbLine[i] > -20:
-            start = i
             break
     for i in range(len(dbLine)-1, -1, -1):
         if dbLine[i] > -20:
@@ -1052,7 +1039,6 @@ def comp_decibel(user_id, folder_id):
         preData.append(data)
 
     # print(preData)
-    path = []
     Datas = []
     if len(preData) == 1:
         data = []
@@ -1181,7 +1167,7 @@ def frequency_ave_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-   # music = session.query(Music).get(music_id)
+    # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
     """
@@ -1211,46 +1197,15 @@ def frequency_ave_data(user_id, music_id):
     return ave
 
 
-def frequency_data(user_id, music_id):
+# dtw用
+def dtw_frequency_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     # music = session.query(Music).get(music_id)
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
     data = data.astype(np.float)
-    f0, voiced_flag, voiced_probs = librosa.pyin(
-        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
-
-    Datas = []
-    if end < len(f0)-2:
-        end += 1
-    for i in range(max(0, start), end):
-        if f0[i] >= 0:
-            dic = {
-                "x": i+1,
-                "y": round(f0[i], 4)
-            }
-        else:
-            dic = {
-                "x": i+1,
-                "y": 0
-            }
-
-        Datas.append(dic)
-    session.close()
-    return Datas
-
-# dtw用
-
-
-def dtw_frequency_data(user_id, music_id):
-    session = create_session()
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-   # music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data.astype(np.float)
-    #data, _ = librosa.effects.trim(data, 45)
+    # data, _ = librosa.effects.trim(data, 45)
     """
     _f0, _time = pw.dio(data, rate, f0_floor=70,
                         f0_ceil=1600, frame_period=10.625)
@@ -1261,32 +1216,6 @@ def dtw_frequency_data(user_id, music_id):
     session.close()
     return f0
 
-# グラフ比較(基本周波数)
-
-# 多分使ってない
-# グラフ比較(基本周波数)
-
-
-"""
-@ app.route('/<user_id>/musics/<music_id>/comp_chart/<music_id2>', methods=['GET'])
-def comp_chart(user_id, music_id, music_id2):
-    Datas = []
-    data = frequency_data(user_id, music_id)
-    dic = {
-        "id": music_id,
-        "data": data
-    }
-    Datas.append(dic)
-    data = frequency_data(user_id, music_id2)
-    dic = {
-        "id": music_id2,
-        "data": data
-    }
-    Datas.append(dic)
-
-    return jsonify(Datas)
-
-"""
 # --スペクトル重心--------
 # @app.route('/<user_id>/musics/<music_id>/spectrum_centroid', methods=['GET'])
 
@@ -1413,7 +1342,7 @@ def spectrum_rollofff_y(user_id, music_id):
         user_id=user_id, id=music_id).first()
     # music = session.query(Music).get(music_id)
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
-    #y, _ = librosa.effects.trim(y, 45)
+    # y, _ = librosa.effects.trim(y, 45)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
     # print(rolloff)
@@ -1491,7 +1420,6 @@ def comp_tone(user_id, folder_id):
         preData.append(data)
 
     print(preData)
-    path = []
     Datas = []
     if len(preData) == 1:
         data = []
