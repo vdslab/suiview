@@ -1082,10 +1082,7 @@ def frequency(user_id, music_id):
         user_id=user_id, id=music_id).first()
     music = session.query(Music).get(music_id)
 
-    data, rate = librosa.load(io.BytesIO(music.content), 48000)
-    data = data.astype(np.float)
-    f0, voiced_flag, voiced_probs = librosa.pyin(
-        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+    f0 = music.fundamental_frequency()
 
     start, end = find_start_end(user_id, music_id)
     Datas = []
@@ -1119,16 +1116,8 @@ def frequency_ave(user_id, music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data.astype(np.float)
-    """
-    _f0, _time = pw.dio(data, rate, f0_floor=70,
-                        f0_ceil=1600, frame_period=10.625)
-    f0 = pw.stonemask(data, _f0, _time, rate)
-    """
-    f0, voiced_flag, voiced_probs = librosa.pyin(
-        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+    f0 = music.fundamental_frequency()
 
     start, end = find_start_end(user_id, music_id)
     total = 0
@@ -1153,16 +1142,8 @@ def frequency_ave_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data.astype(np.float)
-    """
-    _f0, _time = pw.dio(data, rate, f0_floor=70,
-                        f0_ceil=1600, frame_period=10.625)
-    f0 = pw.stonemask(data, _f0, _time, rate)
-    """
-    f0, voiced_flag, voiced_probs = librosa.pyin(
-        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+    f0 = music.fundamental_frequency()
 
     start, end = find_start_end(user_id, music_id)
     total = 0
@@ -1188,17 +1169,9 @@ def dtw_frequency_data(user_id, music_id):
     session = create_session()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data.astype(np.float)
-    # data, _ = librosa.effects.trim(data, 45)
-    """
-    _f0, _time = pw.dio(data, rate, f0_floor=70,
-                        f0_ceil=1600, frame_period=10.625)
-    f0 = pw.stonemask(data, _f0, _time, rate)
-    """
-    f0, voiced_flag, voiced_probs = librosa.pyin(
-        data, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+    f0 = music.fundamental_frequency()
+
     session.close()
     return f0
 
