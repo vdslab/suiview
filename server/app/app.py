@@ -4,7 +4,7 @@ import wave
 from flask import Flask, jsonify, request, make_response, g
 from flask_cors import CORS
 from db import create_session
-from models import Music, User, Comment, Folder, Music_Folders
+from models import Music, Comment, Folder, Music_Folders
 import numpy as np
 import scipy.io.wavfile
 from pylab import frombuffer
@@ -110,20 +110,6 @@ def get_musics():
     session = create_session()
     user_id = g.current_user['sub']
     print(user_id)
-    # get user list
-    user_t = session.query(User).all()
-    user_list = list(user_t[i].id for i in range(len(user_t)))
-    registered = False
-    # check registerd
-    for _id in user_list:
-        if _id == user_id:
-            registered = True
-            break
-    # register
-    if registered is False:
-        u = User(id=user_id)
-        session.add(u)
-        session.commit()
 
     musics = session.query(Music).filter_by(user_id=user_id).all()
     musics = [m.to_json() for m in musics]
