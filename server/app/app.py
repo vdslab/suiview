@@ -404,14 +404,13 @@ def get_folderName(user_id, folder_id):
 
 
 @app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
-# 照らし合わせが出来てない
+@requires_auth
 def get_music_content(user_id, music_id):
     session = create_session()
-    user_id = "auth0|5f6381061d80b10078e6515a"
+    user_id = g.current_user['sub']
     response = make_response()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    # music = session.query(Music).get(music_id)
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()

@@ -169,6 +169,26 @@ export const request_music_name = async (id, getAccessTokenSilently) => {
   }
 };
 
+export const getMusicContent = async (id, getAccessTokenSilently) => {
+  try {
+    const token = await getAccessTokenSilently({
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${id}/content`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return await response.blob();
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 export const request_comment_list = async (id, getAccessTokenSilently) => {
   try {
     const token = await getAccessTokenSilently({

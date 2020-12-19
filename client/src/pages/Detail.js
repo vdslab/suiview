@@ -33,6 +33,7 @@ import {
   request_change_music_name,
 } from "../services";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
+import { Player } from "../components/Player.js";
 
 const ShowChart = (musicId, kind) => {
   if (musicId == null) {
@@ -247,11 +248,7 @@ const Detail = ({ history }) => {
         <IonToolbar>
           <IonList>
             <IonItem>
-              {/*上手くいってない*/}
-              <audio
-                controls
-                src={`${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/content`}
-              />
+              <Player musicId={musicId} />
             </IonItem>
             <IonButton fill="outline">コメントを書く</IonButton>
           </IonList>
