@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request } from "../../services";
-import ManyLiner from "../../chart/drawing/ManyLines";
+import { Liner } from "./drawing";
 
-const Centroid_Rolloff = () => {
+const Decibel = () => {
   const { musicId } = useParams();
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);
@@ -14,19 +14,19 @@ const Centroid_Rolloff = () => {
 
   useEffect(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`,
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel/ave`,
       getAccessTokenSilently,
     ).then((data) => {
-      setData(data);
+      setAve(data);
     });
   }, [musicId, getAccessTokenSilently]);
 
   useEffect(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`,
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`,
       getAccessTokenSilently,
     ).then((data) => {
-      setAve(data);
+      setData(data);
     });
   }, [musicId, getAccessTokenSilently]);
 
@@ -40,9 +40,9 @@ const Centroid_Rolloff = () => {
   return (
     <div>
       <IonItem lines="none"> 安定度... {ave}</IonItem>
-      <ManyLiner data={data} />
+      <Liner data={data} />
     </div>
   );
 };
 
-export default Centroid_Rolloff;
+export default Decibel;

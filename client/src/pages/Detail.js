@@ -32,9 +32,7 @@ import {
   request_comment_list,
   request_change_music_name,
 } from "../services";
-import ShowFrequency from "../chart/page/Frequency";
-import Decibel from "../chart/page/Decibel";
-import CentroidRolloff from "../chart/page/CentroidRolloff";
+import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 
 const ShowChart = (musicId, kind) => {
   if (musicId == null) {

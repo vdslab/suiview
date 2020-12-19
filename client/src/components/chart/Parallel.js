@@ -3,22 +3,24 @@ import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request } from "../../services";
-import PointLiner from "../drawing/LinerWithPoint";
+import { ParallelCoordinates } from "./drawing";
 
-const ProgressChart = () => {
+const ParallelChart = () => {
+  console.log("here");
+
   const { foldername } = useParams();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${foldername}`,
-      getAccessTokenSilently,
+      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${foldername}`,
       getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
   }, [foldername, getAccessTokenSilently]);
+  console.log(data);
 
   if (data == null) {
     return (
@@ -29,9 +31,10 @@ const ProgressChart = () => {
   }
   return (
     <div>
-      <PointLiner data={data} />
+      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+      <ParallelCoordinates data={data} />
     </div>
   );
 };
 
-export default ProgressChart;
+export default ParallelChart;

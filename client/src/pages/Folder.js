@@ -32,11 +32,13 @@ import {
   request_del_music,
   request_folder_name,
 } from "../services";
-import ProgressChart from "../chart/page/Progress";
-import ParallelChart from "../chart/page/Parallel";
-import FrequencyChart from "../chart/page/CmpFreq";
-import VolumeChart from "../chart/page/CmpVol";
-import ToneChart from "../chart/page/CmpTone";
+import {
+  FrequencyChart,
+  ParallelChart,
+  ProgressChart,
+  ToneChart,
+  VolumeChart,
+} from "../components/chart";
 
 export const convertDate = (input) => {
   if (input === null) {

@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { request } from "../../services";
-import Liner from "../drawing/Liner";
+import { ManyLiner } from "./drawing";
 
-const Decibel = () => {
+const Centroid_Rolloff = () => {
   const { musicId } = useParams();
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);
@@ -14,19 +14,19 @@ const Decibel = () => {
 
   useEffect(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel/ave`,
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`,
       getAccessTokenSilently,
     ).then((data) => {
-      setAve(data);
+      setData(data);
     });
   }, [musicId, getAccessTokenSilently]);
 
   useEffect(() => {
     request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`,
+      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`,
       getAccessTokenSilently,
     ).then((data) => {
-      setData(data);
+      setAve(data);
     });
   }, [musicId, getAccessTokenSilently]);
 
@@ -40,9 +40,9 @@ const Decibel = () => {
   return (
     <div>
       <IonItem lines="none"> 安定度... {ave}</IonItem>
-      <Liner data={data} />
+      <ManyLiner data={data} />
     </div>
   );
 };
 
-export default Decibel;
+export default Centroid_Rolloff;
