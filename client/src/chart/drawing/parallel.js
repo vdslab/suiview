@@ -1,4 +1,3 @@
-import React from "react";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
 const ParallelCoordinates = ({ data }) => {
