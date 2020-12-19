@@ -80,7 +80,7 @@ const Charts = () => {
 };
 
 const Detail = ({ history }) => {
-  const { folderId, musicId } = useParams();
+  const { musicId } = useParams();
   const [music, setMusic] = useState(null);
   const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
@@ -104,7 +104,9 @@ const Detail = ({ history }) => {
           <IonBackButton
             slot="start"
             fill="clear"
-            defaultHref={`/folder/${folderId}`}
+            defaultHref={
+              music?.folderId ? `/folder/${music.folderId}` : "/musics"
+            }
             icon={closeOutline}
           ></IonBackButton>
           <IonTitle>
@@ -157,9 +159,7 @@ const Detail = ({ history }) => {
               text: "フォルダの移動",
               icon: ellipsisHorizontalCircleOutline,
               handler: () => {
-                history.push(
-                  `/select_folder/${musicId}/folder/${folderId}/from/detail`,
-                );
+                history.push(`/select_folder/${musicId}`);
                 console.log("Share clicked");
               },
             },

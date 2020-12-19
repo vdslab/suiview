@@ -20,7 +20,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, getMusic, postFolder, putMusic } from "../services/api";
 
 const SelectFolder = ({ history }) => {
-  const { folderId, musicId } = useParams();
+  const { musicId } = useParams();
   const [music, setMusic] = useState(null);
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -60,36 +60,39 @@ const SelectFolder = ({ history }) => {
           >
             <IonLabel>新規フォルダ</IonLabel>
           </IonItem>
-          {folders.map((d) => {
-            if (d.id === folderId) {
-              return (
-                <IonItem key={d.id} color="medium">
-                  <IonLabel>{d.name}</IonLabel>
-                </IonItem>
-              );
-            } else {
-              return (
-                <IonItem
-                  key={d.id}
-                  detail="false"
-                  target="_blank"
-                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-                  onClick={async () => {
-                    await putMusic(
-                      musicId,
-                      {
-                        folderId: d.id,
-                      },
-                      getAccessTokenSilently,
-                    );
-                    history.push("/");
-                  }}
-                >
-                  <IonLabel>{d.name}</IonLabel>
-                </IonItem>
-              );
-            }
-          })}
+          <div>
+            {folders.map((d) => {
+              if (music && d.id === music.folderId) {
+                return (
+                  <IonItem
+                    key={d.id}
+                    class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+                  >
+                    <IonLabel>{d.name}</IonLabel>
+                  </IonItem>
+                );
+              } else {
+                return (
+                  <IonItem
+                    key={d.id}
+                    class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+                    onClick={async () => {
+                      await putMusic(
+                        musicId,
+                        {
+                          folderId: d.id,
+                        },
+                        getAccessTokenSilently,
+                      );
+                      history.push(`/folder/${d.id}`);
+                    }}
+                  >
+                    <IonLabel>{d.name}</IonLabel>
+                  </IonItem>
+                );
+              }
+            })}
+          </div>
         </IonList>
 
         <IonAlert
@@ -113,10 +116,15 @@ const SelectFolder = ({ history }) => {
             },
             {
               text: "Ok",
-              handler: ({ name }) => {
-                postFolder({
-                  name,
-                });
+              handler: async ({ name }) => {
+                await postFolder(
+                  {
+                    name,
+                  },
+                  getAccessTokenSilently,
+                );
+                const folders = await getFolders(getAccessTokenSilently);
+                setFolders(folders);
               },
             },
           ]}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   IonHeader,
   IonItem,
@@ -25,7 +25,9 @@ import { musicRecord, saveAudio } from "../services/recording";
 import { getFolder, postMusic, putMusicContent } from "../services/api";
 
 const Recording = ({ history }) => {
-  const { folderId } = useParams();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const folderId = params.get("folderId") || "";
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
@@ -33,7 +35,7 @@ const Recording = ({ history }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(async () => {
-    if (folderId !== "all") {
+    if (folderId) {
       const data = await getFolder(folderId, getAccessTokenSilently);
       setFolder(data);
     }
@@ -91,16 +93,18 @@ const Recording = ({ history }) => {
               {
                 text: "完了!",
                 handler: async () => {
-                  console.log("push fin");
                   const blob = saveAudio();
-                  const music = await postMusic(
-                    {
-                      name,
-                    },
-                    getAccessTokenSilently,
-                  );
+                  const record = { name };
+                  if (folderId) {
+                    record.folderId = folderId;
+                  }
+                  const music = await postMusic(record, getAccessTokenSilently);
                   await putMusicContent(music.id, blob, getAccessTokenSilently);
-                  history.push(`/detail/${music.id}/from/${folderId}`);
+                  if (folderId) {
+                    history.replace(`/folder/${folderId}`);
+                  } else {
+                    history.replace("/musics");
+                  }
                 },
               },
             ]}

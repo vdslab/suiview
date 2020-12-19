@@ -3,12 +3,15 @@ import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import Home from "../src/pages/Home";
-import Recording from "../src/pages/Recording";
-import Setting from "../src/pages/Setting";
-import Folder from "../src/pages/Folder";
-import Detail from "../src/pages/Detail";
-import SelectFolder from "../src/pages/SelectFolder";
+import {
+  Home,
+  Recording,
+  Setting,
+  MusicList,
+  Folder,
+  Detail,
+  SelectFolder,
+} from "../src/pages";
 
 const App = () => {
   const { isLoading, isAuthenticated, error, loginWithRedirect } = useAuth0();
@@ -26,14 +29,12 @@ const App = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/" component={Home} exact />
-            <Route path="/recording/:folderId" component={Recording} />
+            <Route path="/recording" component={Recording} />
             <Route path="/setting" component={Setting} />
+            <Route path="/musics" component={MusicList} />
             <Route path="/folder/:folderId" component={Folder} />
-            <Route path="/detail/:musicId/from/:folderId" component={Detail} />
-            <Route
-              path="/select_folder/:musicId/folder/:folderId/from/:path"
-              component={SelectFolder}
-            />
+            <Route path="/detail/:musicId" component={Detail} />
+            <Route path="/select_folder/:musicId" component={SelectFolder} />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

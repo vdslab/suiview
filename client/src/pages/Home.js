@@ -53,7 +53,7 @@ const Home = () => {
 
           <IonItem
             _ngcontent-yfv-c79=""
-            routerLink="/folder/all"
+            routerLink="/musics"
             detail="false"
             class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
           >

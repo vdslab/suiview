@@ -11,28 +11,15 @@ import {
   IonButton,
   IonCard,
   IonIcon,
-  IonLabel,
   IonSelect,
   IonSelectOption,
   IonBackButton,
   useIonViewWillEnter,
-  IonItemSliding,
-  IonItemOption,
-  IonItemOptions,
   IonFooter,
 } from "@ionic/react";
-import {
-  chevronForwardOutline,
-  chevronBackOutline,
-  micOutline,
-} from "ionicons/icons";
+import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  deleteMusic,
-  getFolder,
-  getFolderMusics,
-  getMusics,
-} from "../services/api";
+import { deleteMusic, getFolder, getFolderMusics } from "../services/api";
 import {
   FrequencyChart,
   ParallelChart,
@@ -40,23 +27,7 @@ import {
   ToneChart,
   VolumeChart,
 } from "../components/chart";
-
-export const convertDate = (input) => {
-  if (input === null) {
-    return "";
-  }
-  //console.log("input = " + input);
-  //const d = new Date(`${input} UTC`);
-  const d = new Date(input);
-  //console.log(d);
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const date = `${d.getDate()}`.padStart(2, "0");
-  /* const createdDay =
-      year + "/" + month + "/" + date + "/" + hour + ":" + minute;*/
-  const createdDay = year + "/" + month + "/" + date + "/";
-  return createdDay;
-};
+import MusicItem from "../components/MusicItem.js";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -131,30 +102,20 @@ const FolderDetail = () => {
   );
 };
 
-async function fetchMusics(folderId, getAccessToken) {
-  if (folderId === "all") {
-    return await getMusics(getAccessToken);
-  } else {
-    return await getFolderMusics(folderId, getAccessToken);
-  }
-}
-
-const Folder = () => {
+const Folder = ({ history }) => {
   const { folderId } = useParams();
   const [musics, setMusics] = useState([]);
   const [folder, setFolder] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(async () => {
-    const data = await fetchMusics(folderId, getAccessTokenSilently);
+    const data = await getFolderMusics(folderId, getAccessTokenSilently);
     setMusics(data);
   });
 
   useIonViewWillEnter(async () => {
-    if (folderId !== "all") {
-      const data = await getFolder(folderId, getAccessTokenSilently);
-      setFolder(data);
-    }
+    const data = await getFolder(folderId, getAccessTokenSilently);
+    setFolder(data);
   });
 
   return (
@@ -165,65 +126,35 @@ const Folder = () => {
             slot="start"
             fill="clear"
             defaultHref="/"
-            icon={chevronBackOutline}
           ></IonBackButton>
-          <IonTitle>{folder?.name || "all"}</IonTitle>
+          <IonTitle>{folder?.name}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {folderId === "all" ? (
-          []
-        ) : (
-          <IonList>
-            <IonCard>
-              <FolderDetail />
-            </IonCard>
-          </IonList>
-        )}
+        <IonList>
+          <IonCard>
+            <FolderDetail />
+          </IonCard>
+        </IonList>
         <IonList>
           {musics.map((data) => {
             return (
-              <IonItemSliding key={data.id}>
-                <IonItem
-                  _ngcontent-yfv-c79=""
-                  detail="false"
-                  routerLink={`/detail/${data.id}/from/${folderId}`}
-                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-                >
-                  <IonLabel>
-                    No.{data.id}&emsp;{convertDate(data.created)}&emsp;
-                    {data.name}&emsp;
-                  </IonLabel>
-                  <IonButton slot="end" fill="clear">
-                    <IonIcon icon={chevronForwardOutline}></IonIcon>
-                  </IonButton>
-                </IonItem>
-
-                <IonItemOptions>
-                  <IonItemOption
-                    color="primary"
-                    expandable
-                    routerLink={`/select_folder/${data.id}/folder/${folderId}/from/folderdata`}
-                  >
-                    file
-                  </IonItemOption>
-
-                  <IonItemOption
-                    color="danger"
-                    expandable
-                    onClick={async () => {
-                      await deleteMusic(data.id, getAccessTokenSilently);
-                      const musics = await fetchMusics(
-                        folderId,
-                        getAccessTokenSilently,
-                      );
-                      setMusics(musics);
-                    }}
-                  >
-                    delete
-                  </IonItemOption>
-                </IonItemOptions>
-              </IonItemSliding>
+              <MusicItem
+                key={data.id}
+                music={data}
+                routerLink={`/detail/${data.id}/from/${folderId}`}
+                onClickMoveButton={() => {
+                  history.push(`/select_folder/${data.id}`);
+                }}
+                onClickDeleteButton={async () => {
+                  await deleteMusic(data.id, getAccessTokenSilently);
+                  const musics = await getFolderMusics(
+                    folderId,
+                    getAccessTokenSilently,
+                  );
+                  setMusics(musics);
+                }}
+              />
             );
           })}
         </IonList>
@@ -233,7 +164,7 @@ const Folder = () => {
           <IonButton
             slot="end"
             fill="clear"
-            routerLink={`/recording/${folderId}`}
+            routerLink={`/recording?folderId=${folderId}`}
           >
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>
