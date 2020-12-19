@@ -11,7 +11,7 @@ import {
 import { closeOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 /////////////////////////////////////////////
-const Setting = ({ history }) => {
+const Setting = () => {
   const { logout } = useAuth0();
 
   return (

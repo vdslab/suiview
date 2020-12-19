@@ -139,7 +139,7 @@ async function fetchMusics(folderId, getAccessToken) {
   }
 }
 
-const Folder = ({ history }) => {
+const Folder = () => {
   const { folderId } = useParams();
   const [musics, setMusics] = useState([]);
   const [folder, setFolder] = useState(null);
@@ -186,12 +186,8 @@ const Folder = ({ history }) => {
               <IonItemSliding key={data.id}>
                 <IonItem
                   _ngcontent-yfv-c79=""
-                  onClick={() => {
-                    console.log(data);
-                    history.push(`/detail/${data.id}/from/${folderId}`);
-                  }}
                   detail="false"
-                  target="_blank"
+                  routerLink={`/detail/${data.id}/from/${folderId}`}
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
                   <IonLabel>
@@ -207,11 +203,7 @@ const Folder = ({ history }) => {
                   <IonItemOption
                     color="primary"
                     expandable
-                    onClick={() => {
-                      history.push(
-                        `/select_folder/${data.id}/folder/${folderId}/from/folderdata`,
-                      );
-                    }}
+                    routerLink={`/select_folder/${data.id}/folder/${folderId}/from/folderdata`}
                   >
                     file
                   </IonItemOption>
@@ -241,7 +233,7 @@ const Folder = ({ history }) => {
           <IonButton
             slot="end"
             fill="clear"
-            onClick={() => history.push(`/recording/${folderId}`)}
+            routerLink={`/recording/${folderId}`}
           >
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>

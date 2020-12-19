@@ -27,7 +27,7 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, deleteFolder, postFolder } from "../services/api";
 
-const Home = ({ history }) => {
+const Home = () => {
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
@@ -41,14 +41,7 @@ const Home = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonButton
-            slot="start"
-            fill="clear"
-            //href="/setting"
-            onClick={() => {
-              history.push("/setting");
-            }}
-          >
+          <IonButton slot="start" fill="clear" routerLink="/setting">
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
           <IonTitle>musicvis</IonTitle>
@@ -60,11 +53,8 @@ const Home = ({ history }) => {
 
           <IonItem
             _ngcontent-yfv-c79=""
-            onClick={() => {
-              history.push(`/folder/all`);
-            }}
+            routerLink="/folder/all"
             detail="false"
-            target="_blank"
             class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
           >
             すべて
@@ -77,12 +67,9 @@ const Home = ({ history }) => {
             return (
               <IonItemSliding key={data.id}>
                 <IonItem
-                  _ngcontent-yfv-c79=""
-                  onClick={() => {
-                    history.push(`/folder/${data.id}`);
-                  }}
+                  _ngcontent-yfv-c79="" // これは…?
                   detail="false"
-                  target="_blank"
+                  routerLink={`/folder/${data.id}`}
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
                   <IonLabel>{data.name}</IonLabel>
@@ -117,11 +104,7 @@ const Home = ({ history }) => {
           >
             <IonIcon icon={folderOutline}></IonIcon>
           </IonButton>
-          <IonButton
-            slot="end"
-            fill="clear"
-            onClick={() => history.push(`/recording/all`)}
-          >
+          <IonButton slot="end" fill="clear" routerLink="/recording/all">
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>
         </IonToolbar>

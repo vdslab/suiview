@@ -107,15 +107,6 @@ const Detail = ({ history }) => {
             defaultHref={`/folder/${folderId}`}
             icon={closeOutline}
           ></IonBackButton>
-          {/*<IonButton
-            fill="clear"
-            slot="start"
-            onClick={() => {
-              history.push(`/folder/${folderId}`);
-            }}
-          >
-            <IonIcon icon={closeOutline}></IonIcon>
-          </IonButton>*/}
           <IonTitle>
             <IonItem lines="none">
               <IonInput
