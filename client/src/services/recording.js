@@ -1,4 +1,3 @@
-import { request_add_music } from "./index";
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;
@@ -37,7 +36,7 @@ export const musicRecord = () => {
     .then(handleSuccess);
 };
 
-export const saveAudio = (getAccessTokenSilently) => {
+export const saveAudio = () => {
   // export WAV from audio float data
   const exportWAV = (audioData) => {
     const encodeWAV = (samples, sampleRate) => {
@@ -93,26 +92,10 @@ export const saveAudio = (getAccessTokenSilently) => {
 
     const dataview = encodeWAV(mergeBuffers(audioData), audio_sample_rate);
     const audioBlob = new Blob([dataview], { type: "audio/wav" });
-    console.log(dataview);
-    //データの送信をしたい
-    /*window.fetch(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, {
-      method: "PUT",
-      body: audioBlob,
-    });*/
-    request_add_music(audioBlob, getAccessTokenSilently);
-
-    const myURL = window.URL || window.webkitURL;
-    const url = myURL.createObjectURL(audioBlob);
-    /*console.log(url);
-    console.log("123");
-    const a = Fetch_put(`${process.env.REACT_APP_API_ENDPOINT}/1/musics`, audioBlob, token);*/
-    return url;
+    return audioBlob;
   };
 
-  const dl = document.querySelector("#dl");
-  dl.href = exportWAV(audioData);
-  dl.download = "test.wav";
-  alert("音声のダウンロードが可能です");
+  const blob = exportWAV(audioData);
 
   //必要そう↓多分これがないと二回目以降がおかしくなりそう
   audioContext.close().then(function () {
@@ -120,4 +103,6 @@ export const saveAudio = (getAccessTokenSilently) => {
     audio_sample_rate = null;
     audioContext = null;
   });
+
+  return blob;
 };

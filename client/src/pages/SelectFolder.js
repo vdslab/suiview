@@ -17,62 +17,23 @@ import {
 } from "@ionic/react";
 import { closeOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  request_folder_list,
-  request_music_name,
-  request_add_folder,
-  request_change_folder,
-} from "../services";
-/////////////////////////////////////////////
+import { getFolders, getMusic, postFolder, putMusic } from "../services/api";
+
 const SelectFolder = ({ history }) => {
-  const folderId = useParams().folderId;
-  const musicId = useParams().musicId;
-  const [musicName, setMusicName] = useState();
-  const [folderList, setFolderList] = useState(null);
+  const { folderId, musicId } = useParams();
+  const [music, setMusic] = useState(null);
+  const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-
-  console.log(musicId);
-
-  useIonViewWillEnter(() => {
-    request_folder_list(getAccessTokenSilently).then((data) => {
-      setFolderList(data);
-    });
-  }, []);
-
-  useIonViewWillEnter(() => {
-    request_music_name(musicId, getAccessTokenSilently).then((data) => {
-      setMusicName(data);
-    });
-  }, []);
-  console.log(folderList);
-
-  const addFol = (name) => {
-    console.log(name);
-    request_add_folder(name, getAccessTokenSilently).then((data) => {
-      setFolderList(data);
-    }); /*
-      .then(() => {
-        console.log(folderList[folderList.length - 1].id);
-        ChangeFol(folderList[folderList.length - 1].id);
-      });*/
-  };
-
-  const ChangeFol = (id) => {
-    console.log(id);
-    request_change_folder(musicId, id, getAccessTokenSilently).then(() => {
-      /*できれば遷移の仕方分けたい*/
-      /*  if (from == "detail") {
-        history.push("/");
-      } else {
-        history.push(`/folder/${folderId}`);
-      }*/
-      history.push("/");
-    });
-  };
-
   const { getAccessTokenSilently } = useAuth0();
 
-  //console.log(r);
+  useIonViewWillEnter(async () => {
+    const data = await getFolders(getAccessTokenSilently);
+    setFolders(data);
+  });
+  useIonViewWillEnter(async () => {
+    const data = await getMusic(musicId, getAccessTokenSilently);
+    setMusic(data);
+  });
 
   return (
     <IonPage>
@@ -85,7 +46,7 @@ const SelectFolder = ({ history }) => {
       <IonContent>
         <IonList>
           <IonListHeader lines="full">
-            <IonLabel>{musicName}</IonLabel>
+            <IonLabel>{music?.name}</IonLabel>
           </IonListHeader>
           {/*CSS書き直す*/}
           <IonItem
@@ -99,39 +60,44 @@ const SelectFolder = ({ history }) => {
           >
             <IonLabel>新規フォルダ</IonLabel>
           </IonItem>
-          {folderList != null
-            ? folderList.map((d, id) => {
-                if (d.id === folderId) {
-                  return (
-                    <IonItem key={id} color="medium">
-                      <IonLabel>{d.name}</IonLabel>
-                    </IonItem>
-                  );
-                } else {
-                  return (
-                    <IonItem
-                      key={id}
-                      detail="false"
-                      target="_blank"
-                      class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-                      onClick={() => {
-                        ChangeFol(d.id);
-                      }}
-                    >
-                      <IonLabel>{d.name}</IonLabel>
-                    </IonItem>
-                  );
-                }
-              })
-            : []}
+          {folders.map((d) => {
+            if (d.id === folderId) {
+              return (
+                <IonItem key={d.id} color="medium">
+                  <IonLabel>{d.name}</IonLabel>
+                </IonItem>
+              );
+            } else {
+              return (
+                <IonItem
+                  key={d.id}
+                  detail="false"
+                  target="_blank"
+                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
+                  onClick={async () => {
+                    await putMusic(
+                      musicId,
+                      {
+                        folderId: d.id,
+                      },
+                      getAccessTokenSilently,
+                    );
+                    history.push("/");
+                  }}
+                >
+                  <IonLabel>{d.name}</IonLabel>
+                </IonItem>
+              );
+            }
+          })}
         </IonList>
 
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
-          header={"新規フォルダ"}
-          subHeader={"フォルダの名前を記入してください"}
+          header="新規フォルダ"
+          subHeader="フォルダの名前を記入してください"
           inputs={[
             {
               name: "name",
@@ -147,8 +113,10 @@ const SelectFolder = ({ history }) => {
             },
             {
               text: "Ok",
-              handler: (data) => {
-                addFol(data.name);
+              handler: ({ name }) => {
+                postFolder({
+                  name,
+                });
               },
             },
           ]}

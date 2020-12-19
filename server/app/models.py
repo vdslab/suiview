@@ -13,19 +13,20 @@ class Music(Base):
 
     # XXX remove session from argument
     def fundamental_frequency(self, session, cache=True):
-        if self.f0 is None:
+        if not cache or self.f0 is None:
             data, rate = librosa.load(io.BytesIO(self.content), 48000)
             data = data.astype(np.float)
             f0, _, _ = librosa.pyin(data, fmin=librosa.note_to_hz(
                 'C2'), fmax=librosa.note_to_hz('C7'))
             self.f0 = f0.tobytes()
             session.commit()
-        return np.frombuffer(self.f0, dtype=np.float)
+        return np.frombuffer(self.f0, dtype=np.float64)
 
     def to_json(self):
         return {
             'id': self.id,
             'userId': self.user_id,
+            'folderId': self.folder_id,
             'created': self.created,
             'name': self.name,
         }
@@ -49,18 +50,6 @@ class Folder(Base):
         return {
             'id': self.id,
             'name': self.name,
-        }
-
-
-class Music_Folders(Base):
-    __tablename__ = 'music_folders'
-
-    def to_json(self):
-        return{
-            'id': self.id,
-            'music_id': self.music_id,
-            'folder_id': self.folder_id,
-            'user_id': self.user_id
         }
 
 

@@ -1,33 +1,35 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { request } from "../../services";
+import {
+  getMusicSpectrumCentroid,
+  getMusicSpectrumRolloff,
+} from "../../services/api";
 import { ManyLiner } from "./drawing";
 
-const Centroid_Rolloff = () => {
-  const { musicId } = useParams();
+const CentroidRolloff = ({ musicId }) => {
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);
-
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`,
+    const centroidRequest = getMusicSpectrumCentroid(
+      musicId,
       getAccessTokenSilently,
-    ).then((data) => {
-      setData(data);
-    });
-  }, [musicId, getAccessTokenSilently]);
-
-  useEffect(() => {
-    request(
-      `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`,
+    );
+    const rolloffRequest = getMusicSpectrumRolloff(
+      musicId,
       getAccessTokenSilently,
-    ).then((data) => {
-      setAve(data);
-    });
+    );
+    Promise.all([centroidRequest, rolloffRequest]).then(
+      ([centroid, rolloff]) => {
+        setAve(rolloff.average);
+        setData([
+          { id: "centroid", data: centroid.values },
+          { id: "rolloff", data: rolloff.values },
+        ]);
+      },
+    );
   }, [musicId, getAccessTokenSilently]);
 
   if (data == null) {
@@ -45,4 +47,4 @@ const Centroid_Rolloff = () => {
   );
 };
 
-export default Centroid_Rolloff;
+export default CentroidRolloff;

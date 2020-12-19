@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   IonHeader,
   IonItem,
@@ -16,24 +17,27 @@ import {
   IonTextarea,
   IonFooter,
   IonAlert,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { musicRecord, saveAudio } from "../services/recording";
-import { useParams } from "react-router-dom";
-/////////////////////////////////////////////
-const Recording = ({ history }) => {
-  const [musicName, setMusicName] = useState();
-  const [comment, setComment] = useState();
-  const item = useParams();
-  const [showAlert, setShowAlert] = useState(false);
-  const folName = item.foldername;
-  //フォルダ・名前のやつやるでバックログ用
-  //const [r, setR] = useState();
+import { getFolder, postMusic, putMusicContent } from "../services/api";
 
+const Recording = ({ history }) => {
+  const { folderId } = useParams();
+  const [name, setName] = useState("");
+  const [comment, setComment] = useState("");
+  const [folder, setFolder] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
 
-  //console.log(r);
+  useIonViewWillEnter(async () => {
+    if (folderId !== "all") {
+      const data = await getFolder(folderId, getAccessTokenSilently);
+      setFolder(data);
+    }
+  });
 
   return (
     <IonPage>
@@ -46,14 +50,14 @@ const Recording = ({ history }) => {
       <IonContent>
         <IonList>
           <IonListHeader lines="full">
-            フォルダ名 &emsp; {folName}
+            フォルダ名 &emsp; {folder?.name || "all"}
           </IonListHeader>
           <IonItem>
             <IonLabel>名前&ensp;</IonLabel>
             <IonInput
-              value={musicName}
+              value={name}
               placeholder="music name"
-              onIonChange={(e) => setMusicName(e.detail.value)}
+              onIonChange={(e) => setName(e.detail.value)}
             ></IonInput>
           </IonItem>
           <IonItem>
@@ -86,10 +90,17 @@ const Recording = ({ history }) => {
               { text: "取り消し" },
               {
                 text: "完了!",
-                handler: () => {
+                handler: async () => {
                   console.log("push fin");
-                  saveAudio(getAccessTokenSilently);
-                  //setR(saveAudio(getAccessTokenSilently));
+                  const blob = saveAudio();
+                  const music = await postMusic(
+                    {
+                      name,
+                    },
+                    getAccessTokenSilently,
+                  );
+                  await putMusicContent(music.id, blob, getAccessTokenSilently);
+                  history.push(`/detail/${music.id}/from/${folderId}`);
                 },
               },
             ]}

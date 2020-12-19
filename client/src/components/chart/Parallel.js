@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { request } from "../../services";
+import { getFolderParallel } from "../../services/api";
 import { ParallelCoordinates } from "./drawing";
 
-const ParallelChart = () => {
-  console.log("here");
-
-  const { foldername } = useParams();
+const ParallelChart = ({ folderId }) => {
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${foldername}`,
-      getAccessTokenSilently,
-    ).then((data) => {
+    getFolderParallel(folderId, getAccessTokenSilently).then((data) => {
       setData(data);
     });
-  }, [foldername, getAccessTokenSilently]);
-  console.log(data);
+  }, [folderId, getAccessTokenSilently]);
 
   if (data == null) {
     return (

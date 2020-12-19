@@ -28,76 +28,20 @@ import {
   close,
 } from "ionicons/icons";
 import {
-  request_music_name,
-  request_comment_list,
-  request_change_music_name,
-} from "../services";
+  getMusic,
+  getMusicComments,
+  putMusic,
+  deleteMusic,
+} from "../services/api";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
 
-const ShowChart = (musicId, kind) => {
-  if (musicId == null) {
-    return null;
-  }
-  if (kind === "pitch") {
-    console.log("here");
-    return (
-      <div>
-        <ShowFrequency musicId={musicId} />
-      </div>
-    );
-  } else if (kind === "vol") {
-    return (
-      <div>
-        <Decibel musicId={musicId} />
-      </div>
-    );
-  } else if (kind === "tone") {
-    return (
-      <div>
-        <CentroidRolloff musicId={musicId} />
-      </div>
-    );
-  } /*else if (kind == "flat") {
-    return (
-      <div>
-        <Flatness musicId={musicId} />
-      </div>
-    );
-  } else if (kind == "fourier") {
-    return (
-      <div>
-        <ShowFourier musicId={musicId} />
-      </div>
-    );
-  } else if (kind == "amplitude") {
-    return (
-      <div>
-        <MusicDetail musicId={musicId} />
-      </div>
-    );
-  } else if (kind == "spect") {
-    return (
-      <div>
-        <ShowSpectrogram musicId={musicId} />
-      </div>
-    );
-  }*/
-};
+const chartIds = ["PITCH", "VOL", "TONE"];
 
-const Chartes = () => {
-  const [chartId, setChartId] = useState("PITCH");
-  const chartIds = [
-    "PITCH",
-    "VOL",
-    "TONE",
-    /*"SPECTRUM FLATNESS",
-    "FOURIER",
-    "AMPLITUDE",
-    "SPECTROGRAM",*/
-  ];
+const Charts = () => {
   const { musicId } = useParams();
-  console.log(musicId);
+  const [chartId, setChartId] = useState(chartIds[0]);
+
   return (
     <div>
       <IonItem lines="none">
@@ -116,43 +60,42 @@ const Chartes = () => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "PITCH" ? ShowChart(musicId, "pitch") : []}
-      {chartId === "VOL" ? ShowChart(musicId, "vol") : []}
-      {chartId === "TONE" ? ShowChart(musicId, "tone") : []}
-      {/*} {chartId === "SPECTRUM FLATNESS" ? ShowChart(musicId, "flat") : []}
-      {chartId === "FOURIER" ? ShowChart(musicId, "fourier") : []}
-      {chartId === "AMPLITUDE" ? ShowChart(musicId, "amplitude") : []}
-        {chartId === "SPECTROGRAM" ? ShowChart(musicId, "spect") : []}*/}
+      {chartId === "PITCH" && (
+        <div>
+          <ShowFrequency musicId={musicId} />
+        </div>
+      )}
+      {chartId === "VOL" && (
+        <div>
+          <Decibel musicId={musicId} />
+        </div>
+      )}
+      {chartId === "TONE" && (
+        <div>
+          <CentroidRolloff musicId={musicId} />
+        </div>
+      )}
     </div>
   );
 };
 
 const Detail = ({ history }) => {
-  const { musicId } = useParams();
-  const [name, setName] = useState();
-  const { folderId } = useParams();
+  const { folderId, musicId } = useParams();
+  const [music, setMusic] = useState(null);
+  const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const [comments, setComments] = useState();
-
   const { getAccessTokenSilently } = useAuth0();
 
-  useIonViewWillEnter(() => {
-    request_music_name(musicId, getAccessTokenSilently).then((data) => {
-      setName(data);
-    });
-  }, []);
+  useIonViewWillEnter(async () => {
+    const data = await getMusic(musicId, getAccessTokenSilently);
+    setMusic(data);
+  });
+  useIonViewWillEnter(async () => {
+    const data = await getMusicComments(musicId, getAccessTokenSilently);
+    setComments(data);
+  });
 
-  useIonViewWillEnter(() => {
-    request_comment_list(musicId, getAccessTokenSilently).then((data) => {
-      setComments(data);
-    });
-  }, []);
   console.log(comments);
-
-  const changeName = () => {
-    console.log("here");
-    request_change_music_name(name, musicId, getAccessTokenSilently);
-  };
 
   return (
     <IonPage>
@@ -176,12 +119,20 @@ const Detail = ({ history }) => {
           <IonTitle>
             <IonItem lines="none">
               <IonInput
-                value={name}
+                value={music?.name}
                 onIonChange={(e) => {
-                  setName(e.detail.value);
+                  if (music) {
+                    setMusic(Object.assign(music, { name: e.detail.value }));
+                  }
                 }}
               ></IonInput>
-              <IonButton slot="end" fill="outline" onClick={() => changeName()}>
+              <IonButton
+                slot="end"
+                fill="outline"
+                onClick={() => {
+                  putMusic(musicId, music, getAccessTokenSilently);
+                }}
+              >
                 名前を変更する
               </IonButton>
             </IonItem>
@@ -203,11 +154,12 @@ const Detail = ({ history }) => {
           cssClass="my-custom-class"
           buttons={[
             {
-              text: "削除(まだできない)",
+              text: "削除",
               role: "destructive",
               icon: trash,
-              handler: () => {
-                console.log("Delete clicked");
+              handler: async () => {
+                await deleteMusic(music.id, getAccessTokenSilently);
+                history.push("/");
               },
             },
             {
@@ -235,7 +187,7 @@ const Detail = ({ history }) => {
       <IonContent>
         <IonList>
           <IonCard>
-            <Chartes />
+            <Charts />
           </IonCard>
         </IonList>
         <IonList>

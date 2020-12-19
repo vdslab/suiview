@@ -26,9 +26,9 @@ const App = () => {
         <IonReactRouter>
           <IonRouterOutlet>
             <Route path="/" component={Home} exact />
-            <Route path="/recording/:foldername" component={Recording} />
+            <Route path="/recording/:folderId" component={Recording} />
             <Route path="/setting" component={Setting} />
-            <Route path="/folder/:foldername" component={Folder} />
+            <Route path="/folder/:folderId" component={Folder} />
             <Route path="/detail/:musicId/from/:folderId" component={Detail} />
             <Route
               path="/select_folder/:musicId/folder/:folderId/from/:path"

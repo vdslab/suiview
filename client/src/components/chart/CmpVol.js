@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { request } from "../../services";
+import { getFolderDecibel } from "../../services/api";
 import { ManyLiner } from "./drawing";
 
-const VolumeChart = () => {
-  const { foldername } = useParams();
+const VolumeChart = ({ folderId }) => {
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${foldername}`,
-      getAccessTokenSilently,
-    ).then((data) => {
+    getFolderDecibel(folderId, getAccessTokenSilently).then((data) => {
       setData(data);
     });
-  }, [foldername, getAccessTokenSilently]);
-  console.log(data);
+  }, [folderId, getAccessTokenSilently]);
 
   if (data == null) {
     return (
