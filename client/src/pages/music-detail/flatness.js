@@ -89,7 +89,7 @@ const AmplitudeChart = ({ data }) => {
 const Flatness = () => {
   const { musicId } = useParams();
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_flatness`,
   );
 
   if (data == undefined) {

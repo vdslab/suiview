@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonHeader,
   IonItem,
@@ -7,24 +7,15 @@ import {
   IonTitle,
   IonContent,
   IonPage,
-  IonButton,
-  IonIcon,
   IonLabel,
   IonListHeader,
   IonBackButton,
-  IonInput,
-  IonTextarea,
   IonFooter,
-  IonGrid,
-  IonCol,
-  IonRow,
   IonAlert,
-  IonImg,
   useIonViewWillEnter,
 } from "@ionic/react";
-import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
+import { closeOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { musicRecord, saveAudio } from "../serviceWorker/recording";
 import {
   request_folder_list,
   request_music_name,
@@ -36,9 +27,8 @@ import { useParams } from "react-router-dom";
 const SelectFolder = ({ history }) => {
   const folderId = useParams().folderId;
   const musicId = useParams().musicId;
-  const from = useParams().path;
   const [musicName, setMusicName] = useState();
-  const [folderList, setFolderList] = useState();
+  const [folderList, setFolderList] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
   console.log(musicId);
@@ -80,15 +70,7 @@ const SelectFolder = ({ history }) => {
     });
   };
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   //console.log(r);
 
@@ -117,9 +99,9 @@ const SelectFolder = ({ history }) => {
           >
             <IonLabel>新規フォルダ</IonLabel>
           </IonItem>
-          {folderList != undefined
+          {folderList != null
             ? folderList.map((d, id) => {
-                if (d.id == folderId) {
+                if (d.id === folderId) {
                   return (
                     <IonItem key={id} color="medium">
                       <IonLabel>{d.name}</IonLabel>

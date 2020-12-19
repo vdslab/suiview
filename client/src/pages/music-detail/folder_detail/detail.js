@@ -122,27 +122,27 @@ const ParallelCoordinates = ({ data }) => {
     Math,
     data.map((input) => {
       return input.tone;
-    })
+    }),
   );
   const min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.tone;
-    })
+    }),
   );
 
   const pich_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.pich;
-    })
+    }),
   );
 
   const vol_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.volume;
-    })
+    }),
   );
 
   return (
@@ -314,7 +314,7 @@ const ProgressLine = ({ data /* see data tab */ }) => {
 
 const FrequencyDraw = ({ folderId }) => {
   const data = useFetch_get(
-    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderId}`,
   );
   if (data == undefined) {
     return (
@@ -346,7 +346,7 @@ const FrequencyChart = (folderId) => {
 
 const ParalellDraw = ({ folderId }) => {
   const data = useFetch_get(
-    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${folderId}`,
   );
 
   if (data == undefined) {
@@ -378,7 +378,7 @@ const ParallelChart = (folderId) => {
 
 const ToneDraw = ({ folderId }) => {
   const data = useFetch_get(
-    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderId}`
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderId}`,
   );
 
   if (data == undefined) {
@@ -411,7 +411,7 @@ const ToneChart = (folderId) => {
 
 const VolumeDraw = ({ folderId }) => {
   const data = useFetch_get(
-    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${folderId}`
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${folderId}`,
   );
 
   if (data == undefined) {
@@ -443,7 +443,7 @@ const VolumeChart = (folderId) => {
 
 const ProgressDraw = ({ folderId }) => {
   const data = useFetch_get(
-    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${folderId}`
+    ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${folderId}`,
   );
 
   if (data == undefined) {

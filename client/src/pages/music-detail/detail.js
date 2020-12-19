@@ -42,7 +42,7 @@ const SaveComment = (comment, musicId, token) => {
   Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
     comment,
-    token
+    token,
   );
 };
 
@@ -54,7 +54,7 @@ const SaveFolder = (folderId, musicId, token) => {
   Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/put_folders/${musicId}`,
     folder_ids,
-    token
+    token,
   );
 };
 
@@ -68,7 +68,7 @@ const changeName = (name, musicId, token) => {
           Authorization: `Bearer ${token}`,
         },
         body: name,
-      }
+      },
     )
     .then((response) => response.text())
     .then((text) => {
@@ -87,7 +87,7 @@ const DeleteComment = (id, musicId, token) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     )
     .then((response) => response.text())
     .then((text) => {
@@ -237,10 +237,10 @@ const DetailPage = () => {
   const { musicId } = useParams();
   const [text, setText] = useState();
   const oldComment = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comments`,
   );
   const folderData = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`,
   );
   const [folderId, setFolderId] = useState();
   const [musicName, setMusicName] = useState();
@@ -249,7 +249,7 @@ const DetailPage = () => {
   const token = useGetToken();
 
   const name = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/music_name`,
   );
   console.log(name);
 
@@ -275,8 +275,8 @@ const DetailPage = () => {
       new Set(
         folderData.map((input) => {
           return input.id;
-        })
-      )
+        }),
+      ),
     );
   }
 

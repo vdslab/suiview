@@ -164,7 +164,7 @@ export const convertDate = (input) => {
 export const FolderName = ({ id }) => {
   const folderName = useFetch_get(
     // `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${id}`
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${id}`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${id}`,
   );
   console.log(folderName);
   return <div>{folderName}</div>;
@@ -174,7 +174,7 @@ const addFolder = (name, token) => {
   Fetch_put(
     `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name`,
     name,
-    token
+    token,
   );
 };
 ////////////////////////////////////////
@@ -201,7 +201,7 @@ export const useFetch_get = (url) => {
         console.error(e);
       }
     })();
-  }, [getAccessTokenSilently]);
+  }, [url, getAccessTokenSilently]);
   return data;
 };
 
@@ -240,28 +240,21 @@ const Root = () => {
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
   const [trackNo, setTrackNo] = useState(1);
   const folderData = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders2`,
   );
   const [folderId, setFolderId] = useState();
   const [addFol, setAddFol] = useState();
   const user_id = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/user_id`);
   const token = useGetToken();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-  } = useAuth0();
+  const { user, logout } = useAuth0();
 
   const folder_ids = Array.from(
     new Set(
       folderData.map((input) => {
         return input.id;
-      })
-    )
+      }),
+    ),
   );
 
   musics.sort((a, b) => {

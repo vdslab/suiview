@@ -121,10 +121,10 @@ const FeacherChart = ({ data }) => {
 const Centroid_Rolloff = () => {
   const { musicId } = useParams();
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`,
   );
   const ave = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`,
   );
 
   if (data == undefined) {

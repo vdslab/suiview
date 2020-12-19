@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
 const ParallelCoordinates = ({ data }) => {
@@ -11,41 +11,41 @@ const ParallelCoordinates = ({ data }) => {
     Math,
     data.map((input) => {
       return input.tone;
-    })
+    }),
   );
   const min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.tone;
-    })
+    }),
   );
 
   const pich_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.pich;
-    })
+    }),
   );
 
   const pich_min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.pich;
-    })
+    }),
   );
 
   const vol_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.volume;
-    })
+    }),
   );
 
   const vol_min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.volume;
-    })
+    }),
   );
 
   return (

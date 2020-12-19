@@ -9,20 +9,20 @@ const ParallelChart = () => {
   console.log("here");
 
   const { foldername } = useParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${foldername}`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [foldername, getAccessTokenSilently]);
   console.log(data);
 
-  if (data == undefined) {
+  if (data == null) {
     return (
       <IonItem>
         <div>loading...</div>

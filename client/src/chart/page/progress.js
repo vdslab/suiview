@@ -7,20 +7,20 @@ import PointLiner from "../drawing/liner_with_point";
 
 const ProgressChart = () => {
   const { foldername } = useParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${foldername}`,
       getAccessTokenSilently,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [foldername, getAccessTokenSilently]);
 
-  if (data == undefined) {
+  if (data == null) {
     return (
       <IonItem>
         <div>loading...</div>

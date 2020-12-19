@@ -37,7 +37,7 @@ const DeleteFolder = (id, token) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     )
     .then((response) => response.text())
     .then((text) => {
@@ -55,7 +55,7 @@ const DeleteFromFolder = (folderId, musicId, token) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     )
     .then((response) => response.text())
     .then((text) => {
@@ -71,14 +71,14 @@ const Folder = () => {
   //const [musics, setMusics] = useState([]);
   const { folderId } = useParams();
   const foldersData = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders`,
   );
 
   const musics = useFetch_get(`${process.env.REACT_APP_API_ENDPOINT}/musics`);
   const [folderName, setFolderName] = useState();
   const [showAlert3, setShowAlert3] = useState(false);
   const name = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${folderId}`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_name/${folderId}`,
   );
   /*useEffect(() => {
     window
@@ -99,8 +99,8 @@ const Folder = () => {
     new Set(
       folder_ids.map((input) => {
         return input.music_id;
-      })
-    )
+      }),
+    ),
   );
 
   //console.log(music_ids);

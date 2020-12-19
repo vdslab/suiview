@@ -125,7 +125,7 @@ const Pich = (key) => {
   useEffect(() => {
     window
       .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${folderID}`
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${folderID}`,
       )
       .then((response) => response.json())
       .then((folderName) => {
@@ -136,7 +136,7 @@ const Pich = (key) => {
   useEffect(() => {
     window
       .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderID}`
+        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${folderID}`,
       )
       .then((response) => response.json())
       .then((data) => {

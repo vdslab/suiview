@@ -8,26 +8,26 @@ import { useAuth0 } from "@auth0/auth0-react";
 const ShowFrequency = () => {
   const { musicId } = useParams();
   const [ave, setAve] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency/ave`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setAve(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
   console.log(data);
 
@@ -41,11 +41,7 @@ const ShowFrequency = () => {
   return (
     <div>
       <IonItem lines="none"> 安定度... {ave}</IonItem>
-      {data != undefined ? (
-        <Liner data={data} />
-      ) : (
-        <IonItem>loading...</IonItem>
-      )}
+      {data != null ? <Liner data={data} /> : <IonItem>loading...</IonItem>}
     </div>
   );
 };

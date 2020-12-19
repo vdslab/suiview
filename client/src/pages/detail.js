@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   IonHeader,
@@ -8,18 +8,13 @@ import {
   IonContent,
   IonPage,
   IonBackButton,
-  IonButtons,
   IonButton,
   IonInput,
   IonCard,
   IonList,
-  IonLabel,
   IonSelect,
   IonSelectOption,
-  IonAlert,
   IonIcon,
-  IonTextarea,
-  IonItemOption,
   useIonViewWillEnter,
   IonActionSheet,
   IonListHeader,
@@ -28,8 +23,6 @@ import {
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   request_music_name,
-  request_del_music,
-  request_folder_name,
   request_comment_list,
   request_change_music_name,
 } from "../serviceWorker/index";
@@ -41,7 +34,7 @@ import {
 } from "ionicons/icons";
 import ShowFrequency from "../chart/page/frequency";
 import Decibel from "../chart/page/decibel";
-import Centroid_Rolloff from "../chart/page/centroid_rolloff";
+import CentroidRolloff from "../chart/page/centroid_rolloff";
 /*
 import { add, chevronForwardOutline, trashOutline } from "ionicons/icons";
 import ShowFrequency from "./frequency";
@@ -155,7 +148,7 @@ const ShowChart = (musicId, kind) => {
   } else if (kind === "tone") {
     return (
       <div>
-        <Centroid_Rolloff musicId={musicId} />
+        <CentroidRolloff musicId={musicId} />
       </div>
     );
   } /*else if (kind == "flat") {
@@ -234,16 +227,7 @@ const Detail = ({ history }) => {
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [comments, setComments] = useState();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-    getAccessTokenWithPopup,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request_music_name(musicId, getAccessTokenSilently).then((data) => {
@@ -324,7 +308,7 @@ const Detail = ({ history }) => {
               icon: ellipsisHorizontalCircleOutline,
               handler: () => {
                 history.push(
-                  `/select_folder/${musicId}/folder/${folderId}/from/detail`
+                  `/select_folder/${musicId}/folder/${folderId}/from/detail`,
                 );
                 console.log("Share clicked");
               },

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonHeader,
   IonItem,
@@ -15,19 +15,11 @@ import {
   IonInput,
   IonTextarea,
   IonFooter,
-  IonGrid,
-  IonCol,
-  IonRow,
   IonAlert,
 } from "@ionic/react";
 import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { musicRecord, saveAudio } from "../serviceWorker/recording";
-import {
-  request_folder_list,
-  request_del_folder,
-  request_add_folder,
-} from "../serviceWorker/index";
 import { useParams } from "react-router-dom";
 /////////////////////////////////////////////
 const Recording = ({ history }) => {
@@ -39,15 +31,7 @@ const Recording = ({ history }) => {
   //フォルダ・名前のやつやるでバックログ用
   //const [r, setR] = useState();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   //console.log(r);
 

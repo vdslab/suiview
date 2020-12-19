@@ -7,7 +7,7 @@ import Liner from "../drawing/liner";
 const ShowFourier = () => {
   const { musicId } = useParams();
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`,
   );
   console.log(data);
 

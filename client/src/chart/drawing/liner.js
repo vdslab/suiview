@@ -10,20 +10,20 @@ const Liner = ({ data }) => {
     Math,
     data.map((input) => {
       return input.y;
-    })
+    }),
   );
 
-  console.log(max)
-  
+  console.log(max);
+
   let min = 0;
-  if(max <= 0) {
+  if (max <= 0) {
     min = -20;
-    max = 0
+    max = 0;
   } else {
     max += 50;
   }
-  console.log(max)
-  console.log(min)
+  console.log(max);
+  console.log(min);
 
   return (
     <div style={{ width: "100%", height: "400px" }}>

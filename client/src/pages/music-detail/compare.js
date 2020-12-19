@@ -124,7 +124,7 @@ const ShowComp = () => {
   useEffect(() => {
     window
       .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comp_chart/${musicId2}`
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/comp_chart/${musicId2}`,
       )
       .then((response) => response.json())
       .then((data) => {

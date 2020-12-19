@@ -67,7 +67,7 @@ const HeatMapChart = ({ data }) => {
 const ShowSpectrogram = () => {
   const { musicId } = useParams();
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrogram`,
   );
 
   if (data == undefined) {

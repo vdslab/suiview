@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { IonItem, useIonViewWillEnter } from "@ionic/react";
+import { IonItem } from "@ionic/react";
 import { request } from "../../serviceWorker/index";
 import Liner from "../drawing/liner";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -8,29 +8,29 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Decibel = () => {
   const { musicId } = useParams();
   const [ave, setAve] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
 
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel/ave`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setAve(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/decibel`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
-  if (data == undefined) {
+  if (data == null) {
     return (
       <IonItem>
         <div>loading...</div>

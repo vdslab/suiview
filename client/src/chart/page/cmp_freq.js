@@ -7,20 +7,20 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const FrequencyChart = () => {
   const { foldername } = useParams();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${foldername}`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [foldername, getAccessTokenSilently]);
   console.log(data);
 
-  if (data == undefined) {
+  if (data == null) {
     return (
       <IonItem>
         <div>loading...</div>

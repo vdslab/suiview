@@ -8,29 +8,29 @@ import { useAuth0 } from "@auth0/auth0-react";
 const Centroid_Rolloff = () => {
   const { musicId } = useParams();
   const [ave, setAve] = useState();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
 
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/spectrum_centroid&rolloff`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
   useEffect(() => {
     request(
       `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/rolloff_ave`,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     ).then((data) => {
       setAve(data);
     });
-  }, []);
+  }, [musicId, getAccessTokenSilently]);
 
-  if (data == undefined) {
+  if (data == null) {
     return (
       <IonItem>
         <div>loading...</div>

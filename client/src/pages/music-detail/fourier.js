@@ -58,7 +58,7 @@ const FourierChart = ({ data }) => {
 const ShowFourier = () => {
   const { musicId } = useParams();
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/fourier`,
   );
 
   if (data == undefined) {

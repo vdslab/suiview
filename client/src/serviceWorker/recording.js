@@ -1,5 +1,4 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { request_add_music, request_comment_list } from "./index";
+import { request_add_music } from "./index";
 // for audio
 let audio_sample_rate = null;
 let audioContext = null;

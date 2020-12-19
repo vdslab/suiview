@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonHeader,
   IonItem,
@@ -8,10 +8,8 @@ import {
   IonContent,
   IonPage,
   IonButton,
-  IonAlert,
   IonCard,
   IonIcon,
-  IonInput,
   IonLabel,
   IonSelect,
   IonSelectOption,
@@ -21,11 +19,9 @@ import {
   IonItemOption,
   IonItemOptions,
   IonFooter,
-  IonListHeader,
 } from "@ionic/react";
 import {
   chevronForwardOutline,
-  trashOutline,
   chevronBackOutline,
   micOutline,
 } from "ionicons/icons";
@@ -53,8 +49,6 @@ export const convertDate = (input) => {
   const year = d.getFullYear();
   const month = `${d.getMonth() + 1}`.padStart(2, "0");
   const date = `${d.getDate()}`.padStart(2, "0");
-  const hour = `${d.getHours()}`.padStart(2, "0");
-  const minute = `${d.getMinutes()}`.padStart(2, "0");
   /* const createdDay =
       year + "/" + month + "/" + date + "/" + hour + ":" + minute;*/
   const createdDay = year + "/" + month + "/" + date + "/";
@@ -173,7 +167,7 @@ const Folder = ({ history }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        {id == "all" ? (
+        {id === "all" ? (
           []
         ) : (
           <IonList>
@@ -212,7 +206,7 @@ const Folder = ({ history }) => {
                         expandable
                         onClick={() => {
                           history.push(
-                            `/select_folder/${data.id}/folder/${id}/from/folderdata`
+                            `/select_folder/${data.id}/folder/${id}/from/folderdata`,
                           );
                         }}
                       >

@@ -6,18 +6,13 @@ const ManyLiner = ({ data }) => {
     return null;
   }
 
-  data.map((input) => {
-    input.data.filter((x) => x % 5 == 0);
-  });
-
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
         data={data.map((input) => {
-          const d = parseInt(input.data.length / 100, 10);
           return {
             id: input.id,
-            data: input.data.filter(({ x }) => x % 5 == 0),
+            data: input.data.filter(({ x }) => x % 5 === 0),
           };
         })}
         margin={{ top: 50, right: 50, bottom: 50, left: 60 }}

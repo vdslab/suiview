@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   IonHeader,
   IonItem,
@@ -15,20 +15,16 @@ import {
   IonItemOption,
   IonItemOptions,
   useIonViewWillEnter,
-  IonFab,
-  IonFabButton,
   IonFooter,
   IonAlert,
 } from "@ionic/react";
 import {
   chevronForwardOutline,
-  add,
   settingsOutline,
   folderOutline,
   micOutline,
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { musicRecord, saveAudio, useFetch_get } from "./index";
 import {
   request_folder_list,
   request_del_folder,
@@ -36,18 +32,10 @@ import {
 } from "../../serviceWorker/index";
 /////////////////////////////////////////////
 const Home = ({ history }) => {
-  const [folderData, setFolderData] = useState();
+  const [folderData, setFolderData] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
 
-  const {
-    isLoading,
-    isAuthenticated,
-    error,
-    user,
-    loginWithRedirect,
-    logout,
-    getAccessTokenSilently,
-  } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(() => {
     request_folder_list(getAccessTokenSilently).then((data) => {
@@ -106,7 +94,7 @@ const Home = ({ history }) => {
             </IonButton>
           </IonItem>
 
-          {folderData != undefined
+          {folderData != null
             ? folderData.map((data, id) => {
                 return (
                   <IonItemSliding key={id}>

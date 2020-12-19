@@ -125,7 +125,7 @@ const Tone = () => {
   useEffect(() => {
     window
       .fetch(
-        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${folderID}`
+        `${process.env.REACT_APP_API_ENDPOINT}/1/musics/folders/${folderID}`,
       )
       .then((response) => response.json())
       .then((folderName) => {
@@ -136,7 +136,7 @@ const Tone = () => {
   useEffect(() => {
     window
       .fetch(
-        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderID}`
+        ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${folderID}`,
       )
       .then((response) => response.json())
       .then((data) => {

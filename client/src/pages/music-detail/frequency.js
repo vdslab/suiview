@@ -56,10 +56,10 @@ const FrequencyChart = ({ data }) => {
 const ShowFrequency = () => {
   const { musicId } = useParams();
   const ave = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency_ave`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency_ave`,
   );
   const data = useFetch_get(
-    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`
+    `${process.env.REACT_APP_API_ENDPOINT}/1/musics/${musicId}/frequency`,
   );
 
   if (data == undefined) {
