@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
 import ManyLiner from "../drawing/many_lines";
-import { request } from "../../serviceWorker/index";
+import { request } from "../../services";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const VolumeChart = () => {

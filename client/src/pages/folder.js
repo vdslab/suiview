@@ -30,7 +30,7 @@ import {
   request_music_list,
   request_del_music,
   request_folder_name,
-} from "../serviceWorker/index";
+} from "../services";
 import { useParams } from "react-router-dom";
 import ProgressChart from "../chart/page/progress";
 import ParallelChart from "../chart/page/parallel";

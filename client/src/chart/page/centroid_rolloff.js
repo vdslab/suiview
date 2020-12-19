@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import { request } from "../../serviceWorker/index";
+import { request } from "../../services";
 import ManyLiner from "../../chart/drawing/many_lines";
 import { useAuth0 } from "@auth0/auth0-react";
 

@@ -25,7 +25,7 @@ import {
   request_music_name,
   request_comment_list,
   request_change_music_name,
-} from "../serviceWorker/index";
+} from "../services";
 import {
   closeOutline,
   ellipsisHorizontalCircleOutline,

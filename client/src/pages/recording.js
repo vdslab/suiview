@@ -19,7 +19,7 @@ import {
 } from "@ionic/react";
 import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import { musicRecord, saveAudio } from "../serviceWorker/recording";
+import { musicRecord, saveAudio } from "../services/recording";
 import { useParams } from "react-router-dom";
 /////////////////////////////////////////////
 const Recording = ({ history }) => {
@@ -65,7 +65,6 @@ const Recording = ({ history }) => {
             ></IonTextarea>
           </IonItem>
         </IonList>
-        　　　　 　　　　
       </IonContent>
       <IonFooter>
         <IonToolbar>
