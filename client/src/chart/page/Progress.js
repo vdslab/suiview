@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import ManyLiner from "../drawing/many_lines";
-import { request } from "../../services";
 import { useAuth0 } from "@auth0/auth0-react";
+import { request } from "../../services";
+import PointLiner from "../drawing/LinerWithPoint";
 
-const FrequencyChart = () => {
+const ProgressChart = () => {
   const { foldername } = useParams();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_freq_compare/${foldername}`,
+      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${foldername}`,
+      getAccessTokenSilently,
       getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
   }, [foldername, getAccessTokenSilently]);
-  console.log(data);
 
   if (data == null) {
     return (
@@ -29,9 +29,9 @@ const FrequencyChart = () => {
   }
   return (
     <div>
-      <ManyLiner data={data} />
+      <PointLiner data={data} />
     </div>
   );
 };
 
-export default FrequencyChart;
+export default ProgressChart;

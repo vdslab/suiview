@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import { request } from "../../services";
 import { useAuth0 } from "@auth0/auth0-react";
-import ParallelCoordinates from "../drawing/parallel";
+import ManyLiner from "../drawing/ManyLines";
+import { request } from "../../services";
 
-const ParallelChart = () => {
-  console.log("here");
-
+const VolumeChart = () => {
   const { foldername } = useParams();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/parallel/${foldername}`,
+      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_volume/${foldername}`,
       getAccessTokenSilently,
     ).then((data) => {
       setData(data);
@@ -31,10 +29,9 @@ const ParallelChart = () => {
   }
   return (
     <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
-      <ParallelCoordinates data={data} />
+      <ManyLiner data={data} />
     </div>
   );
 };
 
-export default ParallelChart;
+export default VolumeChart;

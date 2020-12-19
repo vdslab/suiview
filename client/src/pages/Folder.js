@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   IonHeader,
   IonItem,
@@ -31,12 +32,11 @@ import {
   request_del_music,
   request_folder_name,
 } from "../services";
-import { useParams } from "react-router-dom";
-import ProgressChart from "../chart/page/progress";
-import ParallelChart from "../chart/page/parallel";
-import FrequencyChart from "../chart/page/cmp_freq";
-import VolumeChart from "../chart/page/comp_vol";
-import ToneChart from "../chart/page/cmp_tone";
+import ProgressChart from "../chart/page/Progress";
+import ParallelChart from "../chart/page/Parallel";
+import FrequencyChart from "../chart/page/CmpFreq";
+import VolumeChart from "../chart/page/CmpVol";
+import ToneChart from "../chart/page/CmpTone";
 
 export const convertDate = (input) => {
   if (input === null) {

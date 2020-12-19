@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import { request } from "../../services";
-import Liner from "../drawing/liner";
 import { useAuth0 } from "@auth0/auth0-react";
+import { request } from "../../services";
+import Liner from "../drawing/Liner";
 
 const Decibel = () => {
   const { musicId } = useParams();

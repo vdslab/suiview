@@ -22,19 +22,19 @@ import {
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
-  request_music_name,
-  request_comment_list,
-  request_change_music_name,
-} from "../services";
-import {
   closeOutline,
   ellipsisHorizontalCircleOutline,
   trash,
   close,
 } from "ionicons/icons";
-import ShowFrequency from "../chart/page/frequency";
-import Decibel from "../chart/page/decibel";
-import CentroidRolloff from "../chart/page/centroid_rolloff";
+import {
+  request_music_name,
+  request_comment_list,
+  request_change_music_name,
+} from "../services";
+import ShowFrequency from "../chart/page/Frequency";
+import Decibel from "../chart/page/Decibel";
+import CentroidRolloff from "../chart/page/CentroidRolloff";
 
 const ShowChart = (musicId, kind) => {
   if (musicId == null) {

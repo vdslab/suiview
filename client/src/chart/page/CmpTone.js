@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IonItem } from "@ionic/react";
-import { request } from "../../services";
 import { useAuth0 } from "@auth0/auth0-react";
-import PointLiner from "../drawing/liner_with_point";
+import ManyLiner from "../drawing/ManyLines";
+import { request } from "../../services";
 
-const ProgressChart = () => {
+const ToneChart = () => {
   const { foldername } = useParams();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     request(
-      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/progress/${foldername}`,
-      getAccessTokenSilently,
+      ` ${process.env.REACT_APP_API_ENDPOINT}/1/musics/folder_comp_tone/${foldername}`,
       getAccessTokenSilently,
     ).then((data) => {
       setData(data);
     });
   }, [foldername, getAccessTokenSilently]);
+  console.log(data);
 
   if (data == null) {
     return (
@@ -29,9 +29,9 @@ const ProgressChart = () => {
   }
   return (
     <div>
-      <PointLiner data={data} />
+      <ManyLiner data={data} />
     </div>
   );
 };
 
-export default ProgressChart;
+export default ToneChart;

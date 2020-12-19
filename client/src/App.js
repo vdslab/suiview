@@ -1,14 +1,14 @@
 import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-
 import { useAuth0 } from "@auth0/auth0-react";
-import Home from "../src/pages/home";
-import Recording from "../src/pages/recording";
-import Setting from "../src/pages/setting";
-import Folder from "../src/pages/folder";
-import Detail from "../src/pages/detail";
-import SelectFolder from "../src/pages/select-folder";
+
+import Home from "../src/pages/Home";
+import Recording from "../src/pages/Recording";
+import Setting from "../src/pages/Setting";
+import Folder from "../src/pages/Folder";
+import Detail from "../src/pages/Detail";
+import SelectFolder from "../src/pages/SelectFolder";
 
 const App = () => {
   const { isLoading, isAuthenticated, error, loginWithRedirect } = useAuth0();
