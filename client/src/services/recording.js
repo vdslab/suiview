@@ -8,7 +8,7 @@ export const musicRecord = () => {
   const bufferSize = 1024;
   let scriptProcessor = null;
   const handleSuccess = (stream) => {
-    audioContext = new AudioContext();
+    audioContext = new (AudioContext || window.webkitAudioContext)();
     audio_sample_rate = audioContext.sampleRate;
     console.log(audio_sample_rate);
     scriptProcessor = audioContext.createScriptProcessor(bufferSize, 1, 1);
