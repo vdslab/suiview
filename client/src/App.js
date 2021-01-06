@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import {
   Home,
+  Login,
   Recording,
   Setting,
   MusicList,
@@ -14,19 +15,12 @@ import {
 } from "../src/pages";
 
 const App = () => {
-  const { isLoading, isAuthenticated, error, loginWithRedirect } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
-  }
-
-  if (isAuthenticated) {
-    return (
-      <IonApp>
-        <IonReactRouter>
+  return (
+    <IonApp>
+      <IonReactRouter>
+        {isAuthenticated ? (
           <IonRouterOutlet>
             <Route path="/" component={Home} exact />
             <Route path="/recording" component={Recording} />
@@ -36,12 +30,12 @@ const App = () => {
             <Route path="/detail/:musicId" component={Detail} />
             <Route path="/select_folder/:musicId" component={SelectFolder} />
           </IonRouterOutlet>
-        </IonReactRouter>
-      </IonApp>
-    );
-  } else {
-    return <button onClick={loginWithRedirect}>Log in</button>;
-  }
+        ) : (
+          <Login />
+        )}
+      </IonReactRouter>
+    </IonApp>
+  );
 };
 
 export default App;
