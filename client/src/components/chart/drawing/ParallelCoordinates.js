@@ -10,41 +10,41 @@ const ParallelCoordinates = ({ data }) => {
     Math,
     data.map((input) => {
       return input.tone;
-    }),
+    })
   );
   const min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.tone;
-    }),
+    })
   );
 
   const pich_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.pich;
-    }),
+    })
   );
 
   const pich_min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.pich;
-    }),
+    })
   );
 
   const vol_max = Math.max.apply(
     Math,
     data.map((input) => {
       return input.volume;
-    }),
+    })
   );
 
   const vol_min = Math.min.apply(
     Math,
     data.map((input) => {
       return input.volume;
-    }),
+    })
   );
 
   return (

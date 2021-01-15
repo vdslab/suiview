@@ -9,7 +9,7 @@ const Liner = ({ data }) => {
     Math,
     data.map((input) => {
       return input.y;
-    }),
+    })
   );
 
   console.log(max);

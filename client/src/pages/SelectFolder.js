@@ -82,7 +82,7 @@ const SelectFolder = ({ history }) => {
                         {
                           folderId: d.id,
                         },
-                        getAccessTokenSilently,
+                        getAccessTokenSilently
                       );
                       history.push(`/folder/${d.id}`);
                     }}
@@ -121,7 +121,7 @@ const SelectFolder = ({ history }) => {
                   {
                     name,
                   },
-                  getAccessTokenSilently,
+                  getAccessTokenSilently
                 );
                 const folders = await getFolders(getAccessTokenSilently);
                 setFolders(folders);

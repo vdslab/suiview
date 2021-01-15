@@ -17,7 +17,7 @@ render(
   >
     <App />
   </Auth0Provider>,
-  document.getElementById("content"),
+  document.getElementById("content")
 );
 
 serviceWorkerRegistration.register();

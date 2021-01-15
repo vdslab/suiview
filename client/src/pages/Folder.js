@@ -72,7 +72,7 @@ const ShowChart = (folderId, kind) => {
 
 const FolderDetail = () => {
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
-  const [chartId, setChartId] = useState(chartIds[3]);
+  const [chartId, setChartId] = useState(chartIds[0]);
   const { folderId } = useParams();
 
   return (
@@ -150,7 +150,7 @@ const Folder = ({ history }) => {
                   await deleteMusic(data.id, getAccessTokenSilently);
                   const musics = await getFolderMusics(
                     folderId,
-                    getAccessTokenSilently,
+                    getAccessTokenSilently
                   );
                   setMusics(musics);
                 }}

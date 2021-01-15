@@ -15,11 +15,11 @@ const CentroidRolloff = ({ musicId }) => {
   useEffect(() => {
     const centroidRequest = getMusicSpectrumCentroid(
       musicId,
-      getAccessTokenSilently,
+      getAccessTokenSilently
     );
     const rolloffRequest = getMusicSpectrumRolloff(
       musicId,
-      getAccessTokenSilently,
+      getAccessTokenSilently
     );
     Promise.all([centroidRequest, rolloffRequest]).then(
       ([centroid, rolloff]) => {
@@ -28,7 +28,7 @@ const CentroidRolloff = ({ musicId }) => {
           { id: "centroid", data: centroid.values },
           { id: "rolloff", data: rolloff.values },
         ]);
-      },
+      }
     );
   }, [musicId, getAccessTokenSilently]);
 
@@ -41,7 +41,10 @@ const CentroidRolloff = ({ musicId }) => {
   }
   return (
     <div>
-      <IonItem lines="none"> 安定度... {ave}</IonItem>
+      <IonItem lines="none">
+        {" "}
+        安定度：{ave.stability} &ensp; 標準偏差：{ave.s}
+      </IonItem>
       <ManyLiner data={data} />
     </div>
   );

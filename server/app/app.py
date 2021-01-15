@@ -14,6 +14,7 @@ from collections import OrderedDict
 import librosa
 from dtw import dtw
 from auth import requires_auth
+import math
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -316,26 +317,18 @@ def get_folders_parallel(folder_id):
     Datas = []
     for music in musics:
         Datas.append([music.id, frequency_ave_data(music),  spectrum_rolloff_ave(
-            music), round(decibel_ave_data(music), 4)])
+            music), decibel_ave_data(music)])
 
-    """
-    Datas = sorted(Datas, key=lambda x: x[2])
     for i in range(len(Datas)):
-        Datas[i].append(Datas[i][1]+Datas[i][3] +
-                        ((Datas[-1][2]-Datas[i][2])/10000))
-    Datas = sorted(Datas, key=lambda x: x[4])
-    print(Datas)
-    """
-    for i in range(len(Datas)):
-        Datas[i].append(Datas[i][1]+Datas[i][3] + Datas[i][2]/100)
+        Datas[i].append(Datas[i][1][1]+Datas[i][3][1] + Datas[i][2][1]/100)
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     for i in range(len(Datas)-1, -1, -1):
         dic = {
             "No.": Datas[i][0],
-            "pich": Datas[i][1],
-            "tone": Datas[i][2]/100,
-            "volume": Datas[i][3],
+            "pich": Datas[i][1][1],
+            "tone": Datas[i][2][1]/100,
+            "volume": Datas[i][3][1],
         }
         dicDatas.append(dic)
 
@@ -356,16 +349,11 @@ def get_folder_progress(folder_id):
     Datas = []
     for music in musics:
         Datas.append([music.id, frequency_ave_data(music),  spectrum_rolloff_ave(
-            music), round(decibel_ave_data(music), 4)])
+            music), decibel_ave_data(music)])
 
-    # Datas = sorted(Datas, key=lambda x: x[2])
-    """
     for i in range(len(Datas)):
-        Datas[i].append(-1*(Datas[i][1]+Datas[i][3] +
-                            ((Datas[-1][2]-Datas[i][2])/10000)))
-    """
-    for i in range(len(Datas)):
-        Datas[i].append(-1*(Datas[i][1]+Datas[i][3] + Datas[i][2]/100))
+        Datas[i].append(-1*(Datas[i][1][1]+Datas[i]
+                            [3][1] + Datas[i][2][1]/100))
 
     dicDatas = []
     for i in range(len(Datas)):
@@ -580,7 +568,6 @@ def get_music_decibel(music_id):
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    print(rate)
     data = data.astype(np.float)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
@@ -603,24 +590,20 @@ def get_music_decibel(music_id):
             end = i
             break
 
-    count = 0
-    total = 0
     data = []
     if end < len(dbLine)-2:
         end += 1
     for i in range(start, end):
-        if not(dbLine[i] == 0 or dbLine[i+1] == 0):
-            total += abs(dbLine[i]-dbLine[i+1])
-            count += 1
         dic = {
             "x": i+1,
             "y": int(dbLine[i])
         }
         data.append(dic)
-    average = total / count
+
+    average = decibel_ave_data(music)
 
     session.close()
-    return jsonify({'average': average, 'values': data})
+    return jsonify({'average': average[1], 's': average[0], 'values': data})
 
 
 def decibel_data(music):
@@ -677,15 +660,29 @@ def decibel_ave_data(music):
 
     total = 0
     cnt = 0
+    s_total = 0
+    s_count = 0
     if end < len(dbLine)-2:
         end += 1
     for i in range(0, end):
         if not(dbLine[i] == 0 or dbLine[i+1] == 0):
             total += abs(dbLine[i]-dbLine[i+1])
             cnt += 1
+        if dbLine[i] != 0:
+            s_total += dbLine[i]
+            s_count += 1
 
-    ave = total/cnt
-    return ave
+    stability = total/cnt
+    average = s_total/s_count
+    s = 0
+    for i in range(s_count):
+        s += pow(dbLine[i]-average, 2)
+    s /= s_count
+    s = math.sqrt(s)
+    # どっちがいい？
+    print("s = ", s)
+    print("stability = ", stability)
+    return [round(s, 4), round(stability, 4)]
 
 
 def trim(data, start, end):
@@ -774,17 +771,13 @@ def get_music_f0(music_id):
 
     f0 = music.fundamental_frequency(session)
 
+    average = frequency_ave_data(music)
+
     start, end = find_start_end(music)
-    total = 0
-    count = 0
     data = []
     if end < len(f0)-2:
         end += 1
     for i in range(max(0, start), end):
-        if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
-            if f0[i] > 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
-                total += abs(f0[i]-f0[i+1])
-                count += 1
         if f0[i] >= 0:
             dic = {
                 "x": i+1,
@@ -796,14 +789,11 @@ def get_music_f0(music_id):
                 "y": 0
             }
         data.append(dic)
-    average = total/count
-    average = round(average, 4)
-
-    # print(Datas)
 
     session.close()
     return jsonify({
-        'average': average,
+        'average': average[1],
+        's': average[0],
         'values': data
     })
 
@@ -819,16 +809,30 @@ def frequency_ave_data(music):
         end += 1
     for i in range(max(0, start), end):
         if f0[i] >= 0 and f0[i+1] >= 0 and (not(f0[i] == 0 or f0[i+1] == 0)):
-            # print(f0[i])
             total += abs(f0[i]-f0[i+1])
             cnt += 1
 
-    print(total)
-    ave = total/cnt
-    print("ave = " + str((ave)))
+    data = np.array(f0)
+    data = np.nan_to_num(f0)
+    s_total = 0
+    s_count = 0
+    for i in range(max(0, start), end):
+        if data[i] != 0:
+            s_total += data[i]
+            s_count += 1
+    average = s_total/s_count
+    s = 0
+    for i in range(max(0, start), end):
+        if data[i] != 0:
+            s += pow(data[i]-average, 2)
+    s /= s_count
+    s = math.sqrt(s)
+    print("s=", s)
+
+    stability = total/cnt
+    print("ave = " + str((stability)))
     session.close()
-    ave = round(ave, 4)
-    return ave
+    return [round(s, 4), round(stability, 4)]
 
 
 # dtw用
@@ -888,18 +892,30 @@ def spectrum_rolloff_ave(music):
     start, end = find_start_end(music)
     cnt = 0
     total = 0
+    s_total = 0
+    s_count = 0
     for i in range(start, end):
         if rolloff[0][i] < 4000 and rolloff[0][i+1] < 4000:
             total += abs(rolloff[0][i]-rolloff[0][i+1])
             cnt += 1
+        if rolloff[0][i] != 0:
+            s_total += rolloff[0][i]
+            s_count += 1
     if cnt != 0:
-        ave = total/cnt
+        stability = total/cnt
     else:
-        ave = -1
+        stability = -1
+
+    s = 0
+    average = s_total/s_count
+    for i in range(s_count):
+        s += pow(rolloff[0][i]-average, 2)
+    s /= s_count
+    s = math.sqrt(s)
 
     session.close()
 
-    return ave
+    return [round(s, 4), round(stability, 4)]
 
 
 def spectrum_rolloff_y(music):
@@ -961,8 +977,9 @@ def get_music_spectrum_rolloff(music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
+    average = spectrum_rolloff_ave(music)
     return jsonify({
-        'average': spectrum_rolloff_ave(music),
+        'average': {"stability": average[1], 's': average[0]},
         'values': spectrum_rolloff(music)
     })
 
