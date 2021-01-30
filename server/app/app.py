@@ -803,6 +803,8 @@ def get_music_f0(music_id):
             }
         data.append(dic)
 
+    print(data)
+
     session.close()
     return jsonify({
         'average': average[1],
@@ -833,16 +835,24 @@ def frequency_ave_data(music):
         if data[i] != 0:
             s_total += data[i]
             s_count += 1
-    average = s_total/s_count
-    s = 0
-    for i in range(max(0, start), end):
-        if data[i] != 0:
-            s += pow(data[i]-average, 2)
-    s /= s_count
-    s = math.sqrt(s)
-    print("s=", s)
 
-    stability = total/cnt
+    if s_count != 0:
+        average = s_total/s_count
+        s = 0
+        for i in range(max(0, start), end):
+            if data[i] != 0:
+                s += pow(data[i]-average, 2)
+        s /= s_count
+        s = math.sqrt(s)
+        print("s=", s)
+    else:
+        s = -1
+
+    if cnt != 0:
+        stability = total/cnt
+    else:
+        stability = -1
+
     print("ave = " + str((stability)))
     session.close()
     return [round(s, 4), round(stability, 4)]
