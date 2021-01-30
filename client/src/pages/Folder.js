@@ -16,6 +16,7 @@ import {
   IonBackButton,
   useIonViewWillEnter,
   IonFooter,
+  IonCardContent,
 } from "@ionic/react";
 import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -31,11 +32,9 @@ import MusicItem from "../components/MusicItem.js";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
-  console.log("here");
   if (folderId == null) {
     return null;
   }
-  console.log(kind);
 
   if (kind === "progress") {
     return (
@@ -118,6 +117,7 @@ const Folder = ({ history }) => {
     setFolder(data);
   });
 
+  console.log(musics.length);
   return (
     <IonPage>
       <IonHeader>
@@ -131,11 +131,15 @@ const Folder = ({ history }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList>
+        {musics.length === 0 ? (
+          <IonCard>
+            <IonCardContent>データがありません</IonCardContent>
+          </IonCard>
+        ) : (
           <IonCard>
             <FolderDetail />
           </IonCard>
-        </IonList>
+        )}
         <IonList>
           {musics.map((data) => {
             return (
