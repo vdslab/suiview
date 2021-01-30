@@ -117,7 +117,6 @@ const Folder = ({ history }) => {
     setFolder(data);
   });
 
-  console.log(musics.length);
   return (
     <IonPage>
       <IonHeader>

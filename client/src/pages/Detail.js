@@ -19,6 +19,7 @@ import {
   IonActionSheet,
   IonListHeader,
   IonFooter,
+  IonItemDivider,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -35,6 +36,7 @@ import {
 } from "../services/api";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
+import { convertDate } from "../services/date.js";
 
 const chartIds = ["PITCH", "VOL", "TONE"];
 
@@ -184,6 +186,15 @@ const Detail = ({ history }) => {
         </IonList>
         <IonList>
           <IonListHeader>コメント</IonListHeader>
+          {comments.map((data) => {
+            return (
+              <IonItem key={data.id}>
+                {convertDate(data.created)}
+                <br />
+                {data.comment}
+              </IonItem>
+            );
+          })}
         </IonList>
       </IonContent>
 

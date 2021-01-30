@@ -45,27 +45,6 @@ def post_music():
     return jsonify(music)
 
 
-"""
-init
-@ app.route('/musics/', methods=['POST'])
-@ requires_auth
-def post_music():
-    session = create_session()
-    user_id = g.current_user['sub']
-    data = json.loads(request.data.decode('utf-8'))
-    music = Music(user_id=user_id)
-    if 'name' in data:
-        music.name = data['name']
-    if 'folderId' in data:
-        music.folder_id = data['folderId']
-    session.add(music)
-    session.commit()
-    music = music.to_json()
-    session.close()
-    return jsonify(music)
-"""
-
-
 @app.route('/musics/<music_id>', methods=['GET'])
 @requires_auth
 def get_music(music_id):
@@ -122,22 +101,6 @@ def get_music_content(music_id):
     return response
 
 
-"""
-init
-@app.route('/musics/<music_id>/content', methods=['PUT'])
-@requires_auth
-def put_music_content(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    music.content = request.data
-    session.commit()
-    session.close()
-    return {"message": "updated"}
-"""
-
-
 @app.route('/musics/<music_id>/content', methods=['PUT'])
 @requires_auth
 def put_music_content(music_id):
@@ -151,6 +114,12 @@ def put_music_content(music_id):
         music.name = data['name']
     if 'folderId' in data:
         music.folder_id = data['folderId']
+    if 'comment' in data:
+        print(data["comment"])
+        comment = Comment(music_id=music_id,
+                          text=data['comment'], user_id=user_id)
+        #comment = comment.to_json()
+        session.add(comment)
     session.add(music)
     session.commit()
     session.close()

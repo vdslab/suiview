@@ -23,7 +23,6 @@ const Liner = ({ data }) => {
   }
   console.log(max);
   console.log(min);
-  console.log(data);
 
   return (
     <div style={{ width: "100%", height: "400px" }}>

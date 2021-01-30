@@ -44,6 +44,8 @@ const Recording = ({ history }) => {
     }
   });
 
+  console.log(comment);
+
   return (
     <IonPage>
       <IonHeader>
@@ -98,9 +100,11 @@ const Recording = ({ history }) => {
                 handler: async () => {
                   const blob = saveAudio();
                   const record = { name };
-                  console.log(record);
                   if (folderId) {
                     record.folderId = folderId;
+                  }
+                  if (comment !== "") {
+                    record.comment = comment;
                   }
                   const music = await postMusic(blob, getAccessTokenSilently);
                   console.log(music, music.id);
@@ -109,16 +113,11 @@ const Recording = ({ history }) => {
                     record,
                     getAccessTokenSilently
                   );
-                  /*const music = await postMusic(record, getAccessTokenSilently);
-                  console.log(music, music.id);
-                  await putMusicContent(music.id, blob, getAccessTokenSilently);
                   /*if (folderId) {
                     history.replace(`/folder/${folderId}`);
                   } else {
                     history.replace("/musics");
                   }*/
-                  console.log(music);
-                  console.log(blob);
                 },
               },
             ]}
