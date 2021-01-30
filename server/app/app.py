@@ -386,7 +386,7 @@ def amplitude(music_id):
     for i in range(x):
         dic = {
             "x": i+1,
-            "y": int(data[i])
+            "y": round(data[i], 4)
         }
         Datas.append(dic)
     session.close()
@@ -596,7 +596,7 @@ def get_music_decibel(music_id):
     for i in range(start, end):
         dic = {
             "x": i+1,
-            "y": int(dbLine[i])
+            "y": round(dbLine[i], 4)
         }
         data.append(dic)
 
@@ -856,7 +856,7 @@ def spectrum_centroid(music):
     for i in range(start, end):
         dic = {
             "x": i+1,
-            "y": int(cent[0][i])
+            "y": round(cent[0][i], 4)
         }
         Datas.append(dic)
     session.close()
@@ -876,7 +876,7 @@ def spectrum_rolloff(music):
     for i in range(start, end):
         dic = {
             "x": i+1,
-            "y": int(rolloff[0][i])
+            "y": round(rolloff[0][i], 4)
         }
         Datas.append(dic)
     session.close()
@@ -927,7 +927,7 @@ def spectrum_rolloff_y(music):
     Datas = []
 
     for i in range(len(rolloff[0])):
-        Datas.append(int(rolloff[0][i]))
+        Datas.append(round(rolloff[0][i], 4))
     # return jsonify(Datas)
     session.close()
     return Datas

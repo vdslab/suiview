@@ -109,6 +109,7 @@ const Detail = ({ history }) => {
             }
             icon={closeOutline}
           ></IonBackButton>
+
           <IonTitle>
             <IonItem lines="none">
               <IonInput

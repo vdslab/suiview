@@ -16,13 +16,14 @@ const Liner = ({ data }) => {
 
   let min = 0;
   if (max <= 0) {
-    min = -20;
+    min = -30;
     max = 0;
   } else {
     max += 50;
   }
   console.log(max);
   console.log(min);
+  console.log(data);
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
@@ -41,7 +42,7 @@ const Liner = ({ data }) => {
           min: min,
           max: max,
         }}
-        curve="step"
+        curve="linear"
         axisTop={null}
         axisRight={null}
         axisBottom={{
