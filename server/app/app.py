@@ -151,7 +151,20 @@ def get_folders():
     session = create_session()
     user_id = g.current_user['sub']
     folders = session.query(Folder).filter_by(user_id=user_id).all()
+    #folders = [f.to_json() for f in folders]
+    # 初期フォルダーの作成(どこでやるのがベスト？)
+    if len(folders) == 0:
+        folder = Folder(name="ロングトーン", user_id=user_id)
+        session.add(folder)
+        folder = Folder(name="スケール", user_id=user_id)
+        session.add(folder)
+        folder = Folder(name="アルペジオ", user_id=user_id)
+        session.add(folder)
+        session.commit()
+    # print(len(folders))
+    folders = session.query(Folder).filter_by(user_id=user_id).all()
     folders = [f.to_json() for f in folders]
+
     session.close()
     return jsonify(folders)
 
