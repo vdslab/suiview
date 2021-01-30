@@ -118,7 +118,6 @@ def put_music_content(music_id):
         print(data["comment"])
         comment = Comment(music_id=music_id,
                           text=data['comment'], user_id=user_id)
-        #comment = comment.to_json()
         session.add(comment)
     session.add(music)
     session.commit()
@@ -145,11 +144,11 @@ def post_comment(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    comment = Comment(music_id=music_id, text=data['text'], user_id=user_id)
-    comment = comment.to_json()
+    print(data["item"])
+    comment = Comment(music_id=music_id, text=data['item'], user_id=user_id)
     session.add(comment)
     session.commit()
-    return jsonify(comment)
+    return get_comment(music_id)
 
 
 # フォルダのリストを返す

@@ -19,7 +19,7 @@ import {
   IonActionSheet,
   IonListHeader,
   IonFooter,
-  IonItemDivider,
+  IonAlert,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -30,6 +30,7 @@ import {
 } from "ionicons/icons";
 import {
   getMusic,
+  putMusicComment,
   getMusicComments,
   putMusic,
   deleteMusic,
@@ -86,6 +87,9 @@ const Detail = ({ history }) => {
   const [music, setMusic] = useState(null);
   const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [showActionSheet2, setShowActionSheet2] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(async () => {
@@ -205,9 +209,45 @@ const Detail = ({ history }) => {
             <IonItem>
               <Player musicId={musicId} />
             </IonItem>
-            <IonButton fill="outline">コメントを書く</IonButton>
+            <IonButton fill="outline" onClick={() => setShowAlert(true)}>
+              コメントを書く
+            </IonButton>
           </IonList>
         </IonToolbar>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          cssClass="my-custom-class"
+          header={"コメント"}
+          subHeader={"コメントを記入してください"}
+          inputs={[
+            {
+              name: "item",
+              type: "textarea",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: () => {
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "OK",
+              handler: async ({ item }) => {
+                const data = await putMusicComment(
+                  musicId,
+                  { item },
+                  getAccessTokenSilently
+                );
+                setComments(data);
+              },
+            },
+          ]}
+        />
       </IonFooter>
     </IonPage>
   );

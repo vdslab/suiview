@@ -15,6 +15,15 @@ export async function getMusic(musicId, getAccessToken) {
   return response.json();
 }
 
+export async function putMusicComment(musicId, item, getAccessToken) {
+  const response = await requestPost(
+    `/musics/${musicId}/comments`,
+    JSON.stringify(item),
+    getAccessToken
+  );
+  return response.json();
+}
+
 export async function getMusicComments(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/comments`,

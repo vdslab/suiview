@@ -132,7 +132,7 @@ const Home = () => {
               },
             },
             {
-              text: "Ok",
+              text: "OK",
               handler: async ({ name }) => {
                 await postFolder({ name }, getAccessTokenSilently);
                 const data = await getFolders(getAccessTokenSilently);
