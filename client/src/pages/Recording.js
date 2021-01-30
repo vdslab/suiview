@@ -18,6 +18,9 @@ import {
   IonFooter,
   IonAlert,
   useIonViewWillEnter,
+  IonGrid,
+  IonCol,
+  IonRow,
 } from "@ionic/react";
 import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -95,31 +98,44 @@ const Recording = ({ history }) => {
                 handler: async () => {
                   const blob = saveAudio();
                   const record = { name };
+                  console.log(record);
                   if (folderId) {
                     record.folderId = folderId;
                   }
-                  const music = await postMusic(record, getAccessTokenSilently);
+                  const music = await postMusic(blob, getAccessTokenSilently);
+                  console.log(music, music.id);
+                  await putMusicContent(
+                    music.id,
+                    record,
+                    getAccessTokenSilently
+                  );
+                  /*const music = await postMusic(record, getAccessTokenSilently);
+                  console.log(music, music.id);
                   await putMusicContent(music.id, blob, getAccessTokenSilently);
-                  if (folderId) {
+                  /*if (folderId) {
                     history.replace(`/folder/${folderId}`);
                   } else {
                     history.replace("/musics");
-                  }
+                  }*/
+                  console.log(music);
+                  console.log(blob);
                 },
               },
             ]}
           />
 
-          {/*<IonGrid>
+          <IonGrid>
             <IonRow>
               <IonCol>
                 <IonButton expand="full">やり直す</IonButton>
               </IonCol>
               <IonCol>
-                <IonButton expand="full">記録する</IonButton>
+                <IonButton expand="full" disabled="true">
+                  記録する
+                </IonButton>
               </IonCol>
             </IonRow>
-          </IonGrid>*/}
+          </IonGrid>
         </IonToolbar>
       </IonFooter>
     </IonPage>

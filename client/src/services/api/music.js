@@ -18,7 +18,7 @@ export async function getMusic(musicId, getAccessToken) {
 export async function getMusicComments(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/comments`,
-    getAccessToken,
+    getAccessToken
   );
   return response.json();
 }
@@ -26,7 +26,7 @@ export async function getMusicComments(musicId, getAccessToken) {
 export async function getMusicContent(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/content`,
-    getAccessToken,
+    getAccessToken
   );
   return response.blob();
 }
@@ -34,7 +34,7 @@ export async function getMusicContent(musicId, getAccessToken) {
 export async function getMusicDecibel(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/decibel`,
-    getAccessToken,
+    getAccessToken
   );
   return response.json();
 }
@@ -47,7 +47,7 @@ export async function getMusicF0(musicId, getAccessToken) {
 export async function getMusicSpectrumCentroid(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/spectrum_centroid`,
-    getAccessToken,
+    getAccessToken
   );
   return response.json();
 }
@@ -55,17 +55,13 @@ export async function getMusicSpectrumCentroid(musicId, getAccessToken) {
 export async function getMusicSpectrumRolloff(musicId, getAccessToken) {
   const response = await requestGet(
     `/musics/${musicId}/spectrum_rolloff`,
-    getAccessToken,
+    getAccessToken
   );
   return response.json();
 }
 
-export async function postMusic(item, getAccessToken) {
-  const response = await requestPost(
-    `/musics`,
-    JSON.stringify(item),
-    getAccessToken,
-  );
+export async function postMusic(content, getAccessToken) {
+  const response = await requestPost(`/musics`, content, getAccessToken);
   return response.json();
 }
 
@@ -73,16 +69,16 @@ export async function putMusic(musicId, item, getAccessToken) {
   const response = await requestPut(
     `/musics/${musicId}`,
     JSON.stringify(item),
-    getAccessToken,
+    getAccessToken
   );
   return response.json();
 }
 
-export async function putMusicContent(musicId, content, getAccessToken) {
+export async function putMusicContent(musicId, item, getAccessToken) {
   const response = await requestPut(
     `/musics/${musicId}/content`,
-    content,
-    getAccessToken,
+    JSON.stringify(item),
+    getAccessToken
   );
   return response.json();
 }
