@@ -21,6 +21,8 @@ import {
   IonGrid,
   IonCol,
   IonRow,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -36,6 +38,7 @@ const Recording = ({ history }) => {
   const [folder, setFolder] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
+  const [selected, setSelected] = useState();
 
   useIonViewWillEnter(async () => {
     if (folderId) {
@@ -66,6 +69,20 @@ const Recording = ({ history }) => {
               placeholder="music name"
               onIonChange={(e) => setName(e.detail.value)}
             ></IonInput>
+          </IonItem>
+          <IonItem>
+            <IonLabel>自己評価</IonLabel>
+            <IonSelect
+              onIonChange={(e) => {
+                setSelected(e.target.value);
+              }}
+            >
+              <IonSelectOption value="5">5</IonSelectOption>
+              <IonSelectOption value="4">4</IonSelectOption>
+              <IonSelectOption value="3">3</IonSelectOption>
+              <IonSelectOption value="2">2</IonSelectOption>
+              <IonSelectOption value="1">1</IonSelectOption>
+            </IonSelect>
           </IonItem>
           <IonItem>
             <IonLabel>コメント</IonLabel>
@@ -108,6 +125,7 @@ const Recording = ({ history }) => {
                   }
                   const music = await postMusic(blob, getAccessTokenSilently);
                   console.log(music, music.id);
+                  console.log(selected);
                   await putMusicContent(
                     music.id,
                     record,
