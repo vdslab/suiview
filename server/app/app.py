@@ -241,6 +241,9 @@ def get_folder_musics(folder_id):
     musics = session.query(Music).filter_by(
         folder_id=folder_id, user_id=user_id).all()
     musics = [m.to_json() for m in musics]
+    print(musics)
+    musics = sorted(musics, key=lambda x: x['created'], reverse=True)
+    print(musics)
     session.close()
     return jsonify(musics)
 
