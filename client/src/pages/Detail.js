@@ -87,7 +87,6 @@ const Detail = ({ history }) => {
   const [music, setMusic] = useState(null);
   const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
-  const [showActionSheet2, setShowActionSheet2] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
   const { getAccessTokenSilently } = useAuth0();

@@ -47,6 +47,7 @@ const Recording = ({ history }) => {
   const [selected, setSelected] = useState(3);
   const [recorded, setRecorded] = useState(0);
   const [musicId, setMusicId] = useState();
+  const [record, setRecord] = useState();
 
   useIonViewWillEnter(async () => {
     if (folderId) {
@@ -54,8 +55,6 @@ const Recording = ({ history }) => {
       setFolder(data);
     }
   });
-
-  console.log(comment);
 
   return (
     <IonPage>
@@ -105,11 +104,11 @@ const Recording = ({ history }) => {
       </IonContent>
       <IonFooter>
         <IonToolbar>
-          {recorded == 0 ? (
+          {recorded === 0 ? (
             <IonButton
               expand="full"
               onClick={() => {
-                //musicRecord();
+                musicRecord();
                 setShowAlert(true);
               }}
             >
@@ -128,30 +127,18 @@ const Recording = ({ history }) => {
               {
                 text: "完了!",
                 handler: async () => {
-                  //const blob = saveAudio();
-                  const record = { name };
+                  const blob = saveAudio();
+                  const r = { name };
                   if (folderId) {
-                    record.folderId = folderId;
+                    r.folderId = folderId;
                   }
                   if (comment !== "") {
-                    record.comment = comment;
+                    r.comment = comment;
                   }
-                  //const music = await postMusic(blob, getAccessTokenSilently);
-                  const music = { id: 15 };
+                  setRecord(r);
+                  const music = await postMusic(blob, getAccessTokenSilently);
                   setRecorded(1);
                   setMusicId(music.id);
-                  console.log(music, music.id);
-                  console.log(selected);
-                  /*await putMusicContent(
-                    music.id,
-                    record,
-                    getAccessTokenSilently
-                  );
-                  /*if (folderId) {
-                    history.replace(`/folder/${folderId}`);
-                  } else {
-                    history.replace("/musics");
-                  }*/
                 },
               },
             ]}
@@ -163,7 +150,7 @@ const Recording = ({ history }) => {
                 <IonButton
                   expand="full"
                   onClick={async () => {
-                    //await deleteMusic(musicId, getAccessTokenSilently);
+                    await deleteMusic(musicId, getAccessTokenSilently);
                     setRecorded(0);
                   }}
                 >
@@ -175,8 +162,9 @@ const Recording = ({ history }) => {
                   expand="full"
                   disabled={(recorded + 1) % 2}
                   onClick={async () => {
-                    /*await putMusicContent(
-                      music.id,
+                    console.log(record);
+                    await putMusicContent(
+                      musicId,
                       record,
                       getAccessTokenSilently
                     );
