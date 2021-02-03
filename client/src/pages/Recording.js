@@ -47,7 +47,6 @@ const Recording = ({ history }) => {
   const [selected, setSelected] = useState(3);
   const [recorded, setRecorded] = useState(0);
   const [musicId, setMusicId] = useState();
-  const [record, setRecord] = useState();
 
   useIonViewWillEnter(async () => {
     if (folderId) {
@@ -128,14 +127,6 @@ const Recording = ({ history }) => {
                 text: "完了!",
                 handler: async () => {
                   const blob = saveAudio();
-                  const r = { name };
-                  if (folderId) {
-                    r.folderId = folderId;
-                  }
-                  if (comment !== "") {
-                    r.comment = comment;
-                  }
-                  setRecord(r);
                   const music = await postMusic(blob, getAccessTokenSilently);
                   setRecorded(1);
                   setMusicId(music.id);
@@ -162,10 +153,19 @@ const Recording = ({ history }) => {
                   expand="full"
                   disabled={(recorded + 1) % 2}
                   onClick={async () => {
-                    console.log(record);
+                    const item = { name };
+                    if (folderId) {
+                      item.folderId = folderId;
+                    }
+                    if (comment !== "") {
+                      item.comment = comment;
+                    }
+                    if (selected !== undefined) {
+                      item.selected = selected;
+                    }
                     await putMusicContent(
                       musicId,
-                      record,
+                      item,
                       getAccessTokenSilently
                     );
                     /*if (folderId) {
