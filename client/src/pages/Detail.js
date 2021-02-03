@@ -20,6 +20,7 @@ import {
   IonListHeader,
   IonFooter,
   IonAlert,
+  IonCardHeader,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -99,8 +100,6 @@ const Detail = ({ history }) => {
     const data = await getMusicComments(musicId, getAccessTokenSilently);
     setComments(data);
   });
-
-  console.log(comments);
 
   return (
     <IonPage>
@@ -182,23 +181,24 @@ const Detail = ({ history }) => {
         ></IonActionSheet>
       </IonHeader>
       <IonContent>
-        <IonList>
-          <IonCard>
-            <Charts />
-          </IonCard>
-        </IonList>
-        <IonList>
-          <IonListHeader>コメント</IonListHeader>
-          {comments.map((data) => {
-            return (
-              <IonItem key={data.id}>
-                {convertDate(data.created)}
-                <br />
-                {data.comment}
-              </IonItem>
-            );
-          })}
-        </IonList>
+        <IonCard>
+          <Charts />
+          <IonItem>自己評価　★1~5</IonItem>
+        </IonCard>
+        <IonCard>
+          <IonList>
+            <IonListHeader>コメント</IonListHeader>
+            {comments.map((data) => {
+              return (
+                <IonItem key={data.id}>
+                  {convertDate(data.created)}
+                  <br />
+                  {data.comment}
+                </IonItem>
+              );
+            })}
+          </IonList>
+        </IonCard>
       </IonContent>
 
       <IonFooter>
