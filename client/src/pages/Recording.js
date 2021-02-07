@@ -161,7 +161,7 @@ const Recording = ({ history }) => {
                       item.comment = comment;
                     }
                     if (selected !== undefined) {
-                      item.selected = selected;
+                      item.assessment = selected;
                     }
                     await putMusicContent(
                       musicId,

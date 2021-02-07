@@ -53,10 +53,9 @@ def get_music(music_id):
     music = session.query(Music).filter_by(
         id=music_id, user_id=user_id).first()
     music = music.to_json()
-    """
-    if music["assesment"] == None:
-        music["assesment"] = 0
-    """
+    print(music)
+    if music["assessment"] == None:
+        music["assessment"] = 0
     print(music)
     session.close()
     return jsonify(music)
@@ -122,12 +121,10 @@ def put_music_content(music_id):
 
     print(data)
     print(music)
-    """
-    if 'assesment' in data:
-        print("pre_Data ", data["assesment"])
-        music.assesment = data['assesment']
-        print("tabel ", music.assesment)
-    """
+    if 'assessment' in data:
+        print("pre_Data ", data["assessment"])
+        music.assessment = data['assessment']
+        print("tabel ", music.assessment)
     if 'comment' in data:
         # print(data["comment"])
         comment = Comment(music_id=music_id,

@@ -29,7 +29,7 @@ class Music(Base):
             'folderId': self.folder_id,
             'created': self.created,
             'name': self.name,
-            # 'assesment': self.assessment,
+            'assessment': self.assessment,
         }
 
 

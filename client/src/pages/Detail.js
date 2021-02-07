@@ -185,13 +185,13 @@ const Detail = ({ history }) => {
       <IonContent>
         <IonCard>
           <Charts />
-          {/*<IonItem>
-            {music?.assesment === 0 ? (
+          <IonItem>
+            {music?.assessment === 0 ? (
               <div> 自己評価 なし</div>
             ) : (
-              <div> 自己評価　★{music?.assesment}</div>
+              <div> 自己評価　★{music?.assessment}</div>
             )}
-            </IonItem>*/}
+          </IonItem>
         </IonCard>
         <IonCard>
           <IonList>
