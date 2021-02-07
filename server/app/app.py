@@ -53,6 +53,11 @@ def get_music(music_id):
     music = session.query(Music).filter_by(
         id=music_id, user_id=user_id).first()
     music = music.to_json()
+    """
+    if music["assesment"] == None:
+        music["assesment"] = 0
+    """
+    print(music)
     session.close()
     return jsonify(music)
 
@@ -97,7 +102,7 @@ def get_music_content(music_id):
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
-    print(user_id, music_id)
+    #print(user_id, music_id)
     return response
 
 
@@ -107,18 +112,28 @@ def put_music_content(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    print(data)
+    # print(data)
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     if 'name' in data:
         music.name = data['name']
     if 'folderId' in data:
         music.folder_id = data['folderId']
+
+    print(data)
+    print(music)
+    """
+    if 'assesment' in data:
+        print("pre_Data ", data["assesment"])
+        music.assesment = data['assesment']
+        print("tabel ", music.assesment)
+    """
     if 'comment' in data:
-        print(data["comment"])
+        # print(data["comment"])
         comment = Comment(music_id=music_id,
                           text=data['comment'], user_id=user_id)
         session.add(comment)
+
     session.add(music)
     session.commit()
     session.close()
@@ -144,7 +159,7 @@ def post_comment(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    print(data["item"])
+    # print(data["item"])
     comment = Comment(music_id=music_id, text=data['item'], user_id=user_id)
     session.add(comment)
     session.commit()
@@ -241,9 +256,9 @@ def get_folder_musics(folder_id):
     musics = session.query(Music).filter_by(
         folder_id=folder_id, user_id=user_id).all()
     musics = [m.to_json() for m in musics]
-    print(musics)
+    # print(musics)
     musics = sorted(musics, key=lambda x: x['created'], reverse=True)
-    print(musics)
+    # print(musics)
     session.close()
     return jsonify(musics)
 
@@ -356,7 +371,7 @@ def get_folders_parallel(folder_id):
         dicDatas.append(dic)
 
     session.close()
-    print(dicDatas)
+    # print(dicDatas)
     return jsonify(dicDatas)
 
 

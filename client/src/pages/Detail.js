@@ -101,6 +101,8 @@ const Detail = ({ history }) => {
     setComments(data);
   });
 
+  console.log(music);
+
   return (
     <IonPage>
       <IonHeader>
@@ -183,7 +185,13 @@ const Detail = ({ history }) => {
       <IonContent>
         <IonCard>
           <Charts />
-          <IonItem>自己評価　★1~5</IonItem>
+          {/*<IonItem>
+            {music?.assesment === 0 ? (
+              <div> 自己評価 なし</div>
+            ) : (
+              <div> 自己評価　★{music?.assesment}</div>
+            )}
+            </IonItem>*/}
         </IonCard>
         <IonCard>
           <IonList>

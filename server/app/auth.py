@@ -78,8 +78,6 @@ def requires_auth(f):
                                  " token."}, 400)
 
             g.current_user = payload
-            # print("-----------")
-            # print(payload)
             return f(*args, **kwargs)
         raise AuthError({"code": "invalid_header",
                          "description": "Unable to find appropriate key"}, 400)
