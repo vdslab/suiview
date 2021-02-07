@@ -20,7 +20,6 @@ import {
   IonListHeader,
   IonFooter,
   IonAlert,
-  IonCardHeader,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {

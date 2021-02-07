@@ -7,12 +7,31 @@ import {
   IonPage,
   IonButton,
   IonBackButton,
+  IonCard,
+  IonCardHeader,
+  IonItem,
+  IonCardContent,
+  IonIcon,
+  useIonViewWillEnter,
+  IonAlert,
 } from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
+import { closeOutline, buildOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState } from "react";
+import { getUsername, putUsername } from "../services/api/account";
 /////////////////////////////////////////////
 const Setting = () => {
   const { logout } = useAuth0();
+  const [username, setUsername] = useState();
+  const { getAccessTokenSilently } = useAuth0();
+  const [showAlert, setShowAlert] = useState(false);
+
+  useIonViewWillEnter(async () => {
+    const data = await getUsername(getAccessTokenSilently);
+    setUsername(data);
+  });
+
+  console.log(username);
 
   return (
     <IonPage>
@@ -24,6 +43,22 @@ const Setting = () => {
       </IonHeader>
       <IonContent>
         <IonList>
+          <IonCard>
+            <IonCardHeader>アカウント情報</IonCardHeader>
+            <IonCardContent>
+              <IonItem lines="none" slot="end">
+                ユーザー名：{username}
+                <IonButton
+                  fill="outline"
+                  color="dark"
+                  slot="end"
+                  onClick={() => setShowAlert(true)}
+                >
+                  <IonIcon icon={buildOutline} color="dark"></IonIcon>
+                </IonButton>
+              </IonItem>
+            </IonCardContent>
+          </IonCard>
           <IonButton
             slot="end"
             expand="full"
@@ -33,6 +68,41 @@ const Setting = () => {
             Log out
           </IonButton>
         </IonList>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          cssClass="my-custom-class"
+          header={"ユーザー名の変更"}
+          subHeader={"新しいユーザー名を記入してください"}
+          inputs={[
+            {
+              name: "name",
+              type: "text",
+              placeholder: "名前",
+            },
+          ]}
+          buttons={[
+            {
+              text: "Cancel",
+              role: "cancel",
+              cssClass: "secondary",
+              handler: () => {
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "OK",
+              handler: async ({ name }) => {
+                const data = await putUsername(
+                  { name },
+                  getAccessTokenSilently
+                );
+                //const data = await getUsername(getAccessTokenSilently);
+                setUsername(data);
+              },
+            },
+          ]}
+        />
       </IonContent>
     </IonPage>
   );

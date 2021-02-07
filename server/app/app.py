@@ -5,7 +5,7 @@ import wave
 from flask import Flask, jsonify, request, make_response, g
 from flask_cors import CORS
 from db import create_session
-from models import Music, Comment, Folder
+from models import Music, Comment, Folder, User
 import numpy as np
 import scipy.io.wavfile
 from pylab import frombuffer
@@ -17,6 +17,42 @@ from auth import requires_auth
 import math
 app = Flask(__name__)
 cors = CORS(app)
+
+# 初回ログイン時にできるようにする
+
+
+@app.route('/username', methods=['GET'])
+@requires_auth
+def get_username():
+    session = create_session()
+    user_id = g.current_user['sub']
+    user = session.query(User).filter_by(
+        id=user_id).first()
+    if user == None:
+        user = User(id=user_id)
+        user.name = "undefind"
+        session.add(user)
+    session.commit()
+    user = user.to_json()
+    session.close()
+    return jsonify(user["name"])
+
+
+@app.route('/username', methods=['PUT'])
+@requires_auth
+def put_username():
+    session = create_session()
+    user_id = g.current_user['sub']
+    data = json.loads(request.data.decode('utf-8'))
+    print(data)
+    user = session.query(User).filter_by(
+        id=user_id).first()
+    user.name = data["name"]
+    session.add(user)
+    session.commit()
+    user = user.to_json()
+    session.close()
+    return jsonify(user["name"])
 
 
 @app.route('/musics', methods=['GET'])

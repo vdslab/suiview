@@ -8,6 +8,16 @@ from db import engine
 Base = automap_base()
 
 
+class User(Base):
+    __tablename__ = 'users'
+
+    def to_json(self):
+        return {
+            'userId': self.id,
+            'name': self.name,
+        }
+
+
 class Music(Base):
     __tablename__ = 'musics'
 
