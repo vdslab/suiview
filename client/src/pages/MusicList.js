@@ -36,7 +36,7 @@ const MusicList = ({ history }) => {
             defaultHref="/"
             icon={chevronBackOutline}
           ></IonBackButton>
-          <IonTitle>all</IonTitle>
+          <IonTitle>すべて</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

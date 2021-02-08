@@ -29,17 +29,16 @@ import { getFolders, deleteFolder, postFolder } from "../services/api";
 import argImg from "../images/arpeggio.PNG";
 import longtoneImg from "../images/longtone.PNG";
 import scaleImg from "../images/scale.PNG";
+export const defoFolder = [
+  { img: longtoneImg, name: "ロングトーン" },
+  { img: scaleImg, name: "スケール" },
+  { img: argImg, name: "アルペジオ" },
+];
 
 const Home = () => {
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
-  const defoFolder = [
-    { img: longtoneImg, name: "ロングトーン" },
-    { img: scaleImg, name: "スケール" },
-    { img: argImg, name: "アルペジオ" },
-  ];
-
   useIonViewWillEnter(async () => {
     const data = await getFolders(getAccessTokenSilently);
     setFolders(data);

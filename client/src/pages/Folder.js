@@ -29,6 +29,7 @@ import {
   VolumeChart,
 } from "../components/chart";
 import MusicItem from "../components/MusicItem.js";
+import { defoFolder } from "./Home.js";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -116,6 +117,7 @@ const Folder = ({ history }) => {
     const data = await getFolder(folderId, getAccessTokenSilently);
     setFolder(data);
   });
+  const imgData = defoFolder.find((v) => v.name === folder?.name);
 
   return (
     <IonPage>
@@ -126,7 +128,14 @@ const Folder = ({ history }) => {
             fill="clear"
             defaultHref="/"
           ></IonBackButton>
-          <IonTitle>{folder?.name}</IonTitle>
+          <IonItem lines="none">
+            <IonTitle>{folder?.name}</IonTitle>
+            {imgData ? (
+              <img src={imgData.img} alt="譜面の画像" className="score"></img>
+            ) : (
+              []
+            )}
+          </IonItem>
         </IonToolbar>
       </IonHeader>
       <IonContent>
