@@ -26,11 +26,19 @@ import {
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, deleteFolder, postFolder } from "../services/api";
+import argImg from "../images/arpeggio.PNG";
+import longtoneImg from "../images/longtone.PNG";
+import scaleImg from "../images/scale.PNG";
 
 const Home = () => {
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
+  const defoFolder = [
+    { img: longtoneImg, name: "ロングトーン" },
+    { img: scaleImg, name: "スケール" },
+    { img: argImg, name: "アルペジオ" },
+  ];
 
   useIonViewWillEnter(async () => {
     const data = await getFolders(getAccessTokenSilently);
@@ -67,11 +75,24 @@ const Home = () => {
             return (
               <IonItemSliding key={data.id}>
                 <IonItem
-                  _ngcontent-yfv-c79="" // これは…?
                   detail="false"
                   routerLink={`/folder/${data.id}`}
                   class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
                 >
+                  {defoFolder.map((d, k) => {
+                    if (data.name === d.name) {
+                      return (
+                        <img
+                          src={d.img}
+                          alt="譜面の画像"
+                          key={k}
+                          className="score"
+                        ></img>
+                      );
+                    } else {
+                      return <div key={k}></div>;
+                    }
+                  })}
                   <IonLabel>{data.name}</IonLabel>
                   <IonButton slot="end" fill="clear">
                     <IonIcon icon={chevronForwardOutline}></IonIcon>

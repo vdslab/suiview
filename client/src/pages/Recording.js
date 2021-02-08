@@ -32,6 +32,7 @@ import {
   postMusic,
   putMusicContent,
   deleteMusic,
+  //getFolders,
 } from "../services/api";
 import { Player } from "../components/Player.js";
 
@@ -42,6 +43,7 @@ const Recording = ({ history }) => {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
+  //const [allFolder, setAllFolder] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
   const [selected, setSelected] = useState(3);
@@ -55,6 +57,11 @@ const Recording = ({ history }) => {
     }
   });
 
+  /*useIonViewWillEnter(async () => {
+    const data = await getFolders(getAccessTokenSilently);
+    setAllFolder(data);
+  });*/
+
   return (
     <IonPage>
       <IonHeader>
@@ -66,7 +73,21 @@ const Recording = ({ history }) => {
       <IonContent>
         <IonList>
           <IonListHeader lines="full">
-            フォルダ名 &emsp; {folder?.name || "all"}
+            フォルダ名 &emsp;{folder?.name || ""}
+            {/*} <IonSelect
+              value={folder?.name}
+              onIonChange={(e) => {
+                setSelected(e.target.value);
+              }}
+            >
+              {allFolder?.map((data) => {
+                return (
+                  <IonSelectOption value={data.name} key={data.id}>
+                    {data.name}
+                  </IonSelectOption>
+                );
+              })}
+            </IonSelect>*/}
           </IonListHeader>
           <IonItem>
             <IonLabel>名前&ensp;</IonLabel>

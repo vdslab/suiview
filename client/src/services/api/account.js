@@ -1,9 +1,4 @@
-import {
-  requestGet,
-  requestPost,
-  requestPut,
-  requestDelete,
-} from "./request.js";
+import { requestGet, requestPut } from "./request.js";
 
 export async function getUsername(getAccessToken) {
   const response = await requestGet(`/username`, getAccessToken);
