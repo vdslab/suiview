@@ -18,9 +18,37 @@ import math
 app = Flask(__name__)
 cors = CORS(app)
 
+
+@app.route('/users', methods=['GET'])
+# @requires_auth
+def get_users():
+    session = create_session()
+    users = session.query(User).all()
+    users = [u.to_json() for u in users]
+    print(users)
+    data = []
+    for i in range(len(users)):
+        data.append(users[i]['name'])
+    print(data)
+    session.close()
+    return jsonify(data)
+
+
+@app.route('/folders/<user_name>', methods=['GET'])
+# @requires_auth
+def get_student_folder(user_name):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    print(user.id)
+    folders = session.query(Folder).filter_by(user_id=user.id).all()
+    folders = [f.to_json() for f in folders]
+    print(folders)
+    session.close()
+    return jsonify(folders)
+
+
 # 初回ログイン時にできるようにする
-
-
 @app.route('/username', methods=['GET'])
 @requires_auth
 def get_username():

@@ -1,10 +1,16 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-function Header() {
-  return <div>musicvis</div>;
-}
+import Home from "./pages/Home";
 
-function Home() {
-  return <div>home</div>;
+function Header() {
+  return (
+    <section className="hero has-background-primary">
+      <div className="hero-body">
+        <div className="container">
+          <h1 className="title">musicvis</h1>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function RegistrationPage() {
@@ -12,18 +18,25 @@ function RegistrationPage() {
 }
 
 function Footer() {
-  return <div>footter</div>;
+  return (
+    <footer className="footer">
+      <div className="content has-text-centered">footer</div>
+    </footer>
+  );
 }
 
 export function App() {
   return (
     <Router>
       <Header />
-      <section className="">
-        <div className="">
+      <section className="section">
+        <div className="container">
           <div className=""></div>
           <Switch>
-            <Route path="/" exact>
+            <Route path="/">
+              <Home />
+            </Route>
+            <Route path="/:username/folder">
               <Home />
             </Route>
             <Route path="/registration" exact>
