@@ -34,7 +34,7 @@ def get_users():
     return jsonify(data)
 
 
-@app.route('/folders/<user_name>', methods=['GET'])
+@app.route('/<user_name>/folders', methods=['GET'])
 # @requires_auth
 def get_student_folder(user_name):
     session = create_session()
@@ -48,7 +48,23 @@ def get_student_folder(user_name):
     return jsonify(folders)
 
 
+@app.route('/<user_name>/folders/<folder_name>', methods=['GET'])
+def get_student_folder_musics(user_name, folder_name):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    folder = session.query(Folder).filter_by(
+        user_id=user.id, name=folder_name).first()
+    musics = session.query(Music).filter_by(
+        user_id=user.id, folder_id=folder.id).all()
+    musics = [music.to_json() for music in musics]
+    print(musics)
+    return jsonify(musics)
+
+#########################################################
 # 初回ログイン時にできるようにする
+
+
 @app.route('/username', methods=['GET'])
 @requires_auth
 def get_username():
