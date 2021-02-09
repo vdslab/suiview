@@ -48,7 +48,13 @@ const FolderList = () => {
           </section>
         </div>
         <div className="column">
-          {path.length === 4 ? <FolderChart id={folderId} /> : <MusicDetail />}
+          {path.length === 4 ? (
+            <FolderChart id={folderId} />
+          ) : path.length === 5 ? (
+            <MusicDetail />
+          ) : (
+            []
+          )}
         </div>
       </div>
     </section>
