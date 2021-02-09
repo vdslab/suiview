@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getFolders, getFolderMusics } from "../services/api/index";
-import Chart from "./Chart";
+import FolderChart from "./Chart";
+import MusicDetail from "./MusicDetail";
 
 const FolderList = () => {
   const [musics, setMusics] = useState();
   const path = decodeURI(location.pathname).split("/");
   const username = path[1];
   const folderId = path[3];
+  console.log(path.length);
 
   useEffect(async () => {
     if (folderId !== undefined) {
@@ -46,7 +48,7 @@ const FolderList = () => {
           </section>
         </div>
         <div className="column">
-          <Chart id={folderId} />
+          {path.length === 4 ? <FolderChart id={folderId} /> : <MusicDetail />}
         </div>
       </div>
     </section>

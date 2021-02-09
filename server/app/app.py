@@ -279,7 +279,6 @@ def get_student_folder_tone(user_name, folder_id):
         data = np.array(data)
         preData.append(data)
 
-    print(preData)
     Datas = []
     if len(preData) == 1:
         data = []
@@ -326,6 +325,23 @@ def get_student_folder_tone(user_name, folder_id):
         print("all clear")
         session.close()
     return jsonify(Datas)
+
+
+@app.route('/<user_name>/musics/<music_id>/content', methods=['GET'])
+# @requires_auth
+def get_student_music_content(user_name, music_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    response = make_response()
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    response.data = music.content
+    response.mimetype = "audio/wav"
+    session.close()
+    #print(user_id, music_id)
+    return response
 
 
 #########################################################

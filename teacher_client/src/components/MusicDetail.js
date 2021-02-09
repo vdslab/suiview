@@ -10,6 +10,7 @@ import {
   ToneChart,
   VolumeChart,
 } from "../components/chart/index";
+import { Player } from "./Player.js";
 
 const ShowChart = (data) => {
   const folderId = data.data.id;
@@ -88,6 +89,9 @@ const FolderChart = (item) => {
           return <div key={id}></div>;
         }
       })}
+      <div>
+        <Player />
+      </div>
     </section>
   );
 };
