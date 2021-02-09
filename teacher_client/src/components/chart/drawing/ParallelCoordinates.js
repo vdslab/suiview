@@ -126,7 +126,6 @@ const ParallelCoordinates = ({ data }) => {
           },
         }}
       />
-      hello
     </div>
   );
 };

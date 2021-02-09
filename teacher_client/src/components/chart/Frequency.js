@@ -5,27 +5,18 @@ import { Liner } from "./drawing";
 
 const ShowFrequency = ({ musicId }) => {
   const [data, setData] = useState(null);
-  const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    getMusicF0(musicId, getAccessTokenSilently).then((data) => {
-      setData(data);
-    });
-  }, [musicId, getAccessTokenSilently]);
+  const folderId = item.data.id;
+  const userName = item.data.name;
+  // const { getAccessTokenSilently } = useAuth0();
+  console.log("here");
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <div>loading...</div>;
   }
   return (
     <div>
-      <IonItem lines="none">
-        {" "}
-        安定度：{data.average} &ensp;　標準偏差：{data.s}
-      </IonItem>
+      {" "}
+      安定度：{data.average} &ensp;　標準偏差：{data.s}
       <Liner data={data.values} />
     </div>
   );

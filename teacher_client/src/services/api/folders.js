@@ -20,14 +20,14 @@ export async function getFolderProgress(username, folderId) {
 
 export async function getFolderDecibel(username, folderId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderId}/progress`
+    `http://localhost:8080/${username}/folders/${folderId}/decibel`
   );
   return response.json();
 }
 
 export async function getFolderF0(username, folderId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderId}/progress`
+    `http://localhost:8080/${username}/folders/${folderId}/f0`
   );
   return response.json();
 }
@@ -41,7 +41,7 @@ export async function getFolderParallel(username, folderId) {
 
 export async function getFolderTone(username, folderId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderId}/progress`
+    `http://localhost:8080/${username}/folders/${folderId}/tone`
   );
   return response.json();
 }

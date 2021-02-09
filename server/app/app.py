@@ -123,6 +123,211 @@ def get_student_folders_parallel(user_name, folder_id):
     return jsonify(dicDatas)
 
 
+@app.route('/<user_name>/folders/<folder_id>/f0', methods=['GET'])
+# @requires_auth
+def get_student_folder_f0(user_name, folder_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    musics = session.query(Music).filter_by(
+        folder_id=folder_id, user_id=user_id).all()
+
+    preData = []
+
+    for music in musics:
+        data = dtw_frequency_data(music)
+        start, end = find_start_end(music)
+        data = trim(data, start, end)
+        data = np.array(data)
+        data = np.nan_to_num(data)
+        preData.append(data)
+
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": d[i]
+            }
+            data.append(dic)
+
+        Datas.append({"id": musics[0].id, "data": data})
+
+    else:
+        for i in range(len(preData)):
+            print(len(preData[i]))
+        for i in range(1, len(preData)):
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
+
+            if i == 1:
+                aliged_data = preData[0][alignment.index1]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": aliged_data[j]
+                    }
+                    data.append(dic)
+                Datas.append({"id": musics[0].id, "data": data})
+
+            aliged_data = preData[i][alignment.index2]
+            aliged_data = list(aliged_data)
+            # print(aliged_data)
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": round(aliged_data[j], 4)
+                }
+                data.append(dic)
+            Datas.append({"id": musics[i].id, "data": data})
+            print("fin"+str(i))
+            print(len(Datas))
+        print(Datas)
+        print("finish")
+        session.close()
+    return jsonify(Datas)
+
+
+@ app.route('/<user_name>/folders/<folder_id>/decibel', methods=['GET'])
+# @ requires_auth
+def get_student_folder_decibel(user_name, folder_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    musics = session.query(Music).filter_by(folder_id=folder_id,
+                                            user_id=user_id).order_by(Music.id).all()
+
+    preData = []
+
+    for music in musics:
+        data = decibel_data(music)
+        start, end = find_start_end(music)
+        data = trim(data, start, end)
+        data = np.array(data)
+        preData.append(data)
+
+    # print(preData)
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": str(d[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": musics[0].id, "data": data})
+
+    else:
+        print(len(preData))
+        for i in range(1, len(preData)):
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
+
+            if i == 1:
+                aliged_data = preData[0][alignment.index1]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": str(aliged_data[j])
+                    }
+                    data.append(dic)
+                Datas.append({"id": musics[0].id, "data": data})
+
+            aliged_data = preData[i][alignment.index2]
+            aliged_data = list(aliged_data)
+
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": str(aliged_data[j])
+                }
+                data.append(dic)
+            Datas.append({"id": musics[i].id, "data": data})
+            print("fin")
+        print("all clear")
+        session.close()
+    return jsonify(Datas)
+
+
+@ app.route('/<user_name>/folders/<folder_id>/tone', methods=['GET'])
+# @ requires_auth
+def get_student_folder_tone(user_name, folder_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    musics = session.query(Music).filter_by(
+        user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
+
+    preData = []
+
+    for music in musics:
+        data = spectrum_rolloff_y(music)
+        start, end = find_start_end(music)
+        data = trim(data, start, end)
+        data = np.array(data)
+        preData.append(data)
+
+    print(preData)
+    Datas = []
+    if len(preData) == 1:
+        data = []
+        d = list(preData[0])
+        for i in range(len(d)):
+            dic = {
+                "x": i+1,
+                "y": str(d[i])
+            }
+            data.append(dic)
+
+        Datas.append({"id": musics[0].id, "data": data})
+
+    else:
+        print(len(preData))
+        for i in range(1, len(preData)):
+            # alignment = dtw(preData[0], preData[i], keep_internals=True)
+            alignment = dtw(preData[0], preData[i], keep_internals=True)
+
+            if i == 1:
+                aliged_data = preData[0][alignment.index1]
+                aliged_data = list(aliged_data)
+                data = []
+                for j in range(len(aliged_data)):
+                    dic = {
+                        "x": j+1,
+                        "y": str(aliged_data[j])
+                    }
+                    data.append(dic)
+                Datas.append({"id": musics[0].id, "data": data})
+
+            aliged_data = preData[i][alignment.index2]
+            aliged_data = list(aliged_data)
+            # print(aliged_data)
+            data = []
+            for j in range(len(aliged_data)):
+                dic = {
+                    "x": j+1,
+                    "y": str(aliged_data[j])
+                }
+                data.append(dic)
+            Datas.append({"id": musics[i].id, "data": data})
+            print("fin")
+        print("all clear")
+        session.close()
+    return jsonify(Datas)
+
+
 #########################################################
 # 初回ログイン時にできるようにする
 

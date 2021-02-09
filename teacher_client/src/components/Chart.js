@@ -32,84 +32,28 @@ const ShowChart = (data) => {
       ) : (
         []
       )}
+      {kind === "PITCH" ? (
+        <FrequencyChart data={{ id: folderId, name: userName }} />
+      ) : (
+        []
+      )}
+      {kind === "VOL" ? (
+        <VolumeChart data={{ id: folderId, name: userName }} />
+      ) : (
+        []
+      )}
+      {kind === "TONE" ? (
+        <ToneChart data={{ id: folderId, name: userName }} />
+      ) : (
+        []
+      )}
     </div>
   );
-
-  if (kind === "PROGRESS") {
-    return (
-      <div>
-        <ProgressChart data={{ id: folderId, name: userName }} />
-      </div>
-    );
-  } else if (kind === "ALL") {
-    return (
-      <div>
-        <ParallelChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "PITCH") {
-    return (
-      <div>
-        <FrequencyChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "VOL") {
-    return (
-      <div>
-        <VolumeChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "TONE") {
-    return (
-      <div>
-        <ToneChart folderId={folderId} />
-      </div>
-    );
-  }
-  return <div></div>;
-
-  /*return <ProgressChart data={{ id: folderId, name: userName }} />;
-  /*
-  if (folderId == null) {
-    return null;
-  }
-
-  if (kind === "progress") {
-    return (
-      <div>
-        <ProgressChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "parallel") {
-    return (
-      <div>
-        <ParallelChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "pitch") {
-    return (
-      <div>
-        <FrequencyChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "vol") {
-    return (
-      <div>
-        <VolumeChart folderId={folderId} />
-      </div>
-    );
-  } else if (kind === "tone") {
-    return (
-      <div>
-        <ToneChart folderId={folderId} />
-      </div>
-    );
-  }*/
 };
 
 const Chart = (item) => {
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
-  const [chartId, setChartId] = useState(chartIds[1]);
+  const [chartId, setChartId] = useState(chartIds[4]);
   const path = decodeURI(location.pathname).split("/");
   const username = path[1];
   const folderId = item.id;

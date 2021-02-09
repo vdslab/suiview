@@ -3,22 +3,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderDecibel } from "../../services/api";
 import { ManyLiner } from "./drawing";
 
-const VolumeChart = ({ folderId }) => {
+const VolumeChart = (item) => {
   const [data, setData] = useState(null);
-  const { getAccessTokenSilently } = useAuth0();
-
+  const folderId = item.data.id;
+  const userName = item.data.name;
+  // const { getAccessTokenSilently } = useAuth0();
+  console.log("here");
   useEffect(() => {
-    getFolderDecibel(folderId, getAccessTokenSilently).then((data) => {
+    getFolderDecibel(userName, folderId).then((data) => {
       setData(data);
     });
-  }, [folderId, getAccessTokenSilently]);
+  }, [folderId]);
+  console.log(data);
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <div>loading...</div>;
   }
   return (
     <div>
