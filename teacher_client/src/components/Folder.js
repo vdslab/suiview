@@ -9,8 +9,10 @@ const FolderList = () => {
   const folderName = path[3];
 
   useEffect(async () => {
-    const data = await getFolderMusics(username, folderName);
-    setMusics(data);
+    if (folderName !== undefined) {
+      const data = await getFolderMusics(username, folderName);
+      setMusics(data);
+    }
   }, []);
   console.log(musics);
   if (musics?.length === 0) {

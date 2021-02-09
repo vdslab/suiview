@@ -5,13 +5,14 @@ import { getFolders } from "../services/api/index";
 const FolderList = () => {
   const [folders, setFolders] = useState();
   const path = location.pathname.split("/");
-  console.log(path);
-  const username = path[1];
-  console.log(username);
+  const userName = path[1];
 
   useEffect(async () => {
-    const data = await getFolders(username);
-    setFolders(data);
+    console.log(userName);
+    if (userName !== undefined && userName !== "") {
+      const data = await getFolders(userName);
+      setFolders(data);
+    }
   }, []);
   console.log(folders);
 
@@ -21,7 +22,7 @@ const FolderList = () => {
         {folders?.map((data) => {
           return (
             <li key={data.id}>
-              <a href={`http://localhost:3000/${username}/folder/${data.name}`}>
+              <a href={`http://localhost:3000/${userName}/folder/${data.name}`}>
                 {data.name}
               </a>
             </li>
