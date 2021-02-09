@@ -432,6 +432,36 @@ def get_student_music_decibel(user_name, music_id):
     return jsonify({'average': average[1], 's': average[0], 'values': data})
 
 
+@ app.route('/<user_name>/musics/<music_id>/centroid', methods=['GET'])
+# @ requires_auth
+def get_student_music_spectrum_centroid(user_name, music_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    return jsonify({
+        'values': spectrum_centroid(music)
+    })
+
+
+@ app.route('/<user_name>/musics/<music_id>/rolloff', methods=['GET'])
+# @ requires_auth
+def get_student_music_spectrum_rolloff(user_name, music_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    average = spectrum_rolloff_ave(music)
+    return jsonify({
+        'average': {"stability": average[1], 's': average[0]},
+        'values': spectrum_rolloff(music)
+    })
+
+
 #########################################################
 #########################################################
 # 初回ログイン時にできるようにする

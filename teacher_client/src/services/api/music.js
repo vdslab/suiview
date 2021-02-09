@@ -22,6 +22,20 @@ export async function getMusicDecibel(userName, musicId) {
   return response.json();
 }
 
+export async function getMusicSpectrumCentroid(username, musicId) {
+  const response = await fetch(
+    `http://localhost:8080/${username}/musics/${musicId}/centroid`
+  );
+  return response.json();
+}
+
+export async function getMusicSpectrumRolloff(username, musicId) {
+  const response = await fetch(
+    `http://localhost:8080/${username}/musics/${musicId}/rolloff`
+  );
+  return response.json();
+}
+
 /*
 export async function getMusicContent(musicId, getAccessToken) {
     const response = await requestGet(

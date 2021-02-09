@@ -6,19 +6,25 @@ import {
 } from "../../services/api";
 import { ManyLiner } from "./drawing";
 
-const CentroidRolloff = ({ musicId }) => {
+const CentroidRolloff = () => {
+  const path = decodeURI(location.pathname).split("/");
+  const userName = path[1];
+  const musicId = path[4];
+
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);
-  const { getAccessTokenSilently } = useAuth0();
+  //const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const centroidRequest = getMusicSpectrumCentroid(
-      musicId,
-      getAccessTokenSilently
+      userName,
+      musicId
+      // getAccessTokenSilently
     );
     const rolloffRequest = getMusicSpectrumRolloff(
-      musicId,
-      getAccessTokenSilently
+      userName,
+      musicId
+      //getAccessTokenSilently
     );
     Promise.all([centroidRequest, rolloffRequest]).then(
       ([centroid, rolloff]) => {
@@ -29,7 +35,7 @@ const CentroidRolloff = ({ musicId }) => {
         ]);
       }
     );
-  }, [musicId, getAccessTokenSilently]);
+  }, [musicId]);
 
   if (data == null) {
     return <div>loading...</div>;

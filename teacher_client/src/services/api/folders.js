@@ -59,17 +59,3 @@ export async function getMusicF0(username, folderId) {
   );
   return response.json();
 }
-
-export async function getMusicSpectrumCentroid(username, folderId) {
-  const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderId}/progress`
-  );
-  return response.json();
-}
-
-export async function getMusicSpectrumRolloff(username, folderId) {
-  const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderId}/progress`
-  );
-  return response.json();
-}
