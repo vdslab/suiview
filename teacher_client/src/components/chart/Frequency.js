@@ -15,12 +15,10 @@ const ShowFrequency = () => {
     });
   }, [musicId, getAccessTokenSilently]);*/
   useEffect(() => {
-    console.log("AAA");
     getMusicF0(userName, musicId).then((data) => {
       setData(data);
     });
   }, [musicId]);
-  console.log(data);
 
   if (data == null) {
     return <div>loading...</div>;

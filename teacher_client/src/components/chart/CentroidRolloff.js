@@ -32,18 +32,11 @@ const CentroidRolloff = ({ musicId }) => {
   }, [musicId, getAccessTokenSilently]);
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <div>loading...</div>;
   }
   return (
     <div>
-      <IonItem lines="none">
-        {" "}
-        安定度：{ave.stability} &ensp; 標準偏差：{ave.s}
-      </IonItem>
+      安定度：{ave.stability} &ensp; 標準偏差：{ave.s}
       <ManyLiner data={data} />
     </div>
   );

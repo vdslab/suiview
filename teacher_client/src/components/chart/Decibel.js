@@ -1,30 +1,27 @@
 import { useEffect, useState } from "react";
 //import { useAuth0 } from "@auth0/auth0-react";
-import { getMusicDecibel } from "../../services/api";
+import { getMusicDecibel } from "../../services/api/music";
 import { Liner } from "./drawing";
 
-const Decibel = ({ musicId }) => {
+const Decibel = () => {
   const [data, setData] = useState(null);
-  const { getAccessTokenSilently } = useAuth0();
+  const path = decodeURI(location.pathname).split("/");
+  const userName = path[1];
+  const musicId = path[4];
 
   useEffect(() => {
-    getMusicDecibel(musicId, getAccessTokenSilently).then((data) => {
+    getMusicDecibel(userName, musicId).then((data) => {
       setData(data);
     });
-  }, [musicId, getAccessTokenSilently]);
+  }, [musicId]);
+  console.log(data);
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <div>loading...</div>;
   }
   return (
     <div>
-      <IonItem lines="none">
-        安定度：{data.average} &ensp; 標準偏差：{data.s}
-      </IonItem>
+      安定度：{data.average} &ensp; 標準偏差：{data.s}
       <Liner data={data.values} />
     </div>
   );

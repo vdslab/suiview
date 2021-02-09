@@ -347,7 +347,6 @@ def get_student_music_content(user_name, music_id):
 @ app.route('/<user_name>/musics/<music_id>/f0', methods=['GET'])
 # @ requires_auth
 def get_student_music_f0(user_name, music_id):
-    print("AAAAAAAAAAA")
     session = create_session()
     user = session.query(User).filter_by(
         name=user_name).first()
@@ -383,6 +382,54 @@ def get_student_music_f0(user_name, music_id):
         's': average[0],
         'values': data
     })
+
+
+@ app.route('/<user_name>/musics/<music_id>/decibel', methods=['GET'])
+# @ requires_auth
+def get_student_music_decibel(user_name, music_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
+    data = data.astype(np.float)
+    S = np.abs(librosa.stft(data))
+    db = librosa.amplitude_to_db(S, ref=np.max)
+    dbLine = []
+    for i in range(len(db[0])):
+        _max = -20  # -80 にしてる処理もあるが？
+        for j in range(len(db)):
+            if _max <= db[j][i]:
+                _max = db[j][i]
+        dbLine.append(_max)
+
+    start = 0
+    end = 0
+    for i in range(len(dbLine)):
+        if dbLine[i] > -20:
+            start = i
+            break
+    for i in range(len(dbLine)-1, -1, -1):
+        if dbLine[i] > -20:
+            end = i
+            break
+
+    data = []
+    if end < len(dbLine)-2:
+        end += 1
+    for i in range(start, end):
+        dic = {
+            "x": i+1,
+            "y": round(dbLine[i], 4)
+        }
+        data.append(dic)
+
+    average = decibel_ave_data(music)
+
+    session.close()
+    return jsonify({'average': average[1], 's': average[0], 'values': data})
 
 
 #########################################################
@@ -806,6 +853,7 @@ def get_folder_progress(folder_id):
     return jsonify(dicDatas)
 
 
+"""
 # 波形
 @ app.route('/musics/<music_id>/amplitude', methods=['GET'])
 @ requires_auth
@@ -831,8 +879,8 @@ def amplitude(music_id):
         Datas.append(dic)
     session.close()
     return jsonify(Datas)
-
-
+"""
+"""
 # フーリエ変換
 @ app.route('/musics/<music_id>/fourier', methods=['GET'])
 @ requires_auth
@@ -871,21 +919,11 @@ def fourier(music_id):
             }
             Datas.append(dic)
 
-    """
-    for i in range(min(1000, len(fft_data))):  # len(fft_data)):
-        if 0 < freList[i] and freList[i] < 4000:  # 周波数の範囲
-            dic = {
-                # "x": '{:.4f}'.format(freList[i]),
-                "x": int(freList[i]),
-                "y": fft_data[i]
-            }
-            Datas.append(dic)
-    """
     session.close()
     fourier_roll(music_id)
     return jsonify(Datas)
-
-
+"""
+"""
 # フーリエ変換　ロールオフ
 @ app.route('/musics/<music_id>/fourier_roll', methods=['GET'])
 def fourier_roll(music_id):
@@ -968,8 +1006,9 @@ def fourier_roll_data(music_id):
 
     session.close()
     return idx
+"""
 
-
+"""
 # スペクトログラム
 @ app.route('/musics/<music_id>/spectrogram', methods=['GET'])
 @ requires_auth
@@ -997,9 +1036,11 @@ def get_music_spectrogram(music_id):
         Datas.append(dic)
     session.close()
     return jsonify(Datas)
-
+"""
 
 # デシベル値
+
+
 @ app.route('/musics/<music_id>/decibel', methods=['GET'])
 @ requires_auth
 def get_music_decibel(music_id):

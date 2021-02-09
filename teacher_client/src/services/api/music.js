@@ -7,9 +7,16 @@ export async function getMusicContent(userName, musicId) {
 }
 
 export async function getMusicF0(userName, musicId) {
-  console.log("!!!!!!!!!!!!!!!!!!");
   const response = await fetch(
     `http://localhost:8080/${userName}/musics/${musicId}/f0`
+  );
+  //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
+  return response.json();
+}
+
+export async function getMusicDecibel(userName, musicId) {
+  const response = await fetch(
+    `http://localhost:8080/${userName}/musics/${musicId}/decibel`
   );
   //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
   return response.json();
