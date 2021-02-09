@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   FrequencyChart,
   ParallelChart,
@@ -8,52 +9,27 @@ import {
 } from "../components/chart/index";
 
 const ShowChart = (data) => {
-  const folderId = data.data.id;
-  const userName = data.data.userName;
-  const kind = data.data.kind;
-  console.log("showchart", kind);
+  const { folderId } = useParams();
+  const kind = data.kind;
+
   if (folderId === undefined) {
     return <div>loading...</div>;
   }
 
   return (
     <div>
-      {kind === "PROGRESS" ? (
-        <ProgressChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
-      {kind === "ALL" ? (
-        <ParallelChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
-      {kind === "PITCH" ? (
-        <FrequencyChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
-      {kind === "VOL" ? (
-        <VolumeChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
-      {kind === "TONE" ? (
-        <ToneChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
+      {kind === "PROGRESS" ? <ProgressChart /> : []}
+      {kind === "ALL" ? <ParallelChart /> : []}
+      {kind === "PITCH" ? <FrequencyChart /> : []}
+      {kind === "VOL" ? <VolumeChart /> : []}
+      {kind === "TONE" ? <ToneChart /> : []}
     </div>
   );
 };
 
-const FolderChart = (item) => {
+const FolderChart = () => {
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
   const [chartId, setChartId] = useState(chartIds[4]);
-  const path = decodeURI(location.pathname).split("/");
-  const username = path[1];
-  const folderId = item.id;
-
   return (
     <section>
       <select
@@ -71,14 +47,8 @@ const FolderChart = (item) => {
       </select>
 
       {chartIds.map((data, id) => {
-        console.log(data, chartId);
         if (data === chartId) {
-          return (
-            <ShowChart
-              key={id}
-              data={{ id: folderId, kind: data, userName: username }}
-            />
-          );
+          return <ShowChart key={id} kind={data} />;
         } else {
           return <div key={id}></div>;
         }

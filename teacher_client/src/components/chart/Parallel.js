@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
 import { ParallelCoordinates } from "./drawing";
+import { useParams } from "react-router-dom";
 
-const ParallelChart = (item) => {
+const ParallelChart = () => {
   const [data, setData] = useState(null);
-  const folderId = item.data.id;
-  const userName = item.data.name;
+  const { userName, folderId } = useParams();
+
   // const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {

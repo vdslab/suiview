@@ -13,10 +13,6 @@ function Header() {
   );
 }
 
-function RegistrationPage() {
-  return <div>registration</div>;
-}
-
 function Footer() {
   return (
     <footer className="footer">
@@ -33,21 +29,21 @@ export function App() {
         <div className="container">
           <div className=""></div>
           <Switch>
-            <Route path="/">
+            <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/:username/folder">
+            <Route path="/:userName/folder" exact>
               <Home />
             </Route>
-            <Route path="/:username/folder/:foldername">
+            <Route path="/:userName/folder/:folderId" exact>
               <Home />
             </Route>
-            <Route path="/:username/folder/:foldername/:musicId">
+            <Route path="/:userName/folder/:folderId/:musicId">
               <Home />
             </Route>
-            <Route path="/registration" exact>
+            {/*<Route path="/registration" exact>
               <RegistrationPage />
-            </Route>
+  </Route>*/}
           </Switch>
         </div>
       </section>

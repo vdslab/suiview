@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { ManyLiner } from "./drawing";
 import { getFolderF0 } from "../../services/api";
+import { useParams } from "react-router-dom";
 
-const FrequencyChart = (item) => {
+const FrequencyChart = () => {
   const [data, setData] = useState(null);
-  const folderId = item.data.id;
-  const userName = item.data.name;
+  const { userName, folderId } = useParams();
   // const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     getFolderF0(userName, folderId).then((data) => {

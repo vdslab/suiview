@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 //import { useAuth0 } from "@auth0/auth0-react";
 import { getMusicDecibel } from "../../services/api/music";
 import { Liner } from "./drawing";
+import { useParams } from "react-router-dom";
 
 const Decibel = () => {
   const [data, setData] = useState(null);
-  const path = decodeURI(location.pathname).split("/");
-  const userName = path[1];
-  const musicId = path[4];
+  const { userName, musicId } = useParams();
 
   useEffect(() => {
     getMusicDecibel(userName, musicId).then((data) => {

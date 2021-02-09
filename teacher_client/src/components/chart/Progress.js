@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { getFolderProgress } from "../../services/api/index";
 import { PointLiner } from "./drawing";
+import { useParams } from "react-router-dom";
 
-const ProgressChart = (item) => {
+const ProgressChart = () => {
   const [data, setData] = useState(null);
-  const folderId = item.data.id;
-  const userName = item.data.name;
+  const { userName, folderId } = useParams();
+
   // const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     getFolderProgress(userName, folderId).then((data) => {

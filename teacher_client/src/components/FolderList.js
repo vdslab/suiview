@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getFolders } from "../services/api/index";
 
 const FolderList = () => {
   const [folders, setFolders] = useState();
-  const path = location.pathname.split("/");
-  const userName = path[1];
+  const { userName } = useParams(undefined);
+  console.log(userName);
 
-  useEffect(async () => {
-    console.log(userName);
-    if (userName !== undefined && userName !== "") {
-      const data = await getFolders(userName);
-      setFolders(data);
-    }
-  }, []);
+  useEffect(() => {
+    (async () => {
+      if (userName !== undefined && userName !== "") {
+        const data = await getFolders(userName);
+        setFolders(data);
+      }
+    })();
+  }, [userName]);
   console.log(folders);
 
   return (
@@ -21,7 +24,7 @@ const FolderList = () => {
         {folders?.map((data) => {
           return (
             <li key={data.id}>
-              <a href={`/${userName}/folder/${data.id}`}>{data.name}</a>
+              <Link to={`/${userName}/folder/${data.id}`}>{data.name}</Link>
             </li>
           );
         })}

@@ -5,11 +5,10 @@ import {
   getMusicSpectrumRolloff,
 } from "../../services/api";
 import { ManyLiner } from "./drawing";
+import { useParams } from "react-router-dom";
 
 const CentroidRolloff = () => {
-  const path = decodeURI(location.pathname).split("/");
-  const userName = path[1];
-  const musicId = path[4];
+  const { userName, musicId } = useParams();
 
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderTone } from "../../services/api";
 import { ManyLiner } from "./drawing";
+import { useParams } from "react-router-dom";
 
-const ToneChart = (item) => {
+const ToneChart = () => {
   const [data, setData] = useState(null);
-  const folderId = item.data.id;
-  const userName = item.data.name;
+  const { folderId, userName } = useParams();
   // const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
     getFolderTone(userName, folderId).then((data) => {
