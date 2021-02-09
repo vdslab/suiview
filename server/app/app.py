@@ -344,6 +344,48 @@ def get_student_music_content(user_name, music_id):
     return response
 
 
+@ app.route('/<user_name>/musics/<music_id>/f0', methods=['GET'])
+# @ requires_auth
+def get_student_music_f0(user_name, music_id):
+    print("AAAAAAAAAAA")
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+
+    f0 = music.fundamental_frequency(session)
+
+    average = frequency_ave_data(music)
+
+    start, end = find_start_end(music)
+    data = []
+    if end < len(f0)-2:
+        end += 1
+    for i in range(max(0, start), end):
+        if f0[i] >= 0:
+            dic = {
+                "x": i+1,
+                "y": round(f0[i], 4)
+            }
+        else:
+            dic = {
+                "x": i+1,
+                "y": 0
+            }
+        data.append(dic)
+
+    session.close()
+    print(data)
+    return jsonify({
+        'average': average[1],
+        's': average[0],
+        'values': data
+    })
+
+
+#########################################################
 #########################################################
 # 初回ログイン時にできるようにする
 

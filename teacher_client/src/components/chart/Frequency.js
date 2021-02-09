@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
 //import { useAuth0 } from "@auth0/auth0-react";
-import { getMusicF0 } from "../../services/api";
+import { getMusicF0 } from "../../services/api/music";
 import { Liner } from "./drawing";
 
-const ShowFrequency = ({ musicId }) => {
+const ShowFrequency = () => {
   const [data, setData] = useState(null);
-  const folderId = item.data.id;
-  const userName = item.data.name;
+  const path = decodeURI(location.pathname).split("/");
+  const userName = path[1];
+  const musicId = path[4];
   // const { getAccessTokenSilently } = useAuth0();
-  console.log("here");
+  /* useEffect(() => {
+    getMusicF0(musicId, getAccessTokenSilently).then((data) => {
+      setData(data);
+    });
+  }, [musicId, getAccessTokenSilently]);*/
+  useEffect(() => {
+    console.log("AAA");
+    getMusicF0(userName, musicId).then((data) => {
+      setData(data);
+    });
+  }, [musicId]);
+  console.log(data);
 
   if (data == null) {
     return <div>loading...</div>;

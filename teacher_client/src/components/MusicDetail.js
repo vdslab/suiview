@@ -1,50 +1,34 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { getFolders, getFolderMusics } from "../services/api/index";
-//import ProgressChart from "./chart/Progress";
-//import VolumeChart from "./chart/";
+
 import {
-  FrequencyChart,
-  ParallelChart,
-  ProgressChart,
-  ToneChart,
-  VolumeChart,
+  CentroidRolloff,
+  Decibel,
+  ShowFrequency,
 } from "../components/chart/index";
 import { Player } from "./Player.js";
 
 const ShowChart = (data) => {
-  const folderId = data.data.id;
-  const userName = data.data.userName;
   const kind = data.data.kind;
+  const path = decodeURI(location.pathname).split("/");
+  const userName = path[1];
+  const musicId = path[4];
   console.log("showchart", kind);
-  if (folderId === undefined) {
+  if (musicId === undefined) {
     return <div>loading...</div>;
   }
 
   return (
     <div>
-      {kind === "PROGRESS" ? (
-        <ProgressChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
-      {kind === "ALL" ? (
-        <ParallelChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
       {kind === "PITCH" ? (
-        <FrequencyChart data={{ id: folderId, name: userName }} />
+        <ShowFrequency data={{ id: musicId, name: userName }} />
       ) : (
         []
       )}
-      {kind === "VOL" ? (
-        <VolumeChart data={{ id: folderId, name: userName }} />
-      ) : (
-        []
-      )}
+      {kind === "VOL" ? <Decibel data={{ id: musicId, name: userName }} /> : []}
       {kind === "TONE" ? (
-        <ToneChart data={{ id: folderId, name: userName }} />
+        <CentroidRolloff data={{ id: musicId, name: userName }} />
       ) : (
         []
       )}
@@ -52,30 +36,33 @@ const ShowChart = (data) => {
   );
 };
 
-const FolderChart = (item) => {
-  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
-  const [chartId, setChartId] = useState(chartIds[4]);
+const MusicDetail = (item) => {
+  const chartIds = ["PITCH", "VOL", "TONE"];
+  const [chartId, setChartId] = useState(chartIds[0]);
   const path = decodeURI(location.pathname).split("/");
   const username = path[1];
   const folderId = item.id;
 
   return (
     <section>
-      <div className="columns">
-        <select
-          name="pets"
-          id="pet-select"
-          onChange={(e) => setChartId(e.currentTarget.value)}
-        >
-          {chartIds.map((item, id) => {
-            return (
-              <option value={item} key={id}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
+      <div>
+        <Player />
       </div>
+
+      <select
+        name="pets"
+        id="pet-select"
+        onChange={(e) => setChartId(e.currentTarget.value)}
+      >
+        {chartIds.map((item, id) => {
+          return (
+            <option value={item} key={id}>
+              {item}
+            </option>
+          );
+        })}
+      </select>
+
       {chartIds.map((data, id) => {
         console.log(data, chartId);
         if (data === chartId) {
@@ -89,11 +76,8 @@ const FolderChart = (item) => {
           return <div key={id}></div>;
         }
       })}
-      <div>
-        <Player />
-      </div>
     </section>
   );
 };
 
-export default FolderChart;
+export default MusicDetail;

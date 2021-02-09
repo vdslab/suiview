@@ -7,7 +7,7 @@ const Liner = ({ data }) => {
 
   let max = Math.max.apply(
     Math,
-    data.map((input) => {
+    data?.map((input) => {
       return input.y;
     })
   );

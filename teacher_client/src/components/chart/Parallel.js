@@ -8,7 +8,7 @@ const ParallelChart = (item) => {
   const folderId = item.data.id;
   const userName = item.data.name;
   // const { getAccessTokenSilently } = useAuth0();
-  console.log("here");
+
   useEffect(() => {
     getFolderParallel(userName, folderId).then((data) => {
       setData(data);

@@ -60,21 +60,20 @@ const FolderChart = (item) => {
 
   return (
     <section>
-      <div className="columns">
-        <select
-          name="pets"
-          id="pet-select"
-          onChange={(e) => setChartId(e.currentTarget.value)}
-        >
-          {chartIds.map((item, id) => {
-            return (
-              <option value={item} key={id}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      <select
+        name="pets"
+        id="pet-select"
+        onChange={(e) => setChartId(e.currentTarget.value)}
+      >
+        {chartIds.map((item, id) => {
+          return (
+            <option value={item} key={id}>
+              {item}
+            </option>
+          );
+        })}
+      </select>
+
       {chartIds.map((data, id) => {
         console.log(data, chartId);
         if (data === chartId) {
