@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   FrequencyChart,
@@ -32,19 +32,21 @@ const FolderChart = () => {
   const [chartId, setChartId] = useState(chartIds[4]);
   return (
     <section>
-      <select
-        name="pets"
-        id="pet-select"
-        onChange={(e) => setChartId(e.currentTarget.value)}
-      >
-        {chartIds.map((item, id) => {
-          return (
-            <option value={item} key={id}>
-              {item}
-            </option>
-          );
-        })}
-      </select>
+      <div className="select is-small">
+        <select
+          name="pets"
+          id="pet-select"
+          onChange={(e) => setChartId(e.currentTarget.value)}
+        >
+          {chartIds.map((item, id) => {
+            return (
+              <option value={item} key={id}>
+                {item}
+              </option>
+            );
+          })}
+        </select>
+      </div>
 
       {chartIds.map((data, id) => {
         if (data === chartId) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+//import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderDecibel } from "../../services/api";
 import { ManyLiner } from "./drawing";
 import { useParams } from "react-router-dom";
@@ -14,7 +14,7 @@ const VolumeChart = () => {
     getFolderDecibel(userName, folderId).then((data) => {
       setData(data);
     });
-  }, [folderId]);
+  }, [userName, folderId]);
   console.log(data);
 
   if (data == null) {

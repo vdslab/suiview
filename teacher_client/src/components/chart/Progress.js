@@ -12,7 +12,7 @@ const ProgressChart = () => {
     getFolderProgress(userName, folderId).then((data) => {
       setData(data);
     });
-  }, [folderId]);
+  }, [userName, folderId]);
   console.log(data);
 
   if (data == null) {

@@ -5,16 +5,32 @@ import Folder from "../components/Folder";
 function Home() {
   return (
     <div className="columns">
-      <div className="column is-2">
-        生徒
+      <div className="column is-2 ">
+        <h1
+          className="has-text-weight-bold"
+          style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
+        >
+          生徒
+        </h1>
         <StudentList />
       </div>
       <div className="column is-2">
-        フォルダー
+        <h1
+          className="has-text-weight-bold"
+          style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
+        >
+          フォルダー
+        </h1>
         <FolderList />
       </div>
       <div className="column is-8">
-        録音データ <Folder />
+        <h1
+          className="has-text-weight-bold"
+          style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
+        >
+          録音データ
+        </h1>{" "}
+        <Folder />
       </div>
     </div>
   );

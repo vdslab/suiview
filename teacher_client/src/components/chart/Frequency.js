@@ -18,7 +18,7 @@ const ShowFrequency = () => {
     getMusicF0(userName, musicId).then((data) => {
       setData(data);
     });
-  }, [musicId]);
+  }, [userName, musicId]);
 
   if (data == null) {
     return <div>loading...</div>;

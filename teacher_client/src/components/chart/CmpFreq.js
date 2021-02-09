@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+//import { useAuth0 } from "@auth0/auth0-react";
 import { ManyLiner } from "./drawing";
 import { getFolderF0 } from "../../services/api";
 import { useParams } from "react-router-dom";
@@ -12,7 +12,7 @@ const FrequencyChart = () => {
     getFolderF0(userName, folderId).then((data) => {
       setData(data);
     });
-  }, [folderId]);
+  }, [userName, folderId]);
   console.log(data);
 
   if (data == null) {

@@ -1,26 +1,23 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { getFolderMusics } from "../services/api/index";
 import FolderChart from "./Chart";
 import MusicDetail from "./MusicDetail";
 
 const FolderList = () => {
   const [musics, setMusics] = useState();
-  const path = decodeURI(location.pathname).split("/");
-  const { userName, folderId } = useParams();
-  console.log("here");
-  console.log(userName);
-  console.log(folderId);
+  const path = useLocation().pathname.split("/");
+  console.log(path);
+  const { userName, folderId, musicId } = useParams();
 
   useEffect(() => {
     (async () => {
-      console.log("inside");
       if (folderId !== undefined) {
         const data = await getFolderMusics(userName, folderId);
         setMusics(data);
       }
     })();
-  }, [folderId]);
+  }, [userName, folderId]);
 
   if (musics?.length === 0) {
     return <div>録音データがありません</div>;
@@ -36,15 +33,23 @@ const FolderList = () => {
           <section>
             <ul>
               {musics?.map((data) => {
+                console.log(data.id, parseInt(musicId));
                 return (
                   <li key={data.id}>
-                    <a href={`/${userName}/folder/${folderId}/${data.id}`}>
+                    <Link
+                      to={`/${userName}/folder/${folderId}/${data.id}`}
+                      className={
+                        data.id !== parseInt(musicId)
+                          ? "has-text-black"
+                          : "has-text-blue"
+                      }
+                    >
                       {data.name === undefined ? (
                         <div>no name</div>
                       ) : (
                         <div>{data.name}</div>
                       )}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}

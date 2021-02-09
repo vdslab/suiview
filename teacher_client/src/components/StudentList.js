@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getUsers } from "../services/api/index";
 
 const StudentList = () => {
   const [studentList, setStudentList] = useState([]);
+  const { userName } = useParams();
   useEffect(() => {
     (async () => {
       const data = await getUsers();
@@ -19,7 +20,13 @@ const StudentList = () => {
           return (
             <li key={key}>
               {/*}  <a href={`/${d}/folder`}>{d}</a>*/}
-              <Link to={`/${d}/folder`}>{d}</Link>
+
+              <Link
+                to={`/${d}/folder`}
+                className={d !== userName ? "has-text-black" : "has-text-blue"}
+              >
+                {d}
+              </Link>
             </li>
           );
         })}

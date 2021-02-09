@@ -5,7 +5,7 @@ import { getFolders } from "../services/api/index";
 
 const FolderList = () => {
   const [folders, setFolders] = useState();
-  const { userName } = useParams(undefined);
+  const { userName, folderId } = useParams(undefined);
   console.log(userName);
 
   useEffect(() => {
@@ -24,7 +24,16 @@ const FolderList = () => {
         {folders?.map((data) => {
           return (
             <li key={data.id}>
-              <Link to={`/${userName}/folder/${data.id}`}>{data.name}</Link>
+              <Link
+                to={`/${userName}/folder/${data.id}`}
+                className={
+                  data.id !== parseInt(folderId)
+                    ? "has-text-black"
+                    : "has-text-blue"
+                }
+              >
+                {data.name}
+              </Link>
             </li>
           );
         })}
