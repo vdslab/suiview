@@ -29,7 +29,7 @@ const ShowChart = (data) => {
 
 const FolderChart = () => {
   const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
-  const [chartId, setChartId] = useState(chartIds[4]);
+  const [chartId, setChartId] = useState(chartIds[0]);
   return (
     <section>
       <div className="select is-small">
