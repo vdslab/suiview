@@ -4,10 +4,9 @@ export async function getFolders(username) {
   return response.json();
 }
 
-export async function getFolderMusics(username, folderName) {
-  console.log("HEre", folderName);
+export async function getFolderMusics(username, folderId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/folders/${folderName}`
+    `http://localhost:8080/${username}/folders/${folderId}`
   );
   return response.json();
 }

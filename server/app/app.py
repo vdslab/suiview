@@ -48,13 +48,13 @@ def get_student_folder(user_name):
     return jsonify(folders)
 
 
-@app.route('/<user_name>/folders/<folder_name>', methods=['GET'])
-def get_student_folder_musics(user_name, folder_name):
+@app.route('/<user_name>/folders/<folder_id>', methods=['GET'])
+def get_student_folder_musics(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
         name=user_name).first()
     folder = session.query(Folder).filter_by(
-        user_id=user.id, name=folder_name).first()
+        user_id=user.id, id=folder_id).first()
     musics = session.query(Music).filter_by(
         user_id=user.id, folder_id=folder.id).all()
     musics = [music.to_json() for music in musics]

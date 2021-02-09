@@ -22,7 +22,7 @@ const FolderList = () => {
         {folders?.map((data) => {
           return (
             <li key={data.id}>
-              <a href={`http://localhost:3000/${userName}/folder/${data.name}`}>
+              <a href={`http://localhost:3000/${userName}/folder/${data.id}`}>
                 {data.name}
               </a>
             </li>
