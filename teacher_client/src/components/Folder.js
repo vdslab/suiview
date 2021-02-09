@@ -29,7 +29,9 @@ const FolderList = () => {
               {musics?.map((data) => {
                 return (
                   <li key={data.id}>
-                    <a href={`http://localhost:3000/${username}/folder/`}>
+                    <a
+                      href={`http://localhost:3000/${username}/folder/${folderName}/${data.id}`}
+                    >
                       {data.name === undefined ? (
                         <div>no name</div>
                       ) : (

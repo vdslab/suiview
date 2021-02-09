@@ -42,6 +42,9 @@ export function App() {
             <Route path="/:username/folder/:foldername">
               <Home />
             </Route>
+            <Route path="/:username/folder/:foldername/:musicId">
+              <Home />
+            </Route>
             <Route path="/registration" exact>
               <RegistrationPage />
             </Route>
