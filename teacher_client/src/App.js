@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 
 function Header() {
   return (
-    <section className="hero has-background-primary">
+    <section className="hero  is-small has-background-primary">
       <div className="hero-body">
         <div className="container">
           <h1 className="title">musicvis</h1>
@@ -20,7 +20,7 @@ function RegistrationPage() {
 function Footer() {
   return (
     <footer className="footer">
-      <div className="content has-text-centered">footer</div>
+      <div className="content has-text-centered">(_ _)....</div>
     </footer>
   );
 }

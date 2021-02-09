@@ -15,7 +15,7 @@ const StudentList = () => {
         {studentList.map((d, key) => {
           return (
             <li key={key}>
-              <a href={`http://localhost:3000/${d}/folder`}>{d}</a>
+              <a href={`/${d}/folder`}>{d}</a>
             </li>
           );
         })}

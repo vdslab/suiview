@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import { getFolders } from "../services/api/index";
 
 const FolderList = () => {
@@ -22,9 +21,7 @@ const FolderList = () => {
         {folders?.map((data) => {
           return (
             <li key={data.id}>
-              <a href={`http://localhost:3000/${userName}/folder/${data.id}`}>
-                {data.name}
-              </a>
+              <a href={`/${userName}/folder/${data.id}`}>{data.name}</a>
             </li>
           );
         })}

@@ -20,11 +20,10 @@ function Comment(item) {
 
   async function sendComment(comment, writer) {
     console.log("send function");
-    // await putMusicComment(userName, musicId, comment, writer);
+    await putMusicComment(userName, musicId, comment, writer);
     document.getElementById("comment").value = "";
     document.getElementById("writer").value = "";
     alert("送信されました");
-    // setComments(data);
   }
 
   return (

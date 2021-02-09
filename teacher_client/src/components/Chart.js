@@ -1,8 +1,4 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { getFolders, getFolderMusics } from "../services/api/index";
-//import ProgressChart from "./chart/Progress";
-//import VolumeChart from "./chart/";
 import {
   FrequencyChart,
   ParallelChart,

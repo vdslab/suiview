@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { getFolders, getFolderMusics } from "../services/api/index";
+import { getFolderMusics } from "../services/api/index";
 import FolderChart from "./Chart";
 import MusicDetail from "./MusicDetail";
 
@@ -32,9 +31,7 @@ const FolderList = () => {
               {musics?.map((data) => {
                 return (
                   <li key={data.id}>
-                    <a
-                      href={`http://localhost:3000/${username}/folder/${folderId}/${data.id}`}
-                    >
+                    <a href={`/${username}/folder/${folderId}/${data.id}`}>
                       {data.name === undefined ? (
                         <div>no name</div>
                       ) : (

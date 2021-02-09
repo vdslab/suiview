@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import FolderList from "../components/FolderList";
 import StudentList from "../components/StudentList";
 import Folder from "../components/Folder";
-import { getUsers } from "../services/api/index";
 
 function Home() {
   return (

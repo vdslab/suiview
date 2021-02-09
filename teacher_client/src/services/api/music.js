@@ -1,6 +1,6 @@
 export async function getMusicContent(userName, musicId) {
   const response = await fetch(
-    `http://localhost:8080/${userName}/musics/${musicId}/content`
+    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/content`
   );
   //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
   return response.blob();
@@ -8,7 +8,7 @@ export async function getMusicContent(userName, musicId) {
 
 export async function getMusicF0(userName, musicId) {
   const response = await fetch(
-    `http://localhost:8080/${userName}/musics/${musicId}/f0`
+    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/f0`
   );
   //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
   return response.json();
@@ -16,7 +16,7 @@ export async function getMusicF0(userName, musicId) {
 
 export async function getMusicDecibel(userName, musicId) {
   const response = await fetch(
-    `http://localhost:8080/${userName}/musics/${musicId}/decibel`
+    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/decibel`
   );
   //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
   return response.json();
@@ -24,14 +24,14 @@ export async function getMusicDecibel(userName, musicId) {
 
 export async function getMusicSpectrumCentroid(username, musicId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/musics/${musicId}/centroid`
+    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/centroid`
   );
   return response.json();
 }
 
 export async function getMusicSpectrumRolloff(username, musicId) {
   const response = await fetch(
-    `http://localhost:8080/${username}/musics/${musicId}/rolloff`
+    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/rolloff`
   );
   return response.json();
 }
@@ -39,7 +39,7 @@ export async function getMusicSpectrumRolloff(username, musicId) {
 export async function putMusicComment(username, musicId, comment, writer) {
   console.log(username, musicId);
   const response = await fetch(
-    `http://localhost:8080/${username}/musics/${musicId}/comment`,
+    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/comment`,
     {
       method: "POST",
       body: JSON.stringify({ comment: comment, writer: writer }),
