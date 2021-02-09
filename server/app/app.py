@@ -462,6 +462,20 @@ def get_student_music_spectrum_rolloff(user_name, music_id):
     })
 
 
+@app.route('/<user_name>/musics/<music_id>/comment', methods=['POST'])
+def put_teacher_comment(user_name, music_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    data = json.loads(request.data.decode('utf-8'))
+    comment = Comment(
+        music_id=music_id, text=data['comment'], user_id=user_id, writer=data['writer'])
+    session.add(comment)
+    comment = comment.to_json()
+    session.commit()
+    return jsonify("receive")
+
 #########################################################
 #########################################################
 # 初回ログイン時にできるようにする

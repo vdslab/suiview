@@ -51,6 +51,7 @@ class Comment(Base):
             'id': self.id,
             'comment': self.text,
             'created': self.created,
+            'writer': self.writer,
         }
 
 

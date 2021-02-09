@@ -36,6 +36,18 @@ export async function getMusicSpectrumRolloff(username, musicId) {
   return response.json();
 }
 
+export async function putMusicComment(username, musicId, comment, writer) {
+  console.log(username, musicId);
+  const response = await fetch(
+    `http://localhost:8080/${username}/musics/${musicId}/comment`,
+    {
+      method: "POST",
+      body: JSON.stringify({ comment: comment, writer: writer }),
+    }
+  );
+  return response.json();
+}
+
 /*
 export async function getMusicContent(musicId, getAccessToken) {
     const response = await requestGet(

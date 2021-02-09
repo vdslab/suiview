@@ -53,19 +53,6 @@ const FolderList = () => {
           ) : path.length === 5 ? (
             <div>
               <MusicDetail />
-              <div className="has-text-centered">
-                <form method="post">
-                  <textarea class="textarea"></textarea>
-                  <br /> <label>write by</label>
-                  <input
-                    type="text"
-                    class="input"
-                    placeholder="あなたの名前を記入してください"
-                  ></input>
-                  <br />
-                  <input type="submit" value="コメントを送る"></input>
-                </form>
-              </div>
             </div>
           ) : (
             []
