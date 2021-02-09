@@ -46,7 +46,7 @@ const FolderList = () => {
           </section>
         </div>
         <div className="column">
-          <Chart />
+          <Chart id={folderId} />
         </div>
       </div>
     </section>

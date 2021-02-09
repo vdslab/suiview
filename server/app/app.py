@@ -61,6 +61,68 @@ def get_student_folder_musics(user_name, folder_id):
     print(musics)
     return jsonify(musics)
 
+
+@app.route('/<user_name>/folders/<folder_id>/progress', methods=['GET'])
+def get_students_folder_progress(user_name, folder_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    musics = session.query(Music).filter_by(
+        user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
+
+    Datas = []
+    for music in musics:
+        Datas.append([music.id, frequency_ave_data(music),  spectrum_rolloff_ave(
+            music), decibel_ave_data(music)])
+
+    for i in range(len(Datas)):
+        Datas[i].append(-1*(Datas[i][1][1]+Datas[i]
+                            [3][1] + Datas[i][2][1]/100))
+
+    dicDatas = []
+    for i in range(len(Datas)):
+        dic = {
+            "x": Datas[i][0],
+            "y": round(Datas[i][4], 4)
+        }
+        dicDatas.append(dic)
+    session.close()
+    return jsonify(dicDatas)
+
+
+@app.route('/<user_name>/folders/<folder_id>/parallel', methods=['GET'])
+def get_student_folders_parallel(user_name, folder_id):
+    session = create_session()
+    user = session.query(User).filter_by(
+        name=user_name).first()
+    user_id = user.id
+    musics = session.query(Music).filter_by(
+        user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
+
+    Datas = []
+    for music in musics:
+        Datas.append([music.id, frequency_ave_data(music),  spectrum_rolloff_ave(
+            music), decibel_ave_data(music)])
+
+    for i in range(len(Datas)):
+        Datas[i].append(Datas[i][1][1]+Datas[i][3][1] + Datas[i][2][1]/100)
+    Datas = sorted(Datas, key=lambda x: x[4])
+    dicDatas = []
+    for i in range(len(Datas)-1, -1, -1):
+        dic = {
+            "No.": Datas[i][0],
+            "pich": Datas[i][1][1],
+            "tone": Datas[i][2][1]/100,
+            "volume": Datas[i][3][1],
+        }
+        dicDatas.append(dic)
+
+    session.close()
+    # print(dicDatas)
+    return jsonify(dicDatas)
+
+
 #########################################################
 # 初回ログイン時にできるようにする
 
