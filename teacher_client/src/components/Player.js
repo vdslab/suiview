@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 export function Player() {
   const [url, setUrl] = useState(null);
   const { userName, musicId } = useParams();
-
+  console.log(userName, musicId);
   useEffect(() => {
     getMusicContent(userName, musicId).then((blob) => {
       setUrl(URL.createObjectURL(blob));
