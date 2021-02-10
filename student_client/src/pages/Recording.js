@@ -189,11 +189,11 @@ const Recording = ({ history }) => {
                       item,
                       getAccessTokenSilently
                     );
-                    /*if (folderId) {
+                    if (folderId) {
                       history.replace(`/folder/${folderId}`);
                     } else {
                       history.replace("/musics");
-                    }*/
+                    }
                   }}
                 >
                   記録する

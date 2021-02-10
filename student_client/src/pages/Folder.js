@@ -131,7 +131,11 @@ const Folder = ({ history }) => {
           <IonItem lines="none">
             <IonTitle>{folder?.name}</IonTitle>
             {imgData ? (
-              <img src={imgData.img} alt="譜面の画像" className="score"></img>
+              <img
+                src={imgData.img}
+                alt="譜面の画像"
+                className="headerScore"
+              ></img>
             ) : (
               []
             )}

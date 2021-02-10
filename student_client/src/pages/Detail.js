@@ -198,7 +198,7 @@ const Detail = ({ history }) => {
             {comments.map((data) => {
               return (
                 <IonItem key={data.id}>
-                  {convertDate(data.created)} &ensp;write by {data.writer}
+                  {convertDate(data.created)} &ensp; write by {data.writer}
                   <br />
                   {data.comment}
                 </IonItem>
