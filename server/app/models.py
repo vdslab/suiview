@@ -66,4 +66,15 @@ class Folder(Base):
         }
 
 
+class StudentTeacher(Base):
+    __tablename__ = 'students_teachers'
+
+    def to_json(self):
+        return{
+            'id': self.id,
+            'studentId': self.student_id,
+            'teacherId': self.teacher_id,
+        }
+
+
 Base.prepare(engine, reflect=True)

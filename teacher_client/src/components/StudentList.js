@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getUsers } from "../services/api/index";
+import { getUsers, postStudentsList } from "../services/api/index";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const StudentList = () => {
   const [studentList, setStudentList] = useState([]);
   const { userName } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+
+  async function Registration(studentId) {
+    const data = await postStudentsList(studentId, getAccessTokenSilently);
+    console.log(studentId);
+  }
 
   useEffect(() => {
     (async () => {
@@ -18,6 +23,14 @@ const StudentList = () => {
 
   return (
     <section>
+      <button
+        onClick={() => {
+          const studentId = prompt("生徒のIDを入力してください");
+          Registration(studentId);
+        }}
+      >
+        +
+      </button>
       <ul>
         {studentList.map((d, key) => {
           return (

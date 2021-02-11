@@ -5,7 +5,7 @@ import wave
 from flask import Flask, jsonify, request, make_response, g
 from flask_cors import CORS
 from db import create_session
-from models import Music, Comment, Folder, User
+from models import Music, Comment, Folder, User, StudentTeacher
 import numpy as np
 import scipy.io.wavfile
 from pylab import frombuffer
@@ -45,6 +45,23 @@ def get_users():
     print(data)
     session.close()
     return jsonify(data)
+
+
+@app.route('/student', methods=['POST'])
+@requires_auth
+def put_student():
+    session = create_session()
+    user_id = g.current_user['sub']
+    data = json.loads(request.data.decode('utf-8'))
+    print(data)
+    student_teacher = session.query(StudentTeacher).filter_by(
+        teacher_id=user_id, student_id=data).first()
+    if student_teacher == None:
+        student_teacher = StudentTeacher(teacher_id=user_id, student_id=data)
+        session.add(student_teacher)
+        session.commit()
+    session.close()
+    return jsonify("recieve")
 
 
 @app.route('/<user_name>/folders', methods=['GET'])
@@ -353,7 +370,7 @@ def get_student_music_content(user_name, music_id):
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
-    #print(user_id, music_id)
+    # print(user_id, music_id)
     return response
 
 
@@ -610,7 +627,7 @@ def get_music_content(music_id):
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
-    #print(user_id, music_id)
+    # print(user_id, music_id)
     return response
 
 
@@ -679,7 +696,7 @@ def get_folders():
     session = create_session()
     user_id = g.current_user['sub']
     folders = session.query(Folder).filter_by(user_id=user_id).all()
-    #folders = [f.to_json() for f in folders]
+    # folders = [f.to_json() for f in folders]
     # 初期フォルダーの作成(どこでやるのがベスト？)
     if len(folders) == 0:
         folder = Folder(name="ロングトーン", user_id=user_id)
@@ -912,6 +929,8 @@ def get_folder_progress(folder_id):
 
 """
 # 波形
+
+
 @ app.route('/musics/<music_id>/amplitude', methods=['GET'])
 @ requires_auth
 def amplitude(music_id):
@@ -936,9 +955,13 @@ def amplitude(music_id):
         Datas.append(dic)
     session.close()
     return jsonify(Datas)
+
+
 """
 """
 # フーリエ変換
+
+
 @ app.route('/musics/<music_id>/fourier', methods=['GET'])
 @ requires_auth
 def fourier(music_id):
@@ -979,9 +1002,13 @@ def fourier(music_id):
     session.close()
     fourier_roll(music_id)
     return jsonify(Datas)
+
+
 """
 """
 # フーリエ変換　ロールオフ
+
+
 @ app.route('/musics/<music_id>/fourier_roll', methods=['GET'])
 def fourier_roll(music_id):
     session = create_session()
@@ -1063,10 +1090,14 @@ def fourier_roll_data(music_id):
 
     session.close()
     return idx
+
+
 """
 
 """
 # スペクトログラム
+
+
 @ app.route('/musics/<music_id>/spectrogram', methods=['GET'])
 @ requires_auth
 def get_music_spectrogram(music_id):

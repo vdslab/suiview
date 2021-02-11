@@ -12,6 +12,7 @@ function Home() {
         >
           生徒
         </h1>
+
         <StudentList />
       </div>
       <div className="column is-2">
