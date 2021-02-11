@@ -6,13 +6,6 @@ function Home() {
   return (
     <div className="columns">
       <div className="column is-2 ">
-        <h1
-          className="has-text-weight-bold"
-          style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
-        >
-          生徒
-        </h1>
-
         <StudentList />
       </div>
       <div className="column is-2">

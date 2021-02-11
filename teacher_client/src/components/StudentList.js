@@ -9,8 +9,11 @@ const StudentList = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   async function Registration(studentId) {
-    const data = await postStudentsList(studentId, getAccessTokenSilently);
-    setStudentList(data);
+    console.log(studentId);
+    if (studentId !== "") {
+      const data = await postStudentsList(studentId, getAccessTokenSilently);
+      setStudentList(data);
+    }
   }
 
   useEffect(() => {
@@ -23,14 +26,26 @@ const StudentList = () => {
 
   return (
     <section>
-      <button
-        onClick={() => {
-          const studentId = prompt("生徒のIDを入力してください");
-          Registration(studentId);
-        }}
-      >
-        +
-      </button>
+      <div className="columns">
+        <div className="column">
+          <h1
+            className="has-text-weight-bold"
+            style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
+          >
+            生徒
+          </h1>
+        </div>
+        <div className="column">
+          <button
+            onClick={() => {
+              const studentId = prompt("生徒のIDを入力してください");
+              Registration(studentId);
+            }}
+          >
+            +
+          </button>
+        </div>
+      </div>
       <ul>
         {studentList.map((d, key) => {
           return (

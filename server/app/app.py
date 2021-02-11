@@ -45,6 +45,8 @@ def get_student_list(teacher_id):
     for i in range(len(students)):
         student = session.query(User).filter_by(
             id=students[i].student_id).first()
+        print(student.name)
+        print("#", student.name)
         data.append(student.name)
     session.close()
     return data
