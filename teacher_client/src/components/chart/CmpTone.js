@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-//import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderTone } from "../../services/api";
 import { ManyLiner } from "./drawing";
 import { useParams } from "react-router-dom";
@@ -7,12 +7,13 @@ import { useParams } from "react-router-dom";
 const ToneChart = () => {
   const [data, setData] = useState(null);
   const { folderId, userName } = useParams();
-  // const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
+
   useEffect(() => {
-    getFolderTone(userName, folderId).then((data) => {
+    getFolderTone(userName, folderId, getAccessTokenSilently).then((data) => {
       setData(data);
     });
-  }, [userName, folderId]);
+  }, [userName, folderId, getAccessTokenSilently]);
   console.log(data);
 
   if (data == null) {

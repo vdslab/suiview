@@ -2,24 +2,30 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { getFolders } from "../services/api/index";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const FolderList = () => {
   const [folders, setFolders] = useState();
   const { userName, folderId } = useParams(undefined);
-  console.log(userName);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     (async () => {
       if (userName !== undefined && userName !== "") {
-        const data = await getFolders(userName);
+        const data = await getFolders(userName, getAccessTokenSilently);
         setFolders(data);
       }
     })();
-  }, [userName]);
-  console.log(folders);
+  }, [userName, getAccessTokenSilently]);
 
   return (
     <section>
+      <h1
+        className="has-text-weight-bold"
+        style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
+      >
+        フォルダー
+      </h1>
       <ul>
         {folders?.map((data) => {
           return (

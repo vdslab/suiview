@@ -27,7 +27,6 @@ def get_users():
     user = session.query(User).filter_by(
         id=user_id).first()
     if user == None:
-        print("here")
         user = User(id=user_id)
         user.name = "undefind"
         user.is_teacher = True
@@ -45,8 +44,6 @@ def get_student_list(teacher_id):
     for i in range(len(students)):
         student = session.query(User).filter_by(
             id=students[i].student_id).first()
-        print(student.name)
-        print("#", student.name)
         data.append(student.name)
     session.close()
     return data
@@ -58,7 +55,6 @@ def put_student():
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    print(data)
     student_teacher = session.query(StudentTeacher).filter_by(
         teacher_id=user_id, student_id=data).first()
     if student_teacher == None:
@@ -70,20 +66,19 @@ def put_student():
 
 
 @app.route('/<user_name>/folders', methods=['GET'])
-# @requires_auth
+@requires_auth
 def get_student_folder(user_name):
     session = create_session()
     user = session.query(User).filter_by(
         name=user_name).first()
-    print(user.id)
     folders = session.query(Folder).filter_by(user_id=user.id).all()
     folders = [f.to_json() for f in folders]
-    print(folders)
     session.close()
     return jsonify(folders)
 
 
 @app.route('/<user_name>/folders/<folder_id>', methods=['GET'])
+@requires_auth
 def get_student_folder_musics(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -93,11 +88,11 @@ def get_student_folder_musics(user_name, folder_id):
     musics = session.query(Music).filter_by(
         user_id=user.id, folder_id=folder.id).all()
     musics = [music.to_json() for music in musics]
-    print(musics)
     return jsonify(musics)
 
 
 @app.route('/<user_name>/folders/<folder_id>/progress', methods=['GET'])
+@requires_auth
 def get_students_folder_progress(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -127,6 +122,7 @@ def get_students_folder_progress(user_name, folder_id):
 
 
 @app.route('/<user_name>/folders/<folder_id>/parallel', methods=['GET'])
+@requires_auth
 def get_student_folders_parallel(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -154,12 +150,11 @@ def get_student_folders_parallel(user_name, folder_id):
         dicDatas.append(dic)
 
     session.close()
-    # print(dicDatas)
     return jsonify(dicDatas)
 
 
 @app.route('/<user_name>/folders/<folder_id>/f0', methods=['GET'])
-# @requires_auth
+@requires_auth
 def get_student_folder_f0(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -229,7 +224,7 @@ def get_student_folder_f0(user_name, folder_id):
 
 
 @ app.route('/<user_name>/folders/<folder_id>/decibel', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_folder_decibel(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -247,7 +242,6 @@ def get_student_folder_decibel(user_name, folder_id):
         data = np.array(data)
         preData.append(data)
 
-    # print(preData)
     Datas = []
     if len(preData) == 1:
         data = []
@@ -262,7 +256,6 @@ def get_student_folder_decibel(user_name, folder_id):
         Datas.append({"id": musics[0].id, "data": data})
 
     else:
-        print(len(preData))
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -296,7 +289,7 @@ def get_student_folder_decibel(user_name, folder_id):
 
 
 @ app.route('/<user_name>/folders/<folder_id>/tone', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_folder_tone(user_name, folder_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -328,9 +321,7 @@ def get_student_folder_tone(user_name, folder_id):
         Datas.append({"id": musics[0].id, "data": data})
 
     else:
-        print(len(preData))
         for i in range(1, len(preData)):
-            # alignment = dtw(preData[0], preData[i], keep_internals=True)
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
@@ -347,7 +338,7 @@ def get_student_folder_tone(user_name, folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            # print(aliged_data)
+
             data = []
             for j in range(len(aliged_data)):
                 dic = {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-//import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
 import { ParallelCoordinates } from "./drawing";
 import { useParams } from "react-router-dom";
@@ -7,14 +7,15 @@ import { useParams } from "react-router-dom";
 const ParallelChart = () => {
   const [data, setData] = useState(null);
   const { userName, folderId } = useParams();
-
-  // const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    getFolderParallel(userName, folderId).then((data) => {
-      setData(data);
-    });
-  }, [userName, folderId]);
+    getFolderParallel(userName, folderId, getAccessTokenSilently).then(
+      (data) => {
+        setData(data);
+      }
+    );
+  }, [userName, folderId, getAccessTokenSilently]);
   console.log(data);
 
   if (data == null) {
