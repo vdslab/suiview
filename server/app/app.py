@@ -20,15 +20,28 @@ cors = CORS(app)
 
 
 @app.route('/users', methods=['GET'])
-# @requires_auth
+@requires_auth
 def get_users():
     session = create_session()
-    users = session.query(User).all()
-    users = [u.to_json() for u in users]
-    print(users)
+    user_id = g.current_user['sub']
+    user = session.query(User).filter_by(
+        id=user_id).first()
+    print(user)
+    if user == None:
+        print("here")
+        user = User(id=user_id)
+        user.name = "undefind"
+        user.is_teacher = True
+        session.add(user)
+        session.commit()
+
+    students = session.query(User).filter_by(is_teacher=False).all()
+    students = [s.to_json() for s in students]
+    print(user_id)
+    print(students)
     data = []
-    for i in range(len(users)):
-        data.append(users[i]['name'])
+    for i in range(len(students)):
+        data.append(students[i]['name'])
     print(data)
     session.close()
     return jsonify(data)

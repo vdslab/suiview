@@ -15,6 +15,7 @@ class User(Base):
         return {
             'userId': self.id,
             'name': self.name,
+            'isTeacher': self.is_teacher,
         }
 
 
