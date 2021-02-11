@@ -26,7 +26,6 @@ def get_users():
     user_id = g.current_user['sub']
     user = session.query(User).filter_by(
         id=user_id).first()
-    print(user)
     if user == None:
         print("here")
         user = User(id=user_id)
@@ -34,22 +33,21 @@ def get_users():
         user.is_teacher = True
         session.add(user)
         session.commit()
+    session.close()
+    return jsonify(get_student_list(user_id))
 
+
+def get_student_list(teacher_id):
+    session = create_session()
     students = session.query(StudentTeacher).filter_by(
-        teacher_id=user_id).all()
-    #students = [s.to_json() for s in students]
-    print(user_id)
-    print(students)
+        teacher_id=teacher_id).all()
     data = []
     for i in range(len(students)):
-        print("###", students[i].student_id)
         student = session.query(User).filter_by(
             id=students[i].student_id).first()
-        print("student==", student.name)
         data.append(student.name)
-    print(data)
     session.close()
-    return jsonify(data)
+    return data
 
 
 @app.route('/student', methods=['POST'])
@@ -66,7 +64,7 @@ def put_student():
         session.add(student_teacher)
         session.commit()
     session.close()
-    return jsonify("recieve")
+    return jsonify(get_student_list(user_id))
 
 
 @app.route('/<user_name>/folders', methods=['GET'])

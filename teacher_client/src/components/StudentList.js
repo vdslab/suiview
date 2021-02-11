@@ -10,7 +10,7 @@ const StudentList = () => {
 
   async function Registration(studentId) {
     const data = await postStudentsList(studentId, getAccessTokenSilently);
-    console.log(studentId);
+    setStudentList(data);
   }
 
   useEffect(() => {
