@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-//import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   getMusicSpectrumCentroid,
   getMusicSpectrumRolloff,
@@ -9,21 +9,20 @@ import { useParams } from "react-router-dom";
 
 const CentroidRolloff = () => {
   const { userName, musicId } = useParams();
-
   const [ave, setAve] = useState();
   const [data, setData] = useState(null);
-  //const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const centroidRequest = getMusicSpectrumCentroid(
       userName,
-      musicId
-      // getAccessTokenSilently
+      musicId,
+      getAccessTokenSilently
     );
     const rolloffRequest = getMusicSpectrumRolloff(
       userName,
-      musicId
-      //getAccessTokenSilently
+      musicId,
+      getAccessTokenSilently
     );
     Promise.all([centroidRequest, rolloffRequest]).then(
       ([centroid, rolloff]) => {
@@ -34,7 +33,7 @@ const CentroidRolloff = () => {
         ]);
       }
     );
-  }, [userName, musicId]);
+  }, [userName, musicId, getAccessTokenSilently]);
 
   if (data == null) {
     return <div>loading...</div>;

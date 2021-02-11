@@ -1,58 +1,72 @@
-export async function getMusicContent(userName, musicId) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/content`
+import { requestGet, requestPost } from "./request";
+
+export async function getMusicContent(
+  userName,
+  musicId,
+  getAccessTokenSilently
+) {
+  const response = await requestGet(
+    `/${userName}/musics/${musicId}/content`,
+    getAccessTokenSilently
   );
-  //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
   return response.blob();
 }
 
-export async function getMusicF0(userName, musicId) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/f0`
-  );
-  //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
-  return response.json();
-}
-
-export async function getMusicDecibel(userName, musicId) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${userName}/musics/${musicId}/decibel`
-  );
-  //const response = await fetch(`${process.env.REACT_APP_API_ENDPOINT}/users`);
-  return response.json();
-}
-
-export async function getMusicSpectrumCentroid(username, musicId) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/centroid`
+export async function getMusicF0(userName, musicId, getAccessTokenSilently) {
+  const response = await requestGet(
+    `/${userName}/musics/${musicId}/f0`,
+    getAccessTokenSilently
   );
   return response.json();
 }
 
-export async function getMusicSpectrumRolloff(username, musicId) {
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/rolloff`
+export async function getMusicDecibel(
+  userName,
+  musicId,
+  getAccessTokenSilently
+) {
+  const response = await requestGet(
+    `/${userName}/musics/${musicId}/decibel`,
+    getAccessTokenSilently
   );
   return response.json();
 }
 
-export async function putMusicComment(username, musicId, comment, writer) {
-  console.log(username, musicId);
-  const response = await fetch(
-    `${process.env.REACT_APP_API_ENDPOINT}/${username}/musics/${musicId}/comment`,
-    {
-      method: "POST",
-      body: JSON.stringify({ comment: comment, writer: writer }),
-    }
+export async function getMusicSpectrumCentroid(
+  username,
+  musicId,
+  getAccessTokenSilently
+) {
+  const response = await requestGet(
+    `/${username}/musics/${musicId}/centroid`,
+    getAccessTokenSilently
   );
   return response.json();
 }
 
-/*
-export async function getMusicContent(musicId, getAccessToken) {
-    const response = await requestGet(
-      `/musics/${musicId}/content`,
-      getAccessToken
-    );
-    return response.blob();
-  }*/
+export async function getMusicSpectrumRolloff(
+  username,
+  musicId,
+  getAccessTokenSilently
+) {
+  const response = await requestGet(
+    `/${username}/musics/${musicId}/rolloff`,
+    getAccessTokenSilently
+  );
+  return response.json();
+}
+
+export async function putMusicComment(
+  username,
+  musicId,
+  comment,
+  writer,
+  getAccessTokenSilently
+) {
+  const response = await requestPost(
+    `/${username}/musics/${musicId}/comment`,
+    JSON.stringify({ comment: comment, writer: writer }),
+    getAccessTokenSilently
+  );
+  return response.json();
+}

@@ -206,7 +206,6 @@ def get_student_folder_f0(user_name, folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            # print(aliged_data)
             data = []
             for j in range(len(aliged_data)):
                 dic = {
@@ -216,8 +215,6 @@ def get_student_folder_f0(user_name, folder_id):
                 data.append(dic)
             Datas.append({"id": musics[i].id, "data": data})
             print("fin"+str(i))
-            print(len(Datas))
-        print(Datas)
         print("finish")
         session.close()
     return jsonify(Datas)
@@ -354,7 +351,7 @@ def get_student_folder_tone(user_name, folder_id):
 
 
 @app.route('/<user_name>/musics/<music_id>/content', methods=['GET'])
-# @requires_auth
+@requires_auth
 def get_student_music_content(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -366,12 +363,11 @@ def get_student_music_content(user_name, music_id):
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
-    # print(user_id, music_id)
     return response
 
 
 @ app.route('/<user_name>/musics/<music_id>/f0', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_music_f0(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -411,7 +407,7 @@ def get_student_music_f0(user_name, music_id):
 
 
 @ app.route('/<user_name>/musics/<music_id>/decibel', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_music_decibel(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -459,7 +455,7 @@ def get_student_music_decibel(user_name, music_id):
 
 
 @ app.route('/<user_name>/musics/<music_id>/centroid', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_music_spectrum_centroid(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -473,7 +469,7 @@ def get_student_music_spectrum_centroid(user_name, music_id):
 
 
 @ app.route('/<user_name>/musics/<music_id>/rolloff', methods=['GET'])
-# @ requires_auth
+@ requires_auth
 def get_student_music_spectrum_rolloff(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(
@@ -489,6 +485,7 @@ def get_student_music_spectrum_rolloff(user_name, music_id):
 
 
 @app.route('/<user_name>/musics/<music_id>/comment', methods=['POST'])
+@ requires_auth
 def put_teacher_comment(user_name, music_id):
     session = create_session()
     user = session.query(User).filter_by(

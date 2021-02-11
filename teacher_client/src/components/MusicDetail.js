@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { putMusicComment } from "../services/api/index";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import {
   CentroidRolloff,
   Decibel,
@@ -9,14 +9,19 @@ import {
 } from "../components/chart/index";
 import { Player } from "./Player.js";
 
-function Comment(item) {
-  const userName = item.data.username;
-  const musicId = item.data.musicId;
-  console.log(musicId, userName);
+function Comment() {
+  const { getAccessTokenSilently } = useAuth0();
+  const { userName, musicId } = useParams();
 
   async function sendComment(comment, writer) {
     console.log("send function");
-    await putMusicComment(userName, musicId, comment, writer);
+    await putMusicComment(
+      userName,
+      musicId,
+      comment,
+      writer,
+      getAccessTokenSilently
+    );
     document.getElementById("comment").value = "";
     document.getElementById("writer").value = "";
     alert("送信されました");
@@ -76,7 +81,7 @@ const ShowChart = (data) => {
 const MusicDetail = () => {
   const chartIds = ["PITCH", "VOL", "TONE"];
   const [chartId, setChartId] = useState(chartIds[0]);
-  const { userName, musicId, folderId } = useParams();
+  const { folderId } = useParams();
 
   return (
     <section>
@@ -107,7 +112,7 @@ const MusicDetail = () => {
           return <div key={id}></div>;
         }
       })}
-      <Comment data={{ username: userName, musicId: musicId }} />
+      <Comment />
     </section>
   );
 };

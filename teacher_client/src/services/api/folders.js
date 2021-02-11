@@ -1,9 +1,4 @@
-import {
-  requestGet,
-  requestPost,
-  requestPut,
-  requestDelete,
-} from "./request.js";
+import { requestGet } from "./request.js";
 
 export async function getFolders(username, getAccessTokenSilently) {
   const response = await requestGet(
