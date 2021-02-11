@@ -35,13 +35,18 @@ def get_users():
         session.add(user)
         session.commit()
 
-    students = session.query(User).filter_by(is_teacher=False).all()
-    students = [s.to_json() for s in students]
+    students = session.query(StudentTeacher).filter_by(
+        teacher_id=user_id).all()
+    #students = [s.to_json() for s in students]
     print(user_id)
     print(students)
     data = []
     for i in range(len(students)):
-        data.append(students[i]['name'])
+        print("###", students[i].student_id)
+        student = session.query(User).filter_by(
+            id=students[i].student_id).first()
+        print("student==", student.name)
+        data.append(student.name)
     print(data)
     session.close()
     return jsonify(data)
