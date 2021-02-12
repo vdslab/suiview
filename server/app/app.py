@@ -518,7 +518,7 @@ def get_username():
     session.commit()
     user = user.to_json()
     session.close()
-    return jsonify(user["name"])
+    return jsonify(user)
 
 
 @app.route('/username', methods=['PUT'])

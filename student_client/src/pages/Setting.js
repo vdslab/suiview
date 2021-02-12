@@ -22,16 +22,16 @@ import { getUsername, putUsername } from "../services/api/account";
 /////////////////////////////////////////////
 const Setting = () => {
   const { logout } = useAuth0();
-  const [username, setUsername] = useState();
+  const [userData, setUserData] = useState();
   const { getAccessTokenSilently } = useAuth0();
   const [showAlert, setShowAlert] = useState(false);
 
   useIonViewWillEnter(async () => {
     const data = await getUsername(getAccessTokenSilently);
-    setUsername(data);
+    setUserData(data);
   });
 
-  console.log(username);
+  console.log(userData);
 
   return (
     <IonPage>
@@ -47,7 +47,7 @@ const Setting = () => {
             <IonCardHeader>アカウント情報</IonCardHeader>
             <IonCardContent>
               <IonItem lines="none" slot="end">
-                ユーザー名：{username}
+                ユーザー名：{userData ? userData["name"] : []}
                 <IonButton
                   fill="outline"
                   color="dark"
@@ -56,6 +56,9 @@ const Setting = () => {
                 >
                   <IonIcon icon={buildOutline} color="dark"></IonIcon>
                 </IonButton>
+              </IonItem>
+              <IonItem lines="none" slot="end">
+                ユーザーID：{userData ? userData["userId"] : []}
               </IonItem>
             </IonCardContent>
           </IonCard>
@@ -98,7 +101,7 @@ const Setting = () => {
                   getAccessTokenSilently
                 );
                 //const data = await getUsername(getAccessTokenSilently);
-                setUsername(data);
+                setUserData(data);
               },
             },
           ]}
