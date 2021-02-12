@@ -1,10 +1,24 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useEffect } from "react";
+import { putUsername, getUsername } from "./services/api/";
 
 function Header(data) {
   const { logout, loginWithRedirect } = useAuth0();
   const login = data.login;
+  const content = ["", "ユーザー名の変更", "ログアウト"];
+  const [selected, setSelected] = useState();
+  const { getAccessTokenSilently } = useAuth0();
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      const data = await getUsername(getAccessTokenSilently);
+      setUserData(data);
+    })();
+  }, [getAccessTokenSilently]);
+
   return (
     <section className="hero  is-small has-background-primary">
       <div className="hero-body">
@@ -14,7 +28,7 @@ function Header(data) {
             <div className="column is-3">
               {login ? (
                 <div className="columns">
-                  <div className="column is-6">user name</div>
+                  <div className="column is-6">{userData?.name}</div>
                   <div className="column is-6">
                     <button
                       slot="end"
@@ -35,6 +49,10 @@ function Header(data) {
           </div>
         </div>
       </div>
+
+      {selected === content[2]
+        ? logout({ returnTo: window.location.origin })
+        : []}
     </section>
   );
 }

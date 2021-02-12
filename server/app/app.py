@@ -518,6 +518,7 @@ def get_username():
     session.commit()
     user = user.to_json()
     session.close()
+    print(user)
     return jsonify(user)
 
 
