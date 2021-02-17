@@ -1243,8 +1243,16 @@ def decibel_ave_data(music):
     s /= s_count
     s = math.sqrt(s)
     # どっちがいい？
+    a = 70
+    x = np.arange(0, 40)
+    y = np.exp(-x/a)
     print("s = ", s)
     print("stability = ", stability)
+    if s < 40:
+        s = y[int(s)]
+    else:
+        s = y[-1]
+
     return [round(s, 4), round(stability, 4)]
 
 
@@ -1485,6 +1493,14 @@ def spectrum_rolloff_ave(music):
     s = math.sqrt(s)
 
     session.close()
+
+    a = 15000
+    x = np.arange(0, 12000)
+    y = np.exp(-x/a)
+    if s != -1 and s < 12000:
+        s = y[int(s)]
+    elif s != -1:
+        s = y[-1]
 
     return [round(s, 4), round(stability, 4)]
 
