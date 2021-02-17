@@ -1387,7 +1387,7 @@ def frequency_ave_data(music):
     data = np.nan_to_num(f0)
     s_total = 0
     s_count = 0
-    for i in range(max(0, start), end):
+    for i in range(max(0, start), end-1):
         if data[i] != 0:
             s_total += data[i]
             s_count += 1
@@ -1409,8 +1409,38 @@ def frequency_ave_data(music):
     else:
         stability = -1
 
+    normalized_s = 0
+    tone_n = 0
+    i = start
+    while i < end-1:
+        cent = 1200*math.log2(data[i]/data[i+1])
+        sp = i
+        count = 0
+        total = 0
+        while i < end-1 and abs(cent) <= 70:
+            total += data[i]
+            count += 1
+            i += 1
+            cent = 1200*math.log2(data[i]/data[i+1])
+            # print(cent)
+        print("count=", count, data[i], data[i+1])
+        if count != 0:
+            ave = total/count
+            ns = 0
+            while sp <= i:
+                ns += pow(data[sp]-ave, 2)
+                sp += 1
+            ns /= count
+            ns = math.sqrt(ns)
+            tone_n += 1
+            normalized_s += ns
+            print("HEY", tone_n)
+        i += 1
+    print(normalized_s/tone_n)
+
     print("ave = " + str((stability)))
     session.close()
+
     return [round(s, 4), round(stability, 4)]
 
 
