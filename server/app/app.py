@@ -907,8 +907,7 @@ def get_folder_progress(folder_id):
             music), decibel_ave_data(music)])
 
     for i in range(len(Datas)):
-        Datas[i].append(-1*(Datas[i][1][1]+Datas[i]
-                            [3][1] + Datas[i][2][1]/100))
+        Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
 
     dicDatas = []
     for i in range(len(Datas)):
@@ -918,6 +917,7 @@ def get_folder_progress(folder_id):
         }
         dicDatas.append(dic)
     session.close()
+    print(Datas)
     return jsonify(dicDatas)
 
 
@@ -1246,12 +1246,11 @@ def decibel_ave_data(music):
     a = 70
     x = np.arange(0, 40)
     y = np.exp(-x/a)
-    print("s = ", s)
-    print("stability = ", stability)
     if s < 40:
         s = y[int(s)]
     else:
         s = y[-1]
+    print("vol = ", s)
 
     return [round(s, 4), round(stability, 4)]
 
@@ -1400,7 +1399,7 @@ def frequency_ave_data(music):
                 s += pow(data[i]-average, 2)
         s /= s_count
         s = math.sqrt(s)
-        print("s=", s)
+        # print("s=", s)
     else:
         s = -1
 
@@ -1413,7 +1412,11 @@ def frequency_ave_data(music):
     tone_n = 0
     i = start
     while i < end-1:
-        cent = 1200*math.log2(data[i]/data[i+1])
+        # print(data[i], data[i+1])
+        if data[i]/data[i+1] == 0:
+            cent = 0
+        else:
+            cent = 1200*math.log2(data[i]/data[i+1])
         sp = i
         count = 0
         total = 0
@@ -1423,7 +1426,7 @@ def frequency_ave_data(music):
             i += 1
             cent = 1200*math.log2(data[i]/data[i+1])
             # print(cent)
-        print("count=", count, data[i], data[i+1])
+        # print("count=", count, data[i], data[i+1])
         if count != 0:
             ave = total/count
             ns = 0
@@ -1434,12 +1437,32 @@ def frequency_ave_data(music):
             ns = math.sqrt(ns)
             tone_n += 1
             normalized_s += ns
-            print("HEY", tone_n)
+            # print("HEY", tone_n)
         i += 1
-    print(normalized_s/tone_n)
+    if tone_n == 0:
+        # print("normalized = -1")
+        s = 0
+    else:
+        ss = normalized_s/tone_n
+        # print("ave = " + str((stability)), "normalized = ", ss)
+        # 閾値要検討
+        a = 8
+        x = np.arange(0, 5.0, 0.01)
+        y = np.exp(-x/a)
+        # print(round(ss*100))
+        if round(ss*100) < len(y):
+            s = y[round(ss*100)]
+        else:
+            s = 0
 
-    print("ave = " + str((stability)))
+    """
+    if s != -1 and s < 12000:
+        s = y[int(s)]
+    elif s != -1:
+        s = y[-1]
+    """
     session.close()
+    print("fre = ", s)
 
     return [round(s, 4), round(stability, 4)]
 
@@ -1531,7 +1554,7 @@ def spectrum_rolloff_ave(music):
         s = y[int(s)]
     elif s != -1:
         s = y[-1]
-
+    print("tone = ", s)
     return [round(s, 4), round(stability, 4)]
 
 
