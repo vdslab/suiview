@@ -28,7 +28,8 @@ class Music(Base):
             data, rate = librosa.load(io.BytesIO(self.content), 48000)
             data = data.astype(np.float)
             f0, _, _ = librosa.pyin(data, fmin=librosa.note_to_hz(
-                'C2'), fmax=librosa.note_to_hz('C7'))
+                'C2'), fmax=librosa.note_to_hz('C7'), sr=48000)
+            print("#############", f0)
             self.f0 = f0.tobytes()
             session.commit()
         return np.frombuffer(self.f0, dtype=np.float64)
