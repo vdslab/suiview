@@ -4,6 +4,7 @@ const ManyLiner = ({ data }) => {
   if (data == null || data === undefined) {
     return null;
   }
+  console.log(Math.floor(data[0].data.length / 5));
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
@@ -14,7 +15,7 @@ const ManyLiner = ({ data }) => {
             data: input.data.filter(({ x }) => x % 5 === 0),
           };
         })}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -30,7 +31,11 @@ const ManyLiner = ({ data }) => {
           tickPadding: 5,
           tickRotation: 0,
           tickValues: data.length
-            ? data[0].data.filter(({ x }) => x % 50 === 0).map(({ x }) => x)
+            ? data[0].data
+                .filter(
+                  ({ x }) => x % Math.floor(data[0].data.length / 6) === 0
+                )
+                .map(({ x }) => x)
             : [],
           legend: "",
           legendOffset: 36,
@@ -50,7 +55,7 @@ const ManyLiner = ({ data }) => {
         legends={[
           {
             anchor: "top-left",
-            direction: "column",
+            direction: "row",
             justify: false,
             translateX: 0,
             translateY: -50,

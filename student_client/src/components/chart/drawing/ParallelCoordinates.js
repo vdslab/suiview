@@ -65,24 +65,20 @@ const ParallelCoordinates = ({ data }) => {
           {
             key: "pich",
             type: "linear",
-            min: pich_max,
-            max: pich_min,
-            //min: "auto",
-            //max: "auto",
+            min: "auto",
+            max: 100,
             ticksPosition: "before",
-            legend: "ptich",
+            legend: "高さ",
             legendPosition: "start",
             legendOffset: 20,
           },
           {
             key: "tone",
             type: "linear",
-            min: max,
-            max: min,
-            //min: "auto",
-            //max: "auto",
+            min: "auto",
+            max: 100,
             ticksPosition: "before",
-            legend: "tone",
+            legend: "音色",
             legendPosition: "start",
             legendOffset: 20,
           },
@@ -90,20 +86,17 @@ const ParallelCoordinates = ({ data }) => {
             key: "volume",
             type: "linear",
             padding: 1,
-            min: vol_max,
-            max: vol_min,
-            //min: "auto",
-            //max: "auto",
+            min: "auto",
+            max: 100,
             ticksPosition: "before",
-            legend: "volume",
+            legend: "強さ",
             legendPosition: "start",
             legendOffset: 20,
           },
         ]}
         axesPlan="foreground"
         strokeWidth={3}
-        //lineOpacity={0.1}
-        margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 60, bottom: 50, left: 60 }}
         animate={true}
         motionStiffness={90}
         motionDamping={12}
@@ -126,7 +119,6 @@ const ParallelCoordinates = ({ data }) => {
           },
         }}
       />
-      hello
     </div>
   );
 };

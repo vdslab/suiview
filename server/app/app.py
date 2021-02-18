@@ -875,20 +875,20 @@ def get_folders_parallel(folder_id):
             music), decibel_ave_data(music)])
 
     for i in range(len(Datas)):
-        Datas[i].append(Datas[i][1][1]+Datas[i][3][1] + Datas[i][2][1]/100)
+        Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     for i in range(len(Datas)-1, -1, -1):
         dic = {
             "No.": Datas[i][0],
-            "pich": Datas[i][1][1],
-            "tone": Datas[i][2][1]/100,
-            "volume": Datas[i][3][1],
+            "pich": Datas[i][1][0],
+            "tone": Datas[i][2][0],
+            "volume": Datas[i][3][0],
         }
         dicDatas.append(dic)
 
     session.close()
-    # print(dicDatas)
+    print(dicDatas)
     return jsonify(dicDatas)
 
 
@@ -1252,7 +1252,7 @@ def decibel_ave_data(music):
         s = y[-1]
     print("vol = ", s)
 
-    return [round(s, 4), round(stability, 4)]
+    return [round(s*100), round(stability, 4)]
 
 
 def trim(data, start, end):
@@ -1464,7 +1464,7 @@ def frequency_ave_data(music):
     session.close()
     print("fre = ", s)
 
-    return [round(s, 4), round(stability, 4)]
+    return [round(s*100), round(stability, 4)]
 
 
 # dtw用
@@ -1555,7 +1555,7 @@ def spectrum_rolloff_ave(music):
     elif s != -1:
         s = y[-1]
     print("tone = ", s)
-    return [round(s, 4), round(stability, 4)]
+    return [round(s*100), round(stability, 4)]
 
 
 def spectrum_rolloff_y(music):
