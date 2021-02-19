@@ -4,8 +4,7 @@ const ManyLiner = ({ data }) => {
   if (data == null || data === undefined) {
     return null;
   }
-  console.log(Math.floor(data[0].data.length / 5));
-
+  const x_padding = Math.round(data[0].data.length / 5 / 10) * 10;
   return (
     <div style={{ width: "100%", height: "400px" }}>
       <ResponsiveLine
@@ -32,9 +31,7 @@ const ManyLiner = ({ data }) => {
           tickRotation: 0,
           tickValues: data.length
             ? data[0].data
-                .filter(
-                  ({ x }) => x % Math.floor(data[0].data.length / 6) === 0
-                )
+                .filter(({ x }) => x % x_padding === 0)
                 .map(({ x }) => x)
             : [],
           legend: "",

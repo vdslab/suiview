@@ -1158,12 +1158,14 @@ def get_music_decibel(music_id):
     data = []
     if end < len(dbLine)-2:
         end += 1
+    j = 0
     for i in range(start, end):
         dic = {
-            "x": i+1,
+            "x": j,
             "y": round(dbLine[i], 4)
         }
         data.append(dic)
+        j += 1
 
     average = decibel_ave_data(music)
 
@@ -1349,18 +1351,20 @@ def get_music_f0(music_id):
     data = []
     if end < len(f0)-2:
         end += 1
+    j = 0
     for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
-                "x": i+1,
+                "x": j,
                 "y": round(f0[i], 4)
             }
         else:
             dic = {
-                "x": i+1,
+                "x": j,
                 "y": 0
             }
         data.append(dic)
+        j += 1
 
     session.close()
     return jsonify({
@@ -1490,12 +1494,14 @@ def spectrum_centroid(music):
     Datas = []
     if end < len(cent[0]-2):
         end += 1
+    j = 0
     for i in range(start, end):
         dic = {
-            "x": i+1,
+            "x": j,
             "y": round(cent[0][i], 4)
         }
         Datas.append(dic)
+        j += 1
     session.close()
     return Datas
 
@@ -1510,12 +1516,14 @@ def spectrum_rolloff(music):
     Datas = []
     if end < len(rolloff[0]-2):
         end += 1
+    j = 0
     for i in range(start, end):
         dic = {
-            "x": i+1,
+            "x": j,
             "y": round(rolloff[0][i], 4)
         }
         Datas.append(dic)
+        j += 1
     session.close()
     return Datas
 

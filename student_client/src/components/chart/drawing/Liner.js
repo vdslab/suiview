@@ -12,8 +12,6 @@ const Liner = ({ data }) => {
     })
   );
 
-  console.log(max);
-
   let min = 0;
   if (max <= 0) {
     min = -30;
@@ -21,9 +19,9 @@ const Liner = ({ data }) => {
   } else {
     max += 50;
   }
-  console.log(max);
-  console.log(min);
-  console.log(Math.floor(data.length / 6));
+
+  const x_padding = Math.round(data.length / 5 / 10) * 10;
+  console.log(x_padding);
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
@@ -50,7 +48,9 @@ const Liner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data.filter(({ x }) => x % 90 === 0).map(({ x }) => x),
+          tickValues: data
+            .filter(({ x }) => x % x_padding === 0)
+            .map(({ x }) => x),
           legend: "",
           legendOffset: 36,
           legendPosition: "middle",
