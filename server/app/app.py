@@ -1420,24 +1420,28 @@ def frequency_ave_data(music):
         sp = i
         count = 0
         total = 0
-        while i < end-1 and abs(cent) <= 70:
+        while i < end-1 and abs(cent) <= 38:
             total += data[i]
             count += 1
             i += 1
             cent = 1200*math.log2(data[i]/data[i+1])
             # print(cent)
         # print("count=", count, data[i], data[i+1])
-        if count != 0:
+        if count >= 15:
             ave = total/count
+            #print("ave = ", ave)
             ns = 0
             while sp <= i:
+                # print(data[sp]-ave)
                 ns += pow(data[sp]-ave, 2)
                 sp += 1
             ns /= count
             ns = math.sqrt(ns)
             tone_n += 1
             normalized_s += ns
-            # print("HEY", tone_n)
+            print("HEY", tone_n)
+            if tone_n != 0:
+                print(ns/tone_n)
         i += 1
     if tone_n == 0:
         # print("normalized = -1")
@@ -1446,7 +1450,7 @@ def frequency_ave_data(music):
         ss = normalized_s/tone_n
         # print("ave = " + str((stability)), "normalized = ", ss)
         # 閾値要検討
-        a = 8
+        a = 4
         x = np.arange(0, 5.0, 0.01)
         y = np.exp(-x/a)
         # print(round(ss*100))
@@ -1454,7 +1458,6 @@ def frequency_ave_data(music):
             s = y[round(ss*100)]
         else:
             s = 0
-
     """
     if s != -1 and s < 12000:
         s = y[int(s)]
