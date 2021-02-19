@@ -5,7 +5,7 @@ const ParallelCoordinates = ({ data }) => {
     return null;
   }
 
-  console.log(data);
+  /*console.log(data);
   const max = Math.max.apply(
     Math,
     data.map((input) => {
@@ -45,7 +45,7 @@ const ParallelCoordinates = ({ data }) => {
     data.map((input) => {
       return input.volume;
     })
-  );
+  );*/
 
   return (
     <div style={{ width: "100%", height: "400px" }}>
