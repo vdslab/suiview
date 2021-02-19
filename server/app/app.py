@@ -618,6 +618,8 @@ def get_music_content(music_id):
     response = make_response()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
+    if music == None:
+        return jsonify("no content")
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
