@@ -40,7 +40,7 @@ const CentroidRolloff = () => {
   }
   return (
     <div>
-      安定度：{ave.stability} &ensp; 標準偏差：{ave.s}
+      {/*} 安定度：{ave.stability} &ensp; */}安定度：{ave.s}
       <ManyLiner data={data} />
     </div>
   );

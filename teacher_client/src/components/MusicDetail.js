@@ -7,7 +7,7 @@ import {
   Decibel,
   ShowFrequency,
 } from "../components/chart/index";
-import { Player } from "./Player.js";
+//import { Player } from "./Player.js";
 
 function Comment() {
   const { getAccessTokenSilently } = useAuth0();

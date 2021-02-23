@@ -20,7 +20,7 @@ const ShowFrequency = () => {
   return (
     <div>
       {" "}
-      安定度：{data.average} &ensp;　標準偏差：{data.s}
+      {/*安定度：{data.average} &ensp;　*/}安定度：{data.s}
       <Liner data={data.values} />
     </div>
   );
