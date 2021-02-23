@@ -9,7 +9,7 @@ const ManyLiner = ({ data }) => {
   console.log(x_padding);
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div style={{ width: "100%", height: "350px" }}>
       <ResponsiveLine
         data={data.map((input) => {
           return {
@@ -17,7 +17,7 @@ const ManyLiner = ({ data }) => {
             data: input.data.filter(({ x }) => x % 5 === 0),
           };
         })}
-        margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+        margin={{ top: 30, right: 50, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -55,10 +55,10 @@ const ManyLiner = ({ data }) => {
         legends={[
           {
             anchor: "top-left",
-            direction: "column",
+            direction: "row",
             justify: false,
             translateX: 0,
-            translateY: -50,
+            translateY: -20,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
             itemWidth: 80,
