@@ -34,17 +34,6 @@ const StudentList = () => {
             生徒
           </h1>
         </div>
-        <div className="column">
-          <button
-            className="button is-outlined is-primary is-rounded is-small"
-            onClick={() => {
-              const studentId = prompt("生徒のIDを入力してください");
-              Registration(studentId);
-            }}
-          >
-            +
-          </button>
-        </div>
       </div>
       <ul>
         {studentList.map((d, key) => {
@@ -60,6 +49,17 @@ const StudentList = () => {
           );
         })}
       </ul>
+      <div style={{ paddingTop: "0.25rem" }}>
+        <button
+          className="button is-outlined is-primary is-rounded is-small"
+          onClick={() => {
+            const studentId = prompt("生徒のIDを入力してください");
+            Registration(studentId);
+          }}
+        >
+          生徒の追加
+        </button>
+      </div>
     </section>
   );
 };
