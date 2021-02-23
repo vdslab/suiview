@@ -153,7 +153,7 @@ const Folder = ({ history }) => {
           </IonCard>
         )}
         <IonList>
-          {musics.map((data) => {
+          {musics.map((data, i) => {
             return (
               <MusicItem
                 key={data.id}

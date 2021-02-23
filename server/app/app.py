@@ -382,12 +382,13 @@ def get_student_music_f0(user_name, music_id):
 
     start, end = find_start_end(music)
     data = []
+    j = 0
     if end < len(f0)-2:
         end += 1
     for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
-                "x": i+1,
+                "x": j,
                 "y": round(f0[i], 4)
             }
         else:
@@ -395,6 +396,7 @@ def get_student_music_f0(user_name, music_id):
                 "x": i+1,
                 "y": 0
             }
+        j += 1
         data.append(dic)
 
     session.close()
@@ -439,14 +441,16 @@ def get_student_music_decibel(user_name, music_id):
             break
 
     data = []
+    j = 0
     if end < len(dbLine)-2:
         end += 1
     for i in range(start, end):
         dic = {
-            "x": i+1,
+            "x": j,
             "y": round(dbLine[i], 4)
         }
         data.append(dic)
+        j += 1
 
     average = decibel_ave_data(music)
 
