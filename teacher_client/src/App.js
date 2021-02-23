@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useState, useEffect } from "react";
-import { putUsername, getUsername } from "./services/api/";
+//import { useState, useEffect } from "react";
+//import { putUsername, getUsername } from "./services/api/";
 
 function Login() {
   const { loginWithRedirect } = useAuth0();
@@ -33,11 +33,14 @@ function Login() {
   );
 }
 
+/*
 function LogoutHeader() {
   const { logout } = useAuth0();
   const { getAccessTokenSilently } = useAuth0();
   const [userData, setUserData] = useState();
   const [reName, setRename] = useState(false);
+  const content = ["-", "アカウント", "ログアウト"];
+  const [selected, setSelected] = useState();
 
   useEffect(() => {
     (async () => {
@@ -55,8 +58,27 @@ function LogoutHeader() {
   }
 
   return (
-    <div className="columns">
-      {reName === false ? (
+    <div>
+      <div className="columns">
+        <div className="select is-small">
+          <select
+            name="pets"
+            id="pet-select"
+            onChange={(e) => setSelected(e.currentTarget.value)}
+          >
+            {content.map((item, id) => {
+              return (
+                <option value={item} key={id}>
+                  {item}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {selected === "ログアウト"
+          ? logout({ returnTo: window.location.origin })
+          : []}
+        {/*reName === false ? (
         <div>
           <div className="column is-6">{userData?.name}</div>
           <button onClick={() => setRename(true)}>ユーザー名を変更する</button>
@@ -80,33 +102,11 @@ function LogoutHeader() {
             これでOK！
           </button>
         </div>
-      )}
-      <div className="column is-6">
-        <button onClick={() => logout({ returnTo: window.location.origin })}>
-          Log out
-        </button>
-      </div>
+          )
     </div>
   );
 }
-
-function Header(data) {
-  return (
-    <section className="hero  is-small has-background-primary">
-      <div className="hero-body">
-        <div className="container">
-          <div className="columns">
-            <h1 className="title column is-9">musicvis</h1>
-            <div className="column is-3">
-              <LogoutHeader />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
+*/
 function Footer() {
   return (
     <footer className="footer">
@@ -123,28 +123,31 @@ export function App() {
       {" "}
       {isAuthenticated ? (
         <div>
-          <Header login={true} />
-          <section className="section">
+          {/*<Header login={true} />*/}
+          {/*} <section className="section">
             <div className="container">
-              <div className=""></div>
-              <Switch>
-                <Route path="/" exact>
-                  <Home />
-                </Route>
-                <Route path="/:userName/folder" exact>
-                  <Home />
-                </Route>
-                <Route path="/:userName/folder/:folderId" exact>
-                  <Home />
-                </Route>
-                <Route path="/:userName/folder/:folderId/:musicId">
-                  <Home />
-                </Route>
-              </Switch>
-            </div>
-          </section>
+      <div className=""></div>*/}
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            {/*} <Route path="/account" exact>
+              <Account />
+    </Route>*/}
+            <Route path="/:userName/folder" exact>
+              <Home />
+            </Route>
+            <Route path="/:userName/folder/:folderId" exact>
+              <Home />
+            </Route>
+            <Route path="/:userName/folder/:folderId/:musicId">
+              <Home />
+            </Route>
+          </Switch>
         </div>
       ) : (
+        /* </section>
+        </div>*/
         <Login />
       )}{" "}
       <Footer />
