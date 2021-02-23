@@ -77,9 +77,7 @@ const MusicDetail = () => {
 
   return (
     <section>
-      <div>
-        <Player />
-      </div>
+      <Player />
       <div className="select is-small">
         <select
           name="pets"
