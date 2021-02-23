@@ -488,15 +488,18 @@ def get_student_music_spectrum_rolloff(user_name, music_id):
 @ requires_auth
 def put_teacher_comment(user_name, music_id):
     session = create_session()
-    user = session.query(User).filter_by(
+    teacher_id = g.current_user['sub']
+    teacher = session.query(User).filter_by(
+        id=teacher_id).first()
+    student = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    student_id = student.id
     data = json.loads(request.data.decode('utf-8'))
     comment = Comment(
-        music_id=music_id, text=data['comment'], user_id=user_id, writer=data['writer'])
+        music_id=music_id, text=data['comment'], user_id=student_id, writer=teacher.name)
     session.add(comment)
-    comment = comment.to_json()
     session.commit()
+    session.close()
     return jsonify("receive")
 
 #########################################################

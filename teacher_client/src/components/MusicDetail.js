@@ -13,17 +13,10 @@ function Comment() {
   const { getAccessTokenSilently } = useAuth0();
   const { userName, musicId } = useParams();
 
-  async function sendComment(comment, writer) {
+  async function sendComment(comment) {
     console.log("send function");
-    await putMusicComment(
-      userName,
-      musicId,
-      comment,
-      writer,
-      getAccessTokenSilently
-    );
+    await putMusicComment(userName, musicId, comment, getAccessTokenSilently);
     document.getElementById("comment").value = "";
-    document.getElementById("writer").value = "";
     alert("送信されました");
   }
 
@@ -35,23 +28,22 @@ function Comment() {
           id="comment"
           placeholder="コメントを書いてください"
         ></textarea>
-        <br /> <label>write by</label>
+        <br />
+        {/*} <label>write by</label>
         <input
           id="writer"
           type="text"
           className="input"
           placeholder="あなたの名前を記入してください"
-        ></input>
-        <br />
+        ></input>*/}
         <input
+          className="button"
           type="button"
           value="コメントを送る"
           onClick={() => {
             const comment = document.getElementById("comment").value;
-            const writer = document.getElementById("writer").value;
-            console.log(comment, writer);
-            if (comment !== "" && writer !== "") {
-              sendComment(comment, writer);
+            if (comment !== "") {
+              sendComment(comment);
             } else {
               alert("記入漏れがあります");
             }

@@ -60,12 +60,11 @@ export async function putMusicComment(
   username,
   musicId,
   comment,
-  writer,
   getAccessTokenSilently
 ) {
   const response = await requestPost(
     `/${username}/musics/${musicId}/comment`,
-    JSON.stringify({ comment: comment, writer: writer }),
+    JSON.stringify({ comment: comment }),
     getAccessTokenSilently
   );
   return response.json();

@@ -4,9 +4,33 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import { putUsername, getUsername } from "./services/api/";
 
-function LoginHeader() {
+function Login() {
   const { loginWithRedirect } = useAuth0();
-  return <button onClick={loginWithRedirect}>login</button>;
+  return (
+    <div>
+      <section className="hero  is-small has-background-primary">
+        <div className="hero-body">
+          <div className="container">
+            <div className="columns">
+              <h1 className="title column is-9">musicvis</h1>
+              <div className="column is-3"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="hero">
+        <div className="hero-body">
+          <div className="has-text-centered">
+            <section>説明とか</section>
+            <br />
+            <button onClick={loginWithRedirect} className="button">
+              login
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 function LogoutHeader() {
@@ -67,8 +91,6 @@ function LogoutHeader() {
 }
 
 function Header(data) {
-  const login = data.login;
-
   return (
     <section className="hero  is-small has-background-primary">
       <div className="hero-body">
@@ -76,7 +98,7 @@ function Header(data) {
           <div className="columns">
             <h1 className="title column is-9">musicvis</h1>
             <div className="column is-3">
-              {login ? <LogoutHeader /> : <LoginHeader />}
+              <LogoutHeader />
             </div>
           </div>
         </div>
@@ -123,7 +145,7 @@ export function App() {
           </section>
         </div>
       ) : (
-        <Header login={false} />
+        <Login />
       )}{" "}
       <Footer />
     </Router>
