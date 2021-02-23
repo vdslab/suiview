@@ -14,7 +14,7 @@ const PointLiner = ({ data }) => {
             data: data.filter(({ x, _ }) => x % 1 === 0),
           },
         ]}
-        margin={{ top: 20, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 20, right: 10, bottom: 50, left: 30 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",

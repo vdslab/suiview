@@ -77,8 +77,11 @@ const MusicDetail = () => {
 
   return (
     <section>
-      <Player />
-      <div className="select is-small">
+      {/*} <div className="columns">
+        {/*<div className="column is-4">
+          <Player />
+  </div>*/}
+      <div className="select is-small ">
         <select
           name="pets"
           id="pet-select"
@@ -93,6 +96,8 @@ const MusicDetail = () => {
           })}
         </select>
       </div>
+      {/*<div className="column is-4">　標準偏差：???</div>
+      </div>*/}
 
       {chartIds.map((data, id) => {
         console.log(data, chartId);

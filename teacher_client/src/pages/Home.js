@@ -86,7 +86,7 @@ function Home() {
             <div className="columns">
               <h1 className="title column is-9">musicvis</h1>
               <div className="column is-3">
-                <div className="select is-small">
+                <div className="select is-small is-primary">
                   <select
                     name="pets"
                     id="pet-select"

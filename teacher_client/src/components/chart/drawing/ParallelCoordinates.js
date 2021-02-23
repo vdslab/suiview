@@ -103,7 +103,7 @@ const ParallelCoordinates = ({ data }) => {
         axesPlan="foreground"
         strokeWidth={3}
         //lineOpacity={0.1}
-        margin={{ top: 20, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 20, right: 10, bottom: 50, left: 30 }}
         animate={true}
         motionStiffness={90}
         motionDamping={12}
