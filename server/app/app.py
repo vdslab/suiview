@@ -55,12 +55,14 @@ def put_student():
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    student_teacher = session.query(StudentTeacher).filter_by(
-        teacher_id=user_id, student_id=data).first()
-    if student_teacher == None:
-        student_teacher = StudentTeacher(teacher_id=user_id, student_id=data)
-        session.add(student_teacher)
-        session.commit()
+    if data != None:
+        student_teacher = session.query(StudentTeacher).filter_by(
+            teacher_id=user_id, student_id=data).first()
+        if student_teacher == None:
+            student_teacher = StudentTeacher(
+                teacher_id=user_id, student_id=data)
+            session.add(student_teacher)
+            session.commit()
     session.close()
     return jsonify(get_student_list(user_id))
 

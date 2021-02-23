@@ -9,6 +9,7 @@ const StudentList = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   async function Registration(studentId) {
+    console.log(studentId);
     if (studentId !== "") {
       const data = await postStudentsList(studentId, getAccessTokenSilently);
       setStudentList(data);
@@ -25,7 +26,7 @@ const StudentList = () => {
   return (
     <section>
       <div className="columns">
-        <div className="column">
+        <div className="column is-4">
           <h1
             className="has-text-weight-bold"
             style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
@@ -35,6 +36,7 @@ const StudentList = () => {
         </div>
         <div className="column">
           <button
+            className="button is-outlined is-primary is-rounded is-small"
             onClick={() => {
               const studentId = prompt("生徒のIDを入力してください");
               Registration(studentId);
