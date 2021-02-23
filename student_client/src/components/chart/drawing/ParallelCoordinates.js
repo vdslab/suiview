@@ -48,7 +48,7 @@ const ParallelCoordinates = ({ data }) => {
   );*/
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveParallelCoordinates
         data={data}
         variables={[
@@ -96,7 +96,7 @@ const ParallelCoordinates = ({ data }) => {
         ]}
         axesPlan="foreground"
         strokeWidth={3}
-        margin={{ top: 30, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 20, right: 60, bottom: 50, left: 20 }}
         animate={true}
         motionStiffness={90}
         motionDamping={12}

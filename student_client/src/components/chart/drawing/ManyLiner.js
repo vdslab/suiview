@@ -6,7 +6,7 @@ const ManyLiner = ({ data }) => {
   }
   const x_padding = Math.round(data[0].data.length / 5 / 10) * 10;
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveLine
         data={data.map((input) => {
           return {
@@ -14,7 +14,7 @@ const ManyLiner = ({ data }) => {
             data: input.data.filter(({ x }) => x % 5 === 0),
           };
         })}
-        margin={{ top: 50, right: 30, bottom: 50, left: 60 }}
+        margin={{ top: 40, right: 20, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -55,7 +55,7 @@ const ManyLiner = ({ data }) => {
             direction: "row",
             justify: false,
             translateX: 0,
-            translateY: -50,
+            translateY: -30,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
             itemWidth: 80,

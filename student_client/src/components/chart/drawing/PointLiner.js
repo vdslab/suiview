@@ -6,7 +6,7 @@ const PointLiner = ({ data }) => {
   }
   console.log(data);
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveLine
         data={[
           {
@@ -14,7 +14,7 @@ const PointLiner = ({ data }) => {
             data: data.filter(({ x, _ }) => x % 1 === 0),
           },
         ]}
-        margin={{ top: 30, right: 50, bottom: 50, left: 60 }}
+        margin={{ top: 20, right: 20, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",

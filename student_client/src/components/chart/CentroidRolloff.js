@@ -43,7 +43,7 @@ const CentroidRolloff = ({ musicId }) => {
     <div>
       <IonItem lines="none">
         {" "}
-        安定度：{ave.stability} &ensp; 標準偏差：{ave.s}
+        {/*安定度：{ave.stability} &ensp;*/} 安定度：{ave.s}
       </IonItem>
       <ManyLiner data={data} />
     </div>

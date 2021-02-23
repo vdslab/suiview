@@ -24,7 +24,7 @@ const Liner = ({ data }) => {
   console.log(x_padding);
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveLine
         data={[
           {
@@ -33,7 +33,7 @@ const Liner = ({ data }) => {
             //data: data.filter(({ x }) => x),
           },
         ]}
-        margin={{ top: 10, right: 30, bottom: 50, left: 60 }}
+        margin={{ top: 10, right: 20, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
