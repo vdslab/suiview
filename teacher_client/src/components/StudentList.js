@@ -26,7 +26,7 @@ const StudentList = () => {
   return (
     <section>
       <div className="columns">
-        <div className="column is-4">
+        <div className="column is-5">
           <h1
             className="has-text-weight-bold"
             style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
