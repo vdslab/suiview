@@ -426,7 +426,7 @@ def get_student_music_decibel(user_name, music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -20  # -80 にしてる処理もあるが？
+        _max = -20   
         for j in range(len(db)):
             if _max <= db[j][i]:
                 _max = db[j][i]
@@ -511,9 +511,9 @@ def put_teacher_comment(user_name, music_id):
 
 #########################################################
 #########################################################
+
+
 # 初回ログイン時にできるようにする
-
-
 @app.route('/username', methods=['GET'])
 @requires_auth
 def get_username():
@@ -633,7 +633,6 @@ def get_music_content(music_id):
     response.data = music.content
     response.mimetype = "audio/wav"
     session.close()
-    # print(user_id, music_id)
     return response
 
 
@@ -643,7 +642,6 @@ def put_music_content(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    # print(data)
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     if 'name' in data:
@@ -651,14 +649,9 @@ def put_music_content(music_id):
     if 'folderId' in data:
         music.folder_id = data['folderId']
 
-    print(data)
-    print(music)
     if 'assessment' in data:
-        print("pre_Data ", data["assessment"])
         music.assessment = data['assessment']
-        print("tabel ", music.assessment)
     if 'comment' in data:
-        # print(data["comment"])
         comment = Comment(music_id=music_id,
                           text=data['comment'], user_id=user_id)
         session.add(comment)
@@ -688,7 +681,6 @@ def post_comment(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    # print(data["item"])
     comment = Comment(music_id=music_id, text=data['item'], user_id=user_id)
     session.add(comment)
     session.commit()
@@ -702,8 +694,7 @@ def get_folders():
     session = create_session()
     user_id = g.current_user['sub']
     folders = session.query(Folder).filter_by(user_id=user_id).all()
-    # folders = [f.to_json() for f in folders]
-    # 初期フォルダーの作成(どこでやるのがベスト？)
+    # 初期フォルダーの作成
     if len(folders) == 0:
         folder = Folder(name="ロングトーン", user_id=user_id)
         session.add(folder)
@@ -712,10 +703,8 @@ def get_folders():
         folder = Folder(name="アルペジオ", user_id=user_id)
         session.add(folder)
         session.commit()
-    # print(len(folders))
     folders = session.query(Folder).filter_by(user_id=user_id).all()
     folders = [f.to_json() for f in folders]
-
     session.close()
     return jsonify(folders)
 
@@ -785,9 +774,7 @@ def get_folder_musics(folder_id):
     musics = session.query(Music).filter_by(
         folder_id=folder_id, user_id=user_id).all()
     musics = [m.to_json() for m in musics]
-    # print(musics)
     musics = sorted(musics, key=lambda x: x['created'], reverse=True)
-    # print(musics)
     session.close()
     return jsonify(musics)
 
@@ -854,7 +841,6 @@ def get_folder_f0(folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            # print(aliged_data)
             data = []
             for j in range(len(aliged_data)):
                 dic = {
@@ -864,15 +850,12 @@ def get_folder_f0(folder_id):
                 data.append(dic)
             Datas.append({"id": musics[i].id, "data": data})
             print("fin"+str(i))
-            print(len(Datas))
-        print(Datas)
         print("finish")
         session.close()
     return jsonify(Datas)
 
+
 # parallelCoordinates
-
-
 @app.route('/folders/<folder_id>/parallel', methods=['GET'])
 @requires_auth
 def get_folders_parallel(folder_id):
@@ -929,212 +912,10 @@ def get_folder_progress(folder_id):
         }
         dicDatas.append(dic)
     session.close()
-    print(Datas)
     return jsonify(dicDatas)
 
 
-"""
-# 波形
-
-
-@ app.route('/musics/<music_id>/amplitude', methods=['GET'])
-@ requires_auth
-def amplitude(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    wf = wave.open(io.BytesIO(music.content))
-    buffer = wf.readframes(wf.getnframes())
-    # 縦:振幅 2バイトずつ整理(-32768から32767)
-    data = frombuffer(buffer, dtype="int16")
-    # 横:サンプル数or時間
-    x = len(data)  # サンプル数
-    # 時間/サンプル数で1サンプル当たりの秒数→データの範囲絞ったとき時間表示するのに使う？
-    # time = float(wf.getnframes()) / wf.getframerate()
-    Datas = []
-    for i in range(x):
-        dic = {
-            "x": i+1,
-            "y": round(data[i], 4)
-        }
-        Datas.append(dic)
-    session.close()
-    return jsonify(Datas)
-
-
-"""
-"""
-# フーリエ変換
-
-
-@ app.route('/musics/<music_id>/fourier', methods=['GET'])
-@ requires_auth
-def fourier(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data/32768  # 振幅の配列らしい
-    fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
-    freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
-
-    pairData = []
-    preNum = 0
-    max_fft = 0
-    for i in range(len(fft_data)):
-        if 0 < freList[i] and freList[i] <= 8000:  # 24000に合わせた方がいいかも
-            if int(freList[i]) != preNum:
-                pairData.append([preNum, max_fft])
-                preNum = int(freList[i])
-                max_fft = 0
-            if max_fft <= fft_data[i]:
-                max_fft = fft_data[i]
-
-    # print(pairData)
-    # print(max(freList))
-
-    Datas = []
-    # print(len(freList))
-    for i in range(min(6000, len(pairData))):  # len(fft_data)):
-        if i % 10 == 0:
-            dic = {
-                "x": pairData[i][0],
-                "y": pairData[i][1],
-            }
-            Datas.append(dic)
-
-    session.close()
-    fourier_roll(music_id)
-    return jsonify(Datas)
-
-
-"""
-"""
-# フーリエ変換　ロールオフ
-
-
-@ app.route('/musics/<music_id>/fourier_roll', methods=['GET'])
-def fourier_roll(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data/32768  # 振幅の配列らしい
-    fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
-    freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
-    print("pre len="+str(max(freList)))
-    pairData = []
-    preNum = 0
-    max_fft = 0
-    for i in range(len(fft_data)):
-        if 0 < freList[i] and freList[i] <= 24000:  # 24000はサンプリング周波数/2
-            if int(freList[i]) != preNum:
-                pairData.append([preNum, max_fft])
-                preNum = int(freList[i])
-                max_fft = 0
-            if max_fft <= fft_data[i]:
-                max_fft = fft_data[i]
-
-    total = 0
-    print("data lend="+str(len(pairData)))
-    for i in range(len(pairData)):
-        total += pairData[i][1]
-
-    eight = total*0.85
-    total2 = 0
-    idx = -1
-    for i in range(len(pairData)):
-        total2 += pairData[i][1]
-        if total2 >= eight:
-            idx = i
-            break
-    # print(total)
-    # print(eight)
-    # print(idx)
-
-    session.close()
-    return jsonify(idx)
-
-
-def fourier_roll_data(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    data = data/32768  # 振幅の配列らしい
-    fft_data = np.abs(np.fft.fft(data))  # 縦:dataを高速フーリエ変換
-    freList = np.fft.fftfreq(data.shape[0], d=1.0/rate)  # 横:周波数の取得
-
-    pairData = []
-    preNum = 0
-    max_fft = 0
-    for i in range(len(fft_data)):
-        if 0 < freList[i] and freList[i] < 8000:
-            if int(freList[i]) != preNum:
-                pairData.append([preNum, max_fft])
-                preNum = int(freList[i])
-                max_fft = 0
-            if max_fft <= fft_data[i]:
-                max_fft = fft_data[i]
-
-    total = 0
-    for i in range(len(pairData)):
-        total += pairData[i][1]
-
-    eight = total*0.85
-    total2 = 0
-    idx = -1
-    for i in range(len(pairData)):
-        total2 += pairData[i][1]
-        if total2 >= eight:
-            idx = i
-            break
-
-    session.close()
-    return idx
-
-
-"""
-
-"""
-# スペクトログラム
-
-
-@ app.route('/musics/<music_id>/spectrogram', methods=['GET'])
-@ requires_auth
-def get_music_spectrogram(music_id):
-    session = create_session()
-    user_id = g.current_user['sub']
-    music = session.query(Music).filter_by(
-        user_id=user_id, id=music_id).first()
-    rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
-    f, time, Sxx = signal.stft(data, rate)
-    Sxx = np.log(np.abs(Sxx))
-    # Sxxを0から1に正規化
-    # norm = matplotlib.colors.Normalize(vmin=-1, vmax=1)
-    # cm = matplotlib.pyplot.get_cmap("jet")
-    # colors = cm(norm(Sxx))  # RGB
-    Datas = []
-
-    for i in range(min(100, len(f)), -1, -1):
-        dic = OrderedDict()
-        dic["y"] = '{:.4f}'.format(f[i])
-        for j in range(min(100, len(time))):
-            # key = str('{:.4f}'.format(time[j]))
-            key = str(j)
-            dic[key] = '{:.4f}'.format(Sxx[i][j])
-        Datas.append(dic)
-    session.close()
-    return jsonify(Datas)
-"""
-
 # デシベル値
-
-
 @ app.route('/musics/<music_id>/decibel', methods=['GET'])
 @ requires_auth
 def get_music_decibel(music_id):
@@ -1148,7 +929,7 @@ def get_music_decibel(music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -20  # -80 にしてる処理もあるが？
+        _max = -20 
         for j in range(len(db)):
             if _max <= db[j][i]:
                 _max = db[j][i]
@@ -1256,7 +1037,7 @@ def decibel_ave_data(music):
         s += pow(dbLine[i]-average, 2)
     s /= s_count
     s = math.sqrt(s)
-    # どっちがいい？
+  
     a = 70
     x = np.arange(0, 40)
     y = np.exp(-x/a)
@@ -1271,7 +1052,6 @@ def decibel_ave_data(music):
 
 def trim(data, start, end):
     res = []
-    print(start, end, len(data))
     if end < len(data)-2:
         end += 1
     for i in range(start, end):
@@ -1296,7 +1076,6 @@ def get_folder_decibel(folder_id):
         data = np.array(data)
         preData.append(data)
 
-    # print(preData)
     Datas = []
     if len(preData) == 1:
         data = []
@@ -1311,7 +1090,6 @@ def get_folder_decibel(folder_id):
         Datas.append({"id": musics[0].id, "data": data})
 
     else:
-        print(len(preData))
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -1415,7 +1193,6 @@ def frequency_ave_data(music):
                 s += pow(data[i]-average, 2)
         s /= s_count
         s = math.sqrt(s)
-        # print("s=", s)
     else:
         s = -1
 
@@ -1428,7 +1205,6 @@ def frequency_ave_data(music):
     tone_n = 0
     i = start
     while i < end-1:
-        # print(data[i], data[i+1])
         if data[i]/data[i+1] == 0:
             cent = 0
         else:
@@ -1441,45 +1217,29 @@ def frequency_ave_data(music):
             count += 1
             i += 1
             cent = 1200*math.log2(data[i]/data[i+1])
-            # print(cent)
-        # print("count=", count, data[i], data[i+1])
         if count >= 15:
             ave = total/count
-            #print("ave = ", ave)
             ns = 0
             while sp <= i:
-                # print(data[sp]-ave)
                 ns += pow(data[sp]-ave, 2)
                 sp += 1
             ns /= count
             ns = math.sqrt(ns)
             tone_n += 1
             normalized_s += ns
-            print("HEY", tone_n)
-            if tone_n != 0:
-                print(ns/tone_n)
         i += 1
     if tone_n == 0:
-        # print("normalized = -1")
         s = 0
     else:
         ss = normalized_s/tone_n
-        # print("ave = " + str((stability)), "normalized = ", ss)
-        # 閾値要検討
+        # 閾値
         a = 4
         x = np.arange(0, 5.0, 0.01)
         y = np.exp(-x/a)
-        # print(round(ss*100))
         if round(ss*100) < len(y):
             s = y[round(ss*100)]
         else:
             s = 0
-    """
-    if s != -1 and s < 12000:
-        s = y[int(s)]
-    elif s != -1:
-        s = y[-1]
-    """
     session.close()
     print("fre = ", s)
 
@@ -1494,8 +1254,6 @@ def dtw_frequency_data(music):
     return f0
 
 # --スペクトル重心--------
-
-
 def spectrum_centroid(music):
     session = create_session()
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
@@ -1586,12 +1344,9 @@ def spectrum_rolloff_y(music):
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     # 引数roll_percent=0.8がデフォ
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    # print(rolloff)
     Datas = []
-
     for i in range(len(rolloff[0])):
         Datas.append(round(rolloff[0][i], 4))
-    # return jsonify(Datas)
     session.close()
     return Datas
 
@@ -1616,7 +1371,6 @@ def spectrum_flatness(music_id):
         }
         Datas.append(dic)
 
-    # print(Datas)
     session.close()
     return jsonify(Datas)
 
@@ -1664,7 +1418,6 @@ def get_folder_tone(folder_id):
         data = np.array(data)
         preData.append(data)
 
-    print(preData)
     Datas = []
     if len(preData) == 1:
         data = []
@@ -1679,9 +1432,7 @@ def get_folder_tone(folder_id):
         Datas.append({"id": musics[0].id, "data": data})
 
     else:
-        print(len(preData))
         for i in range(1, len(preData)):
-            # alignment = dtw(preData[0], preData[i], keep_internals=True)
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
@@ -1698,7 +1449,6 @@ def get_folder_tone(folder_id):
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
-            # print(aliged_data)
             data = []
             for j in range(len(aliged_data)):
                 dic = {
