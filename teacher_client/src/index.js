@@ -14,5 +14,3 @@ render(
   </Auth0Provider>,
   document.getElementById("content")
 );
-
-//render(<App />, document.querySelector("#content"));

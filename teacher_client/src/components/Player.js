@@ -35,7 +35,6 @@ export function Player(data) {
 
   return (
     <div>
-      {/*<audio controls src={url} />*/}
       <audio id={`bgm${musicId}`} preload loop src={url} />
       <button
         className="button is-rounded is-small"

@@ -7,7 +7,6 @@ import {
   Decibel,
   ShowFrequency,
 } from "../components/chart/index";
-//import { Player } from "./Player.js";
 
 function Comment() {
   const { getAccessTokenSilently } = useAuth0();
@@ -29,13 +28,6 @@ function Comment() {
           placeholder="コメントを書いてください"
         ></textarea>
         <br />
-        {/*} <label>write by</label>
-        <input
-          id="writer"
-          type="text"
-          className="input"
-          placeholder="あなたの名前を記入してください"
-        ></input>*/}
         <input
           className="button"
           type="button"
@@ -77,10 +69,6 @@ const MusicDetail = () => {
 
   return (
     <section>
-      {/*} <div className="columns">
-        {/*<div className="column is-4">
-          <Player />
-  </div>*/}
       <div className="select is-small ">
         <select
           name="pets"
@@ -96,8 +84,6 @@ const MusicDetail = () => {
           })}
         </select>
       </div>
-      {/*<div className="column is-4">　標準偏差：???</div>
-      </div>*/}
 
       {chartIds.map((data, id) => {
         console.log(data, chartId);
