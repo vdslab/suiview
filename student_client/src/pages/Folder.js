@@ -16,8 +16,6 @@ import {
   useIonViewWillEnter,
   IonFooter,
   IonCardContent,
-  IonLabel,
-  IonCardHeader,
 } from "@ionic/react";
 import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -40,11 +38,7 @@ const ShowChart = (folderId, kind) => {
   }
 
   if (kind === "progress") {
-    return (
-      <div>
-        <ProgressChart folderId={folderId} />
-      </div>
-    );
+    return <ProgressChart folderId={folderId} />;
   } else if (kind === "parallel") {
     return (
       <div>
@@ -170,7 +164,7 @@ const Folder = ({ history }) => {
             </IonCardContent>
           </IonCard>
         ) : (
-          <IonCard>
+          <IonCard style={{ height: "380px" }}>
             <FolderDetail />
           </IonCard>
         )}
