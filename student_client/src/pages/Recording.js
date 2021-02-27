@@ -142,6 +142,7 @@ const Recording = ({ history }) => {
               <IonCol>
                 <IonButton
                   expand="full"
+                  disabled={(recorded + 1) % 2}
                   onClick={async () => {
                     await deleteMusic(musicId, getAccessTokenSilently);
                     setRecorded(0);

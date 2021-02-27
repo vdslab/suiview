@@ -20,6 +20,11 @@ import {
   IonListHeader,
   IonFooter,
   IonAlert,
+  IonItemDivider,
+  IonLabel,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -27,6 +32,7 @@ import {
   ellipsisHorizontalCircleOutline,
   trash,
   close,
+  createOutline,
 } from "ionicons/icons";
 import {
   getMusic,
@@ -34,6 +40,7 @@ import {
   getMusicComments,
   putMusic,
   deleteMusic,
+  getMusicStability,
 } from "../services/api";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
@@ -88,6 +95,7 @@ const Detail = ({ history }) => {
   const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [stability, steStability] = useState([]);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -99,8 +107,12 @@ const Detail = ({ history }) => {
     const data = await getMusicComments(musicId, getAccessTokenSilently);
     setComments(data);
   });
+  useIonViewWillEnter(async () => {
+    const data = await getMusicStability(musicId, getAccessTokenSilently);
+    steStability(data);
+  });
 
-  console.log(music);
+  console.log(stability);
 
   return (
     <IonPage>
@@ -183,42 +195,57 @@ const Detail = ({ history }) => {
       </IonHeader>
       <IonContent>
         <IonCard>
-          <Charts />
-          <IonItem>
-            {music?.assessment === 0 ? (
-              <div> 自己評価 なし</div>
-            ) : (
-              <div> 自己評価　★{music?.assessment}</div>
-            )}
+          <IonGrid>
+            <IonRow>
+              <IonCol size="2">
+                <Player musicId={musicId} />
+              </IonCol>
+              <IonCol>
+                <IonItem lines="none">
+                  総合点：{stability?.total}&emsp;
+                  {music?.assessment === 0 ? (
+                    <div> ★なし</div>
+                  ) : (
+                    <div> ★{music?.assessment}</div>
+                  )}
+                </IonItem>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+          <IonItem className="ion-text-center">
+            音程：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
+            {stability?.tone}
           </IonItem>
+        </IonCard>
+        <IonCard>
+          <Charts />
         </IonCard>
         <IonCard>
           <IonList>
             <IonListHeader>コメント</IonListHeader>
+
             {comments.map((data) => {
               return (
-                <IonItem key={data.id}>
-                  {convertDate(data.created)} &ensp; write by {data.writer}
-                  <br />
-                  {data.comment}
-                </IonItem>
+                <div>
+                  <IonItem key={data.id} lines="none">
+                    <IonItemDivider color="light">
+                      <IonLabel>
+                        {data.writer == null ? (
+                          <div>{convertDate(data.created)} &ensp;</div>
+                        ) : (
+                          <div>
+                            {convertDate(data.created)}&ensp;by {data.writer}
+                          </div>
+                        )}
+                      </IonLabel>
+                    </IonItemDivider>
+                  </IonItem>
+                  <IonItem>{data.comment}</IonItem>
+                </div>
               );
             })}
           </IonList>
         </IonCard>
-      </IonContent>
-
-      <IonFooter>
-        <IonToolbar>
-          <IonList>
-            <IonItem>
-              <Player musicId={musicId} />
-            </IonItem>
-            <IonButton fill="outline" onClick={() => setShowAlert(true)}>
-              コメントを書く
-            </IonButton>
-          </IonList>
-        </IonToolbar>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -253,6 +280,18 @@ const Detail = ({ history }) => {
             },
           ]}
         />
+      </IonContent>
+      <IonFooter>
+        <IonToolbar>
+          <IonButton
+            size="large"
+            slot="end"
+            fill="clear"
+            onClick={() => setShowAlert(true)}
+          >
+            <IonIcon icon={createOutline}></IonIcon>
+          </IonButton>
+        </IonToolbar>
       </IonFooter>
     </IonPage>
   );

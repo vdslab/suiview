@@ -8,7 +8,6 @@ import {
 import { ManyLiner } from "./drawing";
 
 const CentroidRolloff = ({ musicId }) => {
-  const [ave, setAve] = useState();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -23,7 +22,6 @@ const CentroidRolloff = ({ musicId }) => {
     );
     Promise.all([centroidRequest, rolloffRequest]).then(
       ([centroid, rolloff]) => {
-        setAve(rolloff.average);
         setData([
           { id: "centroid", data: centroid.values },
           { id: "rolloff", data: rolloff.values },
@@ -39,15 +37,7 @@ const CentroidRolloff = ({ musicId }) => {
       </IonItem>
     );
   }
-  return (
-    <div>
-      <IonItem lines="none">
-        {" "}
-        {/*安定度：{ave.stability} &ensp;*/} 安定度：{ave.s}
-      </IonItem>
-      <ManyLiner data={data} />
-    </div>
-  );
+  return <ManyLiner data={data} />;
 };
 
 export default CentroidRolloff;

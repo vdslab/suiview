@@ -21,12 +21,7 @@ const ShowFrequency = ({ musicId }) => {
       </IonItem>
     );
   }
-  return (
-    <div>
-      <IonItem lines="none"> 安定度：{data.s}</IonItem>
-      <Liner data={data.values} />
-    </div>
-  );
+  return <Liner data={data.values} />;
 };
 
 export default ShowFrequency;

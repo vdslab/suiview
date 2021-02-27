@@ -69,6 +69,14 @@ export async function getMusicSpectrumRolloff(musicId, getAccessToken) {
   return response.json();
 }
 
+export async function getMusicStability(musicId, getAccessToken) {
+  const response = await requestGet(
+    `/musics/${musicId}/stability`,
+    getAccessToken
+  );
+  return response.json();
+}
+
 export async function postMusic(content, getAccessToken) {
   const response = await requestPost(`/musics`, content, getAccessToken);
   return response.json();
