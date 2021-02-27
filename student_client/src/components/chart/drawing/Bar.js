@@ -11,7 +11,7 @@ const Bar = ({ data }) => {
         data={data}
         keys={["pich", "volume", "tone"]}
         indexBy="No."
-        margin={{ top: 20, right: 100, bottom: 50, left: 60 }}
+        margin={{ top: 10, right: 100, bottom: 50, left: 60 }}
         padding={0.3}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}

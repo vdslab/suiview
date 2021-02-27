@@ -15,11 +15,7 @@ const ToneChart = ({ folderId }) => {
   }, [folderId, getAccessTokenSilently]);
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <IonItem lines="none">loading...</IonItem>;
   }
   return (
     <div>

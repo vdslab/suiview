@@ -142,13 +142,16 @@ def get_student_folders_parallel(user_name, folder_id):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
+    j = 1
     for i in range(len(Datas)-1, -1, -1):
         dic = {
-            "No.": Datas[i][0],
+            # "No.": Datas[i][0],
+            "No": j,
             "pich": Datas[i][1][0],
             "tone": Datas[i][2][0],
             "volume": Datas[i][3][0],
         }
+        j += 1
         dicDatas.append(dic)
 
     session.close()
@@ -426,7 +429,7 @@ def get_student_music_decibel(user_name, music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -20   
+        _max = -20
         for j in range(len(db)):
             if _max <= db[j][i]:
                 _max = db[j][i]
@@ -818,8 +821,8 @@ def get_folder_f0(folder_id):
                 "y": d[i]
             }
             data.append(dic)
-
-        Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": i+1, "data": data})
+        #Datas.append({"id": musics[0].id, "data": data})
 
     else:
         for i in range(len(preData)):
@@ -837,7 +840,8 @@ def get_folder_f0(folder_id):
                         "y": aliged_data[j]
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
+                #Datas.append({"id": musics[0].id, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -848,7 +852,8 @@ def get_folder_f0(folder_id):
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            #Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
             print("fin"+str(i))
         print("finish")
         session.close()
@@ -873,13 +878,16 @@ def get_folders_parallel(folder_id):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
+    j = 1
     for i in range(len(Datas)-1, -1, -1):
         dic = {
-            "No.": Datas[i][0],
+            # "No.": Datas[i][0],
+            "No.": j,
             "pich": Datas[i][1][0],
             "tone": Datas[i][2][0],
             "volume": Datas[i][3][0],
         }
+        j += 1
         dicDatas.append(dic)
 
     session.close()
@@ -907,7 +915,8 @@ def get_folder_progress(folder_id):
     dicDatas = []
     for i in range(len(Datas)):
         dic = {
-            "x": Datas[i][0],
+            # "x": Datas[i][0],
+            "x": i+1,
             "y": round(Datas[i][4], 4)
         }
         dicDatas.append(dic)
@@ -929,7 +938,7 @@ def get_music_decibel(music_id):
     db = librosa.amplitude_to_db(S, ref=np.max)
     dbLine = []
     for i in range(len(db[0])):
-        _max = -20 
+        _max = -20
         for j in range(len(db)):
             if _max <= db[j][i]:
                 _max = db[j][i]
@@ -1037,7 +1046,7 @@ def decibel_ave_data(music):
         s += pow(dbLine[i]-average, 2)
     s /= s_count
     s = math.sqrt(s)
-  
+
     a = 70
     x = np.arange(0, 40)
     y = np.exp(-x/a)
@@ -1087,7 +1096,7 @@ def get_folder_decibel(folder_id):
             }
             data.append(dic)
 
-        Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": 1, "data": data})
 
     else:
         for i in range(1, len(preData)):
@@ -1103,7 +1112,7 @@ def get_folder_decibel(folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -1115,7 +1124,7 @@ def get_folder_decibel(folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
             print("fin")
         print("all clear")
         session.close()
@@ -1254,6 +1263,8 @@ def dtw_frequency_data(music):
     return f0
 
 # --スペクトル重心--------
+
+
 def spectrum_centroid(music):
     session = create_session()
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
@@ -1429,7 +1440,7 @@ def get_folder_tone(folder_id):
             }
             data.append(dic)
 
-        Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": 1, "data": data})
 
     else:
         for i in range(1, len(preData)):
@@ -1445,7 +1456,7 @@ def get_folder_tone(folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -1456,7 +1467,7 @@ def get_folder_tone(folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
             print("fin")
         print("all clear")
         session.close()

@@ -40,29 +40,13 @@ const ShowChart = (folderId, kind) => {
   if (kind === "progress") {
     return <ProgressChart folderId={folderId} />;
   } else if (kind === "parallel") {
-    return (
-      <div>
-        <ParallelChart folderId={folderId} />
-      </div>
-    );
+    return <ParallelChart folderId={folderId} />;
   } else if (kind === "pitch") {
-    return (
-      <div>
-        <FrequencyChart folderId={folderId} />
-      </div>
-    );
+    return <FrequencyChart folderId={folderId} />;
   } else if (kind === "vol") {
-    return (
-      <div>
-        <VolumeChart folderId={folderId} />
-      </div>
-    );
+    return <VolumeChart folderId={folderId} />;
   } else if (kind === "tone") {
-    return (
-      <div>
-        <ToneChart folderId={folderId} />
-      </div>
-    );
+    return <ToneChart folderId={folderId} />;
   }
 };
 
@@ -173,6 +157,7 @@ const Folder = ({ history }) => {
             return (
               <MusicItem
                 key={data.id}
+                trackNum={i}
                 music={data}
                 routerLink={`/detail/${data.id}/from/${folderId}`}
                 onClickMoveButton={() => {

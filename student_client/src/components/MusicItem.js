@@ -8,6 +8,7 @@ import {
 import { convertDate } from "../services/date.js";
 
 export default function MusicItem({
+  trackNum,
   music,
   routerLink,
   onClickMoveButton,
@@ -20,7 +21,7 @@ export default function MusicItem({
         class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
       >
         <IonLabel>
-          No.{music.id}&emsp;{convertDate(music.created)}&emsp;
+          No.{trackNum + 1}&emsp;{convertDate(music.created)}&emsp;
           {music.name}&emsp;
         </IonLabel>
       </IonItem>

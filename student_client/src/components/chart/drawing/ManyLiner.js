@@ -14,7 +14,7 @@ const ManyLiner = ({ data }) => {
             data: input.data.filter(({ x }) => x % 5 === 0),
           };
         })}
-        margin={{ top: 40, right: 20, bottom: 50, left: 60 }}
+        margin={{ top: 40, right: 20, bottom: 30, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
