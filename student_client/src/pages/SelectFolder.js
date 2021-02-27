@@ -48,7 +48,6 @@ const SelectFolder = ({ history }) => {
           <IonListHeader lines="full">
             <IonLabel>{music?.name}</IonLabel>
           </IonListHeader>
-          {/*CSS書き直す*/}
           <IonItem
             color="light"
             detail="false"

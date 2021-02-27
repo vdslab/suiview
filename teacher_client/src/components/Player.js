@@ -45,7 +45,7 @@ export function Player(data) {
           Playing();
         }}
       >
-        <i class="fas fa-play">p</i>
+        <i className="fas fa-play">s</i>
       </button>
     </div>
   );

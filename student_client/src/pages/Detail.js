@@ -209,7 +209,6 @@ const Detail = ({ history }) => {
       </IonContent>
 
       <IonFooter>
-        {/*デザイン微妙*/}
         <IonToolbar>
           <IonList>
             <IonItem>

@@ -97,7 +97,6 @@ export const saveAudio = () => {
 
   const blob = exportWAV(audioData);
 
-  //必要そう↓多分これがないと二回目以降がおかしくなりそう
   audioContext.close().then(function () {
     audioData = [];
     audio_sample_rate = null;

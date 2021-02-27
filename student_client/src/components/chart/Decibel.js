@@ -23,9 +23,7 @@ const Decibel = ({ musicId }) => {
   }
   return (
     <div>
-      <IonItem lines="none">
-        {/*安定度：{data.average} &ensp; */}安定度：{data.s}
-      </IonItem>
+      <IonItem lines="none">安定度：{data.s}</IonItem>
       <Liner data={data.values} />
     </div>
   );

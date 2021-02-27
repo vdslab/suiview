@@ -57,11 +57,6 @@ const Recording = ({ history }) => {
     }
   });
 
-  /*useIonViewWillEnter(async () => {
-    const data = await getFolders(getAccessTokenSilently);
-    setAllFolder(data);
-  });*/
-
   return (
     <IonPage>
       <IonHeader>
@@ -74,20 +69,6 @@ const Recording = ({ history }) => {
         <IonList>
           <IonListHeader lines="full">
             フォルダ名 &emsp;{folder?.name || ""}
-            {/*} <IonSelect
-              value={folder?.name}
-              onIonChange={(e) => {
-                setSelected(e.target.value);
-              }}
-            >
-              {allFolder?.map((data) => {
-                return (
-                  <IonSelectOption value={data.name} key={data.id}>
-                    {data.name}
-                  </IonSelectOption>
-                );
-              })}
-            </IonSelect>*/}
           </IonListHeader>
           <IonItem>
             <IonLabel>名前&ensp;</IonLabel>
