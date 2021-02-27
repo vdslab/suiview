@@ -89,6 +89,8 @@ const Home = () => {
                           className="score"
                         ></img>
                       );
+                    } else {
+                      return <div key={k}></div>;
                     }
                   })}
                   {defo === 0 ? (
