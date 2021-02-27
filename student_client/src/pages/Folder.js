@@ -5,7 +5,6 @@ import {
   IonItem,
   IonList,
   IonToolbar,
-  IonTitle,
   IonContent,
   IonPage,
   IonButton,
@@ -17,6 +16,8 @@ import {
   useIonViewWillEnter,
   IonFooter,
   IonCardContent,
+  IonLabel,
+  IonCardHeader,
 } from "@ionic/react";
 import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -30,6 +31,7 @@ import {
 } from "../components/chart";
 import MusicItem from "../components/MusicItem.js";
 import { defoFolder } from "./Home.js";
+import noImage from "../images/no_image.PNG";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -121,31 +123,51 @@ const Folder = ({ history }) => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
+      <IonHeader style={{ height: "8.5rem" }} class="--backgoundColor:red">
+        <IonToolbar
+          style={{
+            height: "8.5rem",
+          }}
+        >
+          {" "}
           <IonBackButton
             slot="start"
             fill="clear"
             defaultHref="/"
+            style={{ marginTop: "-5rem" }}
           ></IonBackButton>
-          <IonItem lines="none">
-            <IonTitle>{folder?.name}</IonTitle>
+          <div style={{ height: "5rem" }}>
             {imgData ? (
               <img
                 src={imgData.img}
                 alt="譜面の画像"
-                className="headerScore"
+                className=""
+                style={{ maxWidth: "100%", marginLeft: "-2rem" }}
               ></img>
             ) : (
-              []
+              <img
+                src={noImage}
+                alt="譜面の画像"
+                className=""
+                style={{ width: "100%", marginLeft: "-2rem" }}
+              ></img>
             )}
+          </div>
+          <IonItem lines="none" style={{ marginLeft: "-2rem" }}>
+            {folder?.name}
           </IonItem>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         {musics.length === 0 ? (
-          <IonCard>
-            <IonCardContent>データがありません</IonCardContent>
+          <IonCard style={{ height: "380px" }}>
+            <IonCardContent style={{ marginTop: "35%", marginLeft: "15%" }}>
+              <p>データがありません</p>
+              <p>
+                右下の&ensp;<IonIcon icon={micOutline}></IonIcon>&ensp;
+                から録音しましょう
+              </p>
+            </IonCardContent>
           </IonCard>
         ) : (
           <IonCard>
