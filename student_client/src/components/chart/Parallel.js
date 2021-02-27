@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
-import { ParallelCoordinates } from "./drawing";
+//import { ParallelCoordinates } from "./drawing";
 import { Bar } from "./drawing";
 
 const ParallelChart = ({ folderId }) => {

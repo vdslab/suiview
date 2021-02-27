@@ -1,51 +1,9 @@
 import { ResponsiveBar } from "@nivo/bar";
 
-const ParallelCoordinates = ({ data }) => {
+const Bar = ({ data }) => {
   if (data === null || data === undefined) {
     return null;
   }
-
-  /*console.log(data);
-  const max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.tone;
-    })
-  );
-  const min = Math.min.apply(
-    Math,
-    data.map((input) => {
-      return input.tone;
-    })
-  );
-
-  const pich_max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.pich;
-    })
-  );
-
-  const pich_min = Math.min.apply(
-    Math,
-    data.map((input) => {
-      return input.pich;
-    })
-  );
-
-  const vol_max = Math.max.apply(
-    Math,
-    data.map((input) => {
-      return input.volume;
-    })
-  );
-
-  const vol_min = Math.min.apply(
-    Math,
-    data.map((input) => {
-      return input.volume;
-    })
-  );*/
 
   return (
     <div style={{ width: "100%", height: "300px" }}>
@@ -146,4 +104,4 @@ const ParallelCoordinates = ({ data }) => {
   );
 };
 
-export default ParallelCoordinates;
+export default Bar;

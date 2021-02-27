@@ -10,7 +10,6 @@ import {
   IonButton,
   IonIcon,
   IonLabel,
-  IonListHeader,
   IonItemSliding,
   IonItemOption,
   IonItemOptions,
@@ -29,6 +28,7 @@ import { getFolders, deleteFolder, postFolder } from "../services/api";
 import argImg from "../images/arpeggio.PNG";
 import longtoneImg from "../images/longtone.PNG";
 import scaleImg from "../images/scale.PNG";
+import noImage from "../images/no_image.PNG";
 export const defoFolder = [
   { img: longtoneImg, name: "ロングトーン" },
   { img: scaleImg, name: "スケール" },
@@ -56,14 +56,13 @@ const Home = () => {
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonListHeader>Folders</IonListHeader>
-
           <IonItem
             _ngcontent-yfv-c79=""
             routerLink="/musics"
             detail="false"
             class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
           >
+            <img src={noImage} alt="譜面の画像" className="score"></img>
             すべて
             <IonButton slot="end" fill="clear">
               <IonIcon icon={chevronForwardOutline}></IonIcon>
@@ -71,6 +70,7 @@ const Home = () => {
           </IonItem>
 
           {folders.map((data) => {
+            let defo = 0;
             return (
               <IonItemSliding key={data.id}>
                 <IonItem
@@ -80,6 +80,7 @@ const Home = () => {
                 >
                   {defoFolder.map((d, k) => {
                     if (data.name === d.name) {
+                      defo = 1;
                       return (
                         <img
                           src={d.img}
@@ -88,10 +89,13 @@ const Home = () => {
                           className="score"
                         ></img>
                       );
-                    } else {
-                      return <div key={k}></div>;
                     }
                   })}
+                  {defo === 0 ? (
+                    <img src={noImage} alt="譜面の画像" className="score"></img>
+                  ) : (
+                    []
+                  )}
                   <IonLabel>{data.name}</IonLabel>
                   <IonButton slot="end" fill="clear">
                     <IonIcon icon={chevronForwardOutline}></IonIcon>
