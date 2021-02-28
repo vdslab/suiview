@@ -46,6 +46,7 @@ const MusicList = ({ history }) => {
               <MusicItem
                 key={data.id}
                 music={data}
+                no={false}
                 routerLink={`/detail/${data.id}/from/all`}
                 onClickMoveButton={() => {
                   history.push(`/select_folder/${data.id}`);

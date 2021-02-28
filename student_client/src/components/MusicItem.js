@@ -10,6 +10,7 @@ import { convertDate } from "../services/date.js";
 export default function MusicItem({
   trackNum,
   music,
+  no,
   routerLink,
   onClickMoveButton,
   onClickDeleteButton,
@@ -21,8 +22,19 @@ export default function MusicItem({
         class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
       >
         <IonLabel>
-          No.{trackNum + 1}&emsp;{convertDate(music.created)}&emsp;
-          {music.name}&emsp;
+          {no === true ? (
+            <div>
+              {" "}
+              No.{trackNum + 1}&emsp;{convertDate(music.created)}&emsp;
+              {music.name}&emsp;
+            </div>
+          ) : (
+            <div>
+              {" "}
+              {convertDate(music.created)}&emsp;
+              {music.name}&emsp;
+            </div>
+          )}
         </IonLabel>
       </IonItem>
 

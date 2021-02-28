@@ -17,7 +17,6 @@ import {
   IonIcon,
   useIonViewWillEnter,
   IonActionSheet,
-  IonListHeader,
   IonFooter,
   IonAlert,
   IonItemDivider,
