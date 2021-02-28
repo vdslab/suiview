@@ -548,8 +548,6 @@ def put_username():
     session.commit()
     user = user.to_json()
     session.close()
-    print(user["name"])
-    print(user)
     return jsonify(user)
 
 
@@ -571,7 +569,6 @@ def get_musics():
     Days = list(map(list, set(map(tuple, Days))))
     Days.sort(reverse=True)
     data = {"music": musics, "day": Days}
-
     return jsonify(data)
 
 
