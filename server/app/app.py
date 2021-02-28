@@ -541,7 +541,6 @@ def put_username():
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
-    print(data)
     user = session.query(User).filter_by(
         id=user_id).first()
     user.name = data["name"]
@@ -549,7 +548,9 @@ def put_username():
     session.commit()
     user = user.to_json()
     session.close()
-    return jsonify(user["name"])
+    print(user["name"])
+    print(user)
+    return jsonify(user)
 
 
 @app.route('/musics', methods=['GET'])

@@ -51,7 +51,7 @@ const Home = () => {
           <IonButton slot="start" fill="clear" routerLink="/setting">
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
-          <IonTitle>musicvis</IonTitle>
+          <IonTitle>吹view</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

@@ -31,7 +31,13 @@ const Setting = () => {
     setUserData(data);
   });
 
-  console.log(userData);
+  async function sendUsername(name) {
+    console.log(name);
+    const data = await putUsername({ name }, getAccessTokenSilently);
+    setUserData(data);
+    console.log(data);
+    console.log(userData);
+  }
 
   return (
     <IonPage>
@@ -96,12 +102,13 @@ const Setting = () => {
             {
               text: "OK",
               handler: async ({ name }) => {
-                const data = await putUsername(
+                sendUsername(name);
+                /*const data = await putUsername(
                   { name },
                   getAccessTokenSilently
                 );
-                //const data = await getUsername(getAccessTokenSilently);
                 setUserData(data);
+                console.log(userData);*/
               },
             },
           ]}
