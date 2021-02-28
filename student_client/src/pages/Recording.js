@@ -41,7 +41,6 @@ const Recording = ({ history }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const folderId = params.get("folderId") || "";
-  //const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
   //const [allFolder, setAllFolder] = useState(null);
