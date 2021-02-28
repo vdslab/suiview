@@ -31,8 +31,7 @@ export function Player({ musicId }) {
   }
 
   return (
-    <div>
-      {" "}
+    <div style={{ textAlign: "center" }}>
       <audio id={`bgm${musicId}`} src={url} />
       <IonButton
         className="button is-rounded is-small"

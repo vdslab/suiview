@@ -13,7 +13,6 @@ import {
   IonLabel,
   IonListHeader,
   IonBackButton,
-  IonInput,
   IonTextarea,
   IonFooter,
   IonAlert,
@@ -42,7 +41,7 @@ const Recording = ({ history }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const folderId = params.get("folderId") || "";
-  const [name, setName] = useState("");
+  //const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
   //const [allFolder, setAllFolder] = useState(null);
@@ -86,7 +85,7 @@ const Recording = ({ history }) => {
             ></img>
           )}
           <IonListHeader lines="full">
-            <IonTitle>{folder?.name || ""}</IonTitle>
+            <IonTitle>{folder?.name || "フォルダ指定なし"}</IonTitle>
           </IonListHeader>
           {/*<IonItem>
             <IonLabel>名前&ensp;</IonLabel>
@@ -174,7 +173,8 @@ const Recording = ({ history }) => {
                   expand="full"
                   disabled={(recorded + 1) % 2}
                   onClick={async () => {
-                    const item = { name };
+                    //const item = { name };
+                    const item = "";
                     if (folderId) {
                       item.folderId = folderId;
                     }
