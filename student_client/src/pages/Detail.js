@@ -29,11 +29,11 @@ import {
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
-  closeOutline,
   ellipsisHorizontalCircleOutline,
   trash,
   close,
   createOutline,
+  chevronBackOutline,
 } from "ionicons/icons";
 import {
   getMusic,
@@ -123,8 +123,8 @@ const Detail = ({ history }) => {
             defaultHref={
               music?.folderId ? `/folder/${music.folderId}` : "/musics"
             }
-            icon={closeOutline}
-          ></IonBackButton>
+            icon={chevronBackOutline}
+          />
 
           <IonTitle>
             <IonItem lines="none">

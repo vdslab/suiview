@@ -30,6 +30,7 @@ import {
 import MusicItem from "../components/MusicItem.js";
 import { defoFolder } from "./Home.js";
 import noImage from "../images/no_image.PNG";
+import { chevronBackOutline } from "ionicons/icons";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -113,7 +114,8 @@ const Folder = ({ history }) => {
             fill="clear"
             defaultHref="/"
             style={{ marginTop: "-5rem" }}
-          ></IonBackButton>
+            icon={chevronBackOutline}
+          />
           <div style={{ height: "5rem" }}>
             {imgData ? (
               <img
@@ -159,6 +161,7 @@ const Folder = ({ history }) => {
                 key={data.id}
                 trackNum={i}
                 music={data}
+                no={true}
                 routerLink={`/detail/${data.id}/from/${folderId}`}
                 onClickMoveButton={() => {
                   history.push(`/select_folder/${data.id}`);
