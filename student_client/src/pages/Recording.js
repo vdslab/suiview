@@ -35,6 +35,8 @@ import {
   //getFolders,
 } from "../services/api";
 import { Player } from "../components/Player.js";
+import { defoFolder } from "./Home.js";
+import noImage from "../images/no_image.PNG";
 
 const Recording = ({ history }) => {
   const location = useLocation();
@@ -49,6 +51,7 @@ const Recording = ({ history }) => {
   const [selected, setSelected] = useState(3);
   const [recorded, setRecorded] = useState(0);
   const [musicId, setMusicId] = useState();
+  const imgData = defoFolder.find((v) => v.name === folder?.name);
 
   useIonViewWillEnter(async () => {
     if (folderId) {
@@ -67,17 +70,32 @@ const Recording = ({ history }) => {
       </IonHeader>
       <IonContent>
         <IonList>
+          {imgData ? (
+            <img
+              src={imgData.img}
+              alt="譜面の画像"
+              className=""
+              style={{ maxWidth: "100%" }}
+            ></img>
+          ) : (
+            <img
+              src={noImage}
+              alt="譜面の画像"
+              className=""
+              style={{ width: "100%" }}
+            ></img>
+          )}
           <IonListHeader lines="full">
-            フォルダ名 &emsp;{folder?.name || ""}
+            <IonTitle>{folder?.name || ""}</IonTitle>
           </IonListHeader>
-          <IonItem>
+          {/*<IonItem>
             <IonLabel>名前&ensp;</IonLabel>
             <IonInput
               value={name}
               placeholder="music name"
               onIonChange={(e) => setName(e.detail.value)}
             ></IonInput>
-          </IonItem>
+          </IonItem>*/}
           <IonItem>
             <IonLabel>自己評価</IonLabel>
             <IonSelect

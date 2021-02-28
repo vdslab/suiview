@@ -18,6 +18,9 @@ export function Player({ musicId }) {
 
   function Playing() {
     const bgm1 = document.querySelector(`#bgm${musicId}`);
+    bgm1.addEventListener("ended", function () {
+      setPlay(true);
+    });
     if (bgm1?.paused !== true) {
       setPlay(true);
       bgm1.pause();
@@ -30,7 +33,7 @@ export function Player({ musicId }) {
   return (
     <div>
       {" "}
-      <audio id={`bgm${musicId}`} preload loop src={url} />
+      <audio id={`bgm${musicId}`} src={url} />
       <IonButton
         className="button is-rounded is-small"
         size="large"
