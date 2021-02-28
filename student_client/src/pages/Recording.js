@@ -41,7 +41,7 @@ const Recording = ({ history }) => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const folderId = params.get("folderId") || "";
-  const [name, setName] = useState("");
+  //const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
   //const [allFolder, setAllFolder] = useState(null);
@@ -174,6 +174,7 @@ const Recording = ({ history }) => {
                   disabled={(recorded + 1) % 2}
                   onClick={async () => {
                     //const item = { name };
+                    const name = "";
                     const item = { name };
                     if (folderId) {
                       item.folderId = folderId;
