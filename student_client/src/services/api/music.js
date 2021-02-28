@@ -104,3 +104,12 @@ export async function deleteMusic(musicId, getAccessToken) {
   const response = await requestDelete(`/musics/${musicId}`, getAccessToken);
   return response.json();
 }
+
+export async function putMusicAssesment(musicId, item, getAccessToken) {
+  const response = await requestPut(
+    `/musics/${musicId}/assesment`,
+    JSON.stringify(item),
+    getAccessToken
+  );
+  return response.json();
+}

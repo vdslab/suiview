@@ -34,6 +34,7 @@ import {
   close,
   createOutline,
   chevronBackOutline,
+  starOutline,
 } from "ionicons/icons";
 import {
   getMusic,
@@ -42,11 +43,11 @@ import {
   putMusic,
   deleteMusic,
   getMusicStability,
+  putMusicAssesment,
 } from "../services/api";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
 import { convertDate } from "../services/date.js";
-
 const chartIds = ["PITCH", "VOL", "TONE"];
 
 const Charts = () => {
@@ -95,9 +96,9 @@ const Detail = ({ history }) => {
   const [music, setMusic] = useState(null);
   const [comments, setComments] = useState([]);
   const [showActionSheet, setShowActionSheet] = useState(false);
+  const [showActionSheet2, setShowActionSheet2] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [stability, steStability] = useState([]);
-
   const { getAccessTokenSilently } = useAuth0();
 
   useIonViewWillEnter(async () => {
@@ -112,6 +113,15 @@ const Detail = ({ history }) => {
     const data = await getMusicStability(musicId, getAccessTokenSilently);
     steStability(data);
   });
+
+  async function changeAssesment(input) {
+    const data = await putMusicAssesment(
+      musicId,
+      input,
+      getAccessTokenSilently
+    );
+    setMusic(data);
+  }
 
   return (
     <IonPage>
@@ -203,9 +213,22 @@ const Detail = ({ history }) => {
                 <IonItem lines="none">
                   総合点：{stability?.total}&emsp;
                   {music?.assessment === 0 ? (
-                    <div> ★なし</div>
+                    <div>
+                      <IonButton fill="clear">
+                        <IonIcon icon={starOutline} />
+                      </IonButton>
+                      なし
+                    </div>
                   ) : (
-                    <div> ★{music?.assessment}</div>
+                    <div>
+                      <IonButton
+                        fill="clear"
+                        size="large"
+                        onClick={() => setShowActionSheet2(true)}
+                      >
+                        ★ {music?.assessment}
+                      </IonButton>
+                    </div>
                   )}
                 </IonItem>
               </IonCol>
@@ -246,10 +269,79 @@ const Detail = ({ history }) => {
                 );
               })
             ) : (
-              <IonItem lines="none">まだコメントはありません</IonItem>
+              <div>
+                <IonItem lines="none">まだコメントはありません</IonItem>
+                <IonItem lines="none">
+                  右下の
+                  <IonIcon icon={createOutline} />
+                  からコメントを書きましょう
+                </IonItem>
+              </div>
             )}
           </IonList>
         </IonCard>
+        <IonActionSheet
+          isOpen={showActionSheet2}
+          onDidDismiss={() => setShowActionSheet2(false)}
+          cssClass="my-custom-class"
+          header={"自己評価の変更"}
+          buttons={[
+            {
+              text: "5",
+              role: "5",
+              cssClass: "secondary",
+              handler: () => {
+                changeAssesment(5);
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "4",
+              role: "4",
+              cssClass: "secondary",
+              handler: () => {
+                changeAssesment(4);
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "3",
+              role: "3",
+              cssClass: "secondary",
+              handler: () => {
+                changeAssesment(3);
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "2",
+              role: "2",
+              cssClass: "secondary",
+              handler: () => {
+                changeAssesment(2);
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "1",
+              role: "1",
+              cssClass: "secondary",
+              handler: () => {
+                changeAssesment(1);
+                console.log("Confirm Cancel");
+              },
+            },
+            {
+              text: "Cancel",
+              icon: close,
+              role: "cancel",
+              handler: () => {
+                console.log("Cancel clicked");
+              },
+            },
+          ]}
+        />
+
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}

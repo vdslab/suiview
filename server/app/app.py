@@ -703,6 +703,23 @@ def post_comment(music_id):
     return get_comment(music_id)
 
 
+@ app.route('/musics/<music_id>/assesment', methods=['PUT'])
+@ requires_auth
+def put_assesment(music_id):
+    session = create_session()
+    user_id = g.current_user['sub']
+    data = json.loads(request.data.decode('utf-8'))
+    music = session.query(Music).filter_by(
+        user_id=user_id, id=music_id).first()
+    music.assessment = data
+    print(data, music.assessment)
+    session.add(music)
+    session.commit()
+    music = music.to_json()
+    print(music)
+    return jsonify(music)
+
+
 # フォルダのリストを返す
 @ app.route('/folders', methods=['GET'])
 @ requires_auth
