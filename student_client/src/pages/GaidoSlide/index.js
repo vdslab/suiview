@@ -1,0 +1,10 @@
+export { default as Slide1 } from "./Slide1.js";
+export { default as Slide2 } from "./Slide2.js";
+export { default as Slide3 } from "./Slide3.js";
+export { default as Slide4 } from "./Slide4.js";
+export { default as Slide5 } from "./Slide5.js";
+/*export { default as MusicList } from "./MusicList.js";
+export { default as Folder } from "./Folder.js";
+export { default as Detail } from "./Detail.js";
+export { default as SelectFolder } from "./SelectFolder.js";
+export { default as Gaido } from "./Gaido.js";*/
