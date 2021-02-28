@@ -26,14 +26,9 @@ export default function MusicItem({
             <div>
               {" "}
               No.{trackNum + 1}&emsp;{convertDate(music.created)}&emsp;
-              {music.name}&emsp;
             </div>
           ) : (
-            <div>
-              {" "}
-              {convertDate(music.created)}&emsp;
-              {music.name}&emsp;
-            </div>
+            <div> {convertDate(music.name, 1)}&emsp;</div>
           )}
         </IonLabel>
       </IonItem>

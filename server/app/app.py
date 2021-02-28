@@ -560,8 +560,18 @@ def get_musics():
     musics = session.query(Music).filter_by(
         user_id=user_id).order_by(Music.created.desc()).all()
     musics = [music.to_json() for music in musics]
+    Days = []
+    for music in musics:
+        day = str(music['created'].year)+"/" + \
+            str(music['created'].month).zfill(2) + \
+            "/"+str(music['created'].day).zfill(2)
+        Days.append([day, 0])
     session.close()
-    return jsonify(musics)
+    Days = list(map(list, set(map(tuple, Days))))
+    Days.sort(reverse=True)
+    data = {"music": musics, "day": Days}
+
+    return jsonify(data)
 
 
 @ app.route('/musics', methods=['POST'])
@@ -578,8 +588,8 @@ def post_music():
     return jsonify(music)
 
 
-@app.route('/musics/<music_id>', methods=['GET'])
-@requires_auth
+@ app.route('/musics/<music_id>', methods=['GET'])
+@ requires_auth
 def get_music(music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -594,8 +604,8 @@ def get_music(music_id):
     return jsonify(music)
 
 
-@app.route('/musics/<music_id>', methods=['PUT'])
-@requires_auth
+@ app.route('/musics/<music_id>', methods=['PUT'])
+@ requires_auth
 def put_music(music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -612,8 +622,8 @@ def put_music(music_id):
     return jsonify(music)
 
 
-@app.route('/musics/<music_id>', methods=['DELETE'])
-@requires_auth
+@ app.route('/musics/<music_id>', methods=['DELETE'])
+@ requires_auth
 def delete_music(music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -623,8 +633,8 @@ def delete_music(music_id):
     return jsonify({'message': 'deleted'})
 
 
-@app.route('/musics/<music_id>/content', methods=['GET'])
-@requires_auth
+@ app.route('/musics/<music_id>/content', methods=['GET'])
+@ requires_auth
 def get_music_content(music_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -639,14 +649,15 @@ def get_music_content(music_id):
     return response
 
 
-@app.route('/musics/<music_id>/content', methods=['PUT'])
-@requires_auth
+@ app.route('/musics/<music_id>/content', methods=['PUT'])
+@ requires_auth
 def put_music_content(music_id):
     session = create_session()
     user_id = g.current_user['sub']
     data = json.loads(request.data.decode('utf-8'))
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
+
     if 'name' in data:
         music.name = data['name']
     if 'folderId' in data:
@@ -659,6 +670,8 @@ def put_music_content(music_id):
                           text=data['comment'], user_id=user_id)
         session.add(comment)
 
+    session.add(music)
+    music.name = music.created
     session.add(music)
     session.commit()
     session.close()
@@ -691,8 +704,8 @@ def post_comment(music_id):
 
 
 # フォルダのリストを返す
-@app.route('/folders', methods=['GET'])
-@requires_auth
+@ app.route('/folders', methods=['GET'])
+@ requires_auth
 def get_folders():
     session = create_session()
     user_id = g.current_user['sub']
@@ -713,8 +726,8 @@ def get_folders():
 
 
 # フォルダの追加
-@app.route('/folders', methods=['POST'])
-@requires_auth
+@ app.route('/folders', methods=['POST'])
+@ requires_auth
 def post_folder():
     session = create_session()
     user_id = g.current_user['sub']
@@ -727,8 +740,8 @@ def post_folder():
     return jsonify(folder)
 
 
-@app.route('/folders/<folder_id>', methods=['GET'])
-@requires_auth
+@ app.route('/folders/<folder_id>', methods=['GET'])
+@ requires_auth
 def get_folder(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -740,8 +753,8 @@ def get_folder(folder_id):
     return jsonify(folder)
 
 
-@app.route('/folders/<folder_id>', methods=['PUT'])
-@requires_auth
+@ app.route('/folders/<folder_id>', methods=['PUT'])
+@ requires_auth
 def put_folder(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -756,8 +769,8 @@ def put_folder(folder_id):
     return jsonify(folder)
 
 
-@app.route('/folders/<folder_id>', methods=['DELETE'])
-@requires_auth
+@ app.route('/folders/<folder_id>', methods=['DELETE'])
+@ requires_auth
 def delete_folder(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -769,8 +782,8 @@ def delete_folder(folder_id):
     return jsonify({'message': 'deleted'})
 
 
-@app.route('/folders/<folder_id>/musics', methods=['GET'])
-@requires_auth
+@ app.route('/folders/<folder_id>/musics', methods=['GET'])
+@ requires_auth
 def get_folder_musics(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -782,8 +795,8 @@ def get_folder_musics(folder_id):
     return jsonify(musics)
 
 
-@app.route('/comments/<comment_id>', methods=['DELETE'])
-@requires_auth
+@ app.route('/comments/<comment_id>', methods=['DELETE'])
+@ requires_auth
 def delete_comment(comment_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -793,8 +806,8 @@ def delete_comment(comment_id):
     return {"message": "deleted"}
 
 
-@app.route('/folders/<folder_id>/f0', methods=['GET'])
-@requires_auth
+@ app.route('/folders/<folder_id>/f0', methods=['GET'])
+@ requires_auth
 def get_folder_f0(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
@@ -822,7 +835,7 @@ def get_folder_f0(folder_id):
             }
             data.append(dic)
         Datas.append({"id": 1, "data": data})
-        #Datas.append({"id": musics[0].id, "data": data})
+        # Datas.append({"id": musics[0].id, "data": data})
 
     else:
         for i in range(len(preData)):
@@ -841,7 +854,7 @@ def get_folder_f0(folder_id):
                     }
                     data.append(dic)
                 Datas.append({"id": 1, "data": data})
-                #Datas.append({"id": musics[0].id, "data": data})
+                # Datas.append({"id": musics[0].id, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -852,7 +865,7 @@ def get_folder_f0(folder_id):
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
-            #Datas.append({"id": musics[i].id, "data": data})
+            # Datas.append({"id": musics[i].id, "data": data})
             Datas.append({"id": i+1, "data": data})
             print("fin"+str(i))
         print("finish")
@@ -861,8 +874,8 @@ def get_folder_f0(folder_id):
 
 
 # parallelCoordinates
-@app.route('/folders/<folder_id>/parallel', methods=['GET'])
-@requires_auth
+@ app.route('/folders/<folder_id>/parallel', methods=['GET'])
+@ requires_auth
 def get_folders_parallel(folder_id):
     session = create_session()
     user_id = g.current_user['sub']
