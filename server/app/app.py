@@ -821,7 +821,7 @@ def get_folder_f0(folder_id):
                 "y": d[i]
             }
             data.append(dic)
-        Datas.append({"id": i+1, "data": data})
+        Datas.append({"id": 1, "data": data})
         #Datas.append({"id": musics[0].id, "data": data})
 
     else:

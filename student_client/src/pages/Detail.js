@@ -25,6 +25,8 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonCardHeader,
+  IonCardTitle,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -111,8 +113,6 @@ const Detail = ({ history }) => {
     const data = await getMusicStability(musicId, getAccessTokenSilently);
     steStability(data);
   });
-
-  console.log(stability);
 
   return (
     <IonPage>
@@ -217,33 +217,38 @@ const Detail = ({ history }) => {
             {stability?.tone}
           </IonItem>
         </IonCard>
-        <IonCard>
+        <IonCard style={{ height: "350px" }}>
           <Charts />
         </IonCard>
         <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>コメント</IonCardTitle>
+          </IonCardHeader>
           <IonList>
-            <IonListHeader>コメント</IonListHeader>
-
-            {comments.map((data) => {
-              return (
-                <div>
-                  <IonItem key={data.id} lines="none">
-                    <IonItemDivider color="light">
-                      <IonLabel>
-                        {data.writer == null ? (
-                          <div>{convertDate(data.created)} &ensp;</div>
-                        ) : (
-                          <div>
-                            {convertDate(data.created)}&ensp;by {data.writer}
-                          </div>
-                        )}
-                      </IonLabel>
-                    </IonItemDivider>
-                  </IonItem>
-                  <IonItem>{data.comment}</IonItem>
-                </div>
-              );
-            })}
+            {comments.length !== 0 ? (
+              comments.map((data) => {
+                return (
+                  <div>
+                    <IonItem key={data.id} lines="none">
+                      <IonItemDivider color="light">
+                        <IonLabel>
+                          {data.writer == null ? (
+                            <div>{convertDate(data.created)} &ensp;</div>
+                          ) : (
+                            <div>
+                              {convertDate(data.created)}&ensp;by {data.writer}
+                            </div>
+                          )}
+                        </IonLabel>
+                      </IonItemDivider>
+                    </IonItem>
+                    <IonItem>{data.comment}</IonItem>
+                  </div>
+                );
+              })
+            ) : (
+              <IonItem lines="none">まだコメントはありません</IonItem>
+            )}
           </IonList>
         </IonCard>
         <IonAlert

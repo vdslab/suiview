@@ -15,11 +15,7 @@ const Decibel = ({ musicId }) => {
   }, [musicId, getAccessTokenSilently]);
 
   if (data == null) {
-    return (
-      <IonItem>
-        <div>loading...</div>
-      </IonItem>
-    );
+    return <IonItem lines="none">loading...</IonItem>;
   }
   return <Liner data={data.values} />;
 };
