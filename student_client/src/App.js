@@ -12,6 +12,7 @@ import {
   Folder,
   Detail,
   SelectFolder,
+  Gaido,
 } from "../src/pages";
 
 const App = () => {
@@ -23,8 +24,9 @@ const App = () => {
         {isAuthenticated ? (
           <IonRouterOutlet>
             <Route path="/" component={Home} exact />
+            <Route path="/setting/gaido" component={Gaido} />
             <Route path="/recording" component={Recording} />
-            <Route path="/setting" component={Setting} />
+            <Route path="/setting" component={Setting} exact />
             <Route path="/musics" component={MusicList} />
             <Route path="/folder/:folderId" component={Folder} />
             <Route path="/detail/:musicId" component={Detail} />

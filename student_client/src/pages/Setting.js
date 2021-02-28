@@ -32,11 +32,8 @@ const Setting = () => {
   });
 
   async function sendUsername(name) {
-    console.log(name);
     const data = await putUsername({ name }, getAccessTokenSilently);
     setUserData(data);
-    console.log(data);
-    console.log(userData);
   }
 
   return (
@@ -68,6 +65,7 @@ const Setting = () => {
               </IonItem>
             </IonCardContent>
           </IonCard>
+          <IonItem routerLink="/setting/gaido">利用ガイド</IonItem>
           <IonButton
             slot="end"
             expand="full"

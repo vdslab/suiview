@@ -17,7 +17,7 @@ const Login = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>musicvis</IonTitle>
+          <IonTitle>吹view</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>

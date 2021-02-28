@@ -6,3 +6,4 @@ export { default as MusicList } from "./MusicList.js";
 export { default as Folder } from "./Folder.js";
 export { default as Detail } from "./Detail.js";
 export { default as SelectFolder } from "./SelectFolder.js";
+export { default as Gaido } from "./Gaido.js";
