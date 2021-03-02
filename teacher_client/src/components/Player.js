@@ -9,7 +9,6 @@ export function Player(data) {
   const [play, setPlay] = useState(true);
   const { getAccessTokenSilently } = useAuth0();
   const musicId = data.id;
-  console.log(play);
 
   useEffect(() => {
     getMusicContent(userName, musicId, getAccessTokenSilently).then((blob) => {

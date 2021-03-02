@@ -406,7 +406,6 @@ def get_student_music_f0(user_name, music_id):
         data.append(dic)
 
     session.close()
-    print(data)
     return jsonify({
         'average': average[1],
         's': average[0],
@@ -512,6 +511,23 @@ def put_teacher_comment(user_name, music_id):
     session.close()
     return jsonify("receive")
 
+
+@ app.route('/<user_name>/musics/<music_id>/stability', methods=['GET'])
+@ requires_auth
+def get_student_folder_stability(user_name, music_id):
+    session = create_session()
+    student = session.query(User).filter_by(
+        name=user_name).first()
+    student_id = student.id
+    music = session.query(Music).filter_by(
+        user_id=student_id, id=music_id).first()
+    f0_ave = frequency_ave_data(music)
+    vol_ave = decibel_ave_data(music)
+    tone_ave = spectrum_rolloff_ave(music)
+    data = {"f0": f0_ave[0], "vol": vol_ave[0], "tone": tone_ave[0],
+            "total": f0_ave[0]+vol_ave[0]+tone_ave[0]}
+    print(data)
+    return jsonify(data)
 #########################################################
 #########################################################
 

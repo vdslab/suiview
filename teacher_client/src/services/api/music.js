@@ -69,3 +69,12 @@ export async function putMusicComment(
   );
   return response.json();
 }
+
+export async function getMusicStability(userName, musicId, getAccessToken) {
+  console.log("helo");
+  const response = await requestGet(
+    `/${userName}/musics/${musicId}/stability`,
+    getAccessToken
+  );
+  return response.json();
+}

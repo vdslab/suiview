@@ -34,39 +34,60 @@ function Account() {
       {" "}
       <section className="section">
         <div className="container">
-          ユーザー情報
-          {reName ? (
-            <div className="columns">
-              <div className="column is-4">
-                <input
-                  id="name"
-                  class="input"
-                  type="text"
-                  placeholder={userData?.name}
-                ></input>
-              </div>
-              <div className="column is-8">
-                <button
-                  className="button is-small"
-                  onClick={() => {
-                    sendNewName();
-                  }}
-                >
-                  保存する
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="column is-6">
-              {userData?.name} &ensp;
-              <button
-                onClick={() => setRename(true)}
-                className="button is-small"
+          <div className="title is-5">ユーザー情報</div>
+          <div className="columns">
+            <div className="column is-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="80"
+                height="80"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                ユーザー名を変更する
-              </button>
+                <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
+                <circle cx="12" cy="10" r="3" />
+                <circle cx="12" cy="12" r="10" />
+              </svg>
             </div>
-          )}
+            <div className="column">
+              {reName ? (
+                <div className="columns">
+                  <div className="column is-4">
+                    <input
+                      id="name"
+                      class="input"
+                      type="text"
+                      placeholder={userData?.name}
+                    ></input>
+                  </div>
+                  <div className="column is-8">
+                    <button
+                      className="button is-small"
+                      onClick={() => {
+                        sendNewName();
+                      }}
+                    >
+                      保存する
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="column is-6">
+                  {userData?.name} &ensp;
+                  <button
+                    onClick={() => setRename(true)}
+                    className="button is-small"
+                  >
+                    ユーザー名を変更する
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     </div>

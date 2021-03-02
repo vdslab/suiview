@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom";
 
 const CentroidRolloff = () => {
   const { userName, musicId } = useParams();
-  const [ave, setAve] = useState();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -26,7 +25,6 @@ const CentroidRolloff = () => {
     );
     Promise.all([centroidRequest, rolloffRequest]).then(
       ([centroid, rolloff]) => {
-        setAve(rolloff.average);
         setData([
           { id: "centroid", data: centroid.values },
           { id: "rolloff", data: rolloff.values },
@@ -38,12 +36,7 @@ const CentroidRolloff = () => {
   if (data == null) {
     return <div>loading...</div>;
   }
-  return (
-    <div>
-      {/*} 安定度：{ave.stability} &ensp; */}安定度：{ave.s}
-      <ManyLiner data={data} />
-    </div>
-  );
+  return <ManyLiner data={data} />;
 };
 
 export default CentroidRolloff;

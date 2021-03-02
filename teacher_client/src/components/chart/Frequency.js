@@ -17,13 +17,7 @@ const ShowFrequency = () => {
   if (data == null) {
     return <div>loading...</div>;
   }
-  return (
-    <div>
-      {" "}
-      {/*安定度：{data.average} &ensp;　*/}安定度：{data.s}
-      <Liner data={data.values} />
-    </div>
-  );
+  return <Liner data={data.values} />;
 };
 
 export default ShowFrequency;

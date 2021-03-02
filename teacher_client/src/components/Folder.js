@@ -72,7 +72,10 @@ const FolderList = () => {
             </ul>
           </section>
         </div>
-        <div className="column" style={{ paddingTop: 0 }}>
+        <div
+          className="column"
+          style={{ paddingTop: 0, marginTop: "-1.25rem" }}
+        >
           {path.length === 4 ? (
             <FolderChart />
           ) : path.length === 5 ? (

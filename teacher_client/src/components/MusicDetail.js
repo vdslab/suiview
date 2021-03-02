@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { putMusicComment } from "../services/api/index";
+import { putMusicComment, getMusicStability } from "../services/api/index";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   CentroidRolloff,
@@ -65,10 +65,29 @@ const ShowChart = (data) => {
 const MusicDetail = () => {
   const chartIds = ["PITCH", "VOL", "TONE"];
   const [chartId, setChartId] = useState(chartIds[0]);
-  const { folderId } = useParams();
+  const { userName, folderId, musicId } = useParams();
+  const [stability, steStability] = useState([]);
+  const { getAccessTokenSilently } = useAuth0();
 
+  useEffect(() => {
+    (async () => {
+      if (userName !== undefined && userName !== "") {
+        const data = await getMusicStability(
+          userName,
+          musicId,
+          getAccessTokenSilently
+        );
+        steStability(data);
+      }
+    })();
+  }, [userName, musicId, getAccessTokenSilently]);
   return (
     <section>
+      <div>
+        総合点：{stability?.total}&emsp; (音程：{stability?.f0}&emsp;強さ：
+        {stability?.vol}&emsp;音色：
+        {stability?.tone})
+      </div>
       <div className="select is-small ">
         <select
           name="pets"
