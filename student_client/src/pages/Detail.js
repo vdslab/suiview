@@ -34,7 +34,6 @@ import {
   close,
   createOutline,
   chevronBackOutline,
-  starOutline,
 } from "ionicons/icons";
 import {
   getMusic,
@@ -214,10 +213,13 @@ const Detail = ({ history }) => {
                   総合点：{stability?.total}&emsp;
                   {music?.assessment === 0 ? (
                     <div>
-                      <IonButton fill="clear">
-                        <IonIcon icon={starOutline} />
+                      <IonButton
+                        fill="clear"
+                        size="large"
+                        onClick={() => setShowActionSheet2(true)}
+                      >
+                        ★ なし{" "}
                       </IonButton>
-                      なし
                     </div>
                   ) : (
                     <div>
