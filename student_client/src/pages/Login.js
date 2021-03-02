@@ -1,36 +1,22 @@
-import {
-  IonHeader,
-  IonLoading,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonPage,
-  IonButton,
-  IonFooter,
-} from "@ionic/react";
+import { IonLoading, IonContent, IonPage, IonButton } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
+import img from "../images/icon.png";
 
 const Login = () => {
   const { isLoading, loginWithRedirect } = useAuth0();
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>吹view</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
-        <div className="ion-padding">
-          <p>ここになんかすごいアプリの説明</p>
+        <div className="login_logo">
+          <img src={img} alt="ロゴ画像" />
+          <IonLoading isOpen={isLoading} />
+          <p style={{ marginTop: "-0.125rem" }}>なんかひとこと</p>
+          <IonButton onClick={loginWithRedirect} color="dark">
+            ログイン
+          </IonButton>
         </div>
-        <IonLoading isOpen={isLoading} />
       </IonContent>
-      <IonFooter>
-        <IonButton expand="full" onClick={loginWithRedirect}>
-          ログイン
-        </IonButton>
-      </IonFooter>
     </IonPage>
   );
 };
