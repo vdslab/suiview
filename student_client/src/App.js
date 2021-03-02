@@ -26,7 +26,11 @@ const App = () => {
             <Route
               path="/home"
               render={() => {
-                return "visited" in localStorage ? <Home /> : <Gaido />;
+                return "visited" in localStorage ? (
+                  <Home />
+                ) : (
+                  <Gaido modal={true} />
+                );
               }}
               exact={true}
             />

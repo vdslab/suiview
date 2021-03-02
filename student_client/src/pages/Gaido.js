@@ -1,4 +1,12 @@
-import { IonContent, IonPage, IonSlides } from "@ionic/react";
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonSlides,
+  IonToolbar,
+  IonBackButton,
+  IonTitle,
+} from "@ionic/react";
 import {
   Slide1,
   Slide2,
@@ -9,10 +17,27 @@ import {
   Slide7,
   Slide8,
 } from "./GaidoSlide/index";
+import { chevronBackOutline } from "ionicons/icons";
 
-const Gaido = () => {
+const Gaido = ({ modal }) => {
+  console.log(modal);
   return (
     <IonPage>
+      {modal ? (
+        []
+      ) : (
+        <IonHeader>
+          {" "}
+          <IonToolbar>
+            <IonBackButton
+              slot="start"
+              defaultHref="/"
+              icon={chevronBackOutline}
+            />
+            <IonTitle>利用ガイド</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+      )}
       <IonContent fullscreen class="ion-padding" scroll-y="false">
         <IonSlides
           pager={true}
@@ -26,7 +51,7 @@ const Gaido = () => {
           <Slide5 />
           <Slide6 />
           <Slide7 />
-          <Slide8 />
+          {modal ? <Slide8 /> : []}
         </IonSlides>
       </IonContent>
     </IonPage>

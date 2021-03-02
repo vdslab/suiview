@@ -65,7 +65,14 @@ const Setting = () => {
               </IonItem>
             </IonCardContent>
           </IonCard>
-          <IonItem routerLink="/setting/gaido">利用ガイド</IonItem>
+          <IonButton
+            slot="end"
+            expand="full"
+            color="light"
+            routerLink="/setting/gaido"
+          >
+            利用ガイド
+          </IonButton>
           <IonButton
             slot="end"
             expand="full"

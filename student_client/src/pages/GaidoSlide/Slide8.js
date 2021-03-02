@@ -1,6 +1,6 @@
 import { IonButton, IonSlide } from "@ionic/react";
 
-const Slide5 = () => {
+const Slide8 = () => {
   function setVisited() {
     if (!("visited" in localStorage)) {
       localStorage.setItem("visited", "true");
@@ -24,4 +24,4 @@ const Slide5 = () => {
   );
 };
 
-export default Slide5;
+export default Slide8;
