@@ -43,6 +43,7 @@ const Home = () => {
     const data = await getFolders(getAccessTokenSilently);
     setFolders(data);
   });
+  console.log("hello!");
 
   return (
     <IonPage>

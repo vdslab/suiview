@@ -4,7 +4,6 @@ import img from "../images/icon.png";
 
 const Login = () => {
   const { isLoading, loginWithRedirect } = useAuth0();
-
   return (
     <IonPage>
       <IonContent>
