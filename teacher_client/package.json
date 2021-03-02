@@ -13,6 +13,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.2.0",
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "@nivo/bar": "^0.67.0",
     "@nivo/core": "^0.67.0",
     "@nivo/line": "^0.67.0",
     "@nivo/parallel-coordinates": "^0.67.0",
