@@ -16,7 +16,6 @@ const FolderList = () => {
   useEffect(() => {
     (async () => {
       if (folderId !== undefined) {
-        console.log("AAAAA");
         const data = await getFolderMusics(
           userName,
           folderId,
@@ -30,8 +29,6 @@ const FolderList = () => {
   if (musics?.length === 0) {
     return <div>録音データがありません</div>;
   }
-
-  console.log(musics);
 
   return (
     <section>

@@ -10,7 +10,7 @@ function Login() {
         <div className="hero-body">
           <div className="container">
             <div className="columns">
-              <h1 className="title column is-9">musicvis</h1>
+              <h1 className="title column is-9">吹View♪</h1>
               <div className="column is-3"></div>
             </div>
           </div>

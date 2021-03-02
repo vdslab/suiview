@@ -84,7 +84,7 @@ function Home() {
         <div className="hero-body">
           <div className="container">
             <div className="columns">
-              <h1 className="title column is-9">musicvis</h1>
+              <h1 className="title column is-9">吹view♪</h1>
               <div className="column is-3">
                 <div className="select is-small is-primary">
                   <select
