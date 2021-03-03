@@ -32,7 +32,7 @@ function App() {
 
         <div className="columns">
           <div className="column has-text-centered section">
-            <a href="https://musicvis.vdslab.jp/">
+            <a href="https://suiview-s.vdslab.jp">
               <img src={img} alt="イメージ画像" className="images" />
             </a>
             <div className="title is-6">生徒モード</div>
@@ -45,7 +45,7 @@ function App() {
           </div>
 
           <div className="column has-text-centered section">
-            <a href="https://musicvis-t.vdslab.jp/">
+            <a href="https://suiview-t.vdslab.jp/">
               <img src={img} alt="イメージ画像" className="images" />
             </a>
             <div className="title is-6">先生モード</div>
