@@ -1,10 +1,10 @@
 import { IonSlide } from "@ionic/react";
-import img from "../../images/icon.PNG";
+import iconImg from "../../images/icon.PNG";
 const Slide1 = () => {
   return (
     <IonSlide>
       <img
-        src={img}
+        src={iconImg}
         alt="ロゴ画像"
         className="logo"
         style={{ height: "40%" }}
