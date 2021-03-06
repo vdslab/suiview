@@ -16,7 +16,7 @@ import {
   IonAlert,
   IonInput,
 } from "@ionic/react";
-import { closeOutline, buildOutline } from "ionicons/icons";
+import { closeOutline, buildOutline, shareOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { getUsername, putUsername } from "../services/api/account";
@@ -36,6 +36,12 @@ const Setting = () => {
     const data = await putUsername({ name }, getAccessTokenSilently);
     setUserData(data);
   }
+
+  const name = userData ? userData["name"] : "";
+  const id = userData ? userData["userId"] : "";
+  const url = `https://line.me/R/msg/text/?${name}さんのユーザーIDは${id}です。\nこのIDを生徒に登録して演奏にコメントをつけましょう。`;
+  const encodedUrl = encodeURI(url);
+  console.log(encodedUrl);
 
   return (
     <IonPage>
@@ -61,10 +67,20 @@ const Setting = () => {
                   <IonIcon icon={buildOutline} color="dark"></IonIcon>
                 </IonButton>
               </IonItem>
+              <IonItem>
+                ユーザーID
+                {userData ? (
+                  <a href={encodedUrl}>
+                    <IonButton fill="clear" color="dark">
+                      <IonIcon icon={shareOutline}></IonIcon>
+                    </IonButton>
+                  </a>
+                ) : (
+                  []
+                )}
+              </IonItem>
               <IonItem lines="none" slot="end">
-                <IonInput>
-                  ユーザーID：{userData ? userData["userId"] : []}
-                </IonInput>
+                <IonInput>{userData ? userData["userId"] : []}</IonInput>
               </IonItem>
             </IonCardContent>
           </IonCard>
