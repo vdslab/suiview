@@ -14,6 +14,7 @@ import {
   IonIcon,
   useIonViewWillEnter,
   IonAlert,
+  IonInput,
 } from "@ionic/react";
 import { closeOutline, buildOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -61,7 +62,9 @@ const Setting = () => {
                 </IonButton>
               </IonItem>
               <IonItem lines="none" slot="end">
-                ユーザーID：{userData ? userData["userId"] : []}
+                <IonInput>
+                  ユーザーID：{userData ? userData["userId"] : []}
+                </IonInput>
               </IonItem>
             </IonCardContent>
           </IonCard>
