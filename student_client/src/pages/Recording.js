@@ -162,6 +162,7 @@ const Recording = ({ history }) => {
                   onClick={async () => {
                     await deleteMusic(musicId, getAccessTokenSilently);
                     setRecorded(0);
+                    console.log(recorded);
                   }}
                 >
                   やり直す
@@ -184,11 +185,13 @@ const Recording = ({ history }) => {
                     if (selected !== undefined) {
                       item.assessment = selected;
                     }
+                    console.log(musicId);
                     await putMusicContent(
                       musicId,
                       item,
                       getAccessTokenSilently
                     );
+                    setRecorded(0);
                     if (folderId) {
                       history.replace(`/folder/${folderId}`);
                     } else {

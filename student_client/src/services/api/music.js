@@ -92,6 +92,7 @@ export async function putMusic(musicId, item, getAccessToken) {
 }
 
 export async function putMusicContent(musicId, item, getAccessToken) {
+  console.log(musicId);
   const response = await requestPut(
     `/musics/${musicId}/content`,
     JSON.stringify(item),
