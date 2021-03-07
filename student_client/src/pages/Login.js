@@ -1,6 +1,6 @@
 import { IonLoading, IonContent, IonPage, IonButton } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import iconImg from "../images/icon.PNG";
+import iconImg from "../images/logo.PNG";
 const Login = () => {
   const { isLoading, loginWithRedirect } = useAuth0();
   return (
