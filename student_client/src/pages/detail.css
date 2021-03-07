@@ -1,0 +1,13 @@
+p {
+  font-size: 1.15rem;
+  color: black;
+  margin: 0 1.5rem 1rem 1.5rem;
+}
+
+ion-card-title {
+  font-size: 1.5rem;
+}
+
+span {
+  font-size: 1.75rem;
+}

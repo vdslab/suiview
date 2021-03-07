@@ -4,7 +4,7 @@ const PointLiner = ({ data }) => {
   if (data == null) {
     return null;
   }
-  console.log(data);
+
   return (
     <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveLine

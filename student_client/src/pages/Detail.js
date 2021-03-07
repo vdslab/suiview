@@ -26,6 +26,7 @@ import {
   IonCol,
   IonCardHeader,
   IonCardTitle,
+  IonButtons,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -39,14 +40,15 @@ import {
   getMusic,
   putMusicComment,
   getMusicComments,
-  putMusic,
   deleteMusic,
+  putMusic,
   getMusicStability,
   putMusicAssesment,
 } from "../services/api";
 import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
 import { convertDate } from "../services/date.js";
+import "./detail.css";
 const chartIds = ["PITCH", "VOL", "TONE"];
 
 const Charts = () => {
@@ -122,40 +124,35 @@ const Detail = ({ history }) => {
     setMusic(data);
   }
 
+  function changeName() {
+    putMusic(musicId, music, getAccessTokenSilently);
+    history.replace(music?.folderId ? `/folder/${music.folderId}` : "/musics");
+  }
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonBackButton
-            slot="start"
+          <IonButton
             fill="clear"
-            defaultHref={
-              music?.folderId ? `/folder/${music.folderId}` : "/musics"
-            }
-            icon={chevronBackOutline}
-          />
-
-          <IonTitle>
-            <IonItem lines="none">
-              <IonInput
-                value={music?.name}
-                onIonChange={(e) => {
-                  if (music) {
-                    setMusic(Object.assign(music, { name: e.detail.value }));
-                  }
-                }}
-              ></IonInput>
-              <IonButton
-                slot="end"
-                fill="outline"
-                onClick={() => {
-                  putMusic(musicId, music, getAccessTokenSilently);
-                }}
-              >
-                名前を変更する
-              </IonButton>
-            </IonItem>
-          </IonTitle>
+            onClick={() => {
+              changeName();
+            }}
+          >
+            <IonIcon icon={chevronBackOutline} />
+          </IonButton>
+          <IonTitle>曲詳細</IonTitle>
+          {/*}
+            <IonBackButton
+              slot="start"
+              fill="clear"
+              defaultHref={
+                music?.folderId ? `/folder/${music.folderId}` : "/musics"
+              }
+              icon={chevronBackOutline}
+            />
+          </IonButtons>
+          >*/}
           <IonButton
             slot="end"
             fill="clear"
@@ -203,40 +200,56 @@ const Detail = ({ history }) => {
       </IonHeader>
       <IonContent>
         <IonCard>
-          <IonGrid>
-            <IonRow>
-              <IonCol size="2">
-                <Player musicId={musicId} />
-              </IonCol>
-              <IonCol>
-                <IonItem lines="none">
-                  総合点：{stability?.total}&emsp;
-                  {music?.assessment === 0 ? (
-                    <div>
-                      <IonButton
-                        fill="clear"
-                        size="large"
-                        onClick={() => setShowActionSheet2(true)}
-                      >
-                        ★ なし{" "}
-                      </IonButton>
-                    </div>
-                  ) : (
-                    <div>
-                      <IonButton
-                        fill="clear"
-                        size="large"
-                        onClick={() => setShowActionSheet2(true)}
-                      >
-                        ★ {music?.assessment}
-                      </IonButton>
-                    </div>
-                  )}
-                </IonItem>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-          <IonItem className="ion-text-center">
+          <IonCardHeader>
+            <IonCardTitle>
+              <IonGrid class="ion-no-padding">
+                <IonRow class="ion-no-padding">
+                  <IonCol size="2" style={{ marginLeft: "-0.75rem" }}>
+                    <Player musicId={musicId} />
+                  </IonCol>
+                  <IonCol style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                    <IonInput
+                      value={convertDate(music?.name)}
+                      onIonChange={(e) => {
+                        if (music) {
+                          setMusic(
+                            Object.assign(music, { name: e.detail.value })
+                          );
+                        }
+                      }}
+                    ></IonInput>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonCardTitle>
+          </IonCardHeader>
+
+          <IonItem lines="none">
+            総合点：<span>{stability?.total}</span>&ensp;/300&ensp;
+            {music?.assessment === 0 ? (
+              <div>
+                <IonButton
+                  fill="clear"
+                  size="large"
+                  onClick={() => setShowActionSheet2(true)}
+                >
+                  <span> ★ なし </span>
+                </IonButton>
+              </div>
+            ) : (
+              <div>
+                <IonButton
+                  fill="clear"
+                  size="large"
+                  onClick={() => setShowActionSheet2(true)}
+                >
+                  <span> ★ {music?.assessment}</span>
+                </IonButton>
+              </div>
+            )}
+          </IonItem>
+
+          <IonItem className="ion-text-center ion-padding-bottom" lines="none">
             音程：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
             {stability?.tone}
           </IonItem>
@@ -272,12 +285,13 @@ const Detail = ({ history }) => {
               })
             ) : (
               <div>
-                <IonItem lines="none">まだコメントはありません</IonItem>
-                <IonItem lines="none">
-                  右下の
+                <p className="comment_text">
+                  まだコメントはありません。
+                  <br />
+                  右下の&ensp;
                   <IonIcon icon={createOutline} />
-                  からコメントを書きましょう
-                </IonItem>
+                  &ensp;からコメントを書きましょう。
+                </p>
               </div>
             )}
           </IonList>

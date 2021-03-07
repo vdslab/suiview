@@ -21,7 +21,6 @@ const Liner = ({ data }) => {
   }
 
   const x_padding = Math.round(data.length / 5 / 10) * 10;
-  console.log(x_padding);
 
   return (
     <div style={{ width: "100%", height: "300px" }}>
