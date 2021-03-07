@@ -80,7 +80,10 @@ const Setting = () => {
                 )}
               </IonItem>
               <IonItem lines="none" slot="end">
-                <IonInput>{userData ? userData["userId"] : []}</IonInput>
+                <IonInput
+                  value={userData ? userData["userId"] : []}
+                  readonly="true"
+                ></IonInput>
               </IonItem>
             </IonCardContent>
           </IonCard>

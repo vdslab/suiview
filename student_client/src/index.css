@@ -18,7 +18,7 @@
 }
 
 .logo {
-  width: 50%;
+  width: 70%;
   text-align: center;
   position: absolute;
   top: 25%;
@@ -39,6 +39,15 @@
   text-align: center;
   position: absolute;
   top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.slide_content1 {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
