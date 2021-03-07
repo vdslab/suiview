@@ -7,7 +7,6 @@ import {
   IonTitle,
   IonContent,
   IonPage,
-  IonBackButton,
   IonButton,
   IonInput,
   IonCard,
@@ -26,7 +25,6 @@ import {
   IonCol,
   IonCardHeader,
   IonCardTitle,
-  IonButtons,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {

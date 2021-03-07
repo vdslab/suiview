@@ -160,9 +160,13 @@ const Home = () => {
             {
               text: "OK",
               handler: async ({ name }) => {
-                await postFolder({ name }, getAccessTokenSilently);
-                const data = await getFolders(getAccessTokenSilently);
-                setFolders(data);
+                if (name === "") {
+                  alert("フォルダ名を入力してください");
+                } else {
+                  await postFolder({ name }, getAccessTokenSilently);
+                  const data = await getFolders(getAccessTokenSilently);
+                  setFolders(data);
+                }
               },
             },
           ]}

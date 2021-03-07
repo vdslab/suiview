@@ -41,7 +41,8 @@ const Setting = () => {
   const id = userData ? userData["userId"] : "";
   const url = `https://line.me/R/msg/text/?${name}さんのユーザーIDは${id}です。\nこのIDを生徒に登録して演奏にコメントをつけましょう。`;
   const encodedUrl = encodeURI(url);
-  console.log(encodedUrl);
+
+  console.log(userData);
 
   return (
     <IonPage>
@@ -91,6 +92,22 @@ const Setting = () => {
             routerLink="/setting/gaido"
           >
             利用ガイド
+          </IonButton>
+          <IonButton
+            slot="end"
+            expand="full"
+            color="light"
+            /*routerLink="/setting/gaido"*/
+          >
+            上達への道
+          </IonButton>
+          <IonButton
+            slot="end"
+            expand="full"
+            color="light"
+            /*routerLink="/setting/gaido"*/
+          >
+            プライバシーポリシー
           </IonButton>
           <IonButton
             slot="end"
