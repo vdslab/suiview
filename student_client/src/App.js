@@ -2,7 +2,6 @@ import { Route, Redirect } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
-
 import {
   Home,
   Login,
@@ -14,6 +13,7 @@ import {
   SelectFolder,
   Gaido,
 } from "../src/pages";
+import "./theme/variables.css";
 
 const App = () => {
   const { isAuthenticated } = useAuth0();

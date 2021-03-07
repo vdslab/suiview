@@ -44,7 +44,7 @@ const MusicList = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonBackButton
             slot="start"
             fill="clear"
@@ -84,28 +84,10 @@ const MusicList = ({ history }) => {
               </div>
             );
           })}
-
-          {/*return (
-              <MusicItem
-                key={data.id}
-                music={data}
-                no={false}
-                routerLink={`/detail/${data.id}/from/all`}
-                onClickMoveButton={() => {
-                  history.push(`/select_folder/${data.id}`);
-                }}
-                onClickDeleteButton={async () => {
-                  await deleteMusic(data.id, getAccessTokenSilently);
-                  const musics = await getMusics(getAccessTokenSilently);
-                  setMusics(musics);
-                }}
-              />
-              );
-          })}*/}
         </IonList>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonButton slot="end" fill="clear" routerLink="/recording/all">
             <IonIcon icon={micOutline}></IonIcon>
           </IonButton>

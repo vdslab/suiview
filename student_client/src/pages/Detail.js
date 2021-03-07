@@ -130,7 +130,7 @@ const Detail = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonButton
             fill="clear"
             onClick={() => {
@@ -198,10 +198,10 @@ const Detail = ({ history }) => {
       </IonHeader>
       <IonContent>
         <IonCard>
-          <IonCardHeader>
+          <IonCardHeader style={{ paddingTop: "8px", paddingBottom: "0px" }}>
             <IonCardTitle>
-              <IonGrid class="ion-no-padding">
-                <IonRow class="ion-no-padding">
+              <IonGrid className="ion-no-padding">
+                <IonRow className="ion-no-padding">
                   <IonCol size="2" style={{ marginLeft: "-0.75rem" }}>
                     <Player musicId={musicId} />
                   </IonCol>
@@ -221,36 +221,32 @@ const Detail = ({ history }) => {
               </IonGrid>
             </IonCardTitle>
           </IonCardHeader>
-
-          <IonItem lines="none">
-            総合点：<span>{stability?.total}</span>&ensp;/300&ensp;
+          <div style={{ textAlign: "center" }}>
             {music?.assessment === 0 ? (
-              <div>
-                <IonButton
-                  fill="clear"
-                  size="large"
-                  onClick={() => setShowActionSheet2(true)}
-                >
-                  <span> ★ なし </span>
-                </IonButton>
-              </div>
+              <IonButton
+                fill="clear"
+                size="large"
+                onClick={() => setShowActionSheet2(true)}
+              >
+                <span> ★ なし </span>
+              </IonButton>
             ) : (
-              <div>
-                <IonButton
-                  fill="clear"
-                  size="large"
-                  onClick={() => setShowActionSheet2(true)}
-                >
-                  <span> ★ {music?.assessment}</span>
-                </IonButton>
-              </div>
+              <IonButton
+                fill="clear"
+                size="large"
+                onClick={() => setShowActionSheet2(true)}
+              >
+                <span> ★ {music?.assessment}</span>
+              </IonButton>
             )}
-          </IonItem>
-
-          <IonItem className="ion-text-center ion-padding-bottom" lines="none">
-            音程：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
-            {stability?.tone}
-          </IonItem>
+            <p>
+              総合点：<span>{stability?.total}</span>&ensp;/300&ensp;
+            </p>
+            <p>
+              音程：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
+              {stability?.tone}
+            </p>
+          </div>
         </IonCard>
         <IonCard style={{ height: "350px" }}>
           <Charts />
@@ -392,7 +388,7 @@ const Detail = ({ history }) => {
         />
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonButton
             size="large"
             slot="end"

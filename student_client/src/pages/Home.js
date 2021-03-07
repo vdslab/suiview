@@ -4,7 +4,6 @@ import {
   IonItem,
   IonList,
   IonToolbar,
-  IonTitle,
   IonContent,
   IonPage,
   IonButton,
@@ -47,11 +46,16 @@ const Home = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonButton slot="start" fill="clear" routerLink="/setting">
+        <IonToolbar className="color">
+          <IonButton
+            color="primary"
+            slot="start"
+            fill="clear"
+            routerLink="/setting"
+          >
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
-          <IonTitle>吹view</IonTitle>
+          <h>吹view</h>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -122,7 +126,7 @@ const Home = () => {
         </IonList>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonButton
             slot="start"
             fill="clear"

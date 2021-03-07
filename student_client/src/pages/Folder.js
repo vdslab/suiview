@@ -180,7 +180,7 @@ const Folder = ({ history }) => {
         </IonList>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonButton
             slot="end"
             fill="clear"

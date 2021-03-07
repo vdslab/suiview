@@ -61,13 +61,13 @@ const Recording = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonBackButton slot="start" defaultHref="/" icon={closeOutline} />
           <IonTitle>記録する</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonList>
+      <IonContent className="color">
+        <IonList style={{ backgroundColor: "#fffcf2" }}>
           {imgData ? (
             <img
               src={imgData.img}
@@ -86,15 +86,7 @@ const Recording = ({ history }) => {
           <IonListHeader lines="full">
             <IonTitle>{folder?.name || "フォルダ指定なし"}</IonTitle>
           </IonListHeader>
-          {/*<IonItem>
-            <IonLabel>名前&ensp;</IonLabel>
-            <IonInput
-              value={name}
-              placeholder="music name"
-              onIonChange={(e) => setName(e.detail.value)}
-            ></IonInput>
-          </IonItem>*/}
-          <IonItem>
+          <IonItem color="color">
             <IonLabel>自己評価</IonLabel>
             <IonSelect
               value={selected}
@@ -109,7 +101,7 @@ const Recording = ({ history }) => {
               <IonSelectOption value="1">1</IonSelectOption>
             </IonSelect>
           </IonItem>
-          <IonItem>
+          <IonItem color="color">
             <IonLabel>コメント</IonLabel>
             <IonTextarea
               placeholder=""
@@ -120,7 +112,7 @@ const Recording = ({ history }) => {
         </IonList>
       </IonContent>
       <IonFooter>
-        <IonToolbar>
+        <IonToolbar className="color">
           {recorded === 0 ? (
             <IonButton
               expand="full"

@@ -47,7 +47,7 @@ const Setting = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar className="color">
           <IonBackButton slot="start" defaultHref="/" icon={closeOutline} />
           <IonTitle>設定</IonTitle>
         </IonToolbar>
@@ -61,18 +61,17 @@ const Setting = () => {
                 ユーザー名：{userData ? userData["name"] : []}
                 <IonButton
                   fill="outline"
-                  color="dark"
                   slot="end"
                   onClick={() => setShowAlert(true)}
                 >
-                  <IonIcon icon={buildOutline} color="dark"></IonIcon>
+                  <IonIcon icon={buildOutline}></IonIcon>
                 </IonButton>
               </IonItem>
               <IonItem>
                 ユーザーID
                 {userData ? (
                   <a href={encodedUrl}>
-                    <IonButton fill="clear" color="dark">
+                    <IonButton fill="clear">
                       <IonIcon icon={shareOutline}></IonIcon>
                     </IonButton>
                   </a>

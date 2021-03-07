@@ -43,7 +43,7 @@ const PointLiner = ({ data }) => {
           legendOffset: -45,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "accent" }}
+        colors={{ scheme: "nivo" }}
         lineWidth={4}
         pointSize={10}
         pointColor={{ theme: "background" }}
