@@ -4,7 +4,10 @@ export { default as Slide3 } from "./Slide3.js";
 export { default as Slide4 } from "./Slide4.js";
 export { default as Slide5 } from "./Slide5.js";
 export { default as Slide6 } from "./Slide6.js";
+export { default as Slide62 } from "./Slide6-2.js";
 export { default as Slide7 } from "./Slide7.js";
+export { default as Slide72 } from "./Slide7-2.js";
 export { default as Slide8 } from "./Slide8.js";
+export { default as Slide9 } from "./Slide9.js";
 /*export { default as SelectFolder } from "./SelectFolder.js";
 export { default as Gaido } from "./Gaido.js";*/

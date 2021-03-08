@@ -9,8 +9,11 @@ const Login = () => {
         <div className="login_logo">
           <img src={iconImg} alt="ロゴ画像" />
           <IonLoading isOpen={isLoading} />
-          <p style={{ marginTop: "-0.125rem" }}>なんかひとこと</p>
-          <IonButton onClick={loginWithRedirect} color="dark">
+          <IonButton
+            onClick={loginWithRedirect}
+            color="primary"
+            style={{ marginTop: "1.25rem" }}
+          >
             ログイン
           </IonButton>
         </div>

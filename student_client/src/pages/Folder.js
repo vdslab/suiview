@@ -16,6 +16,7 @@ import {
   useIonViewWillEnter,
   IonFooter,
   IonCardContent,
+  IonButtons,
 } from "@ionic/react";
 import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -29,7 +30,6 @@ import {
 } from "../components/chart";
 import MusicItem from "../components/MusicItem.js";
 import { defoFolder } from "./Home.js";
-import noImage from "../images/no_image.PNG";
 import { chevronBackOutline } from "ionicons/icons";
 
 ////////////////////////////////////////////
@@ -99,44 +99,54 @@ const Folder = ({ history }) => {
     setFolder(data);
   });
   const imgData = defoFolder.find((v) => v.name === folder?.name);
-
+  console.log(imgData);
   return (
     <IonPage>
-      <IonHeader style={{ height: "8.5rem" }} class="--backgoundColor:red">
-        <IonToolbar
-          style={{
-            height: "8.5rem",
-          }}
-        >
-          {" "}
-          <IonBackButton
-            slot="start"
-            fill="clear"
-            defaultHref="/"
-            style={{ marginTop: "-5rem" }}
-            icon={chevronBackOutline}
-          />
-          <div style={{ height: "5rem" }}>
-            {imgData ? (
-              <img
-                src={imgData.img}
-                alt="譜面の画像"
-                className=""
-                style={{ maxWidth: "100%", marginLeft: "-2rem" }}
-              ></img>
-            ) : (
-              <img
-                src={noImage}
-                alt="譜面の画像"
-                className=""
-                style={{ width: "100%", marginLeft: "-2rem" }}
-              ></img>
-            )}
-          </div>
-          <IonItem lines="none" style={{ marginLeft: "-2rem" }}>
-            {folder?.name}
-          </IonItem>
-        </IonToolbar>
+      <IonHeader style={{ height: "8rem" }}>
+        {imgData ? (
+          <IonToolbar
+            className={`bg_image_${imgData.name}`}
+            style={{ height: "8rem" }}
+          >
+            <IonButtons>
+              <IonBackButton
+                slot="start"
+                fill="clear"
+                defaultHref="/"
+                icon={chevronBackOutline}
+              />
+            </IonButtons>
+            <h2
+              style={{
+                textAlign: "center",
+                marginTop: "3.5rem",
+                fontWeight: "bold",
+              }}
+            >
+              {folder?.name}
+            </h2>
+          </IonToolbar>
+        ) : (
+          <IonToolbar className="bg_image" style={{ height: "8rem" }}>
+            <IonButtons>
+              <IonBackButton
+                slot="start"
+                fill="clear"
+                defaultHref="/"
+                icon={chevronBackOutline}
+              />
+            </IonButtons>
+            <h2
+              style={{
+                textAlign: "center",
+                marginTop: "3.5rem",
+                fontWeight: "bold",
+              }}
+            >
+              {folder?.name}
+            </h2>
+          </IonToolbar>
+        )}
       </IonHeader>
       <IonContent>
         {musics.length === 0 ? (

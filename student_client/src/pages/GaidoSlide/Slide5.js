@@ -1,4 +1,5 @@
 import { IonSlide } from "@ionic/react";
+import img from "../../images/progress.png";
 
 const Slide5 = () => {
   return (
@@ -8,18 +9,17 @@ const Slide5 = () => {
         <p /*style={{ marginTop: "-1rem" }}*/>
           録音データが集まると、フォルダ内での演奏データの比較ができるようになります。
           <br />
-          もうちょい説明
-          <br />
           また、演奏データをタップするとその演奏データの詳細情報を見ることができます。
         </p>
       </div>
-      <p>図を入れる</p>
-      {/*<img
-        src={img}
-        alt="録音画面"
-        className="display_img"
-        style={{ height: "50%", marginTop: "-2rem" }}
-      />*/}
+      {
+        <img
+          src={img}
+          alt="録音画面"
+          className="display_img"
+          style={{ height: "50%" }}
+        />
+      }
     </IonSlide>
   );
 };

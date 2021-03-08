@@ -55,6 +55,26 @@
 ion-toolbar.color {
   --background: #fffcf2;
 }
+ion-toolbar.bg_image {
+  height: "8.5rem";
+  --background: url("./images/gray.png") 0 0/100% 100% no-repeat;
+}
+
+ion-toolbar.bg_image_スケール {
+  height: "8.5rem";
+  --background: url("./images/scale (2).PNG") 0 0/100% 100% no-repeat;
+}
+
+ion-toolbar.bg_image_ロングトーン {
+  height: "8.5rem";
+  --background: url("./images/longtone (2).PNG") 0 0/100% 100% no-repeat;
+}
+
+ion-toolbar.bg_image_アルペジオ {
+  height: "8.5rem";
+  --background: url("./images/arpeggio (2).PNG") 0 0/100% 100% no-repeat;
+}
+
 ion-content.color {
   --background: #fffcf2;
 }
