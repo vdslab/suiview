@@ -42,7 +42,9 @@ function Login() {
             </section>
             <section>
               <h2 className="title is-6">生徒モードはこちら↓</h2>
-              <img src={img} alt="先生モード" style={{ width: "40vmin" }} />
+              <a href="https://suiview-s.vdslab.jp/">
+                <img src={img} alt="先生モード" style={{ width: "40vmin" }} />
+              </a>
             </section>
           </div>
         </div>
