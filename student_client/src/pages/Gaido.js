@@ -22,7 +22,7 @@ import {
 } from "./GaidoSlide/index";
 import { chevronBackOutline } from "ionicons/icons";
 
-const Gaido = ({ modal }) => {
+const Gaido = ({ modal, history }) => {
   console.log(modal);
   return (
     <IonPage>

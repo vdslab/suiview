@@ -923,7 +923,7 @@ def get_folders_parallel(folder_id):
     Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     j = 1
-    for i in range(len(Datas)-1, -1, -1):
+    for i in range(len(Datas)):
         dic = {
             # "No.": Datas[i][0],
             "No.": j,
@@ -957,13 +957,15 @@ def get_folder_progress(folder_id):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
 
     dicDatas = []
-    for i in range(len(Datas)):
+    j = 1
+    for i in range(len(Datas)-1, -1, -1):
         dic = {
             # "x": Datas[i][0],
-            "x": i+1,
+            "x": j,
             "y": round(Datas[i][4], 4)
         }
         dicDatas.append(dic)
+        j += 1
     session.close()
     return jsonify(dicDatas)
 
@@ -1258,7 +1260,7 @@ def frequency_ave_data(music):
     tone_n = 0
     i = start
     while i < end-1:
-        if data[i]/data[i+1] == 0:
+        if data[i+1] == 0 or data[i]/data[i+1] == 0:
             cent = 0
         else:
             cent = 1200*math.log2(data[i]/data[i+1])
@@ -1269,7 +1271,11 @@ def frequency_ave_data(music):
             total += data[i]
             count += 1
             i += 1
-            cent = 1200*math.log2(data[i]/data[i+1])
+            if data[i+1] == 0 or data[i]/data[i+1] == 0:
+                cent = 0
+            else:
+                # cent = 1200*math.log2(data[i]/data[i+1])
+                cent = 1200*math.log2(data[i]/data[i+1])
         if count >= 15:
             ave = total/count
             ns = 0
@@ -1530,6 +1536,7 @@ def get_folder_stability(music_id):
     tone_ave = spectrum_rolloff_ave(music)
     data = {"f0": f0_ave[0], "vol": vol_ave[0], "tone": tone_ave[0],
             "total": f0_ave[0]+vol_ave[0]+tone_ave[0]}
+    print(data)
     return jsonify(data)
 
 

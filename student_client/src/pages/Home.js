@@ -55,7 +55,7 @@ const Home = () => {
           >
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
-          <h>吹view</h>
+          <h2>吹view</h2>
         </IonToolbar>
       </IonHeader>
       <IonContent>

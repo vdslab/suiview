@@ -1,10 +1,13 @@
 import { IonButton, IonSlide } from "@ionic/react";
+//import { useHistory } from "react-router";
 
 const Slide8 = () => {
+  //const history = useHistory();
   function setVisited() {
     if (!("visited" in localStorage)) {
       localStorage.setItem("visited", "true");
     }
+    //history.replace("./");
   }
   return (
     <IonSlide>
@@ -14,6 +17,7 @@ const Slide8 = () => {
 
       <IonButton
         routerLink={"/home"}
+        //routerDirection={"root"}
         onClick={() => {
           setVisited();
         }}
