@@ -11,7 +11,7 @@ import {
   Folder,
   Detail,
   SelectFolder,
-  Gaido,
+  Guide,
 } from "../src/pages";
 import "./theme/variables.css";
 
@@ -25,7 +25,7 @@ const App = () => {
           <IonRouterOutlet>
             <Route path="/home" component={Home} exact />
             <Route path="/" component={Home} exact />
-            <Route path="/setting/gaido" component={Gaido} />
+            <Route path="/setting/gaido" component={Guide} />
             <Route path="/recording" component={Recording} />
             <Route path="/setting" component={Setting} exact />
             <Route path="/musics" component={MusicList} />

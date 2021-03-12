@@ -17,7 +17,11 @@ const Slide8 = () => {
   return (
     <IonSlide>
       <div className="slide_content" style={{ marginTop: "-2.5rem" }}>
-        <p>気の利いた一言</p>
+        <p>
+          それではさっそく
+          <br />
+          一緒に練習してみましょう！
+        </p>
       </div>
 
       <IonButton

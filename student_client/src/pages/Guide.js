@@ -19,7 +19,7 @@ import {
   Slide72,
   Slide8,
   Slide9,
-} from "./GaidoSlide/index";
+} from "./GuideSlide/index";
 import { chevronBackOutline } from "ionicons/icons";
 
 const Gaido = ({ modal, history }) => {
@@ -57,7 +57,8 @@ const Gaido = ({ modal, history }) => {
           <Slide7 />
           <Slide72 />
           <Slide8 />
-          {modal ? <Slide9 /> : []}
+          <Slide9 />
+          {/*{modal ? <Slide9 /> : []}*/}
         </IonSlides>
       </IonContent>
     </IonPage>
