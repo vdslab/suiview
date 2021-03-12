@@ -99,7 +99,7 @@ const Folder = ({ history }) => {
     setFolder(data);
   });
   const imgData = defoFolder.find((v) => v.name === folder?.name);
-  console.log(imgData);
+
   return (
     <IonPage>
       <IonHeader style={{ height: "8rem" }}>

@@ -126,20 +126,18 @@ const Detail = ({ history }) => {
   }
 
   function changeName() {
-    console.log(preName, music.name);
     if (preName !== music.name) {
       putMusic(musicId, music, getAccessTokenSilently);
     }
-    steStability([]);
-    setMusic(null);
-    history.replace(music?.folderId ? `/folder/${music.folderId}` : "/musics");
   }
+
+  console.log(music);
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          {/*<IonButton
+          {/*} <IonButton
             fill="clear"
             onClick={() => {
               changeName();
@@ -203,12 +201,15 @@ const Detail = ({ history }) => {
                   </IonCol>
                   <IonCol style={{ paddingTop: "10px", paddingLeft: "10px" }}>
                     <IonInput
+                      debounce="1500"
                       value={convertDate(music?.name)}
                       onIonChange={(e) => {
                         if (music) {
+                          console.log("changed");
                           setMusic(
                             Object.assign(music, { name: e.detail.value })
                           );
+                          changeName();
                         }
                       }}
                     ></IonInput>
