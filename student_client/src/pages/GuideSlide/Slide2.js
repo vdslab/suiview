@@ -5,27 +5,30 @@ import { folderOutline, micOutline } from "ionicons/icons";
 const Slide2 = () => {
   return (
     <IonSlide>
-      <div className="slide_content" /*style={{ marginTop: "-1rem" }}*/>
-        <h2>ホーム画面</h2>　　　　
-        <p /*style={{ marginTop: "-1rem" }}*/>
+      <h2 className="title">ホーム画面</h2>　　
+      <div className="center">
+        <p>
           左下の&ensp;
-          <IonIcon icon={folderOutline} />
-          &ensp; 練習ファイルの追加ができます。
+          <IonIcon icon={folderOutline} color="primary" />
+          &ensp;から練習ファイルの
+          <br />
+          追加ができます。
           <br />
           右下の&ensp;
-          <IonIcon icon={micOutline} />
+          <IonIcon icon={micOutline} color="primary" />
           &ensp;からは録音ができます。
           <br />
-          基礎的なフレーズフォルダがあらかじめ用意されています。
-          始めはロングトーンファイルに入ってみましょう。
+          基礎的なフレーズフォルダが
+          <br />
+          あらかじめ用意されています。
+          <br />
+          始めはロングトーンファイルに
+          <br />
+          入ってみましょう。
         </p>
+        <img src={img} alt="ホーム画面" style={{ width: "50%" }} />
       </div>
-      <img
-        src={img}
-        alt="ホーム画面"
-        className="display_img"
-        style={{ height: "50%" }}
-      />
+      　　
     </IonSlide>
   );
 };

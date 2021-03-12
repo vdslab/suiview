@@ -6,39 +6,23 @@ import img_t from "../../images/fol_tone.png";
 const Slide6_2 = () => {
   return (
     <IonSlide>
-      <div className="slide_content" style={{ marginTop: "-2.5rem" }}>
-        <h2>
-          フォルダファイルでの
-          <br />
-          グラフについて-その2-
-        </h2>
+      <h2 className="title_m">
+        フォルダファイルでの
+        <br />
+        グラフについて-その2-
+      </h2>
+      　　
+      <div className="center">
         　　　　
-        <p style={{ marginTop: "-1rem" }}>
+        <p>
           高さ・強さ・音色のそれぞれを重ねたグラフも見ることができます。癖などの把握に役立てることができます。
         </p>
-      </div>
-      {
         <div>
-          <img
-            src={img_f}
-            alt="録音画面"
-            className="display_img"
-            style={{ height: "35%", marginLeft: "-8rem" }}
-          />
-          <img
-            src={img_v}
-            alt="録音画面"
-            className="display_img"
-            style={{ height: "35%" }}
-          />
-          <img
-            src={img_t}
-            alt="録音画面"
-            className="display_img"
-            style={{ height: "35%", marginLeft: "8rem" }}
-          />
+          <img src={img_f} alt="録音画面" style={{ width: "45%" }} />
+          <img src={img_v} alt="録音画面" style={{ width: "45%" }} />
         </div>
-      }
+        <img src={img_t} alt="録音画面" style={{ width: "45%" }} />
+      </div>
     </IonSlide>
   );
 };

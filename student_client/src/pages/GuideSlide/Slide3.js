@@ -5,23 +5,18 @@ import { micOutline } from "ionicons/icons";
 const Slide3 = () => {
   return (
     <IonSlide>
-      <div className="slide_content" /*style={{ marginTop: "-4rem" }}*/>
-        <h2>フォルダ画面</h2>　　　　
-        <p>
+      <h2 className="title">フォルダ画面</h2>　　
+      <div className="center">
+        <p style={{ marginBottom: "4rem" }}>
           右下の&ensp;
-          <IonIcon icon={micOutline} />
-          &ensp; から録音ができます
+          <IonIcon icon={micOutline} color="primary" />
+          &ensp;から録音ができます。
           <br />
-          <IonIcon icon={micOutline} />
+          <IonIcon icon={micOutline} color="primary" />
           を押して録音に進みましょう！
         </p>
+        <img src={img} alt="フォルダ画面" style={{ width: "50%" }} />
       </div>
-      <img
-        src={img}
-        alt="フォルダ画面"
-        className="display_img"
-        style={{ height: "50%" }}
-      />
     </IonSlide>
   );
 };

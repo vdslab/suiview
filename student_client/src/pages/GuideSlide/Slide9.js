@@ -16,22 +16,23 @@ const Slide8 = () => {
   }
   return (
     <IonSlide>
-      <div className="slide_content" style={{ marginTop: "-2.5rem" }}>
+      <div className="center_m5">
         <p>
           それではさっそく
           <br />
           一緒に練習してみましょう！
         </p>
+        <IonButton
+          routerLink={"/home"}
+          fill="outline"
+          size="large"
+          onClick={() => {
+            setVisited();
+          }}
+        >
+          はじめる
+        </IonButton>
       </div>
-
-      <IonButton
-        routerLink={"/home"}
-        onClick={() => {
-          setVisited();
-        }}
-      >
-        はじめる
-      </IonButton>
     </IonSlide>
   );
 };

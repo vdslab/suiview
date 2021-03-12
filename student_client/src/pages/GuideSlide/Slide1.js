@@ -3,14 +3,10 @@ import iconImg from "../../images/logo.PNG";
 const Slide1 = () => {
   return (
     <IonSlide>
-      <img
-        src={iconImg}
-        alt="ロゴ画像"
-        className="logo"
-        style={{ height: "30%" }}
-      />
-      <div className="slide_content1">
-        <h2>吹viewにようこそ</h2>
+      <div className="center_m5">
+        <img src={iconImg} alt="ロゴ画像" style={{ width: "60%" }} />
+
+        <h2 style={{ margin: "1.5rem" }}>吹viewにようこそ</h2>
         <p>
           管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。
           <br />
