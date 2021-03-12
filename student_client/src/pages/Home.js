@@ -28,6 +28,7 @@ import argImg from "../images/arpeggio (2).PNG";
 import longtoneImg from "../images/longtone (2).PNG";
 import scaleImg from "../images/scale (2).PNG";
 import noImage from "../images/gray.png";
+import Guide from "./Gaido.js";
 export const defoFolder = [
   { img: longtoneImg, name: "ロングトーン" },
   { img: scaleImg, name: "スケール" },
@@ -42,6 +43,18 @@ const Home = () => {
     const data = await getFolders(getAccessTokenSilently);
     setFolders(data);
   });
+
+  function logined() {
+    if ("visited" in localStorage) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  if (logined() === false) {
+    return <Guide modal={true} />;
+  }
 
   return (
     <IonPage>

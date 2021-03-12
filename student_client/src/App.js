@@ -1,4 +1,4 @@
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { IonApp, IonRouterOutlet } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -23,18 +23,8 @@ const App = () => {
       <IonReactRouter>
         {isAuthenticated ? (
           <IonRouterOutlet>
-            <Route
-              path="/home"
-              render={() => {
-                return "visited" in localStorage ? (
-                  <Home />
-                ) : (
-                  <Gaido modal={true} />
-                );
-              }}
-              exact={true}
-            />
-            {/*<Route path="/" component={Home} exact />*/}
+            <Route path="/home" component={Home} exact />
+            <Route path="/" component={Home} exact />
             <Route path="/setting/gaido" component={Gaido} />
             <Route path="/recording" component={Recording} />
             <Route path="/setting" component={Setting} exact />
@@ -42,11 +32,6 @@ const App = () => {
             <Route path="/folder/:folderId" component={Folder} />
             <Route path="/detail/:musicId" component={Detail} />
             <Route path="/select_folder/:musicId" component={SelectFolder} />
-            <Route
-              path="/"
-              render={() => <Redirect to="/home" />}
-              exact={true}
-            />
           </IonRouterOutlet>
         ) : (
           <Login />
