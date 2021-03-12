@@ -25,6 +25,7 @@ import {
   IonCol,
   IonCardHeader,
   IonCardTitle,
+  IonBackButton,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -99,10 +100,12 @@ const Detail = ({ history }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [stability, steStability] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
+  const [preName, setPreName] = useState();
 
   useIonViewWillEnter(async () => {
     const data = await getMusic(musicId, getAccessTokenSilently);
     setMusic(data);
+    setPreName(data.name);
   });
   useIonViewWillEnter(async () => {
     const data = await getMusicComments(musicId, getAccessTokenSilently);
@@ -123,7 +126,12 @@ const Detail = ({ history }) => {
   }
 
   function changeName() {
-    putMusic(musicId, music, getAccessTokenSilently);
+    console.log(preName, music.name);
+    if (preName !== music.name) {
+      putMusic(musicId, music, getAccessTokenSilently);
+    }
+    steStability([]);
+    setMusic(null);
     history.replace(music?.folderId ? `/folder/${music.folderId}` : "/musics");
   }
 
@@ -131,35 +139,23 @@ const Detail = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          <IonButton
+          {/*<IonButton
             fill="clear"
             onClick={() => {
               changeName();
             }}
           >
             <IonIcon icon={chevronBackOutline} />
-          </IonButton>
+          </IonButton>*/}
           <IonTitle>曲詳細</IonTitle>
-          {/*}
-            <IonBackButton
-              slot="start"
-              fill="clear"
-              defaultHref={
-                music?.folderId ? `/folder/${music.folderId}` : "/musics"
-              }
-              icon={chevronBackOutline}
-            />
-          </IonButtons>
-          >*/}
-          <IonButton
-            slot="end"
+          <IonBackButton
+            slot="start"
             fill="clear"
-            onClick={() => {
-              setShowActionSheet(true);
-            }}
-          >
-            <IonIcon icon={ellipsisHorizontalCircleOutline}></IonIcon>
-          </IonButton>
+            defaultHref={
+              music?.folderId ? `/folder/${music.folderId}` : "/musics"
+            }
+            icon={chevronBackOutline}
+          />
         </IonToolbar>
 
         <IonActionSheet
