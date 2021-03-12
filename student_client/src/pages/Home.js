@@ -24,9 +24,9 @@ import {
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, deleteFolder, postFolder } from "../services/api";
-import argImg from "../images/arpeggio (2).PNG";
-import longtoneImg from "../images/longtone (2).PNG";
-import scaleImg from "../images/scale (2).PNG";
+import argImg from "../images/arpeggio.PNG";
+import longtoneImg from "../images/longtone.PNG";
+import scaleImg from "../images/scale.PNG";
 import noImage from "../images/gray.png";
 import Guide from "./Guide.js";
 export const defoFolder = [
