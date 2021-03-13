@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
 import { ParallelCoordinates } from "./drawing";
+import { Bar } from "./drawing";
 import { useParams } from "react-router-dom";
 
 const ParallelChart = () => {
@@ -24,7 +25,8 @@ const ParallelChart = () => {
   return (
     <div>
       <div lines="none">　最大直近10個のデータです</div>
-      <ParallelCoordinates data={data} />
+      {/*<ParallelCoordinates data={data} />*/}
+      <Bar data={data} />
     </div>
   );
 };

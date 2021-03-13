@@ -43,10 +43,12 @@ const FolderList = () => {
           {" "}
           <section>
             <ul>
-              {musics?.map((data) => {
+              {musics?.map((data, i) => {
                 console.log(data.id, parseInt(musicId));
                 return (
                   <li key={data.id} className="columns">
+                    <p style={{ paddingTop: "15px" }}>No.{i + 1}</p>
+
                     <div className="column is-3">
                       <Player id={data.id} />
                     </div>

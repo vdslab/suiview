@@ -15,6 +15,10 @@ import librosa
 from dtw import dtw
 from auth import requires_auth
 import math
+from dateutil.tz import gettz
+import datetime
+from pytz import timezone
+
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -114,7 +118,7 @@ def get_students_folder_progress(user_name, folder_id):
     dicDatas = []
     for i in range(len(Datas)):
         dic = {
-            "x": Datas[i][0],
+            "x": i+1,
             "y": round(Datas[i][4], 4)
         }
         dicDatas.append(dic)
@@ -146,7 +150,7 @@ def get_student_folders_parallel(user_name, folder_id):
     for i in range(len(Datas)-1, -1, -1):
         dic = {
             # "No.": Datas[i][0],
-            "No": j,
+            "No.": j,
             "pich": Datas[i][1][0],
             "tone": Datas[i][2][0],
             "volume": Datas[i][3][0],
@@ -189,8 +193,8 @@ def get_student_folder_f0(user_name, folder_id):
                 "y": d[i]
             }
             data.append(dic)
-
-        Datas.append({"id": musics[0].id, "data": data})
+        #Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": 1, "data": data})
 
     else:
         for i in range(len(preData)):
@@ -208,7 +212,8 @@ def get_student_folder_f0(user_name, folder_id):
                         "y": aliged_data[j]
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                #Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -219,7 +224,9 @@ def get_student_folder_f0(user_name, folder_id):
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            #Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
+
             print("fin"+str(i))
         print("finish")
         session.close()
@@ -256,7 +263,7 @@ def get_student_folder_decibel(user_name, folder_id):
             }
             data.append(dic)
 
-        Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": 1, "data": data})
 
     else:
         for i in range(1, len(preData)):
@@ -272,7 +279,7 @@ def get_student_folder_decibel(user_name, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -284,7 +291,7 @@ def get_student_folder_decibel(user_name, folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
             print("fin")
         print("all clear")
         session.close()
@@ -321,7 +328,7 @@ def get_student_folder_tone(user_name, folder_id):
             }
             data.append(dic)
 
-        Datas.append({"id": musics[0].id, "data": data})
+        Datas.append({"id": 1, "data": data})
 
     else:
         for i in range(1, len(preData)):
@@ -337,7 +344,7 @@ def get_student_folder_tone(user_name, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": 1, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -349,7 +356,7 @@ def get_student_folder_tone(user_name, folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": i+1, "data": data})
             print("fin")
         print("all clear")
         session.close()
@@ -684,8 +691,8 @@ def put_music_content(music_id):
                           text=data['comment'], user_id=user_id)
         session.add(comment)
 
-    session.add(music)
     music.name = music.created
+    session.add(music)
     session.add(music)
     session.commit()
     session.close()
@@ -778,7 +785,10 @@ def get_folder(folder_id):
     user_id = g.current_user['sub']
     folder = session.query(Folder).filter_by(
         id=folder_id, user_id=user_id).first()
-    folder = folder.to_json()
+    print(folder)
+    if folder != None:
+        folder = folder.to_json()
+    print(folder)
     session.commit()
     session.close()
     return jsonify(folder)
