@@ -31,11 +31,10 @@ import {
   postMusic,
   putMusicContent,
   deleteMusic,
-  //getFolders,
 } from "../services/api";
 import { Player } from "../components/Player.js";
 import { defoFolder } from "./Home.js";
-import noImage from "../images/no_image.PNG";
+import noImage from "../images/gray.png";
 
 const Recording = ({ history }) => {
   const location = useLocation();
