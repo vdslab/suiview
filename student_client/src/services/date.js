@@ -2,9 +2,7 @@ export const convertDate = (input, flag) => {
   if (input === null) {
     return "";
   }
-
   const d = new Date(input);
-  d.setHours(d.getHours() + 9);
   let createdDay = d.toLocaleString("ja-JP").slice(0, -3);
   if (createdDay === "Invalid D") {
     return input;

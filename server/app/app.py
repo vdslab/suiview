@@ -18,7 +18,7 @@ import math
 from dateutil.tz import gettz
 import datetime
 from pytz import timezone
-
+from dateutil import parser
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -692,7 +692,10 @@ def put_music_content(music_id):
         session.add(comment)
 
     music.name = music.created
-    session.add(music)
+    jst_time = music.name + datetime.timedelta(hours=9)
+    time_str = jst_time.strftime('%Y/%m/%d  %H:%M:%S')
+    music.name = time_str
+    time_str = jst_time
     session.add(music)
     session.commit()
     session.close()
