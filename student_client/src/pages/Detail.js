@@ -131,8 +131,7 @@ const Detail = ({ history }) => {
     }
   }
 
-  console.log(music);
-
+  
   return (
     <IonPage>
       <IonHeader>

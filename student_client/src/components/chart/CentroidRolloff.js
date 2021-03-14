@@ -33,7 +33,7 @@ const CentroidRolloff = ({ musicId }) => {
   if (data == null) {
     return <IonItem lines="none">loading...</IonItem>;
   }
-  return <ManyLiner data={data} />;
+  return <ManyLiner data={data} axis_name={""}/>;
 };
 
 export default CentroidRolloff;

@@ -17,7 +17,7 @@ const Decibel = ({ musicId }) => {
   if (data == null) {
     return <IonItem lines="none">loading...</IonItem>;
   }
-  return <Liner data={data.values} />;
+  return <Liner data={data.values} axis_name={"デシベル値"} />;
 };
 
 export default Decibel;

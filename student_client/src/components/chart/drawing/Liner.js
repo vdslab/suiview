@@ -1,9 +1,10 @@
 import { ResponsiveLine } from "@nivo/line";
 
-const Liner = ({ data }) => {
+const Liner = ({ data, axis_name }) => {
   if (data == null) {
     return null;
   }
+  console.log(axis_name)
 
   let max = Math.max.apply(
     Math,
@@ -59,7 +60,7 @@ const Liner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "",
+          legend: axis_name,
           legendOffset: -40,
           legendPosition: "middle",
         }}

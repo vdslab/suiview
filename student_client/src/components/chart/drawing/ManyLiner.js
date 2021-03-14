@@ -1,6 +1,6 @@
 import { ResponsiveLine } from "@nivo/line";
 
-const ManyLiner = ({ data }) => {
+const ManyLiner = ({ data,  axis_name }) => {
   if (data == null || data === undefined) {
     return null;
   }
@@ -43,7 +43,7 @@ const ManyLiner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "",
+          legend:  axis_name,
           legendOffset: -40,
           legendPosition: "middle",
         }}
@@ -58,7 +58,7 @@ const ManyLiner = ({ data }) => {
             translateY: -30,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
-            itemWidth: 50,
+            itemWidth: 60,
             itemHeight: 20,
             itemOpacity: 0.75,
             symbolSize: 12,
