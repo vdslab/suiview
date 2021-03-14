@@ -94,6 +94,8 @@ def get_student_folder_musics(user_name, folder_id):
     musics = session.query(Music).filter_by(
         user_id=user.id, folder_id=folder.id).all()
     musics = [music.to_json() for music in musics]
+    musics = sorted(musics, key=lambda x: x['created'], reverse=True)
+
     return jsonify(musics)
 
 
@@ -116,7 +118,7 @@ def get_students_folder_progress(user_name, folder_id):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
 
     dicDatas = []
-    for i in range(len(Datas)):
+    for i in range(len(Datas)-1, -1, -1):
         dic = {
             "x": i+1,
             "y": round(Datas[i][4], 4)
@@ -144,7 +146,7 @@ def get_student_folders_parallel(user_name, folder_id):
 
     for i in range(len(Datas)):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
-    Datas = sorted(Datas, key=lambda x: x[4])
+
     dicDatas = []
     j = 1
     for i in range(len(Datas)-1, -1, -1):
@@ -197,6 +199,7 @@ def get_student_folder_f0(user_name, folder_id):
         Datas.append({"id": 1, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(len(preData)):
             print(len(preData[i]))
         for i in range(1, len(preData)):
@@ -213,7 +216,7 @@ def get_student_folder_f0(user_name, folder_id):
                     }
                     data.append(dic)
                 #Datas.append({"id": musics[0].id, "data": data})
-                Datas.append({"id": 1, "data": data})
+                Datas.append({"id": len(preData), "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -225,7 +228,8 @@ def get_student_folder_f0(user_name, folder_id):
                 }
                 data.append(dic)
             #Datas.append({"id": musics[i].id, "data": data})
-            Datas.append({"id": i+1, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
 
             print("fin"+str(i))
         print("finish")
@@ -266,6 +270,7 @@ def get_student_folder_decibel(user_name, folder_id):
         Datas.append({"id": 1, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -279,7 +284,7 @@ def get_student_folder_decibel(user_name, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": 1, "data": data})
+                Datas.append({"id": len(preData), "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -291,7 +296,8 @@ def get_student_folder_decibel(user_name, folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": i+1, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
             print("fin")
         print("all clear")
         session.close()
@@ -331,6 +337,7 @@ def get_student_folder_tone(user_name, folder_id):
         Datas.append({"id": 1, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -344,7 +351,7 @@ def get_student_folder_tone(user_name, folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": 1, "data": data})
+                Datas.append({"id": len(preData), "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -356,7 +363,8 @@ def get_student_folder_tone(user_name, folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": i+1, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
             print("fin")
         print("all clear")
         session.close()
@@ -1158,6 +1166,7 @@ def get_folder_decibel(folder_id):
         Datas.append({"id": 1, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -1171,7 +1180,7 @@ def get_folder_decibel(folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": 1, "data": data})
+                Datas.append({"id": len(preData), "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -1183,7 +1192,8 @@ def get_folder_decibel(folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": i+1, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
             print("fin")
         print("all clear")
         session.close()
@@ -1506,6 +1516,7 @@ def get_folder_tone(folder_id):
         Datas.append({"id": 1, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
@@ -1519,7 +1530,7 @@ def get_folder_tone(folder_id):
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
-                Datas.append({"id": 1, "data": data})
+                Datas.append({"id": len(preData), "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -1530,7 +1541,8 @@ def get_folder_tone(folder_id):
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
-            Datas.append({"id": i+1, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
             print("fin")
         print("all clear")
         session.close()
