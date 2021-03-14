@@ -882,6 +882,7 @@ def get_folder_f0(folder_id):
         # Datas.append({"id": musics[0].id, "data": data})
 
     else:
+        l = len(preData)-1
         for i in range(len(preData)):
             print(len(preData[i]))
         for i in range(1, len(preData)):
@@ -897,8 +898,8 @@ def get_folder_f0(folder_id):
                         "y": aliged_data[j]
                     }
                     data.append(dic)
-                Datas.append({"id": 1, "data": data})
-                # Datas.append({"id": musics[0].id, "data": data})
+                Datas.append({"id": len(preData), "data": data})
+                #Datas.append({"id": musics[0].id, "data": data})
 
             aliged_data = preData[i][alignment.index2]
             aliged_data = list(aliged_data)
@@ -909,8 +910,9 @@ def get_folder_f0(folder_id):
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
-            # Datas.append({"id": musics[i].id, "data": data})
-            Datas.append({"id": i+1, "data": data})
+            #Datas.append({"id": musics[i].id, "data": data})
+            Datas.append({"id": l, "data": data})
+            l -= 1
             print("fin"+str(i))
         print("finish")
         session.close()
@@ -1134,9 +1136,7 @@ def get_folder_decibel(folder_id):
     user_id = g.current_user['sub']
     musics = session.query(Music).filter_by(folder_id=folder_id,
                                             user_id=user_id).order_by(Music.id).all()
-
     preData = []
-
     for music in musics:
         data = decibel_data(music)
         start, end = find_start_end(music)

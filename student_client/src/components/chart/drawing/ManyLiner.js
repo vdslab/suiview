@@ -58,7 +58,7 @@ const ManyLiner = ({ data }) => {
             translateY: -30,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
-            itemWidth: 80,
+            itemWidth: 50,
             itemHeight: 20,
             itemOpacity: 0.75,
             symbolSize: 12,
