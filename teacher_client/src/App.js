@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
-import img from "./images/ogp.png";
+import img from "./images/ogp_h.png";
+import qr_img from "./images/QR_y.png";
 
 function Login() {
   const { loginWithRedirect } = useAuth0();
@@ -41,10 +42,21 @@ function Login() {
               </button>
             </section>
             <section>
-              <h2 className="title is-6">生徒モードはこちら↓</h2>
+              <h2 className="title is-6">
+                生徒モードはこちら↓スマートフォン推奨
+              </h2>
               <a href="https://suiview-s.vdslab.jp/">
-                <img src={img} alt="先生モード" style={{ width: "40vmin" }} />
+                <img
+                  src={img}
+                  alt="先生モード"
+                  style={{ width: "25vmin", margin: "0.5rem" }}
+                />
               </a>
+              <img
+                src={qr_img}
+                alt="先生モード"
+                style={{ width: "25vmin", margin: "0.5rem" }}
+              />
             </section>
           </div>
         </div>
