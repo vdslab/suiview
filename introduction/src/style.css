@@ -4,7 +4,7 @@ img.images {
 }
 
 .hero-1 {
-  @extend .hero;
+  /*@extend .hero;*/
   background-image: url('./images/bg2.jpg');
   background-size: cover;
   background-position: center;

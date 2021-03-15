@@ -92,22 +92,22 @@ const Setting = () => {
           >
             利用ガイド
           </IonButton>
-          <IonButton
+          {/*<IonButton
             slot="end"
             expand="full"
             color="light"
-            /*routerLink="/setting/gaido"*/
+            routerLink="/setting/gaido"
           >
             上達への道
-          </IonButton>
-          <IonButton
+          </IonButton>*/}
+          {/*<IonButton
             slot="end"
             expand="full"
             color="light"
-            /*routerLink="/setting/gaido"*/
+            /*routerLink="/setting/gaido"
           >
             プライバシーポリシー
-          </IonButton>
+          </IonButton>*/}
           <IonButton
             slot="end"
             expand="full"
