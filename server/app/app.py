@@ -118,12 +118,14 @@ def get_students_folder_progress(user_name, folder_id):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
 
     dicDatas = []
+    j = 1
     for i in range(len(Datas)-1, -1, -1):
         dic = {
-            "x": i+1,
+            "x": j,
             "y": round(Datas[i][4], 4)
         }
         dicDatas.append(dic)
+        j += 1
     session.close()
     print(Datas)
     return jsonify(dicDatas)
