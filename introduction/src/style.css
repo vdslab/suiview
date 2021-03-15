@@ -1,4 +1,22 @@
-img {
+img.images {
   width: 60%;
   margin-bottom: 0.5rem;
+}
+
+.hero-1 {
+  @extend .hero;
+  background-image: url('./images/bg2.jpg');
+  background-size: cover;
+  background-position: center;
+}
+.images_h {
+  width: 35%;
+  margin: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.here{
+  margin: 0.45rem;
+  color: rgb(143, 143, 143);
+  font-size: 0.75rem;
 }
