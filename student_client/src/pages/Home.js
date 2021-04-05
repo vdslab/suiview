@@ -68,7 +68,7 @@ const Home = () => {
           >
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
-          <h2>吹view</h2>
+          <h2>吹view<span style={{fontSize:"1.15rem"}}> -β版-</span></h2>
         </IonToolbar>
       </IonHeader>
       <IonContent>

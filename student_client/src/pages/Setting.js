@@ -16,10 +16,12 @@ import {
   IonAlert,
   IonInput,
 } from "@ionic/react";
-import { closeOutline, buildOutline, shareOutline } from "ionicons/icons";
+import { closeOutline, buildOutline, /*shareOutline*/ } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { getUsername, putUsername } from "../services/api/account";
+//import line_icon from "../images/LINE_APP.png";
+
 /////////////////////////////////////////////
 const Setting = () => {
   const { logout } = useAuth0();
@@ -68,11 +70,13 @@ const Setting = () => {
                 </IonButton>
               </IonItem>
               <IonItem>
-                ユーザーID
+                ユーザーID&ensp;
                 {userData ? (
                   <a href={encodedUrl}>
-                    <IonButton fill="clear">
-                      <IonIcon icon={shareOutline}></IonIcon>
+                    <IonButton fill="outline">
+                     {/*} <IonIcon icon={shareOutline}></IonIcon>*/}
+                     {/*} <img src={line_icon} style={{width:"1.5rem"}} alt={"LINEアイコン"}/>&ensp;*/}
+                     LINEで共有する
                     </IonButton>
                   </a>
                 ) : (
