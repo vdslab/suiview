@@ -1,0 +1,43 @@
+.picture{
+    margin: 0 auto;
+    width: 15%;
+}
+.position3 {
+    width: 100%;
+    text-align: center;
+    position:absolute;
+  }
+  p{
+    margin: 0 1.5rem 1.5rem 1.5rem;
+  }
+
+@media (max-width: 959px) {
+    .picture{
+        padding-top: 1rem;
+        margin: 0 auto;
+        width: 20%;
+    }
+    .position3 {
+        width: 100%;
+        text-align: center;
+        position:absolute;
+      }
+      p{
+        margin: 0 1.5rem 1.5rem 1.5rem;
+      }
+}
+
+@media (max-width: 480px) {
+  .picture{
+      margin: 0 auto;
+      width: 40%;
+  }
+  .position3 {
+    width: 100%;
+    text-align: center;
+    position:absolute;
+  }
+  p{
+    margin: 0 1.5rem 1.5rem 1.5rem;
+  }
+}

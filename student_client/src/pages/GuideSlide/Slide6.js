@@ -1,6 +1,7 @@
 import { IonSlide } from "@ionic/react";
 import img_p from "../../images/progress.png";
 import img_a from "../../images/all.png";
+import "./Slide6.css";
 
 const Slide6 = () => {
   return (
@@ -11,7 +12,7 @@ const Slide6 = () => {
         グラフについて
       </h2>
       　　
-      <div className="center">
+      <div className="position6">
         　　　 　　　　
         <p>
           各フォルダに保存したデータから5つのグラフを表示することができます。
@@ -19,7 +20,7 @@ const Slide6 = () => {
           評価し、その結果が以下のグラフになります。
           左図が合計300満点での表記、右図がその内訳になります。
         </p>
-        <div>
+        <div className="pictures">
           <img
             src={img_p}
             alt="録音画面"

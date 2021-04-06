@@ -1,7 +1,7 @@
 p {
   font-size: 1.15rem;
   color: black;
-  margin: 0 1.5rem 1rem 1.5rem;
+  /*margin: 0 1rem 1rem 1rem;*/
 }
 
 ion-card-title {
@@ -11,7 +11,7 @@ ion-card-title {
 span {
   font-size: 1.75rem;
 }
-
+/*
 .center_m5 {
   width: 100%;
   text-align: center;
@@ -19,7 +19,7 @@ span {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+}*/
 .center {
   width: 100%;
   text-align: center;

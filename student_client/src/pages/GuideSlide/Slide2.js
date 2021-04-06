@@ -1,17 +1,16 @@
 import { IonIcon, IonSlide } from "@ionic/react";
 import img from "../../images/home_p.png";
 import { folderOutline, micOutline } from "ionicons/icons";
-
+import "./Slide2.css"
 const Slide2 = () => {
   return (
     <IonSlide>
       <h2 className="title">ホーム画面</h2>　　
-      <div className="center">
+      <div className="position2">
         <p>
           左下の&ensp;
           <IonIcon icon={folderOutline} color="primary" />
           &ensp;から練習ファイルの
-          <br />
           追加ができます。
           <br />
           右下の&ensp;
@@ -19,14 +18,13 @@ const Slide2 = () => {
           &ensp;からは録音ができます。
           <br />
           基礎的なフレーズフォルダが
-          <br />
           あらかじめ用意されています。
           <br />
-          始めはロングトーンファイルに
-          <br />
-          入ってみましょう。
+          始めはロングトーンファイルに入ってみましょう。
         </p>
-        <img src={img} alt="ホーム画面" style={{ width: "50%" }} />
+        <div className="picture">  
+          <img src={img} alt="ホーム画面" /*style={{ width: "50%" }}*/ />
+        </div>
       </div>
       　　
     </IonSlide>

@@ -1,0 +1,32 @@
+  .logo{
+      padding-top: 2rem;
+      height: 35%;
+     
+  }
+  .position{
+      text-align: center;
+      padding-top: 8rem;
+  }
+
+@media (max-width: 959px) {
+    .logo{
+        padding-top: 2rem;
+        height: 35%;    
+    }
+    .position{
+        text-align: center;
+        padding-top: 10rem;
+    }
+
+}
+
+@media (max-width: 480px) {
+    .logo{
+        margin-top: -2.25rem;
+        height: 35%;    
+    }
+    .position{
+        text-align: center;
+        padding-top: 10rem;
+    }
+}

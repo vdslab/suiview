@@ -1,0 +1,55 @@
+.picture{
+    margin: 0 auto;
+    width: 40%;
+}
+.position6 {
+  width: 100%;
+  text-align: center;
+ }
+p{
+  font-size: 1.15rem;
+}
+.pictures{
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 959px) {
+    .picture{
+        margin: 0 auto;
+        width: 40%;
+    }
+    .position6 {
+      width: 100%;
+      text-align: center;
+    }
+    p{
+      font-size: 1.15rem;
+    }
+    .pictures{
+      width: 50%;
+      text-align: center;
+      margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+  .picture{
+      margin: 0 auto;
+      width: 40%;
+  }
+  .position6 {
+    width: 100%;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  p{
+    font-size: 1.15rem;
+  }
+  .pictures2{
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+  }
+}

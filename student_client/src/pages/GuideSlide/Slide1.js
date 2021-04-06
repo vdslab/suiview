@@ -1,11 +1,14 @@
 import { IonSlide } from "@ionic/react";
 import iconImg from "../../images/logo.PNG";
+import "./Slide1.css";
+
 const Slide1 = () => {
   return (
     <IonSlide>
-      <div className="center_m5">
-        <img src={iconImg} alt="ロゴ画像" style={{ width: "60%" }} />
-
+      <div className="logo">
+        <img src={iconImg} alt="ロゴ画像" /*style={{ width: "60%" }}*/  />
+       </div>
+        <div className="position">
         <h2 style={{ margin: "1.5rem" }}>吹viewにようこそ</h2>
         <p>
           管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。

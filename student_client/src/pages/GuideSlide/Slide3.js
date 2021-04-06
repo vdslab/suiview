@@ -1,6 +1,7 @@
 import { IonSlide, IonIcon } from "@ionic/react";
 import img from "../../images/folder_p.png";
 import { micOutline } from "ionicons/icons";
+import "./Slide2.css";
 
 const Slide3 = () => {
   return (
@@ -15,7 +16,9 @@ const Slide3 = () => {
           <IonIcon icon={micOutline} color="primary" />
           を押して録音に進みましょう！
         </p>
-        <img src={img} alt="フォルダ画面" style={{ width: "50%" }} />
+        <div className="picture">
+          <img src={img} alt="フォルダ画面" /*style={{ width: "50%" }}*/ />
+        </div>
       </div>
     </IonSlide>
   );
