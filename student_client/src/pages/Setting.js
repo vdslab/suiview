@@ -44,8 +44,7 @@ const Setting = () => {
   const url = `https://line.me/R/msg/text/?${name}さんのユーザーIDは${id}です。\nこのIDを生徒に登録して演奏にコメントをつけましょう。`;
   const encodedUrl = encodeURI(url);
 
-  console.log(userData);
-
+  
   return (
     <IonPage>
       <IonHeader>

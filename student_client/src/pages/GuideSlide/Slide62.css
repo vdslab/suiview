@@ -28,7 +28,8 @@ p{
       font-size: 1.15rem;
     }
     .pictures2{
-      width: 35%;
+      width: 40%;
+      max-width: 300px;
       text-align: center;
       margin: 0 auto;
     }
