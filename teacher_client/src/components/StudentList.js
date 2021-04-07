@@ -9,7 +9,6 @@ const StudentList = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   async function Registration(studentId) {
-    console.log(studentId);
     if (studentId !== "") {
       const data = await postStudentsList(studentId, getAccessTokenSilently);
       setStudentList(data);
@@ -37,10 +36,14 @@ const StudentList = () => {
           return (
             <li key={key}>
               <Link
-                to={`/${d}/folder`}
-                className={d !== userName ? "has-text-black" : "has-text-blue"}
+                to={`/${d[0]}/folder`}
+                className={
+                  d[0].replace("%", "|") !== userName
+                    ? "has-text-black"
+                    : "has-text-blue"
+                }
               >
-                {d}
+                {d[1]}
               </Link>
             </li>
           );

@@ -83,7 +83,7 @@ export function App() {
             <Route path="/:userName/folder/:folderId" exact>
               <Home />
             </Route>
-            <Route path="/:userName/folder/:folderId/:musicId">
+            <Route path="/:userName/folder/:folderId/:musicId" exact>
               <Home />
             </Route>
           </Switch>

@@ -48,7 +48,8 @@ def get_student_list(teacher_id):
     for i in range(len(students)):
         student = session.query(User).filter_by(
             id=students[i].student_id).first()
-        data.append(student.name)
+        data.append([student.id, student.name])
+    print(data)
     session.close()
     return data
 
@@ -71,43 +72,46 @@ def put_student():
     return jsonify(get_student_list(user_id))
 
 
-@app.route('/<user_name>/folders', methods=['GET'])
+@app.route('/<user_id>/folders', methods=['GET'])
 @requires_auth
-def get_student_folder(user_name):
+def get_student_folder(user_id):
     session = create_session()
-    user = session.query(User).filter_by(
-        name=user_name).first()
-    folders = session.query(Folder).filter_by(user_id=user.id).all()
+    folders = session.query(Folder).filter_by(
+        user_id=user_id.replace("%", "|")).all()
     folders = [f.to_json() for f in folders]
     session.close()
     return jsonify(folders)
 
 
-@app.route('/<user_name>/folders/<folder_id>', methods=['GET'])
+@app.route('/<user_id>/folders/<folder_id>', methods=['GET'])
 @requires_auth
-def get_student_folder_musics(user_name, folder_id):
+def get_student_folder_musics(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
+    """
     folder = session.query(Folder).filter_by(
-        user_id=user.id, id=folder_id).first()
+        user_id=user_id.replace("%", "|"), id=folder_id).first()
     musics = session.query(Music).filter_by(
-        user_id=user.id, folder_id=folder.id).all()
+        user_id=user_id.replace("%", "|"), folder_id=folder.id).all()
     musics = [music.to_json() for music in musics]
     musics = sorted(musics, key=lambda x: x['created'], reverse=True)
 
     return jsonify(musics)
 
 
-@app.route('/<user_name>/folders/<folder_id>/progress', methods=['GET'])
+@app.route('/<user_id>/folders/<folder_id>/progress', methods=['GET'])
 @requires_auth
-def get_students_folder_progress(user_name, folder_id):
+def get_students_folder_progress(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
     user_id = user.id
+    """
     musics = session.query(Music).filter_by(
-        user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
+        user_id=user_id.replace("%", "|"), folder_id=folder_id).order_by(Music.id).all()
 
     Datas = []
     for music in musics:
@@ -131,15 +135,17 @@ def get_students_folder_progress(user_name, folder_id):
     return jsonify(dicDatas)
 
 
-@app.route('/<user_name>/folders/<folder_id>/parallel', methods=['GET'])
+@app.route('/<user_id>/folders/<folder_id>/parallel', methods=['GET'])
 @requires_auth
-def get_student_folders_parallel(user_name, folder_id):
+def get_student_folders_parallel(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
     user_id = user.id
+    """
     musics = session.query(Music).filter_by(
-        user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
+        user_id=user_id.replace("%", "|"), folder_id=folder_id).order_by(Music.id).all()
 
     Datas = []
     for music in musics:
@@ -167,13 +173,15 @@ def get_student_folders_parallel(user_name, folder_id):
     return jsonify(dicDatas)
 
 
-@app.route('/<user_name>/folders/<folder_id>/f0', methods=['GET'])
+@app.route('/<user_id>/folders/<folder_id>/f0', methods=['GET'])
 @requires_auth
-def get_student_folder_f0(user_name, folder_id):
+def get_student_folder_f0(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     musics = session.query(Music).filter_by(
         folder_id=folder_id, user_id=user_id).all()
 
@@ -239,13 +247,15 @@ def get_student_folder_f0(user_name, folder_id):
     return jsonify(Datas)
 
 
-@ app.route('/<user_name>/folders/<folder_id>/decibel', methods=['GET'])
+@ app.route('/<user_id>/folders/<folder_id>/decibel', methods=['GET'])
 @ requires_auth
-def get_student_folder_decibel(user_name, folder_id):
+def get_student_folder_decibel(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     musics = session.query(Music).filter_by(folder_id=folder_id,
                                             user_id=user_id).order_by(Music.id).all()
 
@@ -306,13 +316,15 @@ def get_student_folder_decibel(user_name, folder_id):
     return jsonify(Datas)
 
 
-@ app.route('/<user_name>/folders/<folder_id>/tone', methods=['GET'])
+@ app.route('/<user_id>/folders/<folder_id>/tone', methods=['GET'])
 @ requires_auth
-def get_student_folder_tone(user_name, folder_id):
+def get_student_folder_tone(user_id, folder_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     musics = session.query(Music).filter_by(
         user_id=user_id, folder_id=folder_id).order_by(Music.id).all()
 
@@ -373,29 +385,36 @@ def get_student_folder_tone(user_name, folder_id):
     return jsonify(Datas)
 
 
-@app.route('/<user_name>/musics/<music_id>/content', methods=['GET'])
+@app.route('/<user_id>/musics/<music_id>/content', methods=['GET'])
 @requires_auth
-def get_student_music_content(user_name, music_id):
+def get_student_music_content(user_id, music_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
+    print(user_id)
     response = make_response()
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
-    response.data = music.content
-    response.mimetype = "audio/wav"
+    print(music)
+    if music != None:
+        response.data = music.content
+        response.mimetype = "audio/wav"
     session.close()
     return response
 
 
-@ app.route('/<user_name>/musics/<music_id>/f0', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/f0', methods=['GET'])
 @ requires_auth
-def get_student_music_f0(user_name, music_id):
+def get_student_music_f0(user_id, music_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
 
@@ -430,13 +449,15 @@ def get_student_music_f0(user_name, music_id):
     })
 
 
-@ app.route('/<user_name>/musics/<music_id>/decibel', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/decibel', methods=['GET'])
 @ requires_auth
-def get_student_music_decibel(user_name, music_id):
+def get_student_music_decibel(user_id, music_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     rate, data = scipy.io.wavfile.read(io.BytesIO(music.content))
@@ -480,13 +501,15 @@ def get_student_music_decibel(user_name, music_id):
     return jsonify({'average': average[1], 's': average[0], 'values': data})
 
 
-@ app.route('/<user_name>/musics/<music_id>/centroid', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/centroid', methods=['GET'])
 @ requires_auth
-def get_student_music_spectrum_centroid(user_name, music_id):
+def get_student_music_spectrum_centroid(user_id, music_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     return jsonify({
@@ -494,13 +517,15 @@ def get_student_music_spectrum_centroid(user_name, music_id):
     })
 
 
-@ app.route('/<user_name>/musics/<music_id>/rolloff', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/rolloff', methods=['GET'])
 @ requires_auth
-def get_student_music_spectrum_rolloff(user_name, music_id):
+def get_student_music_spectrum_rolloff(user_id, music_id):
     session = create_session()
+    """
     user = session.query(User).filter_by(
         name=user_name).first()
-    user_id = user.id
+    """
+    user_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     average = spectrum_rolloff_ave(music)
@@ -510,16 +535,18 @@ def get_student_music_spectrum_rolloff(user_name, music_id):
     })
 
 
-@app.route('/<user_name>/musics/<music_id>/comment', methods=['POST'])
+@app.route('/<user_id>/musics/<music_id>/comment', methods=['POST'])
 @ requires_auth
-def put_teacher_comment(user_name, music_id):
+def put_teacher_comment(user_id, music_id):
     session = create_session()
     teacher_id = g.current_user['sub']
     teacher = session.query(User).filter_by(
         id=teacher_id).first()
+    """
     student = session.query(User).filter_by(
         name=user_name).first()
-    student_id = student.id
+    """
+    student_id = user_id.replace("%", "|")
     data = json.loads(request.data.decode('utf-8'))
     comment = Comment(
         music_id=music_id, text=data['comment'], user_id=student_id, writer=teacher.name)
@@ -529,13 +556,15 @@ def put_teacher_comment(user_name, music_id):
     return jsonify("receive")
 
 
-@ app.route('/<user_name>/musics/<music_id>/stability', methods=['GET'])
+@ app.route('/<user_id>/musics/<music_id>/stability', methods=['GET'])
 @ requires_auth
-def get_student_folder_stability(user_name, music_id):
+def get_student_folder_stability(user_id, music_id):
     session = create_session()
+    """
     student = session.query(User).filter_by(
-        name=user_name).first()
-    student_id = student.id
+        name=user_name).first()  
+    """
+    student_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=student_id, id=music_id).first()
     f0_ave = frequency_ave_data(music)
@@ -1007,6 +1036,9 @@ def get_music_decibel(music_id):
     data = data.astype(np.float)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
+    times = librosa.times_like(db, sr=48000)
+    print("len", times)
+    print(times)
     dbLine = []
     for i in range(len(db[0])):
         _max = -20
@@ -1032,7 +1064,8 @@ def get_music_decibel(music_id):
     j = 0
     for i in range(start, end):
         dic = {
-            "x": j,
+            # "x": j,
+            "x":  round(times[i], 2),
             "y": round(dbLine[i], 4)
         }
         data.append(dic)
@@ -1212,6 +1245,10 @@ def get_music_f0(music_id):
         user_id=user_id, id=music_id).first()
 
     f0 = music.fundamental_frequency(session)
+    times = librosa.times_like(f0, sr=48000)
+    print(len(f0))
+    print("len", times)
+    print(times)
 
     average = frequency_ave_data(music)
 
@@ -1223,12 +1260,12 @@ def get_music_f0(music_id):
     for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
-                "x": j,
+                "x": round(times[i], 2),
                 "y": round(f0[i], 4)
             }
         else:
             dic = {
-                "x": j,
+                "x":  round(times[i], 2),
                 "y": 0
             }
         data.append(dic)
@@ -1365,6 +1402,9 @@ def spectrum_rolloff(music):
     session = create_session()
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
+    #times = librosa.times_like(rolloff)
+    #print("len", times)
+    # print(times)
 
     start, end = find_start_end(music)
     Datas = []
@@ -1373,6 +1413,7 @@ def spectrum_rolloff(music):
     j = 0
     for i in range(start, end):
         dic = {
+            # "x": round(times[i], 2),
             "x": j,
             "y": round(rolloff[0][i], 4)
         }
