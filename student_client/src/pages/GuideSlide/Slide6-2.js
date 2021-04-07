@@ -4,6 +4,7 @@ import img_v from "../../images/fol_vol.png";
 import img_t from "../../images/fol_tone.png";
 import "./Slide62.css";
 
+
 const Slide6_2 = () => {
   return (
     <IonSlide>

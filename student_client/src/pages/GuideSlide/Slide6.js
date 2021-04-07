@@ -20,7 +20,7 @@ const Slide6 = () => {
           評価し、その結果が以下のグラフになります。
           左図が合計300満点での表記、右図がその内訳になります。
         </p>
-        <div className="pictures">
+        <div className="pictures6">
           <img
             src={img_p}
             alt="録音画面"

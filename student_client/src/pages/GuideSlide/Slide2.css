@@ -1,33 +1,36 @@
-.picture{
+.picture2{
     margin: 0 auto;
     width: 15%;
 }
 .position2 {
 padding-top: 2rem;
   width: 100%;
+  min-width: 300px; /* 横幅の最小値 */
   text-align: center;
 }
 
 @media (max-width: 959px) {
-    .picture{
+    .picture2{
         margin: 0 auto;
         width: 20%;
     }
     .position2 {
     padding-top: 2rem;
       width: 100%;
+      min-width: 300px; /* 横幅の最小値 */
       text-align: center;
     }
 }
 
 @media (max-width: 480px) {
-  .picture{
+  .picture2{
       margin: 0 auto;
       width: 40%;
   }
 
   .position2 {
     width: 100%;
+    min-width: 300px; /* 横幅の最小値 */
     text-align: center;
   }
 }

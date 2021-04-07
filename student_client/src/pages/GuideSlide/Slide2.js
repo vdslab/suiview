@@ -9,11 +9,10 @@ const Slide2 = () => {
     <IonSlide>
       <h2 className="title">ホーム画面</h2>　　
       <div className="position3">
-        <p>
+        <p className="small_p">
           左下の&ensp;
           <IonIcon icon={folderOutline} color="primary" />
-          &ensp;から練習ファイルの
-          追加ができます。
+          &ensp;から練習ファイルの追加ができます。
           <br />
           右下の&ensp;
           <IonIcon icon={micOutline} color="primary" />
