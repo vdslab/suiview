@@ -10,6 +10,10 @@
   p{
     margin: 0 1.5rem 1.5rem 1.5rem;
   }
+  .picture4{
+    margin: 0 auto;
+    width: 15%;
+}
 
 @media (max-width: 959px) {
     .picture{
@@ -25,6 +29,11 @@
       p{
         margin: 0 1.5rem 1.5rem 1.5rem;
       }
+      .picture4{
+        padding-top: 1rem;
+        margin: 0 auto;
+        width: 20%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -40,4 +49,8 @@
   p{
     margin: 0 1.5rem 1.5rem 1.5rem;
   }
+  .picture4{
+    margin: 0 auto;
+    width: 40%;
+}
 }

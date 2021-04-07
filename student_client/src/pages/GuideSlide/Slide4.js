@@ -17,7 +17,7 @@ const Slide4 = () => {
           録音が終わったら記録するボタンを押して記録しましょう。
           自己評価とコメントは任意で付けられます。後から追加、変更ができます。
         </p>
-        <div className="picture">
+        <div className="picture4">
           <img src={img} alt="録音画面" /*style={{ width: "50%" }}*/ />
         </div>
       </div>

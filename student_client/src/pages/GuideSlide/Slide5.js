@@ -11,7 +11,7 @@ const Slide5 = () => {
           <br />
           また、演奏データをタップするとその演奏データの詳細情報を見ることができます。
         </p>
-        <div className="picture">
+        <div className="picture4">
           <img src={img} alt="録音画面"  /*style={{ width: "50%" }}*/ />
         </div>
       </div>
