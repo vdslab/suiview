@@ -32,7 +32,7 @@ def get_users():
         id=user_id).first()
     if user == None:
         user = User(id=user_id)
-        user.name = "undefind"
+        user.name = user_id
         user.is_teacher = True
         session.add(user)
         session.commit()
