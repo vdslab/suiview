@@ -105,7 +105,9 @@ function Home() {
         <div className="hero-body">
           <div className="container">
             <div className="columns">
-              <h1 className="title column is-9">吹view♪</h1>
+              <h1 className="title column is-9">
+                吹view♪<span className="is-size-5"> β版-先生モード-</span>
+              </h1>
               <div className="column is-3">
                 <div className="select is-small is-primary">
                   <select

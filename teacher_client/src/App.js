@@ -12,7 +12,7 @@ function Login() {
         <div className="hero-body">
           <div className="container" style={{ padding: "40px" }}>
             <h1 className="title  has-text-centered">
-              吹View♪<span className="is-size-5">-先生モード-</span>
+              吹View♪<span className="is-size-5"> β版-先生モード-</span>
             </h1>
           </div>
         </div>
