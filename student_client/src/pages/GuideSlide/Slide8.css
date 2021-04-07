@@ -1,0 +1,60 @@
+.picture{
+    margin: 0 auto;
+    width: 40%;
+}
+.position8 {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+}
+p{
+  font-size: 1.05rem;
+  margin: 0 1rem 1rem 1rem;
+}
+.pictures{
+  width: 30%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+@media (max-width: 959px) {
+    .picture{
+        margin: 0 auto;
+        width: 40%;
+    }
+    .position8 {
+      width: 100%;
+      text-align: center;
+      position: absolute;
+    }
+    p{
+      font-size: 1.05rem;
+      margin: 0 1rem 1rem 1rem;
+    }
+    .pictures{
+      width: 50%;
+      text-align: center;
+      margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+  .picture{
+      margin: 0 auto;
+      width: 40%;
+  }
+  .position8 {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+  }
+  p{
+    font-size: 1.05rem;
+    margin: 0 1rem 1rem 1rem;
+  }
+  .picture{
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
+}
