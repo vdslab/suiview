@@ -18,7 +18,7 @@ const PointLiner = ({ data }) => {
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: "auto",
+          min: 0,
           max: 300,
           stacked: true,
           reverse: false,

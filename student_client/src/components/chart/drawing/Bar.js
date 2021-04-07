@@ -9,7 +9,7 @@ const Bar = ({ data }) => {
     <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveBar
         data={data}
-        keys={["pich", "volume", "tone"]}
+        keys={["高さ", "強さ", "音色"]}
         indexBy="No."
         margin={{ top: 10, right: 100, bottom: 50, left: 60 }}
         padding={0.3}

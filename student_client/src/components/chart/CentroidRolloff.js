@@ -5,7 +5,7 @@ import {
   getMusicSpectrumCentroid,
   getMusicSpectrumRolloff,
 } from "../../services/api";
-import { ManyLiner } from "./drawing";
+import { ToneLiner } from "./drawing";
 
 const CentroidRolloff = ({ musicId }) => {
   const [data, setData] = useState(null);
@@ -33,7 +33,7 @@ const CentroidRolloff = ({ musicId }) => {
   if (data == null) {
     return <IonItem lines="none">loading...</IonItem>;
   }
-  return <ManyLiner data={data} axis_name={""}/>;
+  return <ToneLiner data={data} axis_name={""}/>;
 };
 
 export default CentroidRolloff;

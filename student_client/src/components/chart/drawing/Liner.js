@@ -23,7 +23,7 @@ const Liner = ({ data, axis_name }) => {
 
   const x_padding = Math.round(data.length / 5 / 10) * 10;
   let k = 0;
-  function isPrime(num) {
+  function makeInterval(num) {
     //console.log(num, k);
       if (k % x_padding === 0) {
         k += 1;
@@ -35,7 +35,6 @@ const Liner = ({ data, axis_name }) => {
   
   let p = 0;
   function makeData(num) {
-    //console.log(num, k);
       if (p % 5 === 0) {
         p += 1;
         return num;
@@ -43,10 +42,10 @@ const Liner = ({ data, axis_name }) => {
     p += 1;
     return;
   }
-  const jiku = data.filter(isPrime);
+  const jiku = data.filter(makeInterval);
   const d = data
     .filter(makeData);
-  console.log(d);
+  
 
   return (
     <div style={{ width: "100%", height: "300px" }}>

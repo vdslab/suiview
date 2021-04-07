@@ -48,7 +48,7 @@ import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
 import { convertDate } from "../services/date.js";
 import "./detail.css";
-const chartIds = ["PITCH", "VOL", "TONE"];
+const chartIds = ["高さ", "強さ", "音色"];
 
 const Charts = () => {
   const { musicId } = useParams();
@@ -72,17 +72,17 @@ const Charts = () => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "PITCH" && (
+      {chartId === "高さ" && (
         <div>
           <ShowFrequency musicId={musicId} />
         </div>
       )}
-      {chartId === "VOL" && (
+      {chartId === "強さ" && (
         <div>
           <Decibel musicId={musicId} />
         </div>
       )}
-      {chartId === "TONE" && (
+      {chartId === "音色" && (
         <div>
           <CentroidRolloff musicId={musicId} />
         </div>

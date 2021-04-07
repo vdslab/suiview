@@ -52,7 +52,7 @@ const ShowChart = (folderId, kind) => {
 };
 
 const FolderDetail = () => {
-  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
+  const chartIds = ["PROGRESS", "総合点", "高さ", "強さ", "音色"];
   const [chartId, setChartId] = useState(chartIds[0]);
   const { folderId } = useParams();
 
@@ -75,10 +75,10 @@ const FolderDetail = () => {
         </IonSelect>
       </IonItem>
       {chartId === "PROGRESS" ? ShowChart(folderId, "progress") : []}
-      {chartId === "ALL" ? ShowChart(folderId, "parallel") : []}
-      {chartId === "PITCH" ? ShowChart(folderId, "pitch") : []}
-      {chartId === "VOL" ? ShowChart(folderId, "vol") : []}
-      {chartId === "TONE" ? ShowChart(folderId, "tone") : []}
+      {chartId === "総合点" ? ShowChart(folderId, "parallel") : []}
+      {chartId === "高さ" ? ShowChart(folderId, "pitch") : []}
+      {chartId === "強さ" ? ShowChart(folderId, "vol") : []}
+      {chartId === "音色" ? ShowChart(folderId, "tone") : []}
     </div>
   );
 };
