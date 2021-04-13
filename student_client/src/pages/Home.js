@@ -21,6 +21,7 @@ import {
   settingsOutline,
   folderOutline,
   micOutline,
+  caretDownOutline,
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, deleteFolder, postFolder } from "../services/api";
@@ -72,6 +73,7 @@ const Home = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonItem lines="none"><IonIcon icon={caretDownOutline} color="medium"/>&ensp;練習フォルダを選択しましょう</IonItem>
         <IonList>
           <IonItem
             _ngcontent-yfv-c79=""
@@ -130,7 +132,7 @@ const Home = () => {
                       setFolders(folders);
                     }}
                   >
-                    delete
+                    削除
                   </IonItemOption>
                 </IonItemOptions>
               </IonItemSliding>
@@ -167,7 +169,7 @@ const Home = () => {
           ]}
           buttons={[
             {
-              text: "Cancel",
+              text: "取り消し",
               role: "cancel",
               cssClass: "secondary",
               handler: () => {
@@ -175,7 +177,7 @@ const Home = () => {
               },
             },
             {
-              text: "OK",
+              text: "完了",
               handler: async ({ name }) => {
                 if (name === "") {
                   alert("フォルダ名を入力してください");

@@ -117,7 +117,7 @@ const Setting = () => {
             color="light"
             onClick={() => logout({ returnTo: window.location.origin })}
           >
-            Log out
+            ログアウト
           </IonButton>
         </IonList>
         <IonAlert

@@ -6,13 +6,13 @@
     width: 100%;
     text-align: center;
     position:absolute;
-  }
-  p{
-    margin: 0 1.5rem 1.5rem 1.5rem;
-  }
-  .picture4{
-    margin: 0 auto;
-    width: 15%;
+}
+p{
+  margin: 0 1.5rem 1.5rem 1.5rem;
+}
+.picture4{
+  margin: 0 auto;
+  width: 15%;
 }
 .picture5{
   margin: 0 auto;
@@ -29,14 +29,14 @@
         width: 100%;
         text-align: center;
         position:absolute;
-      }
-      p{
-        margin: 0 1.5rem 1.5rem 1.5rem;
-      }
-      .picture4{
-        padding-top: 1rem;
-        margin: 0 auto;
-        width: 20%;
+    }
+    p{
+      margin: 0 1.5rem 1.5rem 1.5rem;
+    }
+    .picture4{
+      padding-top: 1rem;
+      margin: 0 auto;
+      width: 20%;
     }
     .picture5{
       padding-top: 1rem;
@@ -63,9 +63,9 @@
   .picture4{
     margin: 0 auto;
     width: 40%;
-}
-.picture5{
-  margin: 0 auto;
-  width: 45%;
-}
+  }
+  .picture5{
+    margin: 0 auto;
+    width: 45%;
+  }
 }
