@@ -51,11 +51,16 @@ const ShowChart = (folderId, kind) => {
   }
 };
 
-const FolderDetail = () => {
-  const chartIds = ["PROGRESS", "総合点", "高さ", "強さ", "音色"];
-  const [chartId, setChartId] = useState(chartIds[0]);
+const FolderDetail = (item) => {
+  const chartIds = ["総合点", "高さ", "強さ", "音色"];
+  const chartIds2 = ["精進グラフ", "総合点", "高さ", "強さ", "音色"];
   const { folderId } = useParams();
-
+  const count = item.count;
+  let IdSet = chartIds;
+  if(count > 10){
+    IdSet = chartIds2;
+  }
+  const [chartId, setChartId] = useState(IdSet[0]);
   return (
     <div>
       <IonItem>
@@ -65,7 +70,7 @@ const FolderDetail = () => {
           onIonChange={(e) => setChartId(e.detail.value)}
           buttons={["Cancel", "Open Modal", "Delete"]}
         >
-          {chartIds.map((id, k) => {
+          {IdSet.map((id, k) => {
             return (
               <IonSelectOption value={id} key={k}>
                 {id}
@@ -74,7 +79,7 @@ const FolderDetail = () => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "PROGRESS" ? ShowChart(folderId, "progress") : []}
+      {chartId === "精進グラフ" ? ShowChart(folderId, "progress") : []}
       {chartId === "総合点" ? ShowChart(folderId, "parallel") : []}
       {chartId === "高さ" ? ShowChart(folderId, "pitch") : []}
       {chartId === "強さ" ? ShowChart(folderId, "vol") : []}
@@ -161,7 +166,7 @@ const Folder = ({ history }) => {
           </IonCard>
         ) : (
           <IonCard style={{ height: "380px" }}>
-            <FolderDetail />
+            <FolderDetail count={musics.length}/>
           </IonCard>
         )}
         <IonList>

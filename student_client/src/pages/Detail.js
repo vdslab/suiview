@@ -338,7 +338,7 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "Cancel",
+              text: "取り消し",
               icon: close,
               role: "cancel",
               handler: () => {
@@ -362,7 +362,7 @@ const Detail = ({ history }) => {
           ]}
           buttons={[
             {
-              text: "Cancel",
+              text: "取り消し",
               role: "cancel",
               cssClass: "secondary",
               handler: () => {
@@ -370,7 +370,7 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "OK",
+              text: "完了",
               handler: async ({ item }) => {
                 const data = await putMusicComment(
                   musicId,

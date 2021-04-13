@@ -158,12 +158,14 @@ def get_student_folders_parallel(user_id, folder_id):
     dicDatas = []
     j = 1
     for i in range(len(Datas)-1, -1, -1):
+        if j > 10:
+            break
         dic = {
             # "No.": Datas[i][0],
             "No.": j,
-            "pich": Datas[i][1][0],
-            "tone": Datas[i][2][0],
-            "volume": Datas[i][3][0],
+            "高さ": Datas[i][1][0],
+            "音色": Datas[i][2][0],
+            "強さ": Datas[i][3][0],
         }
         j += 1
         dicDatas.append(dic)
@@ -974,16 +976,19 @@ def get_folders_parallel(folder_id):
 
     for i in range(len(Datas)):
         Datas[i].append(Datas[i][1][0]+Datas[i][3][0] + Datas[i][2][0])
-    Datas = sorted(Datas, key=lambda x: x[4])
+    #Datas = sorted(Datas, key=lambda x: x[4])
     dicDatas = []
     j = 1
-    for i in range(len(Datas)):
+    # for i in range(len(Datas)):
+    for i in range(len(Datas)-1, -1, -1):
+        if j > 10:
+            break
         dic = {
             # "No.": Datas[i][0],
             "No.": j,
-            "pich": Datas[i][1][0],
-            "tone": Datas[i][2][0],
-            "volume": Datas[i][3][0],
+            "高さ": Datas[i][1][0],
+            "強さ": Datas[i][2][0],
+            "音色": Datas[i][3][0],
         }
         j += 1
         dicDatas.append(dic)
@@ -1381,6 +1386,7 @@ def spectrum_centroid(music):
     session = create_session()
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     cent = librosa.feature.spectral_centroid(y=y, sr=sr)
+    times = librosa.times_like(cent, sr=48000)
     start, end = find_start_end(music)
     Datas = []
     if end < len(cent[0]-2):
@@ -1388,7 +1394,8 @@ def spectrum_centroid(music):
     j = 0
     for i in range(start, end):
         dic = {
-            "x": j,
+            "x": round(times[i], 2),
+            # "x": j,
             "y": round(cent[0][i], 4)
         }
         Datas.append(dic)
@@ -1402,7 +1409,7 @@ def spectrum_rolloff(music):
     session = create_session()
     y, sr = librosa.load(io.BytesIO(music.content), 48000)
     rolloff = librosa.feature.spectral_rolloff(y=y, sr=sr)
-    #times = librosa.times_like(rolloff)
+    times = librosa.times_like(rolloff, sr=48000)
     #print("len", times)
     # print(times)
 
@@ -1413,8 +1420,8 @@ def spectrum_rolloff(music):
     j = 0
     for i in range(start, end):
         dic = {
-            # "x": round(times[i], 2),
-            "x": j,
+            "x": round(times[i], 2),
+            # "x": j,
             "y": round(rolloff[0][i], 4)
         }
         Datas.append(dic)
