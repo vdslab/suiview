@@ -20,15 +20,15 @@ const ShowChart = (data) => {
     <div>
       {kind === "PROGRESS" ? <ProgressChart /> : []}
       {kind === "ALL" ? <ParallelChart /> : []}
-      {kind === "PITCH" ? <FrequencyChart /> : []}
-      {kind === "VOL" ? <VolumeChart /> : []}
-      {kind === "TONE" ? <ToneChart /> : []}
+      {kind === "高さ" ? <FrequencyChart /> : []}
+      {kind === "強さ" ? <VolumeChart /> : []}
+      {kind === "音色" ? <ToneChart /> : []}
     </div>
   );
 };
 
 const FolderChart = () => {
-  const chartIds = ["PROGRESS", "ALL", "PITCH", "VOL", "TONE"];
+  const chartIds = ["PROGRESS", "ALL", "高さ", "強さ", "音色"];
   const [chartId, setChartId] = useState(chartIds[0]);
   return (
     <section>

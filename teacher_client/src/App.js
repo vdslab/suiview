@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
-import img from "./images/ogp_h.png";
+import img from "./images/ogp_hb.png";
 import qr_img from "./images/QR_y.png";
 
 function Login() {
