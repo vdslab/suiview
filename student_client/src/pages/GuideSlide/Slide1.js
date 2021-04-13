@@ -1,5 +1,5 @@
 import { IonSlide } from "@ionic/react";
-import iconImg from "../../images/logo.PNG";
+import iconImg from "../../images/logo_b.PNG";
 import "./Slide1.css";
 
 const Slide1 = () => {
