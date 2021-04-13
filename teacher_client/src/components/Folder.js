@@ -9,7 +9,6 @@ import { Player } from "./Player";
 const FolderList = () => {
   const [musics, setMusics] = useState();
   const path = useLocation().pathname.split("/");
-  console.log(path);
   const { userName, folderId, musicId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
 
