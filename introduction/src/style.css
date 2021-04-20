@@ -5,9 +5,10 @@ img.images {
 
 .hero-1 {
   /*@extend .hero;*/
-  background-image: url('./images/bg2.jpg');
+  background-color: rgb(155, 255, 247);
+  /*background-image: url('./images/bg2.jpg');
   background-size: cover;
-  background-position: center;
+  background-position: center;*/
 }
 .images_h {
   width: 35%;
@@ -15,7 +16,7 @@ img.images {
   margin-bottom: 0.5rem;
 }
 
-.here{
+.here {
   margin: 0.45rem;
   color: rgb(143, 143, 143);
   font-size: 0.75rem;

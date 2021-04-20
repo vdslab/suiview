@@ -1,6 +1,6 @@
-import img2 from "./images/ogp_t_b.png";
+import img2 from "./images/ogp_t.png";
 import qr_img from "./images/QR_b.jpg";
-import imgh from "./images/ogp_half_b.png";
+import imgh from "./images/ogp_half.png";
 
 function App() {
   return (
@@ -10,37 +10,21 @@ function App() {
           <div className="hero-body">
             <div className="container" style={{ padding: "20px" }}>
               <div className="has-text-centered ">
-                <h1 className="title has-text-white">
+                <h1 className="title is-2 ">吹 v i ew</h1>
+                <h2 className="title is-6 ">
                   管楽器を対象とした基礎的演奏技向上のための
                   <br />
                   音響特徴可視化アプリの試作
-                </h1>
-                <h2 className="title is-6 has-text-white">
-                  日本大学文理学部 渡邉みさと
                 </h2>
+                <h3 className="title is-6 ">
+                  日本大学文理学部 渡邉 尾上 北原 植村
+                </h3>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="hero">
-        <section
-          className="section"
-          style={{ paddingLeft: "56px", paddingRight: "56px" }}
-        >
-          <div className="has-text-centered">
-            <div className="title is-5">概要</div>
-            <p>
-              管楽器は、発音そのものが簡単ではないため、音の強さ・高さ・音色が安定した音を出せるようになるための基礎的な反復トレーニングが不可欠である。
-              しかし、初心者にとって、これらが安定しているかを音から判断するのは難しく、初心者が独力で練習する1つの障壁になっていた。
-              本研究では、管楽器を練習したいユーザが気軽に録音し、音の強さ・高さ・音色の安定度を視覚的に確かめられるWebアプリ「吹view」の開発を進めている。
-              これらの音響特徴をグラフ化するだけでなく、継続的に録音を行うことで、これらの音響特徴の安定度がどのように改善しているかを可視化する機能の実装も進めている。
-              本発表では、本アプリのプロトタイプについてデモを交えて報告する。
-            </p>
-          </div>
-        </section>
-      </section>
       <section className="hero">
         <section
           className="section"
