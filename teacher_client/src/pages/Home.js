@@ -136,21 +136,33 @@ function Home() {
       {selected === "アカウント" ? (
         <Account />
       ) : (
-        <section className="section">
-          <div className="container">
-            <div className="columns">
-              <div className="column is-2 ">
-                <StudentList />
-              </div>
-              <div className="column is-2">
-                <FolderList />
-              </div>
-              <div className="column is-8">
-                <Folder />
+        <div>
+          <section
+            className="section"
+            style={{ paddingBottom: "0px", paddingTop: "24px" }}
+          >
+            生徒とフォルダーを選択しましょう。
+            <br />
+            生徒とフォルダーのみの選択ではそのフォルダの蓄積データのグラフが表示され、
+            <br />
+            さらに録音データを選択するとその音源のグラフを見ることができます。
+          </section>
+          <section className="section">
+            <div className="container">
+              <div className="columns">
+                <div className="column is-2 ">
+                  <StudentList />
+                </div>
+                <div className="column is-2">
+                  <FolderList />
+                </div>
+                <div className="column is-8">
+                  <Folder />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       )}
     </div>
   );

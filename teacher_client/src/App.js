@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
-import img from "./images/ogp_hb.png";
-import qr_img from "./images/QR_y.png";
+//import img from "./images/ogp_hb.png";
+//import qr_img from "./images/QR_y.png";
 
 function Login() {
   const { loginWithRedirect } = useAuth0();
@@ -41,7 +41,7 @@ function Login() {
                 login
               </button>
             </section>
-            <section>
+            {/*<section>
               <h2 className="title is-6">
                 生徒モードはこちら↓スマートフォン推奨
               </h2>
@@ -57,7 +57,7 @@ function Login() {
                 alt="先生モード"
                 style={{ width: "25vmin", margin: "0.5rem" }}
               />
-            </section>
+            </section>*/}
           </div>
         </div>
       </section>
