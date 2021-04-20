@@ -105,11 +105,6 @@ def get_student_folder_musics(user_id, folder_id):
 @requires_auth
 def get_students_folder_progress(user_id, folder_id):
     session = create_session()
-    """
-    user = session.query(User).filter_by(
-        name=user_name).first()
-    user_id = user.id
-    """
     musics = session.query(Music).filter_by(
         user_id=user_id.replace("%", "|"), folder_id=folder_id).order_by(Music.id).all()
 
@@ -131,7 +126,8 @@ def get_students_folder_progress(user_id, folder_id):
         dicDatas.append(dic)
         j += 1
     session.close()
-    print(Datas)
+    dicDatas = sorted(dicDatas, key=lambda x: x["x"], reverse=True)
+
     return jsonify(dicDatas)
 
 
@@ -139,11 +135,6 @@ def get_students_folder_progress(user_id, folder_id):
 @requires_auth
 def get_student_folders_parallel(user_id, folder_id):
     session = create_session()
-    """
-    user = session.query(User).filter_by(
-        name=user_name).first()
-    user_id = user.id
-    """
     musics = session.query(Music).filter_by(
         user_id=user_id.replace("%", "|"), folder_id=folder_id).order_by(Music.id).all()
 
@@ -161,7 +152,6 @@ def get_student_folders_parallel(user_id, folder_id):
         if j > 10:
             break
         dic = {
-            # "No.": Datas[i][0],
             "No.": j,
             "高さ": Datas[i][1][0],
             "音色": Datas[i][2][0],
@@ -169,9 +159,8 @@ def get_student_folders_parallel(user_id, folder_id):
         }
         j += 1
         dicDatas.append(dic)
-
+    dicDatas = sorted(dicDatas, key=lambda x: x["No."], reverse=True)
     session.close()
-    print(dicDatas)
     return jsonify(dicDatas)
 
 
@@ -179,10 +168,6 @@ def get_student_folders_parallel(user_id, folder_id):
 @requires_auth
 def get_student_folder_f0(user_id, folder_id):
     session = create_session()
-    """
-    user = session.query(User).filter_by(
-        name=user_name).first()
-    """
     user_id = user_id.replace("%", "|")
     musics = session.query(Music).filter_by(
         folder_id=folder_id, user_id=user_id).all()
@@ -992,9 +977,8 @@ def get_folders_parallel(folder_id):
         }
         j += 1
         dicDatas.append(dic)
-
+    dicDatas = sorted(dicDatas, key=lambda x: x["No."], reverse=True)
     session.close()
-    print(dicDatas)
     return jsonify(dicDatas)
 
 
@@ -1025,6 +1009,8 @@ def get_folder_progress(folder_id):
         }
         dicDatas.append(dic)
         j += 1
+    dicDatas = sorted(dicDatas, key=lambda x: x["x"], reverse=True)
+
     session.close()
     return jsonify(dicDatas)
 
