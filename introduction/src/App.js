@@ -9,15 +9,14 @@ function App() {
         <div className="bg">
           <div className="hero-body">
             <div className="container" style={{ padding: "20px" }}>
-              <div className="has-text-centered ">
+              <div className=" ">
                 <h1 className="title is-2 ">吹 v i ew</h1>
-                <h2 className="title is-6 ">
+                <h2 className="title is-5 ">
                   管楽器を対象とした基礎的演奏技向上のための
-                  <br />
                   音響特徴可視化アプリの試作
                 </h2>
                 <h3 className="title is-6 ">
-                  日本大学文理学部 渡邉 尾上 北原 植村
+                  日本大学文理学部 渡邉みさと 尾上洋介 北原鉄朗 植村あい子
                 </h3>
               </div>
             </div>
@@ -30,7 +29,7 @@ function App() {
           className="section"
           style={{ paddingLeft: "56px", paddingRight: "56px" }}
         >
-          <div className="has-text-centered">
+          <div className="">
             <div className="title is-5">吹viewとは</div>
             <p>
               管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。
@@ -38,8 +37,6 @@ function App() {
             <p>
               管楽器を練習したいユーザが気軽に録音
               し,音の強さ・高さ・音色の安定度を視覚的に確かめることができます。
-            </p>
-            <p>
               また、先生モードからは登録したユーザの演奏データを見てコメントをつけることができ、他者からの評価をもらうこともできます。
             </p>{" "}
           </div>
@@ -53,8 +50,6 @@ function App() {
             <div className="title is-6">生徒モード</div>
             <p>
               ユーザーが演奏を録音すると、高さ・強さ・音色の3観点からどの程度演奏が安定しているかを点数とグラフから知ることができます。
-            </p>
-            <p>
               また、演奏データを蓄積していくことで安定度の推移がわかります。
             </p>
             <p className="here">こちらから↓スマートフォン推奨</p>
@@ -72,9 +67,8 @@ function App() {
           >
             <div className="title is-6">先生モード</div>
             <p>
-              先生モードでは生徒が演奏した音源とグラフを見てコメントを付けることができます。
+              先生モードでは生徒が演奏した音源とグラフを見てコメントを付けることができます。付けたコメントは生徒が見ることができます。
             </p>
-            <p>付けたコメントは生徒が見ることができます。</p>
             <p className="here">こちらから↓PC・タブレット推奨</p>
 
             <div style={{ margin: "1rem" }}>
