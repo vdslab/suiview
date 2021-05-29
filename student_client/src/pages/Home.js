@@ -30,6 +30,7 @@ import longtoneImg from "../images/longtone.PNG";
 import scaleImg from "../images/scale.PNG";
 import noImage from "../images/gray.png";
 import Guide from "./Guide.js";
+import { useTranslation } from "react-i18next";
 export const defoFolder = [
   { img: longtoneImg, name: "ロングトーン" },
   { img: scaleImg, name: "スケール" },
@@ -37,6 +38,7 @@ export const defoFolder = [
 ];
 
 const Home = () => {
+  const { t } = useTranslation();
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
@@ -69,11 +71,17 @@ const Home = () => {
           >
             <IonIcon icon={settingsOutline}></IonIcon>
           </IonButton>
-          <h2>吹view<span style={{fontSize:"1.15rem"}}> -β版-</span></h2>
+          <h2>
+            {t("title")}
+            <span style={{ fontSize: "1.15rem" }}> {t("subtitle")}</span>
+          </h2>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonItem lines="none"><IonIcon icon={caretDownOutline} color="medium"/>&ensp;練習フォルダを選択しましょう</IonItem>
+        <IonItem lines="none">
+          <IonIcon icon={caretDownOutline} color="medium" />
+          &ensp;練習フォルダを選択しましょう
+        </IonItem>
         <IonList>
           <IonItem
             _ngcontent-yfv-c79=""

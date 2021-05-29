@@ -21,8 +21,11 @@
     "@nivo/heatmap": "^0.70.1",
     "@nivo/line": "^0.70.1",
     "@nivo/parallel-coordinates": "^0.70.1",
+    "i18next": "^20.3.1",
+    "i18next-browser-languagedetector": "^6.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-i18next": "^11.10.0",
     "react-router-dom": "^5.2.0"
   },
   "browserslist": {

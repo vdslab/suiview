@@ -15,15 +15,20 @@ import {
   useIonViewWillEnter,
   IonAlert,
   IonInput,
+  IonLabel,
+  IonSelectOption,
+  IonSelect,
 } from "@ionic/react";
-import { closeOutline, buildOutline, /*shareOutline*/ } from "ionicons/icons";
+import { closeOutline, buildOutline /*shareOutline*/ } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { getUsername, putUsername } from "../services/api/account";
+import { useTranslation } from "react-i18next";
 //import line_icon from "../images/LINE_APP.png";
 
 /////////////////////////////////////////////
 const Setting = () => {
+  const { t, i18n } = useTranslation();
   const { logout } = useAuth0();
   const [userData, setUserData] = useState();
   const { getAccessTokenSilently } = useAuth0();
@@ -44,7 +49,6 @@ const Setting = () => {
   const url = `https://line.me/R/msg/text/?${name}さんのユーザーIDは${id}です。\nこのIDを生徒に登録して演奏にコメントをつけましょう。`;
   const encodedUrl = encodeURI(url);
 
-  
   return (
     <IonPage>
       <IonHeader>
@@ -73,9 +77,9 @@ const Setting = () => {
                 {userData ? (
                   <a href={encodedUrl}>
                     <IonButton fill="outline">
-                     {/*} <IonIcon icon={shareOutline}></IonIcon>*/}
-                     {/*} <img src={line_icon} style={{width:"1.5rem"}} alt={"LINEアイコン"}/>&ensp;*/}
-                     LINEで共有する
+                      {/*} <IonIcon icon={shareOutline}></IonIcon>*/}
+                      {/*} <img src={line_icon} style={{width:"1.5rem"}} alt={"LINEアイコン"}/>&ensp;*/}
+                      LINEで共有する
                     </IonButton>
                   </a>
                 ) : (
@@ -87,6 +91,18 @@ const Setting = () => {
               </IonItem>
             </IonCardContent>
           </IonCard>
+          <IonItem>
+            <IonLabel position="stacked">{t("changeLanguage")}</IonLabel>
+            <IonSelect
+              value={i18n.language.slice(0, 2)}
+              onIonChange={(event) => {
+                i18n.changeLanguage(event.detail.value);
+              }}
+            >
+              <IonSelectOption value="ja">{t("japanese")}</IonSelectOption>
+              <IonSelectOption value="en">{t("english")}</IonSelectOption>
+            </IonSelect>
+          </IonItem>
           <IonButton
             slot="end"
             expand="full"
