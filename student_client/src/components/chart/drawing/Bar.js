@@ -11,7 +11,7 @@ const Bar = ({ data }) => {
         data={data}
         keys={["高さ", "強さ", "音色"]}
         indexBy="No."
-        margin={{ top: 5, right: 100, bottom: 60, left: 60 }}
+        margin={{ top: 20, right: 5, bottom: 60, left: 60 }}
         padding={0.3}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}
@@ -65,7 +65,6 @@ const Bar = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "安定度",
           legendPosition: "middle",
           legendOffset: -40,
         }}
@@ -75,17 +74,17 @@ const Bar = ({ data }) => {
         legends={[
           {
             dataFrom: "keys",
-            anchor: "bottom-right",
-            direction: "column",
+            anchor: "top-left",
+            direction: "row",
             justify: false,
-            translateX: 120,
-            translateY: 0,
+            translateX: 0,
+            translateY: -20,
             itemsSpacing: 2,
-            itemWidth: 100,
+            itemWidth: 80,
             itemHeight: 20,
             itemDirection: "left-to-right",
             itemOpacity: 0.85,
-            symbolSize: 20,
+            symbolSize: 10,
             effects: [
               {
                 on: "hover",

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
-//import { ParallelCoordinates } from "./drawing";
 import { Bar } from "./drawing";
 
 const ParallelChart = ({ folderId }) => {
@@ -21,7 +20,6 @@ const ParallelChart = ({ folderId }) => {
   return (
     <div>
       <IonItem lines="none">　最大直近10個のデータです</IonItem>
-      {/*<ParallelCoordinates data={data} />*/}
       <Bar data={data} />
     </div>
   );
