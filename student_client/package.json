@@ -18,6 +18,7 @@
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
     "@nivo/bar": "^0.70.1",
+    "@nivo/core": "^0.70.1",
     "@nivo/heatmap": "^0.70.1",
     "@nivo/line": "^0.70.1",
     "@nivo/parallel-coordinates": "^0.70.1",
