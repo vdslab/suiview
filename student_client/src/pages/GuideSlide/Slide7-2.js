@@ -14,7 +14,7 @@ const Slide7_2 = () => {
           &ensp;からコメントを書くことができます。また、自分の演奏を聞いた人もコメントを付けることができます。
         </p>
         <div className="picture4">
-        <img src={img} alt="曲詳細画面" /*style={{ width: "50%" }}*/ />
+          <img src={img} alt="曲詳細画面" /*style={{ width: "50%" }}*/ />
         </div>
       </div>
     </IonSlide>

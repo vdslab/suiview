@@ -4,7 +4,6 @@ import img_v from "../../images/fol_vol.png";
 import img_t from "../../images/fol_tone.png";
 import "./Slide62.css";
 
-
 const Slide6_2 = () => {
   return (
     <IonSlide>
@@ -21,7 +20,7 @@ const Slide6_2 = () => {
         <div className="pictures2">
           <img src={img_f} alt="録音画面" style={{ width: "45%" }} />
           <img src={img_v} alt="録音画面" style={{ width: "45%" }} />
-        <img src={img_t} alt="録音画面" style={{ width: "45%" }} />
+          <img src={img_t} alt="録音画面" style={{ width: "45%" }} />
         </div>
       </div>
     </IonSlide>

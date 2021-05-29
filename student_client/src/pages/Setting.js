@@ -18,13 +18,13 @@ import {
   IonLabel,
   IonSelectOption,
   IonSelect,
+  IonButtons,
 } from "@ionic/react";
-import { closeOutline, buildOutline /*shareOutline*/ } from "ionicons/icons";
+import { buildOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { getUsername, putUsername } from "../services/api/account";
 import { useTranslation } from "react-i18next";
-//import line_icon from "../images/LINE_APP.png";
 
 /////////////////////////////////////////////
 const Setting = () => {
@@ -53,7 +53,9 @@ const Setting = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          <IonBackButton slot="start" defaultHref="/" icon={closeOutline} />
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>設定</IonTitle>
         </IonToolbar>
       </IonHeader>

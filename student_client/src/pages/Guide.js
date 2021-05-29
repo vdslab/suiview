@@ -6,6 +6,7 @@ import {
   IonToolbar,
   IonBackButton,
   IonTitle,
+  IonButtons,
 } from "@ionic/react";
 import {
   Slide1,
@@ -20,7 +21,6 @@ import {
   Slide8,
   Slide9,
 } from "./GuideSlide/index";
-import { chevronBackOutline } from "ionicons/icons";
 
 const Gaido = ({ modal, history }) => {
   return (
@@ -29,13 +29,10 @@ const Gaido = ({ modal, history }) => {
         []
       ) : (
         <IonHeader>
-          {" "}
-          <IonToolbar>
-            <IonBackButton
-              slot="start"
-              defaultHref="/"
-              icon={chevronBackOutline}
-            />
+          <IonToolbar className="color">
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" />
+            </IonButtons>
             <IonTitle>利用ガイド</IonTitle>
           </IonToolbar>
         </IonHeader>

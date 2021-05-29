@@ -1,6 +1,6 @@
 import { IonSlide } from "@ionic/react";
 import img from "../../images/detail.png";
-import "./Slide4.css"
+import "./Slide4.css";
 
 const Slide7 = () => {
   return (

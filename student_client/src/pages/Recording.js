@@ -22,8 +22,10 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  IonImg,
+  IonButtons,
 } from "@ionic/react";
-import { closeOutline, radioButtonOnOutline } from "ionicons/icons";
+import { radioButtonOnOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { musicRecord, saveAudio } from "../services/recording";
 import {
@@ -33,8 +35,7 @@ import {
   deleteMusic,
 } from "../services/api";
 import { Player } from "../components/Player.js";
-import { defoFolder } from "./Home.js";
-import noImage from "../images/gray.png";
+import { folderImage } from "../services/folderImage";
 
 const Recording = ({ history }) => {
   const location = useLocation();
@@ -42,13 +43,11 @@ const Recording = ({ history }) => {
   const folderId = params.get("folderId") || "";
   const [comment, setComment] = useState("");
   const [folder, setFolder] = useState(null);
-  //const [allFolder, setAllFolder] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
   const [selected, setSelected] = useState(3);
   const [recorded, setRecorded] = useState(0);
   const [musicId, setMusicId] = useState();
-  const imgData = defoFolder.find((v) => v.name === folder?.name);
 
   useIonViewWillEnter(async () => {
     if (folderId) {
@@ -61,27 +60,15 @@ const Recording = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          <IonBackButton slot="start" defaultHref="/" icon={closeOutline} />
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>記録する</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="color">
         <IonList style={{ backgroundColor: "#fffcf2" }}>
-          {imgData ? (
-            <img
-              src={imgData.img}
-              alt="譜面の画像"
-              className=""
-              style={{ maxWidth: "100%" }}
-            ></img>
-          ) : (
-            <img
-              src={noImage}
-              alt="譜面の画像"
-              className=""
-              style={{ width: "100%" }}
-            ></img>
-          )}
+          <IonImg src={folderImage(folder?.name)} alt="譜面の画像" />
           <IonListHeader lines="full">
             <IonTitle>{folder?.name || "フォルダ指定なし"}</IonTitle>
           </IonListHeader>
@@ -180,7 +167,7 @@ const Recording = ({ history }) => {
                     await putMusicContent(
                       musicId,
                       item,
-                      getAccessTokenSilently
+                      getAccessTokenSilently,
                     );
                     setRecorded(0);
                     if (folderId) {

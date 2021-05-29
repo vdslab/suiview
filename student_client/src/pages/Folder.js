@@ -17,6 +17,8 @@ import {
   IonFooter,
   IonCardContent,
   IonButtons,
+  IonTitle,
+  IonImg,
 } from "@ionic/react";
 import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -29,8 +31,7 @@ import {
   VolumeChart,
 } from "../components/chart";
 import MusicItem from "../components/MusicItem.js";
-import { defoFolder } from "./Home.js";
-import { chevronBackOutline } from "ionicons/icons";
+import { folderImage } from "../services/folderImage";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -57,7 +58,7 @@ const FolderDetail = (item) => {
   const { folderId } = useParams();
   const count = item.count;
   let IdSet = chartIds;
-  if(count > 10){
+  if (count > 10) {
     IdSet = chartIds2;
   }
   const [chartId, setChartId] = useState(IdSet[0]);
@@ -103,57 +104,19 @@ const Folder = ({ history }) => {
     const data = await getFolder(folderId, getAccessTokenSilently);
     setFolder(data);
   });
-  const imgData = defoFolder.find((v) => v.name === folder?.name);
 
   return (
     <IonPage>
-      <IonHeader style={{ height: "8rem" }}>
-        {imgData ? (
-          <IonToolbar
-            className={`bg_image_${imgData.name}`}
-            style={{ height: "8rem" }}
-          >
-            <IonButtons>
-              <IonBackButton
-                slot="start"
-                fill="clear"
-                defaultHref="/"
-                icon={chevronBackOutline}
-              />
-            </IonButtons>
-            <h2
-              style={{
-                textAlign: "center",
-                marginTop: "3.5rem",
-                fontWeight: "bold",
-              }}
-            >
-              {folder?.name}
-            </h2>
-          </IonToolbar>
-        ) : (
-          <IonToolbar className="bg_image" style={{ height: "8rem" }}>
-            <IonButtons>
-              <IonBackButton
-                slot="start"
-                fill="clear"
-                defaultHref="/"
-                icon={chevronBackOutline}
-              />
-            </IonButtons>
-            <h2
-              style={{
-                textAlign: "center",
-                marginTop: "3.5rem",
-                fontWeight: "bold",
-              }}
-            >
-              {folder?.name}
-            </h2>
-          </IonToolbar>
-        )}
+      <IonHeader>
+        <IonToolbar className="color">
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
+          <IonTitle>{folder?.name}</IonTitle>
+        </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonImg src={folderImage(folder?.name)} alt={folder?.name} />
         {musics.length === 0 ? (
           <IonCard style={{ height: "380px" }}>
             <IonCardContent style={{ marginTop: "35%", marginLeft: "15%" }}>
@@ -166,7 +129,7 @@ const Folder = ({ history }) => {
           </IonCard>
         ) : (
           <IonCard style={{ height: "380px" }}>
-            <FolderDetail count={musics.length}/>
+            <FolderDetail count={musics.length} />
           </IonCard>
         )}
         <IonList>
@@ -185,7 +148,7 @@ const Folder = ({ history }) => {
                   await deleteMusic(data.id, getAccessTokenSilently);
                   const musics = await getFolderMusics(
                     folderId,
-                    getAccessTokenSilently
+                    getAccessTokenSilently,
                   );
                   setMusics(musics);
                 }}

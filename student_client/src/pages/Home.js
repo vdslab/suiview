@@ -15,9 +15,12 @@ import {
   useIonViewWillEnter,
   IonFooter,
   IonAlert,
+  IonTitle,
+  IonButtons,
+  IonThumbnail,
+  IonImg,
 } from "@ionic/react";
 import {
-  chevronForwardOutline,
   settingsOutline,
   folderOutline,
   micOutline,
@@ -25,17 +28,9 @@ import {
 } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, deleteFolder, postFolder } from "../services/api";
-import argImg from "../images/arpeggio.PNG";
-import longtoneImg from "../images/longtone.PNG";
-import scaleImg from "../images/scale.PNG";
-import noImage from "../images/gray.png";
-import Guide from "./Guide.js";
+import { folderImage } from "../services/folderImage";
+import Guide from "./Guide";
 import { useTranslation } from "react-i18next";
-export const defoFolder = [
-  { img: longtoneImg, name: "ロングトーン" },
-  { img: scaleImg, name: "スケール" },
-  { img: argImg, name: "アルペジオ" },
-];
 
 const Home = () => {
   const { t } = useTranslation();
@@ -63,18 +58,12 @@ const Home = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          <IonButton
-            color="primary"
-            slot="start"
-            fill="clear"
-            routerLink="/setting"
-          >
-            <IonIcon icon={settingsOutline}></IonIcon>
-          </IonButton>
-          <h2>
-            {t("title")}
-            <span style={{ fontSize: "1.15rem" }}> {t("subtitle")}</span>
-          </h2>
+          <IonButtons slot="end">
+            <IonButton routerLink="/setting">
+              <IonIcon icon={settingsOutline} />
+            </IonButton>
+          </IonButtons>
+          <IonTitle>{t("title")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -83,52 +72,21 @@ const Home = () => {
           &ensp;練習フォルダを選択しましょう
         </IonItem>
         <IonList>
-          <IonItem
-            _ngcontent-yfv-c79=""
-            routerLink="/musics"
-            detail="false"
-            class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-          >
-            <img src={noImage} alt="譜面の画像" className="score"></img>
-            すべて
-            <IonButton slot="end" fill="clear">
-              <IonIcon icon={chevronForwardOutline}></IonIcon>
-            </IonButton>
+          <IonItem className="folder" routerLink="/musics" c>
+            <IonThumbnail slot="start">
+              <IonImg src={folderImage()} />
+            </IonThumbnail>
+            <IonLabel>すべて</IonLabel>
           </IonItem>
 
           {folders.map((data) => {
-            let defo = 0;
             return (
               <IonItemSliding key={data.id}>
-                <IonItem
-                  detail="false"
-                  routerLink={`/folder/${data.id}`}
-                  class="item md item-lines-full in-list ion-activatable ion-focusable item-label hydrated"
-                >
-                  {defoFolder.map((d, k) => {
-                    if (data.name === d.name) {
-                      defo = 1;
-                      return (
-                        <img
-                          src={d.img}
-                          alt="譜面の画像"
-                          key={k}
-                          className="score"
-                        ></img>
-                      );
-                    } else {
-                      return <div key={k}></div>;
-                    }
-                  })}
-                  {defo === 0 ? (
-                    <img src={noImage} alt="譜面の画像" className="score"></img>
-                  ) : (
-                    []
-                  )}
+                <IonItem className="folder" routerLink={`/folder/${data.id}`}>
+                  <IonThumbnail slot="start">
+                    <IonImg src={folderImage(data.name)} />
+                  </IonThumbnail>
                   <IonLabel>{data.name}</IonLabel>
-                  <IonButton slot="end" fill="clear">
-                    <IonIcon icon={chevronForwardOutline}></IonIcon>
-                  </IonButton>
                 </IonItem>
                 <IonItemOptions>
                   <IonItemOption

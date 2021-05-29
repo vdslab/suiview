@@ -1,6 +1,6 @@
 import { IonSlide } from "@ionic/react";
 import img from "../../images/progress.png";
-import "./Slide4.css"
+import "./Slide4.css";
 const Slide5 = () => {
   return (
     <IonSlide>
@@ -12,7 +12,7 @@ const Slide5 = () => {
           また、演奏データをタップするとその演奏データの詳細情報を見ることができます。
         </p>
         <div className="picture4">
-          <img src={img} alt="録音画面"  /*style={{ width: "50%" }}*/ />
+          <img src={img} alt="録音画面" /*style={{ width: "50%" }}*/ />
         </div>
       </div>
     </IonSlide>

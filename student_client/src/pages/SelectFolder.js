@@ -14,8 +14,8 @@ import {
   IonFooter,
   IonAlert,
   useIonViewWillEnter,
+  IonButtons,
 } from "@ionic/react";
-import { closeOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, getMusic, postFolder, putMusic } from "../services/api";
 
@@ -38,8 +38,10 @@ const SelectFolder = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonBackButton slot="start" defaultHref="/" icon={closeOutline} />
+        <IonToolbar class="color">
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>フォルダの選択</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -81,7 +83,7 @@ const SelectFolder = ({ history }) => {
                         {
                           folderId: d.id,
                         },
-                        getAccessTokenSilently
+                        getAccessTokenSilently,
                       );
                       history.push(`/folder/${d.id}`);
                     }}
@@ -120,7 +122,7 @@ const SelectFolder = ({ history }) => {
                   {
                     name,
                   },
-                  getAccessTokenSilently
+                  getAccessTokenSilently,
                 );
                 const folders = await getFolders(getAccessTokenSilently);
                 setFolders(folders);

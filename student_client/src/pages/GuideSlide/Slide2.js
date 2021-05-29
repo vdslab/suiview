@@ -18,12 +18,11 @@ const Slide2 = () => {
           <IonIcon icon={micOutline} color="primary" />
           &ensp;からは録音ができます。
           <br />
-          基礎的なフレーズフォルダが
-          あらかじめ用意されています。
+          基礎的なフレーズフォルダが あらかじめ用意されています。
           <br />
           始めはロングトーンファイルに入ってみましょう。
         </p>
-        <div className="picture4">  
+        <div className="picture4">
           <img src={img} alt="ホーム画面" /*style={{ width: "50%" }}*/ />
         </div>
       </div>

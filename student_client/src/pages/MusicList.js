@@ -13,8 +13,9 @@ import {
   IonFooter,
   IonLabel,
   IonItemDivider,
+  IonButtons,
 } from "@ionic/react";
-import { chevronBackOutline, micOutline } from "ionicons/icons";
+import { micOutline } from "ionicons/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import { deleteMusic, getMusics } from "../services/api";
 import MusicItem from "../components/MusicItem.js";
@@ -45,12 +46,9 @@ const MusicList = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          <IonBackButton
-            slot="start"
-            fill="clear"
-            defaultHref="/"
-            icon={chevronBackOutline}
-          />
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>すべて</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -26,6 +26,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonBackButton,
+  IonButtons,
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
@@ -33,7 +34,6 @@ import {
   trash,
   close,
   createOutline,
-  chevronBackOutline,
 } from "ionicons/icons";
 import {
   getMusic,
@@ -120,7 +120,7 @@ const Detail = ({ history }) => {
     const data = await putMusicAssesment(
       musicId,
       input,
-      getAccessTokenSilently
+      getAccessTokenSilently,
     );
     setMusic(data);
   }
@@ -131,28 +131,18 @@ const Detail = ({ history }) => {
     }
   }
 
-  
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar className="color">
-          {/*} <IonButton
-            fill="clear"
-            onClick={() => {
-              changeName();
-            }}
-          >
-            <IonIcon icon={chevronBackOutline} />
-          </IonButton>*/}
+          <IonButtons slot="start">
+            <IonBackButton
+              defaultHref={
+                music?.folderId ? `/folder/${music.folderId}` : "/musics"
+              }
+            />
+          </IonButtons>
           <IonTitle>曲詳細</IonTitle>
-          <IonBackButton
-            slot="start"
-            fill="clear"
-            defaultHref={
-              music?.folderId ? `/folder/${music.folderId}` : "/musics"
-            }
-            icon={chevronBackOutline}
-          />
         </IonToolbar>
 
         <IonActionSheet
@@ -206,7 +196,7 @@ const Detail = ({ history }) => {
                         if (music) {
                           console.log("changed");
                           setMusic(
-                            Object.assign(music, { name: e.detail.value })
+                            Object.assign(music, { name: e.detail.value }),
                           );
                           changeName();
                         }
@@ -375,7 +365,7 @@ const Detail = ({ history }) => {
                 const data = await putMusicComment(
                   musicId,
                   { item },
-                  getAccessTokenSilently
+                  getAccessTokenSilently,
                 );
                 setComments(data);
               },
