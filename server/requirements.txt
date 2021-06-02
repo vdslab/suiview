@@ -88,7 +88,7 @@ toml==0.10.2
 tornado==6.1
 traitlets==5.0.5
 unidic-lite==1.0.7
-urllib3==1.25.11
+urllib3==1.26.5
 wcwidth==0.2.5
 Werkzeug==1.0.1
 whitenoise==5.2.0
