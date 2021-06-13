@@ -1,40 +1,36 @@
 import { ResponsiveLine } from "@nivo/line";
 
-const ToneLiner = ({ data,  axis_name }) => {
+const ToneLiner = ({ data, axis_name }) => {
   if (data == null || data === undefined) {
     return null;
   }
   const x_padding = Math.round(data[0].data.length / 5 / 10) * 10;
   let k = 0;
   function makeInterval(num) {
-    
-      if (k % x_padding === 0) {
-        k += 1;
-        return num;
-      }
+    if (k % x_padding === 0) {
+      k += 1;
+      return num;
+    }
     k += 1;
     return;
   }
-  
   let p = 0;
   function makeData(num) {
     //console.log(num, k);
-      if (p % 5 === 0) {
-        p += 1;
-        return num;
-      }
+    if (p % 5 === 0) {
+      p += 1;
+      return num;
+    }
     p += 1;
     return;
   }
-  const jiku = data[0].data.filter(makeInterval);
-  const d = data[0].data
-    .filter(makeData);
+  const jiku = data[1].data.filter(makeInterval);
+  const d = data[1].data.filter(makeData);
   //const d2 = data[1].data.filter(makeData);
   //console.log(data);
   //const intervalData = [{id:"centroid", data:d},{id:"rolloff",data:d2}];
-  const intervalData = [{id:"centroid", data:d}];
+  const intervalData = [{ id: "rolloff", data: d }];
   //console.log(intervalData)
-  
   return (
     <div style={{ width: "100%", height: "300px" }}>
       <ResponsiveLine
@@ -43,7 +39,6 @@ const ToneLiner = ({ data,  axis_name }) => {
             id: input.id,
             //data: input.data.filter(({ x }) => x % 5 === 0),
             data: d.filter(({ x }) => x),
-        
           };
         })}
         margin={{ top: 40, right: 20, bottom: 30, left: 60 }}
@@ -71,7 +66,7 @@ const ToneLiner = ({ data,  axis_name }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend:  axis_name,
+          legend: axis_name,
           legendOffset: -40,
           legendPosition: "middle",
         }}

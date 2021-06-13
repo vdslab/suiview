@@ -4,7 +4,6 @@ const Liner = ({ data, axis_name }) => {
   if (data == null) {
     return null;
   }
-  console.log(axis_name)
 
   let max = Math.max.apply(
     Math,
@@ -24,28 +23,24 @@ const Liner = ({ data, axis_name }) => {
   const x_padding = Math.round(data.length / 5 / 10) * 10;
   let k = 0;
   function makeInterval(num) {
-    //console.log(num, k);
-      if (k % x_padding === 0) {
-        k += 1;
-        return num;
-      }
+    if (k % x_padding === 0) {
+      k += 1;
+      return num;
+    }
     k += 1;
     return;
   }
-  
   let p = 0;
   function makeData(num) {
-      if (p % 5 === 0) {
-        p += 1;
-        return num;
-      }
+    if (p % 5 === 0) {
+      p += 1;
+      return num;
+    }
     p += 1;
     return;
   }
   const jiku = data.filter(makeInterval);
-  const d = data
-    .filter(makeData);
-  
+  const d = data.filter(makeData);
 
   return (
     <div style={{ width: "100%", height: "300px" }}>
@@ -86,7 +81,7 @@ const Liner = ({ data, axis_name }) => {
           tickPadding: 5,
           tickRotation: 0,
           legend: axis_name,
-          legendOffset: -40,
+          legendOffset: -50,
           legendPosition: "middle",
         }}
         colors={{ scheme: "nivo" }}
