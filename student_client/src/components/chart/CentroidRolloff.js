@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
-  getMusicSpectrumCentroid,
+  //getMusicSpectrumCentroid,
   getMusicSpectrumRolloff,
 } from "../../services/api";
-import { ToneLiner } from "./drawing";
+//import { ToneLiner } from "./drawing";
 import { Liner } from "./drawing";
 
 const CentroidRolloff = ({ musicId }) => {
@@ -13,10 +13,10 @@ const CentroidRolloff = ({ musicId }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    const centroidRequest = getMusicSpectrumCentroid(
+    /*const centroidRequest = getMusicSpectrumCentroid(
       musicId,
       getAccessTokenSilently
-    );
+    );*/
     const rolloffRequest = getMusicSpectrumRolloff(
       musicId,
       getAccessTokenSilently
