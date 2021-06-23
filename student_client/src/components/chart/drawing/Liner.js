@@ -71,7 +71,7 @@ const Liner = ({ data, axis_name }) => {
             .filter(({ x }) =>x % x_padding === 0)
             .map(({ x }) => x),*/
           tickValues: jiku.map(({ x }) => x),
-          legend: "",
+          legend: "秒",
           legendOffset: 36,
           legendPosition: "middle",
         }}

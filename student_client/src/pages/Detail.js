@@ -120,7 +120,7 @@ const Detail = ({ history }) => {
     const data = await putMusicAssesment(
       musicId,
       input,
-      getAccessTokenSilently,
+      getAccessTokenSilently
     );
     setMusic(data);
   }
@@ -196,7 +196,7 @@ const Detail = ({ history }) => {
                         if (music) {
                           console.log("changed");
                           setMusic(
-                            Object.assign(music, { name: e.detail.value }),
+                            Object.assign(music, { name: e.detail.value })
                           );
                           changeName();
                         }
@@ -229,7 +229,7 @@ const Detail = ({ history }) => {
               総合点：<span>{stability?.total}</span>&ensp;/300&ensp;
             </p>
             <p>
-              音程：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
+              高さ：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
               {stability?.tone}
             </p>
           </div>
@@ -365,7 +365,7 @@ const Detail = ({ history }) => {
                 const data = await putMusicComment(
                   musicId,
                   { item },
-                  getAccessTokenSilently,
+                  getAccessTokenSilently
                 );
                 setComments(data);
               },

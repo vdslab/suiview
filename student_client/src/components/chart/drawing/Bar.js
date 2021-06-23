@@ -6,7 +6,7 @@ const Bar = ({ data }) => {
   }
 
   return (
-    <div style={{ width: "100%", height: "300px" }}>
+    <div style={{ width: "100%", height: "290px" }}>
       <ResponsiveBar
         data={data}
         keys={["高さ", "強さ", "音色"]}
@@ -65,6 +65,7 @@ const Bar = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
+          legend: "総合点",
           legendPosition: "middle",
           legendOffset: -40,
         }}
