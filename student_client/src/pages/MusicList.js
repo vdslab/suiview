@@ -21,6 +21,7 @@ import { deleteMusic, getMusics } from "../services/api";
 import MusicItem from "../components/MusicItem.js";
 import { convertDate } from "../services/date.js";
 
+//　一時使用停止(すべてを使わなくしたため)
 const MusicList = ({ history }) => {
   const [musics, setMusics] = useState([]);
   const { getAccessTokenSilently } = useAuth0();

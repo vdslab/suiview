@@ -18,6 +18,7 @@ import {
 } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolders, getMusic, postFolder, putMusic } from "../services/api";
+import { useTranslation } from "react-i18next";
 
 const SelectFolder = ({ history }) => {
   const { musicId } = useParams();
@@ -25,6 +26,7 @@ const SelectFolder = ({ history }) => {
   const [folders, setFolders] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const { getAccessTokenSilently } = useAuth0();
+  const { t } = useTranslation();
 
   useIonViewWillEnter(async () => {
     const data = await getFolders(getAccessTokenSilently);
@@ -42,7 +44,7 @@ const SelectFolder = ({ history }) => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
           </IonButtons>
-          <IonTitle>フォルダの選択</IonTitle>
+          <IonTitle>{t("selectFolder")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
@@ -59,7 +61,7 @@ const SelectFolder = ({ history }) => {
               setShowAlert(true);
             }}
           >
-            <IonLabel>新規フォルダ</IonLabel>
+            <IonLabel>{t("newFolder")}</IonLabel>
           </IonItem>
           <div>
             {folders.map((d) => {
@@ -83,7 +85,7 @@ const SelectFolder = ({ history }) => {
                         {
                           folderId: d.id,
                         },
-                        getAccessTokenSilently,
+                        getAccessTokenSilently
                       );
                       history.push(`/folder/${d.id}`);
                     }}
@@ -100,13 +102,13 @@ const SelectFolder = ({ history }) => {
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
-          header="新規フォルダ"
-          subHeader="フォルダの名前を記入してください"
+          header={t("newFolder")}
+          subHeader={t("enterFolderName")}
           inputs={[
             {
               name: "name",
               type: "text",
-              placeholder: "名前",
+              placeholder: t("name"),
             },
           ]}
           buttons={[
@@ -122,7 +124,7 @@ const SelectFolder = ({ history }) => {
                   {
                     name,
                   },
-                  getAccessTokenSilently,
+                  getAccessTokenSilently
                 );
                 const folders = await getFolders(getAccessTokenSilently);
                 setFolders(folders);

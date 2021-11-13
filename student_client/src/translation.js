@@ -107,6 +107,7 @@ const translation = {
       guideSlide9p1: "Let's practice!",
       guideSlide9p2: "",
       login: "Login",
+      selectFolder: "Select folder",
     },
   },
   ja: {
@@ -214,6 +215,7 @@ const translation = {
       guideSlide9p1: "それではさっそく",
       guideSlide9p2: "一緒に練習してみましょう！",
       login: "ログイン",
+      selectFolder: "フォルダの選択",
     },
   },
 };

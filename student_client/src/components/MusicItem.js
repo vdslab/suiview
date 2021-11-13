@@ -6,6 +6,7 @@ import {
   IonItemOptions,
 } from "@ionic/react";
 import { convertDate } from "../services/date.js";
+import { useTranslation } from "react-i18next";
 
 export default function MusicItem({
   trackNum,
@@ -15,7 +16,7 @@ export default function MusicItem({
   onClickMoveButton,
   onClickDeleteButton,
 }) {
-
+  const { t } = useTranslation();
   return (
     <IonItemSliding>
       <IonItem
@@ -25,10 +26,10 @@ export default function MusicItem({
         <IonLabel>
           {no === true ? (
             <div>
-              No.{trackNum+1}&emsp;{convertDate(music.name)}&emsp;
+              No.{trackNum + 1}&emsp;{convertDate(music.name)}&emsp;
             </div>
           ) : (
-           <div> {convertDate(music.name, 1)}&emsp;</div>
+            <div> {convertDate(music.name, 1)}&emsp;</div>
           )}
         </IonLabel>
       </IonItem>
@@ -43,7 +44,7 @@ export default function MusicItem({
             }
           }}
         >
-          　フォルダ移動
+          　{t("moveFolder")}
         </IonItemOption>
 
         <IonItemOption
@@ -55,7 +56,7 @@ export default function MusicItem({
             }
           }}
         >
-          削除
+          {t("delete")}
         </IonItemOption>
       </IonItemOptions>
     </IonItemSliding>
