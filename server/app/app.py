@@ -783,6 +783,7 @@ def get_folders():
     user_id = g.current_user['sub']
     folders = session.query(Folder).filter_by(user_id=user_id).all()
     # 初期フォルダーの作成
+    # 英語の時どうする？
     if len(folders) == 0:
         folder = Folder(name="ロングトーン", user_id=user_id)
         session.add(folder)
@@ -977,8 +978,8 @@ def get_folders_parallel(folder_id):
             # "No.": Datas[i][0],
             "No.": j,
             "高さ": Datas[i][1][0],
-            "強さ": Datas[i][2][0],
-            "音色": Datas[i][3][0],
+            "強さ": Datas[i][3][0],
+            "音色": Datas[i][2][0],
         }
         j += 1
         dicDatas.append(dic)
@@ -1198,16 +1199,24 @@ def get_folder_decibel(folder_id):
 
     else:
         l = len(preData)-1
+
+        alignment = dtw(preData[0], preData[1], keep_internals=True)
+        # データの中で一番長いやつの時間をとる
+        # DTWの伸び縮みしないやつがいいね
+        times = librosa.times_like(preData[0][alignment.index1], sr=48000)
+
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
 
             if i == 1:
                 aliged_data = preData[0][alignment.index1]
                 aliged_data = list(aliged_data)
+
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        # "x": j+1,
+                        "x": round(times[j], 2),
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
@@ -1219,7 +1228,8 @@ def get_folder_decibel(folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    # "x": j+1,
+                    "x": round(times[j], 2),
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
