@@ -36,8 +36,10 @@ import {
 } from "../services/api";
 import { Player } from "../components/Player.js";
 import { folderImage } from "../services/folderImage";
+import { useTranslation } from "react-i18next";
 
 const Recording = ({ history }) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const folderId = params.get("folderId") || "";
@@ -63,17 +65,17 @@ const Recording = ({ history }) => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
           </IonButtons>
-          <IonTitle>記録する</IonTitle>
+          <IonTitle>{t("record")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="color">
         <IonList style={{ backgroundColor: "#fffcf2" }}>
-          <IonImg src={folderImage(folder?.name)} alt="譜面の画像" />
+          <IonImg src={folderImage(folder?.name)} alt={t("musicalScore")} />
           <IonListHeader lines="full">
-            <IonTitle>{folder?.name || "フォルダ指定なし"}</IonTitle>
+            <IonTitle>{folder?.name || t("noFolderSpecified")}</IonTitle>
           </IonListHeader>
           <IonItem color="color">
-            <IonLabel>自己評価</IonLabel>
+            <IonLabel>{t("selfAssessment")}</IonLabel>
             <IonSelect
               value={selected}
               onIonChange={(e) => {
@@ -88,7 +90,7 @@ const Recording = ({ history }) => {
             </IonSelect>
           </IonItem>
           <IonItem color="color">
-            <IonLabel>コメント</IonLabel>
+            <IonLabel>{t("comment")}</IonLabel>
             <IonTextarea
               placeholder=""
               value={comment}
@@ -116,11 +118,11 @@ const Recording = ({ history }) => {
             isOpen={showAlert}
             onDidDismiss={() => setShowAlert(false)}
             cssClass="my-custom-class"
-            header={"録音中..."}
+            header={t("recording")}
             buttons={[
-              { text: "取り消し" },
+              { text: t("cancel") },
               {
-                text: "完了!",
+                text: t("ok"),
                 handler: async () => {
                   const blob = saveAudio();
                   const music = await postMusic(blob, getAccessTokenSilently);
@@ -143,7 +145,7 @@ const Recording = ({ history }) => {
                     console.log(recorded);
                   }}
                 >
-                  やり直す
+                  {t("tryAgain")}
                 </IonButton>
               </IonCol>
               <IonCol>
@@ -167,7 +169,7 @@ const Recording = ({ history }) => {
                     await putMusicContent(
                       musicId,
                       item,
-                      getAccessTokenSilently,
+                      getAccessTokenSilently
                     );
                     setRecorded(0);
                     if (folderId) {
@@ -177,7 +179,7 @@ const Recording = ({ history }) => {
                     }
                   }}
                 >
-                  記録する
+                  {t("completed")}
                 </IonButton>
               </IonCol>
             </IonRow>
