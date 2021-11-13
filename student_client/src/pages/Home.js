@@ -69,15 +69,15 @@ const Home = () => {
       <IonContent>
         <IonItem lines="none">
           <IonIcon icon={caretDownOutline} color="medium" />
-          &ensp;練習フォルダを選択しましょう
+          &ensp;{t("selectPracticeFolder")}
         </IonItem>
         <IonList>
-          <IonItem className="folder" routerLink="/musics" c>
+          {/*<IonItem className="folder" routerLink="/musics" c>
             <IonThumbnail slot="start">
               <IonImg src={folderImage()} />
             </IonThumbnail>
             <IonLabel>すべて</IonLabel>
-          </IonItem>
+          </IonItem>*/}
 
           {folders.map((data) => {
             return (
@@ -98,7 +98,7 @@ const Home = () => {
                       setFolders(folders);
                     }}
                   >
-                    削除
+                    {t("delete")}
                   </IonItemOption>
                 </IonItemOptions>
               </IonItemSliding>
@@ -124,18 +124,18 @@ const Home = () => {
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
-          header={"新規フォルダ"}
-          subHeader={"フォルダの名前を記入してください"}
+          header={t("newFolder")}
+          subHeader={t("enterFolderName")}
           inputs={[
             {
               name: "name",
               type: "text",
-              placeholder: "名前",
+              placeholder: t("name"),
             },
           ]}
           buttons={[
             {
-              text: "取り消し",
+              text: t("cahcel"),
               role: "cancel",
               cssClass: "secondary",
               handler: () => {
@@ -143,10 +143,10 @@ const Home = () => {
               },
             },
             {
-              text: "完了",
+              text: t("ok"),
               handler: async ({ name }) => {
                 if (name === "") {
-                  alert("フォルダ名を入力してください");
+                  alert(t("enterFolderName"));
                 } else {
                   await postFolder({ name }, getAccessTokenSilently);
                   const data = await getFolders(getAccessTokenSilently);
