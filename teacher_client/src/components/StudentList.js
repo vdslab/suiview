@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getUsers, postStudentsList } from "../services/api/index";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useTranslation } from "react-i18next";
 
 const StudentList = () => {
   const [studentList, setStudentList] = useState([]);
   const { userName } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+  const { t } = useTranslation();
 
   async function Registration(studentId) {
     if (studentId !== "") {
@@ -28,7 +30,7 @@ const StudentList = () => {
         className="has-text-weight-bold"
         style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
       >
-        生徒
+        {t("students")}
       </h1>
 
       <ul>
@@ -53,11 +55,11 @@ const StudentList = () => {
         <button
           className="button is-outlined is-primary is-rounded is-small"
           onClick={() => {
-            const studentId = prompt("生徒のIDを入力してください");
+            const studentId = prompt(t("enterStudentId"));
             Registration(studentId);
           }}
         >
-          生徒の追加
+          {t("addStudent")}
         </button>
       </div>
     </section>

@@ -22,7 +22,7 @@ function Account() {
   async function sendNewName() {
     const name = document.getElementById("name").value;
     if (name === "") {
-      alert("入力してください");
+      alert("enterNewUserName");
       return;
     }
     putUsername({ name }, getAccessTokenSilently);
@@ -36,9 +36,9 @@ function Account() {
       {" "}
       <section className="section">
         <div className="container">
-          <div className="title is-5">ユーザー情報</div>
+          <div className="title is-5">{t("userName")}</div>
           <div className="columns">
-            <div className="column is-2">
+            {/*<div className="column is-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="80"
@@ -54,14 +54,14 @@ function Account() {
                 <circle cx="12" cy="10" r="3" />
                 <circle cx="12" cy="12" r="10" />
               </svg>
-            </div>
+             </div>*/}
             <div className="column">
               {reName ? (
                 <div className="columns">
                   <div className="column is-4">
                     <input
                       id="name"
-                      class="input"
+                      className="input"
                       type="text"
                       placeholder={userData?.name}
                     ></input>
@@ -73,7 +73,7 @@ function Account() {
                         sendNewName();
                       }}
                     >
-                      保存する
+                      {t("save")}
                     </button>
                   </div>
                 </div>
@@ -84,7 +84,7 @@ function Account() {
                     onClick={() => setRename(true)}
                     className="button is-small"
                   >
-                    ユーザー名を変更する
+                    {t("changeUserName")}
                   </button>
                 </div>
               )}
@@ -111,7 +111,8 @@ function Account() {
 }
 
 function Home() {
-  const content = ["ホーム", "アカウント", "ログアウト"];
+  const { t } = useTranslation();
+  const content = [t("home"), t("setting"), t("logout")];
   const [selected, setSelected] = useState();
   const { logout } = useAuth0();
 
@@ -122,7 +123,7 @@ function Home() {
           <div className="container">
             <div className="columns">
               <h1 className="title column is-9">
-                吹view♪<span className="is-size-5"> β版-先生モード-</span>
+                {t("title")}♪<span className="is-size-5"> {t("subtitle")}</span>
               </h1>
               <div className="column is-3">
                 <div className="select is-small is-primary">
@@ -140,7 +141,7 @@ function Home() {
                     })}
                   </select>
                 </div>
-                {selected === "ログアウト"
+                {selected === t("logout")
                   ? logout({ returnTo: window.location.origin })
                   : []}
               </div>
@@ -149,7 +150,7 @@ function Home() {
         </div>
       </section>
 
-      {selected === "アカウント" ? (
+      {selected === t("setting") ? (
         <Account />
       ) : (
         <div>
@@ -157,11 +158,10 @@ function Home() {
             className="section"
             style={{ paddingBottom: "0px", paddingTop: "24px" }}
           >
-            生徒とフォルダーを選択しましょう。
+            {t("homeP1")}
             <br />
-            生徒とフォルダーのみの選択ではそのフォルダの蓄積データのグラフが表示され、
-            <br />
-            さらに録音データを選択するとその音源のグラフを見ることができます。
+            {t("homeP2")} <br />
+            {t("homeP3")}
           </section>
           <section className="section">
             <div className="container">

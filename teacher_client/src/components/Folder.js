@@ -5,12 +5,14 @@ import FolderChart from "./Chart";
 import MusicDetail from "./MusicDetail";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Player } from "./Player";
+import { useTranslation } from "react-i18next";
 
 const FolderList = () => {
   const [musics, setMusics] = useState();
   const path = useLocation().pathname.split("/");
   const { userName, folderId, musicId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+  const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -26,7 +28,7 @@ const FolderList = () => {
   }, [userName, folderId, getAccessTokenSilently]);
 
   if (musics?.length === 0) {
-    return <div>録音データがありません</div>;
+    return <div>{t("noData")}</div>;
   }
 
   return (
@@ -35,7 +37,7 @@ const FolderList = () => {
         className="has-text-weight-bold"
         style={{ textDecoration: "underline", paddingBottom: "0.5rem" }}
       >
-        録音データ
+        {t("songs")}
       </h1>{" "}
       <div className="columns">
         <div className="column is-4">

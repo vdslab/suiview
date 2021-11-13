@@ -25,6 +25,5 @@ export async function putUsername(name, getAccessToken) {
 
 export async function getUsername(getAccessToken) {
   const response = await requestGet(`/username`, getAccessToken);
-  console.log(response);
   return response.json();
 }
