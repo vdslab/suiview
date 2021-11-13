@@ -32,6 +32,7 @@ import {
 } from "../components/chart";
 import MusicItem from "../components/MusicItem.js";
 import { folderImage } from "../services/folderImage";
+import { useTranslation } from "react-i18next";
 
 ////////////////////////////////////////////
 const ShowChart = (folderId, kind) => {
@@ -45,16 +46,23 @@ const ShowChart = (folderId, kind) => {
     return <ParallelChart folderId={folderId} />;
   } else if (kind === "pitch") {
     return <FrequencyChart folderId={folderId} />;
-  } else if (kind === "vol") {
+  } else if (kind === "intensity") {
     return <VolumeChart folderId={folderId} />;
-  } else if (kind === "tone") {
+  } else if (kind === "timber") {
     return <ToneChart folderId={folderId} />;
   }
 };
 
 const FolderDetail = (item) => {
-  const chartIds = ["総合点", "高さ", "強さ", "音色"];
-  const chartIds2 = ["精進グラフ", "総合点", "高さ", "強さ", "音色"];
+  const { t } = useTranslation();
+  const chartIds = [t("stackedScore"), t("pitch"), t("intensity"), t("timber")];
+  const chartIds2 = [
+    t("overallScore"),
+    t("stackedScore"),
+    t("pitch"),
+    t("intensity"),
+    t("timber"),
+  ];
   const { folderId } = useParams();
   const count = item.count;
   let IdSet = chartIds;
@@ -80,16 +88,17 @@ const FolderDetail = (item) => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "精進グラフ" ? ShowChart(folderId, "progress") : []}
-      {chartId === "総合点" ? ShowChart(folderId, "parallel") : []}
-      {chartId === "高さ" ? ShowChart(folderId, "pitch") : []}
-      {chartId === "強さ" ? ShowChart(folderId, "vol") : []}
-      {chartId === "音色" ? ShowChart(folderId, "tone") : []}
+      {chartId === t("overallScore") ? ShowChart(folderId, "progress") : []}
+      {chartId === t("stackedScore") ? ShowChart(folderId, "parallel") : []}
+      {chartId === t("pitch") ? ShowChart(folderId, "pitch") : []}
+      {chartId === t("intensity") ? ShowChart(folderId, "intensity") : []}
+      {chartId === t("timber") ? ShowChart(folderId, "timber") : []}
     </div>
   );
 };
 
 const Folder = ({ history }) => {
+  const { t } = useTranslation();
   const { folderId } = useParams();
   const [musics, setMusics] = useState([]);
   const [folder, setFolder] = useState(null);
@@ -120,10 +129,10 @@ const Folder = ({ history }) => {
         {musics.length === 0 ? (
           <IonCard style={{ height: "380px" }}>
             <IonCardContent style={{ marginTop: "35%", marginLeft: "15%" }}>
-              <p>データがありません</p>
+              <p>{t("noData")}</p>
               <p>
-                右下の&ensp;<IonIcon icon={micOutline}></IonIcon>&ensp;
-                から録音しましょう
+                {t("letRecord")}&ensp;<IonIcon icon={micOutline}></IonIcon>
+                &ensp; {t("fromBottomRight")}
               </p>
             </IonCardContent>
           </IonCard>
@@ -148,7 +157,7 @@ const Folder = ({ history }) => {
                   await deleteMusic(data.id, getAccessTokenSilently);
                   const musics = await getFolderMusics(
                     folderId,
-                    getAccessTokenSilently,
+                    getAccessTokenSilently
                   );
                   setMusics(musics);
                 }}
