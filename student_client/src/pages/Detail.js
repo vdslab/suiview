@@ -251,8 +251,8 @@ const Detail = ({ history }) => {
             {comments.length !== 0 ? (
               comments.map((data) => {
                 return (
-                  <div>
-                    <IonItem key={data.id} lines="none">
+                  <div key={data.id}>
+                    <IonItem lines="none">
                       <IonItemDivider color="light">
                         <IonLabel>
                           {data.writer == null ? (

@@ -108,6 +108,10 @@ const translation = {
       guideSlide9p2: "",
       login: "Login",
       selectFolder: "Select folder",
+      max10: "At most the latest 10 data will be displayed",
+      decibelValue: "Decibel value",
+      frequency: "frequency",
+      seconds: "seconds",
     },
   },
   ja: {
@@ -216,6 +220,10 @@ const translation = {
       guideSlide9p2: "一緒に練習してみましょう！",
       login: "ログイン",
       selectFolder: "フォルダの選択",
+      max10: "最大直近10個のデータです",
+      decibelValue: "デシベル値",
+      frequency: "周波数",
+      seconds: "秒",
     },
   },
 };

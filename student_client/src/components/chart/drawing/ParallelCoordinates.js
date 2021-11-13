@@ -1,6 +1,9 @@
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
+import { useTranslation } from "react-i18next";
 
 const ParallelCoordinates = ({ data }) => {
+  const { t } = useTranslation();
+
   if (data === null || data === undefined) {
     return null;
   }
@@ -68,7 +71,7 @@ const ParallelCoordinates = ({ data }) => {
             min: "auto",
             max: 100,
             ticksPosition: "before",
-            legend: "高さ",
+            legend: t("pitch"),
             legendPosition: "start",
             legendOffset: 20,
           },
@@ -78,7 +81,7 @@ const ParallelCoordinates = ({ data }) => {
             min: "auto",
             max: 100,
             ticksPosition: "before",
-            legend: "音色",
+            legend: t("timber"),
             legendPosition: "start",
             legendOffset: 20,
           },
@@ -89,7 +92,7 @@ const ParallelCoordinates = ({ data }) => {
             min: "auto",
             max: 100,
             ticksPosition: "before",
-            legend: "強さ",
+            legend: t("intensity"),
             legendPosition: "start",
             legendOffset: 20,
           },

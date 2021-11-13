@@ -7,8 +7,10 @@ import {
 } from "../../services/api";
 //import { ToneLiner } from "./drawing";
 import { Liner } from "./drawing";
+import { useTranslation } from "react-i18next";
 
 const CentroidRolloff = ({ musicId }) => {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -38,7 +40,7 @@ const CentroidRolloff = ({ musicId }) => {
     return <IonItem lines="none">loading...</IonItem>;
   }
   // return <ToneLiner data={data} axis_name={""} />;
-  return <Liner data={data.values} axis_name={"周波数"} />;
+  return <Liner data={data.values} axis_name={t("frequency")} />;
 };
 
 export default CentroidRolloff;

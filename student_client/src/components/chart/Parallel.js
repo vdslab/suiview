@@ -3,8 +3,10 @@ import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getFolderParallel } from "../../services/api";
 import { Bar } from "./drawing";
+import { useTranslation } from "react-i18next";
 
 const ParallelChart = ({ folderId }) => {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
@@ -19,7 +21,7 @@ const ParallelChart = ({ folderId }) => {
   }
   return (
     <div>
-      <IonItem lines="none">　最大直近10個のデータです</IonItem>
+      <IonItem lines="none">{t("max10")}</IonItem>
       <Bar data={data} />
     </div>
   );

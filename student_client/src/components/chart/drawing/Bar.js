@@ -1,15 +1,19 @@
 import { ResponsiveBar } from "@nivo/bar";
+import { useTranslation } from "react-i18next";
 
 const Bar = ({ data }) => {
+  const { t } = useTranslation();
+
   if (data === null || data === undefined) {
     return null;
   }
+  // console.log(data);
 
   return (
     <div style={{ width: "100%", height: "290px" }}>
       <ResponsiveBar
         data={data}
-        keys={["高さ", "強さ", "音色"]}
+        keys={["高さ", "音色", "強さ"]}
         indexBy="No."
         margin={{ top: 20, right: 5, bottom: 60, left: 60 }}
         padding={0.3}
@@ -65,7 +69,7 @@ const Bar = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "総合点",
+          legend: t("overallScore"),
           legendPosition: "middle",
           legendOffset: -40,
         }}

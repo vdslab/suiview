@@ -17,7 +17,7 @@ const ShowFrequency = ({ musicId }) => {
   if (data == null) {
     return <IonItem lines="none">loading...</IonItem>;
   }
-  return <Liner data={data.values} axis_name={"周波数"} />;
+  return <Liner data={data.values} axis_name={"frequency"} />;
 };
 
 export default ShowFrequency;

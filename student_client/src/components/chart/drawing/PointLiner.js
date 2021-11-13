@@ -1,6 +1,9 @@
 import { ResponsiveLine } from "@nivo/line";
+import { useTranslation } from "react-i18next";
 
 const PointLiner = ({ data }) => {
+  const { t } = useTranslation();
+
   if (data == null) {
     return null;
   }
@@ -39,7 +42,7 @@ const PointLiner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "総合点",
+          legend: t("overallScore"),
           legendOffset: -45,
           legendPosition: "middle",
         }}

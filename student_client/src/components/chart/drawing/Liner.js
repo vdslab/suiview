@@ -1,6 +1,9 @@
 import { ResponsiveLine } from "@nivo/line";
+import { useTranslation } from "react-i18next";
 
 const Liner = ({ data, axis_name }) => {
+  const { t } = useTranslation();
+
   if (data == null) {
     return null;
   }
@@ -71,7 +74,7 @@ const Liner = ({ data, axis_name }) => {
             .filter(({ x }) =>x % x_padding === 0)
             .map(({ x }) => x),*/
           tickValues: jiku.map(({ x }) => x),
-          legend: "秒",
+          legend: t("seconds"),
           legendOffset: 36,
           legendPosition: "middle",
         }}
