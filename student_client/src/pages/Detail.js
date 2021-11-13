@@ -48,9 +48,11 @@ import { CentroidRolloff, Decibel, ShowFrequency } from "../components/chart";
 import { Player } from "../components/Player.js";
 import { convertDate } from "../services/date.js";
 import "./detail.css";
-const chartIds = ["高さ", "強さ", "音色"];
+import { useTranslation } from "react-i18next";
 
 const Charts = () => {
+  const { t } = useTranslation();
+  const chartIds = [t("pitch"), t("intensity"), t("timber")];
   const { musicId } = useParams();
   const [chartId, setChartId] = useState(chartIds[0]);
 
@@ -72,17 +74,17 @@ const Charts = () => {
           })}
         </IonSelect>
       </IonItem>
-      {chartId === "高さ" && (
+      {chartId === t("pitch") && (
         <div>
           <ShowFrequency musicId={musicId} />
         </div>
       )}
-      {chartId === "強さ" && (
+      {chartId === t("intensity") && (
         <div>
           <Decibel musicId={musicId} />
         </div>
       )}
-      {chartId === "音色" && (
+      {chartId === t("timber") && (
         <div>
           <CentroidRolloff musicId={musicId} />
         </div>
@@ -92,6 +94,7 @@ const Charts = () => {
 };
 
 const Detail = ({ history }) => {
+  const { t } = useTranslation();
   const { musicId } = useParams();
   const [music, setMusic] = useState(null);
   const [comments, setComments] = useState([]);
@@ -131,6 +134,7 @@ const Detail = ({ history }) => {
     }
   }
 
+  //ナニコレ？
   return (
     <IonPage>
       <IonHeader>
@@ -142,7 +146,7 @@ const Detail = ({ history }) => {
               }
             />
           </IonButtons>
-          <IonTitle>曲詳細</IonTitle>
+          <IonTitle>{t("detail")}</IonTitle>
         </IonToolbar>
 
         <IonActionSheet
@@ -151,7 +155,7 @@ const Detail = ({ history }) => {
           cssClass="my-custom-class"
           buttons={[
             {
-              text: "削除",
+              text: t("delete"),
               role: "destructive",
               icon: trash,
               handler: async () => {
@@ -160,7 +164,7 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "フォルダの移動",
+              text: t("moveFolder"),
               icon: ellipsisHorizontalCircleOutline,
               handler: () => {
                 history.push(`/select_folder/${musicId}`);
@@ -214,7 +218,7 @@ const Detail = ({ history }) => {
                 size="large"
                 onClick={() => setShowActionSheet2(true)}
               >
-                <span> ★ なし </span>
+                <span> ★ {t("none")} </span>
               </IonButton>
             ) : (
               <IonButton
@@ -226,11 +230,13 @@ const Detail = ({ history }) => {
               </IonButton>
             )}
             <p>
-              総合点：<span>{stability?.total}</span>&ensp;/300&ensp;
+              {t("overallScore")}：<span>{stability?.total}</span>
+              &ensp;/300&ensp;
             </p>
             <p>
-              高さ：{stability?.f0}&emsp;強さ：{stability?.vol}&emsp;音色：
-              {stability?.tone}
+              {t("pitch")}：{stability?.f0}&emsp;{t("intensity")}：
+              {stability?.vol}
+              &emsp;{t("timber")}：{stability?.tone}
             </p>
           </div>
         </IonCard>
@@ -239,7 +245,7 @@ const Detail = ({ history }) => {
         </IonCard>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>コメント</IonCardTitle>
+            <IonCardTitle>{t("comments")}</IonCardTitle>
           </IonCardHeader>
           <IonList>
             {comments.length !== 0 ? (
@@ -266,11 +272,11 @@ const Detail = ({ history }) => {
             ) : (
               <div>
                 <p className="comment_text">
-                  まだコメントはありません。
+                  {t("noComment")}
                   <br />
-                  右下の&ensp;
+                  {t("letWriteComment")}&ensp;
                   <IonIcon icon={createOutline} />
-                  &ensp;からコメントを書きましょう。
+                  &ensp;{t("writeFromBottomRight")}
                 </p>
               </div>
             )}
@@ -280,7 +286,7 @@ const Detail = ({ history }) => {
           isOpen={showActionSheet2}
           onDidDismiss={() => setShowActionSheet2(false)}
           cssClass="my-custom-class"
-          header={"自己評価の変更"}
+          header={t("changeSelfAssessment")}
           buttons={[
             {
               text: "5",
@@ -328,7 +334,7 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "取り消し",
+              text: t("cancel"),
               icon: close,
               role: "cancel",
               handler: () => {
@@ -342,8 +348,8 @@ const Detail = ({ history }) => {
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
-          header={"コメント"}
-          subHeader={"コメントを記入してください"}
+          header={t("comment")}
+          subHeader={t("writeComment")}
           inputs={[
             {
               name: "item",
@@ -352,7 +358,7 @@ const Detail = ({ history }) => {
           ]}
           buttons={[
             {
-              text: "取り消し",
+              text: t("cancel"),
               role: "cancel",
               cssClass: "secondary",
               handler: () => {
@@ -360,7 +366,7 @@ const Detail = ({ history }) => {
               },
             },
             {
-              text: "完了",
+              text: t("ok"),
               handler: async ({ item }) => {
                 const data = await putMusicComment(
                   musicId,
