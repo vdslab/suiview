@@ -1,6 +1,6 @@
 import { IonIcon, IonSlide } from "@ionic/react";
 import img from "../../images/home_p.png";
-import { folderOutline, micOutline } from "ionicons/icons";
+import { folderOutline } from "ionicons/icons";
 //import "./Slide2.css";
 import "./Slide4.css";
 import { useTranslation } from "react-i18next";
