@@ -80,7 +80,7 @@ const ManyLiner = ({ data, axis_name }) => {
           tickRotation: 0,
           //legend: axis_name,
           legend: "decibel",
-          legendOffset: -40,
+          legendOffset: -50,
           legendPosition: "middle",
         }}
         colors={{ scheme: "nivo" }}
