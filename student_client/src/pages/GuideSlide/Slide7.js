@@ -1,18 +1,21 @@
 import { IonSlide } from "@ionic/react";
 import img from "../../images/detail.png";
 import "./Slide4.css";
+import { useTranslation } from "react-i18next";
 
 const Slide7 = () => {
+  const { t } = useTranslation();
   return (
     <IonSlide>
-      <h2 className="title">曲詳細画面</h2>　　
+      <h2 className="title">{t("detailScreen")}</h2>　　
       <div className="position3">
         <p className="small_p">
-          一つ目のカードには、再生ボタン、曲名、自己評価、点数が表示されます。自己評価はタップすることで後から変更することができます。
-          グラフは先ほど同様、高さ・強さ・音色の3つのものを見ることができます。
+          {t("guideSlide7p1")}
+          {t("guideSlide7p2")}
+          {t("guideSlide7p3")}{" "}
         </p>
         <div className="picture5">
-          <img src={img} alt="曲詳細画面" /*style={{ width: "50%" }}*/ />
+          <img src={img} alt={t("detailScreen")} /*style={{ width: "50%" }}*/ />
         </div>
       </div>
     </IonSlide>

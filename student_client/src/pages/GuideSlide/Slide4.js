@@ -2,20 +2,22 @@ import { IonSlide, IonIcon } from "@ionic/react";
 import img from "../../images/recording.png";
 import { radioButtonOnOutline } from "ionicons/icons";
 import "./Slide4.css";
+import { useTranslation } from "react-i18next";
 
 const Slide4 = () => {
+  const { t } = useTranslation();
   return (
     <IonSlide>
-      <h2 className="title">録音画面</h2>　　
+      <h2 className="title">{t("recordingScreen")}</h2>　　
       <div className="position3">
         　
         <p /*style={{ marginBottom: "3rem" }}*/>
-          下の&ensp;
+          {t("guideSlide4p1")}&ensp;
           <IonIcon icon={radioButtonOnOutline} color="primary" />
-          &ensp;を押すと録音が始まります。
+          &ensp;{t("guideSlide4p2")}
           <br />
-          録音が終わったら記録するボタンを押して記録しましょう。
-          自己評価とコメントは任意で付けられます。後から追加、変更ができます。
+          {t("guideSlide4p3")}
+          {t("guideSlide4p4")}
         </p>
         <div className="picture4">
           <img src={img} alt="録音画面" /*style={{ width: "50%" }}*/ />

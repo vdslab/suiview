@@ -1,22 +1,23 @@
 import { IonSlide } from "@ionic/react";
 import img from "../../images/ogp_tb.png";
-import "./Slide8.css";
+import { useTranslation } from "react-i18next";
 
 const Slide8 = () => {
+  const { t } = useTranslation();
   return (
     <IonSlide>
-      <h2 className="title">演奏を聴いてもらう</h2>　　
+      <h2 className="title">{t("guideSlide8p1")}</h2>　　
       <div className="position8">
         <p style={{ marginBottom: "3rem" }}>
-          このアプリで録音したデータは先生モードから別の人も聞くことができます。
-          自分の演奏を聴いてもらうには、聞いてもらいたい人にIDを伝える必要があります。
-          設定からユーザーIDを確認して伝えてみましょう。
+          {t("guideSlide8p2")}
+          {t("guideSlide8p3")}
+          {t("guideSlide8p4")}
         </p>
         <div>
-          <p>先生モードはこちらをタップ↓</p>
+          <p>{t("guideSlide8p5")}</p>
           <div className="picture">
             <a href="https://suiview-t.vdslab.jp/">
-              <img src={img} alt="先生モード" style={{ width: "70%" }} />
+              <img src={img} alt={t("teacherMode")} style={{ width: "70%" }} />
             </a>
           </div>
         </div>

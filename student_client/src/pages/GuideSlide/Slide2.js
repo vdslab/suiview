@@ -3,27 +3,25 @@ import img from "../../images/home_p.png";
 import { folderOutline, micOutline } from "ionicons/icons";
 //import "./Slide2.css";
 import "./Slide4.css";
+import { useTranslation } from "react-i18next";
 
 const Slide2 = () => {
+  const { t } = useTranslation();
   return (
     <IonSlide>
-      <h2 className="title">ホーム画面</h2>　　
+      <h2 className="title">{t("homeScreen")}</h2>　　
       <div className="position3">
         <p className="small_p">
-          左下の&ensp;
+          {t("guideSlide2p3")}
+          <br />
+          {t("guideSlide2p1")}&ensp;
           <IonIcon icon={folderOutline} color="primary" />
-          &ensp;から練習ファイルの追加ができます。
+          &ensp;{t("guideSlide2p2")}
           <br />
-          右下の&ensp;
-          <IonIcon icon={micOutline} color="primary" />
-          &ensp;からは録音ができます。
-          <br />
-          基礎的なフレーズフォルダが あらかじめ用意されています。
-          <br />
-          始めはロングトーンファイルに入ってみましょう。
+          {t("guideSlide2p4")}
         </p>
         <div className="picture4">
-          <img src={img} alt="ホーム画面" /*style={{ width: "50%" }}*/ />
+          <img src={img} alt={t("homeScreen")} /*style={{ width: "50%" }}*/ />
         </div>
       </div>
       　　

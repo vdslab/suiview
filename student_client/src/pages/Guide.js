@@ -21,8 +21,10 @@ import {
   Slide8,
   Slide9,
 } from "./GuideSlide/index";
+import { useTranslation } from "react-i18next";
 
 const Gaido = ({ modal, history }) => {
+  const { t } = useTranslation();
   return (
     <IonPage>
       {modal ? (
@@ -33,7 +35,7 @@ const Gaido = ({ modal, history }) => {
             <IonButtons slot="start">
               <IonBackButton defaultHref="/" />
             </IonButtons>
-            <IonTitle>利用ガイド</IonTitle>
+            <IonTitle>{t("guide")}</IonTitle>
           </IonToolbar>
         </IonHeader>
       )}
@@ -53,7 +55,6 @@ const Gaido = ({ modal, history }) => {
           <Slide7 />
           <Slide72 />
           <Slide8 />
-          {/*<Slide9 />*/}
           {modal ? <Slide9 /> : []}
         </IonSlides>
       </IonContent>

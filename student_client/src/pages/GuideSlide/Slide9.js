@@ -1,6 +1,8 @@
 import { IonButton, IonSlide } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 
-const Slide8 = () => {
+const Slide9 = () => {
+  const { t } = useTranslation();
   function logined() {
     if ("visited" in localStorage) {
       return true;
@@ -18,9 +20,9 @@ const Slide8 = () => {
     <IonSlide>
       <div className="center_m5">
         <p>
-          それではさっそく
+          {t("guideSlide9p1")}
           <br />
-          一緒に練習してみましょう！
+          {t("guideSlide9p2")}
         </p>
         <IonButton
           routerLink={"/home"}
@@ -30,11 +32,11 @@ const Slide8 = () => {
             setVisited();
           }}
         >
-          はじめる
+          {t("start")}
         </IonButton>
       </div>
     </IonSlide>
   );
 };
 
-export default Slide8;
+export default Slide9;

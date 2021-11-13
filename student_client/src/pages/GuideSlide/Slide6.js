@@ -2,33 +2,34 @@ import { IonSlide } from "@ionic/react";
 import img_p from "../../images/progress.png";
 import img_a from "../../images/all.png";
 import "./Slide6.css";
+import { useTranslation } from "react-i18next";
 
 const Slide6 = () => {
+  const { t } = useTranslation();
   return (
     <IonSlide>
       <h2 className="title_m">
-        フォルダファイルでの
+        {t("guideSlide6p1")}
         <br />
-        グラフについて
+        {t("guideSlide6p2")}
       </h2>
       　　
       <div className="position6">
         　　　 　　　　
         <p>
-          各フォルダに保存したデータから5つのグラフを表示することができます。
-          一つの録音データを高さ・強さ・音色の3観点から100点満点でどれくらい安定しているかを
-          評価し、その結果が以下のグラフになります。
-          左図が合計300満点での表記、右図がその内訳になります。
+          {t("guideSlide6p3")}
+          {t("guideSlide6p4")}
+          {t("guideSlide6p5")}
         </p>
         <div className="pictures6">
           <img
             src={img_p}
-            alt="録音画面"
+            alt={t("folderScreen")}
             style={{ width: "40%", marginRight: "1rem" }}
           />
           <img
             src={img_a}
-            alt="録音画面"
+            alt={t("folderScreen")}
             style={{ width: "40%", marginLeft: "1rem" }}
           />
         </div>

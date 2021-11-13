@@ -132,7 +132,7 @@ const Folder = ({ history }) => {
               <p>{t("noData")}</p>
               <p>
                 {t("letRecord")}&ensp;<IonIcon icon={micOutline}></IonIcon>
-                &ensp; {t("fromBottomRight")}
+                &ensp; {t("addDataFromBottomRight")}
               </p>
             </IonCardContent>
           </IonCard>

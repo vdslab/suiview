@@ -39,16 +39,73 @@ const translation = {
       overallScore: "Overall score",
       stackedScore: "Stacked score",
       noData: "There is no data.",
-      letRecord: "Let's record from ",
+      letRecord: "Let's record from",
       addDataFromBottomRight: "at the bottom right.",
       detail: "Detail",
       moveFolder: "Move folder",
       none: "none",
       noComment: "There is no comment.",
-      letWriteComment: "Let's write comment from ",
+      letWriteComment: "Let's write comment from",
       writeFromBottomRight: "at the bottom right.",
       changeSelfAssessment: "Change self assessment.",
       writeComment: "Let's write comment",
+      welcomSuiview: "Welcom to Suiview",
+      guideSlide1p1:
+        "This application helps beginners who are just starting to practice wind instruments to produce stable sounds.",
+      guideSlide1p2:
+        "You can easily record and visually check the stability of your performance from the three perspectives of pitch, intensity, and timbre.",
+      homeScreen: "Home screen",
+      guideSlide2p1: "You can add practice files from",
+      guideSlide2p2: "at the bottom left.",
+      guideSlide2p3: "Basic practice folders are prepared in advance.",
+      guideSlide2p4: "Let's select longtone folder at first.",
+      folderScreen: "Folder screen",
+      guideSlide3p1: "You can record from",
+      guideSlide3p2: "Let's tap",
+      guideSlide3p3: "!",
+      recordingScreen: "Recording screen",
+      guideSlide4p1: "Press the",
+      guideSlide4p2: "button to start recording.",
+      guideSlide4p3:
+        "When you have finished recording, you press the completed button to record data.",
+      guideSlide4p4:
+        "Self-assessment and comments are optional. You can add or change it later.",
+      guideSlide5p1:
+        "Once the recorded data is collected, you will be able to compare the performance data in the folder.",
+      guideSlide5p2:
+        "You can also tap the performance data to see detailed information about it.",
+      guideSlide6p1: "About graphs in folder Screen",
+      guideSlide6p2: "",
+      guideSlide6p3:
+        "Five graphs can be displayed from the data saved in each folder.",
+      guideSlide6p4:
+        "Evaluate how stable one recorded data is from the three viewpoints of pitch, intensity, and timbre, with a maximum of 100 points.",
+      guideSlide6p5:
+        "The figure on the left is a total of 300 points, and the figure on the right is a breakdown.",
+      guideSlide6p6:
+        "You can also see a graph that overlays height, strength, and timbre. It can be useful for grasping habits.",
+      detailScreen: "Detail screen",
+      guideSlide7p1:
+        "The first card shows the play button, song title, self-assessment, and stability score.",
+      guideSlide7p2: "You can change your self-assessment later by tapping it.",
+      guideSlide7p3:
+        "As before, As before, the second card will display three graphs: pitch, itensity, and timbre.",
+      guideSlide7p4: "Comments are displayed on the third card.",
+      guideSlide7p5: "You can write comment from ",
+      guideSlide7p6: " .",
+      guideSlide7p7:
+        "The user who listen to your performance can also write comments.",
+      teacherMode: "Teacher mode",
+      guideSlide8p1: "Teacher mode",
+      guideSlide8p2:
+        "The data recorded by this app can be listened to by another person from the teacher mode.",
+      guideSlide8p3:
+        "To listen to the performance, you need to enter the ID of the person you want to hear.",
+      guideSlide8p4: "You can check the user ID from the setting screen.",
+      guideSlide8p5: "Tap here for teacher mode.",
+      start: "Start",
+      guideSlide9p1: "Let's practice!",
+      guideSlide9p2: "",
     },
   },
   ja: {
@@ -100,6 +157,61 @@ const translation = {
       writeFromBottomRight: "からコメントを書きましょう",
       changeSelfAssessment: "自己評価の変更",
       writeComment: "コメントを記入してください",
+      welcomSuiview: "吹Viewへようこそ",
+      guideSlide1p1:
+        " 管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。",
+      guideSlide1p2:
+        "管楽器を練習したいユーザが気軽に録音し,高さ・強さ・音色の3観点からどの程度演奏が安定しているかを視覚的に確かめることができます。",
+      homeScreen: "ホーム画面",
+      guideSlide2p1: "左下の",
+      guideSlide2p2: "から練習ファイルの追加ができます。",
+      guideSlide2p3: "基礎的な練習フォルダが あらかじめ用意されています。",
+      guideSlide2p4: "始めはロングトーンファイルを選んでみましょう。",
+      folderScreen: "フォルダー画面",
+      guideSlide3p1: "右下の",
+      guideSlide3p2: "",
+      guideSlide3p3: "を押して録音に進みましょう！",
+      recordingScreen: "録音画面",
+      guideSlide4p1: "下の",
+      guideSlide4p2: "ボタンを押すと録音が始まります。",
+      guideSlide4p3: "録音が終わったら記録するボタンを押して記録しましょう。",
+      guideSlide4p4:
+        " 自己評価とコメントは任意で付けられます。後から追加、変更ができます。",
+      guideSlide5p1:
+        "録音データが集まると、フォルダ内での演奏データの比較ができるようになります。",
+      guideSlide5p2:
+        "また、演奏データをタップするとその演奏データの詳細情報を見ることができます。",
+      guideSlide6p1: "フォルダ画面での",
+      guideSlide6p2: "グラフについて",
+      guideSlide6p3:
+        " 各フォルダに保存したデータから5つのグラフを表示することができます。",
+      guideSlide6p4:
+        "一つの録音データを高さ・強さ・音色の3観点から100点満点でどれくらい安定しているかを評価し、その結果が以下のグラフになります。",
+      guideSlide6p5: "左図が合計300満点での表記、右図がその内訳になります。",
+      guideSlide6p6:
+        "高さ・強さ・音色のそれぞれを重ねたグラフも見ることができます。癖などの把握に役立てることができます。",
+      detailScreen: "曲詳細画面",
+      guideSlide7p1:
+        "一つ目のカードには、再生ボタン、曲名、自己評価, 安定度が表示されます。",
+      guideSlide7p2: "自己評価はタップすることで後から変更することができます。",
+      guideSlide7p3:
+        "グラフは先ほど同様、高さ・強さ・音色の3つのものを見ることができます。",
+      guideSlide7p4: "3つめのカードにはコメントが表示されます。",
+      guideSlide7p5: "",
+      guideSlide7p6: "からコメントを書くことができます",
+      guideSlide7p7:
+        "また、自分の演奏を聞いた人もコメントを付けることができます。",
+      teacherMode: "先生モード",
+      guideSlide8p1: "演奏を聴いてもらう",
+      guideSlide8p2:
+        "このアプリで録音したデータは先生モードから別の人も聞くことができます。",
+      guideSlide8p3:
+        "自分の演奏を聴いてもらうには、聞いてもらいたい人にIDを伝える必要があります。",
+      guideSlide8p4: "設定からユーザーIDを確認して伝えてみましょう。",
+      guideSlide8p5: "先生モードはこちらをタップ↓",
+      start: "始める",
+      guideSlide9p1: "それではさっそく",
+      guideSlide9p2: "一緒に練習してみましょう！",
     },
   },
 };
