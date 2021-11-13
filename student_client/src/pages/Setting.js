@@ -56,16 +56,16 @@ const Setting = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/" />
           </IonButtons>
-          <IonTitle>設定</IonTitle>
+          <IonTitle>{t("setting")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         <IonList>
           <IonCard>
-            <IonCardHeader>アカウント情報</IonCardHeader>
+            <IonCardHeader>{t("account")}</IonCardHeader>
             <IonCardContent>
               <IonItem lines="none" slot="end">
-                ユーザー名：{userData ? userData["name"] : []}
+                {t("userName")}：{userData ? userData["name"] : []}
                 <IonButton
                   fill="outline"
                   slot="end"
@@ -75,13 +75,13 @@ const Setting = () => {
                 </IonButton>
               </IonItem>
               <IonItem>
-                ユーザーID&ensp;
+                {t("userId")}&ensp;
                 {userData ? (
                   <a href={encodedUrl}>
                     <IonButton fill="outline">
                       {/*} <IonIcon icon={shareOutline}></IonIcon>*/}
                       {/*} <img src={line_icon} style={{width:"1.5rem"}} alt={"LINEアイコン"}/>&ensp;*/}
-                      LINEで共有する
+                      {t("shareLine")}
                     </IonButton>
                   </a>
                 ) : (
@@ -111,7 +111,7 @@ const Setting = () => {
             color="light"
             routerLink="/setting/gaido"
           >
-            利用ガイド
+            {t("guide")}
           </IonButton>
           {/*<IonButton
             slot="end"
@@ -135,20 +135,20 @@ const Setting = () => {
             color="light"
             onClick={() => logout({ returnTo: window.location.origin })}
           >
-            ログアウト
+            {t("logout")}
           </IonButton>
         </IonList>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
           cssClass="my-custom-class"
-          header={"ユーザー名の変更"}
-          subHeader={"新しいユーザー名を記入してください"}
+          header={t("changeUserName")}
+          subHeader={t("enterNewUserName")}
           inputs={[
             {
               name: "name",
               type: "text",
-              placeholder: "名前",
+              placeholder: t("name"),
             },
           ]}
           buttons={[
