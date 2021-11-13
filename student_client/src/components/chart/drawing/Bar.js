@@ -7,13 +7,25 @@ const Bar = ({ data }) => {
   if (data === null || data === undefined) {
     return null;
   }
-  // console.log(data);
+
+  const languageSupportedData = data.map((item) => {
+    const objEn = {
+      "No.": item["No."],
+      Pitch: item["高さ"],
+      Intensity: item["強さ"],
+      Timber: item["音色"],
+    };
+    if (t("pitch") === "Pitch") {
+      return objEn;
+    }
+    return item;
+  });
 
   return (
     <div style={{ width: "100%", height: "290px" }}>
       <ResponsiveBar
-        data={data}
-        keys={["高さ", "音色", "強さ"]}
+        data={languageSupportedData}
+        keys={[t("pitch"), t("intensity"), t("timber")]}
         indexBy="No."
         margin={{ top: 20, right: 5, bottom: 60, left: 60 }}
         padding={0.3}
@@ -38,20 +50,6 @@ const Bar = ({ data }) => {
             rotation: -45,
             lineWidth: 6,
             spacing: 10,
-          },
-        ]}
-        fill={[
-          {
-            match: {
-              id: "fries",
-            },
-            id: "dots",
-          },
-          {
-            match: {
-              id: "sandwich",
-            },
-            id: "lines",
           },
         ]}
         borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}

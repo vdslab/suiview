@@ -17,7 +17,7 @@ import "./theme/variables.css";
 
 const App = () => {
   const { isAuthenticated } = useAuth0();
-  console.log("visited" in localStorage);
+  //console.log("visited" in localStorage);
   return (
     <IonApp>
       <IonReactRouter>
