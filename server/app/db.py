@@ -24,8 +24,10 @@ def create_engine():
                 database=db_name,
                 query={
                     'unix_sock': socket_path
-                }
+                },
             ),
+            pool_size=20,
+            max_overflow=40,
         )
     return sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
@@ -36,6 +38,8 @@ def create_engine():
             host=db_host,
             port=db_port,
         ),
+        pool_size=20,
+        max_overflow=40,
     )
 
 

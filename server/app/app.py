@@ -97,7 +97,7 @@ def get_student_folder_musics(user_id, folder_id):
         user_id=user_id.replace("%", "|"), folder_id=folder.id).all()
     musics = [music.to_json() for music in musics]
     musics = sorted(musics, key=lambda x: x['created'], reverse=True)
-
+    session.close()
     return jsonify(musics)
 
 
@@ -230,7 +230,7 @@ def get_student_folder_f0(user_id, folder_id):
 
             print("fin"+str(i))
         print("finish")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -299,7 +299,7 @@ def get_student_folder_decibel(user_id, folder_id):
             l -= 1
             print("fin")
         print("all clear")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -368,7 +368,7 @@ def get_student_folder_tone(user_id, folder_id):
             l -= 1
             print("fin")
         print("all clear")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -499,6 +499,7 @@ def get_student_music_spectrum_centroid(user_id, music_id):
     user_id = user_id.replace("%", "|")
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
+    session.close()
     return jsonify({
         'values': spectrum_centroid(music)
     })
@@ -516,6 +517,7 @@ def get_student_music_spectrum_rolloff(user_id, music_id):
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     average = spectrum_rolloff_ave(music)
+    session.close()
     return jsonify({
         'average': {"stability": average[1], 's': average[0]},
         'values': spectrum_rolloff(music)
@@ -560,6 +562,7 @@ def get_student_folder_stability(user_id, music_id):
     data = {"f0": f0_ave[0], "vol": vol_ave[0], "tone": tone_ave[0],
             "total": f0_ave[0]+vol_ave[0]+tone_ave[0]}
     print(data)
+    session.close()
     return jsonify(data)
 #########################################################
 #########################################################
@@ -750,6 +753,7 @@ def post_comment(music_id):
     comment = Comment(music_id=music_id, text=data['item'], user_id=user_id)
     session.add(comment)
     session.commit()
+    session.close()
     return get_comment(music_id)
 
 
@@ -767,6 +771,7 @@ def put_assesment(music_id):
     session.commit()
     music = music.to_json()
     print(music)
+    session.close()
     return jsonify(music)
 
 
@@ -941,7 +946,7 @@ def get_folder_f0(folder_id):
             l -= 1
             print("fin"+str(i))
         print("finish")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -1222,7 +1227,7 @@ def get_folder_decibel(folder_id):
             l -= 1
             print("fin")
         print("all clear")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -1502,6 +1507,7 @@ def get_music_spectrum_centroid(music_id):
     user_id = g.current_user['sub']
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
+    session.close()
     return jsonify({
         'values': spectrum_centroid(music)
     })
@@ -1515,6 +1521,7 @@ def get_music_spectrum_rolloff(music_id):
     music = session.query(Music).filter_by(
         user_id=user_id, id=music_id).first()
     average = spectrum_rolloff_ave(music)
+    session.close()
     return jsonify({
         'average': {"stability": average[1], 's': average[0]},
         'values': spectrum_rolloff(music)
@@ -1581,7 +1588,7 @@ def get_folder_tone(folder_id):
             l -= 1
             print("fin")
         print("all clear")
-        session.close()
+    session.close()
     return jsonify(Datas)
 
 
@@ -1598,6 +1605,7 @@ def get_folder_stability(music_id):
     data = {"f0": f0_ave[0], "vol": vol_ave[0], "tone": tone_ave[0],
             "total": f0_ave[0]+vol_ave[0]+tone_ave[0]}
     print(data)
+    session.close()
     return jsonify(data)
 
 
