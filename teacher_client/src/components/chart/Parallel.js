@@ -4,11 +4,13 @@ import { getFolderParallel } from "../../services/api";
 //import { ParallelCoordinates } from "./drawing";
 import { Bar } from "./drawing";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ParallelChart = () => {
   const [data, setData] = useState(null);
   const { userName, folderId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getFolderParallel(userName, folderId, getAccessTokenSilently).then(
@@ -24,7 +26,7 @@ const ParallelChart = () => {
   }
   return (
     <div>
-      <div lines="none">　最大直近10個のデータです</div>
+      <div lines="none">{t("max10")}</div>
       {/*<ParallelCoordinates data={data} />*/}
       <Bar data={data} />
     </div>

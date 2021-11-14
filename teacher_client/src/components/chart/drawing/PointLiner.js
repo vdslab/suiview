@@ -1,6 +1,9 @@
 import { ResponsiveLine } from "@nivo/line";
+import { useTranslation } from "react-i18next";
 
 const PointLiner = ({ data }) => {
+  const { t } = useTranslation();
+
   if (data == null) {
     return null;
   }
@@ -10,7 +13,7 @@ const PointLiner = ({ data }) => {
       <ResponsiveLine
         data={[
           {
-            id: "Your record",
+            id: "",
             data: data.filter(({ x, _ }) => x % 1 === 0),
           },
         ]}
@@ -18,7 +21,7 @@ const PointLiner = ({ data }) => {
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: "auto",
+          min: 0,
           max: 300,
           stacked: true,
           reverse: false,
@@ -39,11 +42,11 @@ const PointLiner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "総合点",
+          legend: t("overallScore"),
           legendOffset: -45,
           legendPosition: "middle",
         }}
-        colors={{ scheme: "accent" }}
+        colors={{ scheme: "nivo" }}
         lineWidth={4}
         pointSize={10}
         pointColor={{ theme: "background" }}

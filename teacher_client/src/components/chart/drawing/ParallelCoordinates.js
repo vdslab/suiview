@@ -1,5 +1,6 @@
 import { ResponsiveParallelCoordinates } from "@nivo/parallel-coordinates";
 
+//現在は使ってない
 const ParallelCoordinates = ({ data }) => {
   if (data === null || data === undefined) {
     return null;

@@ -1,18 +1,19 @@
 import { ResponsiveLine } from "@nivo/line";
+import { useTranslation } from "react-i18next";
 
-const Liner = ({ data }) => {
+const Liner = ({ data, axis_name }) => {
+  const { t } = useTranslation();
+
   if (data == null) {
     return null;
   }
 
   let max = Math.max.apply(
     Math,
-    data?.map((input) => {
+    data.map((input) => {
       return input.y;
     })
   );
-
-  console.log(data);
 
   let min = 0;
   if (max <= 0) {
@@ -23,7 +24,26 @@ const Liner = ({ data }) => {
   }
 
   const x_padding = Math.round(data.length / 5 / 10) * 10;
-  console.log(x_padding);
+  let k = 0;
+  function makeInterval(num) {
+    if (k % x_padding === 0) {
+      k += 1;
+      return num;
+    }
+    k += 1;
+    return;
+  }
+  let p = 0;
+  function makeData(num) {
+    if (p % 5 === 0) {
+      p += 1;
+      return num;
+    }
+    p += 1;
+    return;
+  }
+  const jiku = data.filter(makeInterval);
+  const d = data.filter(makeData);
 
   return (
     <div style={{ width: "100%", height: "300px" }}>
@@ -31,11 +51,11 @@ const Liner = ({ data }) => {
         data={[
           {
             id: "x",
-            data: data.filter(({ x }) => x % 5 === 0),
-            //data: data.filter(({ x }) => x),
+            //data: data.filter(({ x }) => x % 5 === 0),
+            data: d.filter(({ x }) => x),
           },
         ]}
-        margin={{ top: 10, right: 10, bottom: 50, left: 30 }}
+        margin={{ top: 10, right: 20, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -50,10 +70,11 @@ const Liner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues: data
-            .filter(({ x }) => x % x_padding === 0)
-            .map(({ x }) => x),
-          legend: "",
+          /*tickValues: data
+            .filter(({ x }) =>x % x_padding === 0)
+            .map(({ x }) => x),*/
+          tickValues: jiku.map(({ x }) => x),
+          legend: t("seconds"),
           legendOffset: 36,
           legendPosition: "middle",
         }}
@@ -62,8 +83,8 @@ const Liner = ({ data }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: "",
-          legendOffset: -40,
+          legend: axis_name,
+          legendOffset: -50,
           legendPosition: "middle",
         }}
         colors={{ scheme: "nivo" }}

@@ -49,7 +49,7 @@ export function Player(data) {
             fill="none"
             stroke="#000000"
             strokeWidth="1.5"
-            stroke-linecap="round"
+            strokeLinecap="round"
             strokeLinejoin="round"
           >
             <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -63,7 +63,7 @@ export function Player(data) {
             fill="none"
             stroke="#000000"
             strokeWidth="1.5"
-            stroke-linecap="round"
+            strokeLinecap="round"
             strokeLinejoin="round"
           >
             <rect x="6" y="4" width="4" height="16"></rect>
@@ -89,7 +89,7 @@ export function Player(data) {
       fill="none"
       stroke="#000000"
       strokeWidth="1.5"
-      stroke-linecap="round"
+      strokeLinecap="round"
       strokeLinejoin="round"
     >
       <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -97,7 +97,7 @@ export function Player(data) {
       bgm1.pause();
       console.log("Stop", musicId);
     } else {
-      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" stroke-linecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
       bgm1.play();
       console.log("start", musicId);
     }
@@ -122,7 +122,7 @@ export function Player(data) {
           fill="none"
           stroke="#000000"
           strokeWidth="1.5"
-          stroke-linecap="round"
+          strokeLinecap="round"
           strokeLinejoin="round"
         >
           <polygon points="5 3 19 12 5 21 5 3"></polygon>

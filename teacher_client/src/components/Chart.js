@@ -10,10 +10,12 @@ import {
 import { getFolderMusics } from "../services/api/index";
 //import FolderChart from "./Chart";;
 import { useAuth0 } from "@auth0/auth0-react";
+import { useTranslation } from "react-i18next";
 
 const ShowChart = (data) => {
   const { folderId } = useParams();
   const kind = data.kind;
+  const { t } = useTranslation();
 
   if (folderId === undefined) {
     return <div>loading...</div>;
@@ -21,18 +23,25 @@ const ShowChart = (data) => {
 
   return (
     <div>
-      {kind === "精進グラフ" ? <ProgressChart /> : []}
-      {kind === "総合点" ? <ParallelChart /> : []}
-      {kind === "高さ" ? <FrequencyChart /> : []}
-      {kind === "強さ" ? <VolumeChart /> : []}
-      {kind === "音色" ? <ToneChart /> : []}
+      {kind === t("overallScore") ? <ProgressChart /> : []}
+      {kind === t("stackedScore") ? <ParallelChart /> : []}
+      {kind === t("pitch") ? <FrequencyChart /> : []}
+      {kind === t("intensity") ? <VolumeChart /> : []}
+      {kind === t("timber") ? <ToneChart /> : []}
     </div>
   );
 };
 
 const FolderChart = (item) => {
-  const chartIds = ["総合点", "高さ", "強さ", "音色"];
-  const chartIds2 = ["総合点", "精進グラフ", "高さ", "強さ", "音色"];
+  const { t } = useTranslation();
+  const chartIds = [t("stackedScore"), t("pitch"), t("intensity"), t("timber")];
+  const chartIds2 = [
+    t("overallScore"),
+    t("stackedScore"),
+    t("pitch"),
+    t("intensity"),
+    t("timber"),
+  ];
   const [musics, setMusics] = useState();
   const { userName, folderId } = useParams();
   const { getAccessTokenSilently } = useAuth0();

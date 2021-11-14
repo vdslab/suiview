@@ -7,16 +7,18 @@ import {
   Decibel,
   ShowFrequency,
 } from "../components/chart/index";
+import { useTranslation } from "react-i18next";
 
 function Comment() {
   const { getAccessTokenSilently } = useAuth0();
   const { userName, musicId } = useParams();
+  const { t } = useTranslation();
 
   async function sendComment(comment) {
     console.log("send function");
     await putMusicComment(userName, musicId, comment, getAccessTokenSilently);
     document.getElementById("comment").value = "";
-    alert("送信されました");
+    alert(t("transmissionIsComplete"));
   }
 
   return (
@@ -25,19 +27,19 @@ function Comment() {
         <textarea
           className="textarea"
           id="comment"
-          placeholder="コメントを書いてください"
+          placeholder={t("writeComment")}
         ></textarea>
         <br />
         <input
           className="button"
           type="button"
-          value="コメントを送る"
+          value={t("sendComment")}
           onClick={() => {
             const comment = document.getElementById("comment").value;
             if (comment !== "") {
               sendComment(comment);
             } else {
-              alert("記入漏れがあります");
+              alert(t("enterComment"));
             }
           }}
         ></input>
@@ -63,6 +65,7 @@ const ShowChart = (data) => {
 };
 
 const MusicDetail = () => {
+  const { t } = useTranslation();
   const chartIds = ["PITCH", "VOL", "TONE"];
   const [chartId, setChartId] = useState(chartIds[0]);
   const { userName, folderId, musicId } = useParams();
@@ -84,8 +87,9 @@ const MusicDetail = () => {
   return (
     <section>
       <div>
-        総合点：{stability?.total}&emsp; (音程：{stability?.f0}&emsp;強さ：
-        {stability?.vol}&emsp;音色：
+        {t("overallScore")}：{stability?.total}&emsp; ({t("pitch")}：
+        {stability?.f0}
+        &emsp;{t("intensity")}：{stability?.vol}&emsp;{t("timber")}：
         {stability?.tone})
       </div>
       <div className="select is-small ">
