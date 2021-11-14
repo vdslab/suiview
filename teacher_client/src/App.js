@@ -56,23 +56,6 @@ function Login() {
                 {t("login")}
               </button>
             </section>
-            {/*<section>
-              <h2 className="title is-6">
-                生徒モードはこちら↓スマートフォン推奨
-              </h2>
-              <a href="https://suiview-s.vdslab.jp/">
-                <img
-                  src={img}
-                  alt="先生モード"
-                  style={{ width: "25vmin", margin: "0.5rem" }}
-                />
-              </a>
-              <img
-                src={qr_img}
-                alt="先生モード"
-                style={{ width: "25vmin", margin: "0.5rem" }}
-              />
-            </section>*/}
           </div>
         </div>
       </section>
