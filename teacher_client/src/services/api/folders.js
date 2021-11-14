@@ -13,7 +13,6 @@ export async function getFolderMusics(
   folderId,
   getAccessTokenSilently
 ) {
-  console.log("HEREHERE!!!", folderId);
   const response = await requestGet(
     `/${username}/folders/${folderId}`,
     getAccessTokenSilently
@@ -70,7 +69,6 @@ export async function getFolderTone(
   folderId,
   getAccessTokenSilently
 ) {
-  console.log("HREE");
   const response = await requestGet(
     `/${username}/folders/${folderId}/tone`,
     getAccessTokenSilently

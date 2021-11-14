@@ -10,14 +10,14 @@ export const musicRecord = () => {
   const handleSuccess = (stream) => {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     audio_sample_rate = audioContext.sampleRate;
-    console.log(audio_sample_rate);
+    //console.log(audio_sample_rate);
     scriptProcessor = audioContext.createScriptProcessor(bufferSize, 1, 1);
     const mediastreamsource = audioContext.createMediaStreamSource(stream);
     mediastreamsource.connect(scriptProcessor);
     scriptProcessor.onaudioprocess = onAudioProcess;
     scriptProcessor.connect(audioContext.destination);
 
-    console.log("record start?");
+    //console.log("record start?");
   };
 
   //save audio data
@@ -64,7 +64,7 @@ export const saveAudio = () => {
       view.setUint16(20, 1, true); // フォーマットID
       view.setUint16(22, 1, true); // チャンネル数
       view.setUint32(24, sampleRate, true); // サンプリングレート
-      console.log(sampleRate);
+      //console.log(sampleRate);
       view.setUint32(28, sampleRate * 2, true); // データ速度
       view.setUint16(32, 2, true); // ブロックサイズ
       view.setUint16(34, 16, true); // サンプルあたりのビット数

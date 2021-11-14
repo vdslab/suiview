@@ -45,7 +45,6 @@ const FolderList = () => {
           <section>
             <ul>
               {musics?.map((data, i) => {
-                console.log(data.id, parseInt(musicId));
                 return (
                   <li key={data.id} className="columns">
                     <p style={{ paddingTop: "15px" }}>No.{i + 1}</p>

@@ -71,7 +71,6 @@ export async function putMusicComment(
 }
 
 export async function getMusicStability(userName, musicId, getAccessToken) {
-  console.log("helo");
   const response = await requestGet(
     `/${userName}/musics/${musicId}/stability`,
     getAccessToken

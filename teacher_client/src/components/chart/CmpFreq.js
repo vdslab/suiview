@@ -13,7 +13,6 @@ const FrequencyChart = () => {
       setData(data);
     });
   }, [userName, folderId, getAccessTokenSilently]);
-  console.log(data);
 
   if (data == null) {
     return <div>loading...</div>;

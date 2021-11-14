@@ -142,7 +142,7 @@ const Recording = ({ history }) => {
                   onClick={async () => {
                     await deleteMusic(musicId, getAccessTokenSilently);
                     setRecorded(0);
-                    console.log(recorded);
+                    // console.log(recorded);
                   }}
                 >
                   {t("tryAgain")}
@@ -165,7 +165,7 @@ const Recording = ({ history }) => {
                     if (selected !== undefined) {
                       item.assessment = selected;
                     }
-                    console.log(musicId);
+                    // console.log(musicId);
                     await putMusicContent(
                       musicId,
                       item,

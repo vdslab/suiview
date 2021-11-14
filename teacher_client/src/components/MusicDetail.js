@@ -15,7 +15,6 @@ function Comment() {
   const { t } = useTranslation();
 
   async function sendComment(comment) {
-    console.log("send function");
     await putMusicComment(userName, musicId, comment, getAccessTokenSilently);
     document.getElementById("comment").value = "";
     alert(t("transmissionIsComplete"));
@@ -109,7 +108,6 @@ const MusicDetail = () => {
       </div>
 
       {chartIds.map((data, id) => {
-        console.log(data, chartId);
         if (data === chartId) {
           return <ShowChart key={id} data={{ id: folderId, kind: data }} />;
         } else {
