@@ -1,19 +1,38 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
-//import img from "./images/ogp_hb.png";
-//import qr_img from "./images/QR_y.png";
+import { useTranslation } from "react-i18next";
 
 function Login() {
   const { loginWithRedirect } = useAuth0();
+  const { t, i18n } = useTranslation();
+
   return (
     <div>
       <section className="hero  is-small has-background-primary">
         <div className="hero-body">
-          <div className="container" style={{ padding: "40px" }}>
+          <div
+            className="container"
+            style={{
+              padding: "40px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
             <h1 className="title  has-text-centered">
-              吹View♪<span className="is-size-5"> β版-先生モード-</span>
+              {t("title")}♪<span className="is-size-5"> {t("subtitle")}</span>
             </h1>
+            <div className="select is-small is-primary">
+              <select
+                value={i18n.language.slice(0, 2)}
+                onChange={(event) => {
+                  i18n.changeLanguage(event.currentTarget.value);
+                }}
+              >
+                <option value="ja">{t("japanese")}</option>
+                <option value="en">{t("english")}</option>
+              </select>
+            </div>
           </div>
         </div>
       </section>
@@ -21,24 +40,20 @@ function Login() {
         <div className="hero-body">
           <div className="has-text-centered">
             <section>
-              <h2 className="title is-5">吹viewとは</h2>
+              <h2 className="title is-5">{t("aboutSuiview")}</h2>
               <p>
-                管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。
-                管楽器を練習したいユーザが気軽に録音し,音の強さ・高さ・音色の安定度を視覚的に確かめることができます。
+                {t("loginPage1")} {t("loginPage2")}
               </p>
               <br />
-              <h2 className="title is-5">先生モードでできること</h2>
-              <p>
-                先生モードでは生徒が演奏した音源とグラフを見てコメントを付けることができます。
-                付けたコメントは生徒が見ることができます。
-              </p>
+              <h2 className="title is-5">{t("whatYouCanDo")}</h2>
+              <p>{t("loginPage3")}</p>
             </section>
             <section className="section">
               <button
                 onClick={loginWithRedirect}
                 className="button is-primary is-outlined"
               >
-                login
+                {t("login")}
               </button>
             </section>
             {/*<section>

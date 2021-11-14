@@ -60,10 +60,6 @@ const translation = {
       transmissionIsComplete: "Transmission is complete",
       sendComment: "Send a comment",
       welcomSuiview: "Welcom to Suiview",
-      guideSlide1p1:
-        "This application helps beginners who are just starting to practice wind instruments to produce stable sounds.",
-      guideSlide1p2:
-        "You can easily record and visually check the stability of your performance from the three perspectives of pitch, intensity, and timbre.",
       homeScreen: "Home screen",
       login: "Login",
       selectFolder: "Select folder",
@@ -76,6 +72,14 @@ const translation = {
         "If you select only students and folders, a graph of the accumulated data of that folder will be displayed.",
       homeP3:
         "If you select a song, you can see the graph of the sound source.",
+      aboutSuiview: "About Suiview",
+      loginPage1:
+        "This application helps beginners who are just starting to practice wind instruments to produce stable sounds.",
+      loginPage2:
+        "You can easily record and visually check the stability of your performance from the three perspectives of pitch, intensity, and timbre.",
+      whatYouCanDo: "What you can do in teacher mode",
+      loginPage3:
+        "In teacher mode, you can see and comment on student performances and graphs.Students can see the comments you write.",
     },
   },
   ja: {
@@ -144,6 +148,14 @@ const translation = {
         "生徒とフォルダーのみの選択ではそのフォルダの蓄積データのグラフが表示され、",
       homeP3:
         "さらに録音データを選択するとその音源のグラフを見ることができます。",
+      aboutSuiview: "吹viewとは",
+      loginPage1:
+        " 管楽器の練習を始めたばかりの初心者が安定した音を出せるようにするためのお手伝いをするアプリです。",
+      loginPage2:
+        "管楽器を練習したいユーザが気軽に録音し,高さ・強さ・音色の3観点からどの程度演奏が安定しているかを視覚的に確かめることができます。",
+      whatYouCanDo: "先生モードでできること",
+      loginPage3:
+        " 先生モードでは生徒が演奏した音源とグラフを見てコメントを付けることができます。付けたコメントは生徒が見ることができます。",
     },
   },
 };
