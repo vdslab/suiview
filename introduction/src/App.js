@@ -50,27 +50,29 @@ function App() {
           </div>
         </section>
       </header>
-      <div className="introduction">
-        <h3 className="intro_title">{t("aboutSuiview")}</h3>
-        <p className="introduction">
-          {t("aboutSuiview1_1")}
-          <br className="br-sp" />
-          {t("aboutSuiview1_2")}
-          <br className="br-sp" />
-          {t("aboutSuiview1_3")}
-          <br />
-          {t("aboutSuiview2_1")}
-          <br className="br-sp" />
-          {t("aboutSuiview2_2")}
-          <br className="br-sp" />
-          {t("aboutSuiview2_3")}
-          <br />
-          {t("aboutSuiview3_1")}
-          <br className="br-sp" />
-          {t("aboutSuiview3_2")}
-          <br className="br-sp" />
-          {t("aboutSuiview3_3")}
-        </p>
+      <div className="description">
+        <h3>{t("aboutSuiview")}</h3>
+        <div>
+          <p>
+            {t("aboutSuiview1_1")}
+            <br className="br-sp" />
+            {t("aboutSuiview1_2")}
+            <br className="br-sp" />
+            {t("aboutSuiview1_3")}
+            <br />
+            {t("aboutSuiview2_1")}
+            <br className="br-sp" />
+            {t("aboutSuiview2_2")}
+            <br className="br-sp" />
+            {t("aboutSuiview2_3")}
+            <br />
+            {t("aboutSuiview3_1")}
+            <br className="br-sp" />
+            {t("aboutSuiview3_2")}
+            <br className="br-sp" />
+            {t("aboutSuiview3_3")}
+          </p>
+        </div>
       </div>
       <div className="student">
         <div className="studentTitle">
@@ -173,16 +175,37 @@ function App() {
         </div>
       </div>
 
+      <div className="description">
+        <h3>{t("publications")}</h3>
+        <div>
+          <p>{t("publications1")}</p>
+          <ul>
+            <li>
+              M. Watanabe, Y. Onoue, A. Uemura, and T. Kitahara, “Suiview: A
+              Web-based Application that Enables Users to Practice Wind
+              Instrument Performance,” in Proceedings of the 15th International
+              Symposium on CMMR, 2021, pp. 5–10.
+            </li>
+            <li>
+              渡邉みさと, 尾上洋介, 植村あい子, and 北原鉄朗,
+              “管楽器を対象とした基礎的演奏技術向上のための音響特徴可視化アプリの試作,”
+              2021.
+            </li>
+          </ul>
+        </div>
+      </div>
+
       <div className="footer">
         <div className="names">
+          {t("watanabe")}, {t("numabe")}, {t("onoue")}, <br class="br-sp" />
+          {t("uemura")}, {t("kitahara")}
+          <br />
           {t("team")}
-          <br className="br-sp" />
-          {t("watanabe")} {t("onoue")} {t("kitahara")} {t("uemura")}
           <br />
           <br />
-          {t("lab1")}
+          <a href="https://vdslab.jp/">{t("lab1")}</a>
           <br />
-          {t("lab2")}
+          <a href="https://www.kthrlab.jp/">{t("lab2")}</a>
         </div>
       </div>
     </div>

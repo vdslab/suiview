@@ -3,6 +3,11 @@
   margin: 0px;
 }
 
+ul {
+  list-style-type: disc;
+  padding-inline-start: 30px;
+}
+
 /* header */
 
 header {
@@ -19,22 +24,22 @@ h1 {
   font-weight: bold;
 }
 
-/* introduction */
+/* introduction, publications */
 
-div.introduction {
+.description {
   background-color: #f5f5f5;
   font-size: 15px;
   text-align: left;
   padding: 22px 39px 51px 39px;
 }
 
-p.introduction {
+.description > div {
   padding-top: 10px;
   padding-left: 44px;
   line-height: 200%;
 }
 
-h3.intro_title {
+.description > h3 {
   font-size: 30px;
   font-weight: bold;
   text-decoration: underline;
@@ -144,6 +149,10 @@ div.names {
   display: none;
 }
 
+.footer a {
+  color: #4a4a4a;
+}
+
 /* select box*/
 .select select {
   border-color: rgb(255 186 215);
@@ -180,7 +189,8 @@ div.names {
   .br-sp {
     display: flex;
   }
-  p {
+  p,
+  ul {
     font-size: 11px;
   }
   p.subtitle {
@@ -188,13 +198,13 @@ div.names {
     font-size: 10px;
   }
 
-  div.introduction {
+  div.description {
     padding: 25px 43px 18.4px 33px;
   }
-  h3.intro_title {
+  h3.description_title {
     font-size: 16px;
   }
-  p.introduction {
+  p.description {
     padding-left: 12px;
   }
   h2.student {
