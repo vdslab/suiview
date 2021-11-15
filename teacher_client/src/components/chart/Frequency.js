@@ -10,6 +10,7 @@ const ShowFrequency = () => {
   const { userName, musicId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const { t } = useTranslation();
+
   useEffect(() => {
     getMusicF0(userName, musicId, getAccessTokenSilently).then((data) => {
       setData(data);

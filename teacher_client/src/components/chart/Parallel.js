@@ -26,7 +26,6 @@ const ParallelChart = () => {
   return (
     <div>
       <div lines="none">{t("max10")}</div>
-      {/*<ParallelCoordinates data={data} />*/}
       <Bar data={data} />
     </div>
   );

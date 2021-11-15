@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { IonItem } from "@ionic/react";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  //getMusicSpectrumCentroid,
-  getMusicSpectrumRolloff,
-} from "../../services/api";
-//import { ToneLiner } from "./drawing";
+import { getMusicSpectrumRolloff } from "../../services/api";
 import { Liner } from "./drawing";
 import { useTranslation } from "react-i18next";
 
@@ -15,22 +11,10 @@ const CentroidRolloff = ({ musicId }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    /*const centroidRequest = getMusicSpectrumCentroid(
-      musicId,
-      getAccessTokenSilently
-    );*/
     const rolloffRequest = getMusicSpectrumRolloff(
       musicId,
       getAccessTokenSilently
     );
-    /*Promise.all([centroidRequest, rolloffRequest]).then(
-      ([centroid, rolloff]) => {
-        setData([
-          { id: "centroid", data: centroid.values },
-          { id: "rolloff", data: rolloff.values },
-        ]);
-      }
-    );*/
     Promise.all([rolloffRequest]).then(([rolloff]) => {
       setData(rolloff);
     });
@@ -39,7 +23,6 @@ const CentroidRolloff = ({ musicId }) => {
   if (data == null) {
     return <IonItem lines="none">loading...</IonItem>;
   }
-  // return <ToneLiner data={data} axis_name={""} />;
   return <Liner data={data.values} axis_name={t("frequency")} />;
 };
 
