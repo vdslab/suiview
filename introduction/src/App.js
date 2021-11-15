@@ -197,7 +197,7 @@ function App() {
 
       <div className="footer">
         <div className="names">
-          {t("watanabe")}, {t("numabe")}, {t("onoue")}, <br class="br-sp" />
+          {t("watanabe")}, {t("numabe")}, {t("onoue")}, <br className="br-sp" />
           {t("uemura")}, {t("kitahara")}
           <br />
           {t("team")}
