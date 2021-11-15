@@ -188,7 +188,7 @@ def get_student_folder_f0(user_id, folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": d[i]
             }
             data.append(dic)
@@ -208,7 +208,7 @@ def get_student_folder_f0(user_id, folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        "x": j,
                         "y": aliged_data[j]
                     }
                     data.append(dic)
@@ -220,7 +220,7 @@ def get_student_folder_f0(user_id, folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    "x": j,
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
@@ -261,7 +261,7 @@ def get_student_folder_decibel(user_id, folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": str(d[i])
             }
             data.append(dic)
@@ -279,7 +279,7 @@ def get_student_folder_decibel(user_id, folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        "x": j,
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
@@ -291,7 +291,7 @@ def get_student_folder_decibel(user_id, folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    "x": j,
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
@@ -330,7 +330,7 @@ def get_student_folder_tone(user_id, folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": str(d[i])
             }
             data.append(dic)
@@ -348,7 +348,7 @@ def get_student_folder_tone(user_id, folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        "x": j,
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
@@ -360,7 +360,7 @@ def get_student_folder_tone(user_id, folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    "x": j,
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
@@ -906,7 +906,7 @@ def get_folder_f0(folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": d[i]
             }
             data.append(dic)
@@ -926,7 +926,7 @@ def get_folder_f0(folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        "x": j,
                         "y": aliged_data[j]
                     }
                     data.append(dic)
@@ -938,7 +938,7 @@ def get_folder_f0(folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    "x": j,
                     "y": round(aliged_data[j], 4)
                 }
                 data.append(dic)
@@ -1190,7 +1190,7 @@ def get_folder_decibel(folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": str(d[i])
             }
             data.append(dic)
@@ -1199,11 +1199,6 @@ def get_folder_decibel(folder_id):
 
     else:
         l = len(preData)-1
-
-        alignment = dtw(preData[0], preData[1], keep_internals=True)
-        # データの中で一番長いやつの時間をとる
-        # DTWの伸び縮みしないやつがいいね
-        times = librosa.times_like(preData[0][alignment.index1], sr=48000)
 
         for i in range(1, len(preData)):
             alignment = dtw(preData[0], preData[i], keep_internals=True)
@@ -1215,8 +1210,7 @@ def get_folder_decibel(folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        # "x": j+1,
-                        "x": round(times[j], 2),
+                        "x": j,
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
@@ -1228,8 +1222,7 @@ def get_folder_decibel(folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    # "x": j+1,
-                    "x": round(times[j], 2),
+                    "x": j,
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
@@ -1561,7 +1554,7 @@ def get_folder_tone(folder_id):
         d = list(preData[0])
         for i in range(len(d)):
             dic = {
-                "x": i+1,
+                "x": i,
                 "y": str(d[i])
             }
             data.append(dic)
@@ -1579,7 +1572,7 @@ def get_folder_tone(folder_id):
                 data = []
                 for j in range(len(aliged_data)):
                     dic = {
-                        "x": j+1,
+                        "x": j,
                         "y": str(aliged_data[j])
                     }
                     data.append(dic)
@@ -1590,7 +1583,7 @@ def get_folder_tone(folder_id):
             data = []
             for j in range(len(aliged_data)):
                 dic = {
-                    "x": j+1,
+                    "x": j,
                     "y": str(aliged_data[j])
                 }
                 data.append(dic)
