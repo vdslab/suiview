@@ -408,6 +408,7 @@ def get_student_music_f0(user_id, music_id):
     f0 = music.fundamental_frequency(session)
 
     average = frequency_ave_data(music)
+    times = librosa.times_like(f0, sr=48000)
 
     start, end = find_start_end(music)
     data = []
@@ -417,12 +418,12 @@ def get_student_music_f0(user_id, music_id):
     for i in range(max(0, start), end):
         if f0[i] >= 0:
             dic = {
-                "x": j,
+                "x": round(times[i], 2),
                 "y": round(f0[i], 4)
             }
         else:
             dic = {
-                "x": i+1,
+                "x": round(times[i], 2),
                 "y": 0
             }
         j += 1
@@ -451,6 +452,7 @@ def get_student_music_decibel(user_id, music_id):
     data = data.astype(np.float)
     S = np.abs(librosa.stft(data))
     db = librosa.amplitude_to_db(S, ref=np.max)
+    times = librosa.times_like(db, sr=48000)
     dbLine = []
     for i in range(len(db[0])):
         _max = -20
@@ -476,7 +478,7 @@ def get_student_music_decibel(user_id, music_id):
         end += 1
     for i in range(start, end):
         dic = {
-            "x": j,
+            "x": round(times[i], 2),
             "y": round(dbLine[i], 4)
         }
         data.append(dic)
@@ -1245,9 +1247,6 @@ def get_music_f0(music_id):
 
     f0 = music.fundamental_frequency(session)
     times = librosa.times_like(f0, sr=48000)
-    print(len(f0))
-    print("len", times)
-    print(times)
 
     average = frequency_ave_data(music)
 

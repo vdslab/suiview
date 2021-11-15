@@ -19,7 +19,6 @@ const translation = {
       shareLine: "Share by LINE",
       changeUserName: "Change username",
       enterNewUserName: "Please enter a new username.",
-
       pitch: "Pitch",
       intensity: "Intensity",
       timber: "Timber",
@@ -38,8 +37,8 @@ const translation = {
       login: "Login",
       max10: "At most the latest 10 data will be displayed",
       decibelValue: "Decibel value",
-      frequency: "frequency",
-      seconds: "seconds",
+      frequency: "Frequency",
+      seconds: "Seconds",
       homeP1: "Let's select student and folder.",
       homeP2:
         "If you select only students and folders, a graph of the accumulated data of that folder will be displayed.",
@@ -53,6 +52,7 @@ const translation = {
       whatYouCanDo: "What you can do in teacher mode",
       loginPage3:
         "In teacher mode, you can see and comment on student performances and graphs.Students can see the comments you write.",
+      time: "Time",
     },
   },
   ja: {
@@ -74,7 +74,6 @@ const translation = {
       setting: "設定",
       changeUserName: "ユーザー名の変更",
       enterNewUserName: "新しいユーザー名を入力してください",
-
       pitch: "高さ",
       intensity: "強さ",
       timber: "音色",
@@ -103,6 +102,7 @@ const translation = {
       whatYouCanDo: "先生モードでできること",
       loginPage3:
         " 先生モードでは生徒が演奏した音源とグラフを見てコメントを付けることができます。付けたコメントは生徒が見ることができます。",
+      time: "時間",
     },
   },
 };

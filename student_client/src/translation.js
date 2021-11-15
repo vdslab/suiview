@@ -110,8 +110,9 @@ const translation = {
       selectFolder: "Select folder",
       max10: "At most the latest 10 data will be displayed",
       decibelValue: "Decibel value",
-      frequency: "frequency",
-      seconds: "seconds",
+      frequency: "Frequency",
+      seconds: "Seconds",
+      time: "Time",
     },
   },
   ja: {
@@ -224,6 +225,7 @@ const translation = {
       decibelValue: "デシベル値",
       frequency: "周波数",
       seconds: "秒",
+      time: "時間",
     },
   },
 };

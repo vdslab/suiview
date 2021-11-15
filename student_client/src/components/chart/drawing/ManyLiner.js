@@ -7,19 +7,7 @@ const ManyLiner = ({ data, axis_name }) => {
   if (data == null || data === undefined) {
     return null;
   }
-  //sconsole.log(data);
-  //const x_padding = Math.round(data[0].data.length / 5 / 10) * 10;
 
-  const x_padding = Math.round(data[0].data.length / 5 / 10) * 10;
-  let k = 0;
-  function makeInterval(num) {
-    if (k % x_padding === 0) {
-      k += 1;
-      return num;
-    }
-    k += 1;
-    return;
-  }
   let p = 0;
   function makeData(num) {
     if (p % 5 === 0) {
@@ -29,8 +17,6 @@ const ManyLiner = ({ data, axis_name }) => {
     p += 1;
     return;
   }
-  const jiku = data[1].data.filter(makeInterval);
-  //console.log(data[0].data.filter(makeData));
 
   return (
     <div style={{ width: "100%", height: "300px" }}>
@@ -57,19 +43,10 @@ const ManyLiner = ({ data, axis_name }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          /*tickValues: data.length
-            ? data[0].data
-                .filter(({ x }) => x % x_padding === 0)
-                .map(({ x }) => x)
-            : [],*/
-          /* tickValues: data.length
-            ? data[0].data.filter(({ x, i }) => i % 100 === 0).map(({ x }) => x)
-            : [],*/
-          tickValues: jiku.map(({ x }) => {
-            //console.log(x);
+          tickValues: [0].map((x) => {
             return x;
           }),
-          legend: t("seconds"),
+          legend: t("time"),
           legendOffset: 30,
           legendPosition: "middle",
         }}
@@ -78,8 +55,7 @@ const ManyLiner = ({ data, axis_name }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          //legend: axis_name,
-          legend: "decibel",
+          legend: axis_name,
           legendOffset: -50,
           legendPosition: "middle",
         }}
