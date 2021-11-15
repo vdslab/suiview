@@ -1,23 +1,259 @@
-img.images {
-  width: 60%;
-  margin-bottom: 0.5rem;
+* {
+  font-family: "Noto Sans JP", sans-serif;
+  margin: 0px;
 }
 
-.hero-1 {
-  /*@extend .hero;*/
-  background-color: rgb(155, 255, 247);
-  /*background-image: url('./images/bg2.jpg');
-  background-size: cover;
-  background-position: center;*/
-}
-.images_h {
-  width: 35%;
-  margin: 0.25rem;
-  margin-bottom: 0.5rem;
+/* header */
+
+header {
+  background-color: #fef7ff;
+  text-align: left;
+  font-size: 20px;
+  margin-bottom: 0px;
+  font-weight: bold;
+  padding-left: 10px;
 }
 
-.here {
-  margin: 0.45rem;
-  color: rgb(143, 143, 143);
-  font-size: 0.75rem;
+h1 {
+  font-size: 80px;
+  font-weight: bold;
+}
+
+/* introduction */
+
+div.introduction {
+  background-color: #f5f5f5;
+  font-size: 15px;
+  text-align: left;
+  padding: 22px 39px 51px 39px;
+}
+
+p.introduction {
+  padding-top: 10px;
+  padding-left: 44px;
+  line-height: 200%;
+}
+
+h3.intro_title {
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+/* student */
+
+.student {
+  background-color: #fffef7;
+  text-align: center;
+}
+
+h2.student {
+  padding-top: 30px;
+  padding-bottom: 27px;
+  color: #ffd11d;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+p.student {
+  font-size: 13px;
+  padding-bottom: 67px;
+}
+
+img.ogp_s {
+  width: 170px;
+}
+
+img.qr {
+  width: 170px;
+}
+
+p.img1 {
+  font-size: 10px;
+}
+
+.columns {
+  size: 550px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: 43px;
+  text-align: center;
+}
+
+.container-2 {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  padding-bottom: 79px;
+}
+
+/* teacher */
+
+.teacher {
+  background-color: #edfffc;
+  text-align: center;
+}
+
+h2.teacher {
+  padding-top: 30px;
+  padding-bottom: 27px;
+  color: #0dddc2;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+p.teacher {
+  font-size: 13px;
+  line-height: 170%;
+  padding-bottom: 67px;
+}
+
+img.teacher {
+  text-align: center;
+  width: 550px;
+  padding-bottom: 43px;
+}
+
+img.ogp_t {
+  text-align: center;
+  width: 325px;
+}
+
+div.ogp_t {
+  font-size: 10px;
+  padding-bottom: 79px;
+}
+
+.studentImages img {
+  border: 2px solid rgba(103, 43, 12, 0.938);
+}
+
+/* footer */
+
+div.names {
+  text-align: right;
+  padding-top: 19px;
+  padding-right: 33px;
+  padding-bottom: 45px;
+}
+
+.br-sp,
+.img-sp {
+  display: none;
+}
+
+/* select box*/
+.select select {
+  border-color: rgb(255 186 215);
+}
+
+.select select:hover {
+  border-color: rgb(255 186 215);
+  box-shadow: 0 0 0 0.125em rgb(220 50 105 / 25%);
+}
+
+.input:active,
+.input:focus,
+.is-active.input,
+.is-active.textarea,
+.is-focused.input,
+.is-focused.textarea,
+.select select.is-active,
+.select select.is-focused,
+.select select:active,
+.select select:focus,
+.textarea:active,
+.textarea:focus {
+  border-color: rgb(255 186 215);
+  box-shadow: 0 0 0 0.125em rgb(220 50 105 / 25%);
+}
+
+.select:not(.is-multiple):not(.is-loading)::after {
+  border-color: #000000;
+  right: 1.125em;
+  z-index: 4;
+}
+
+@media screen and (max-width: 460px) {
+  .br-sp {
+    display: flex;
+  }
+  p {
+    font-size: 11px;
+  }
+  p.subtitle {
+    padding-top: 10px;
+    font-size: 10px;
+  }
+
+  div.introduction {
+    padding: 25px 43px 18.4px 33px;
+  }
+  h3.intro_title {
+    font-size: 16px;
+  }
+  p.introduction {
+    padding-left: 12px;
+  }
+  h2.student {
+    font-size: 17px;
+    width: 110px;
+    background-color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-top: 17px;
+    margin-bottom: 22px;
+  }
+  .studentTitle {
+    display: flex;
+    justify-content: center;
+  }
+  p.student {
+    font-size: 12px;
+    line-height: 200%;
+    padding-bottom: 33px;
+  }
+  .columns,
+  img.teacher,
+  .ogp_t {
+    display: none;
+  }
+
+  h2.teacher {
+    font-size: 17px;
+    width: 110px;
+    background-color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-top: 17px;
+    margin-bottom: 22px;
+  }
+
+  .teacherTitle {
+    display: flex;
+    justify-content: center;
+  }
+
+  p.teacher {
+    font-size: 12px;
+    line-height: 200%;
+    padding-bottom: 33px;
+  }
+
+  div.names {
+    font-size: 10px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+  }
+  .ogp_s_sp,
+  .ogp_t_sp {
+    width: 150px;
+  }
+  .img-sp {
+    display: inherit;
+    padding-bottom: 26px;
+  }
 }
