@@ -43,7 +43,7 @@ const translation = {
       comparePeformances: "Compare",
       publications: "Publications",
       publications1:
-        "Please cite the following articles for referring to the Suiview.",
+        "Please cite the following articles for referring to Suiview.",
       team: "College of Humanities and Sciences, Nihon University",
       watanabe: "Misato Watanabe",
       numabe: "Kei Numabe",
