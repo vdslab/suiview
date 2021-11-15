@@ -7,7 +7,6 @@ import resources from "./translation.js";
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
-  lang: "ja",
   fallbackLng: "en",
 });
 
