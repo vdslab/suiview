@@ -63,7 +63,7 @@ pycodestyle==2.6.0
 pycparser==2.20
 pygame==2.0.0.dev6
 pyglet==1.5.0
-Pygments==2.7.2
+Pygments==2.7.4
 PyJWT==1.4.2
 pylint==2.6.0
 pyparsing==2.4.7
