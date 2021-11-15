@@ -22,7 +22,7 @@ const translation = {
       pitch: "Pitch",
       intensity: "Intensity",
       timber: "Timber",
-      overallScore: "Overall score",
+      overallScore: "Total score",
       stackedScore: "Stacked score",
       noData: "There is no data.",
       letWriteComment: "Let's write comment from",
