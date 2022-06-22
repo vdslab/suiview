@@ -47,7 +47,7 @@ mccabe==0.6.1
 mecab-python3==1.0.3
 mido==1.2.9
 numba==0.51.2
-numpy==1.19.4
+numpy==1.22.0
 packaging==20.4
 pandas==1.1.4
 parso==0.7.1
